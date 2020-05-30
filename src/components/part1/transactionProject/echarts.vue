@@ -8,6 +8,7 @@
 import $ from 'jQuery'
 import echarts from 'echarts'
 import {getGexfData} from "@/api/part1/system/transactionProject";
+//import axios from 'axios'
 require('echarts/extension/dataTool')
 export default {
   name: 'les_miserables',
@@ -20,7 +21,25 @@ export default {
     this.drawLine();
      },
   methods: {
+      readFile(filePath) {
+          // 创建一个新的xhr对象
+          let xhr = null
+          if (window.XMLHttpRequest) {
+              xhr = new XMLHttpRequest()
+          } else {
+              // eslint-disable-next-line
+              xhr = new ActiveXObject('Microsoft.XMLHTTP')
+          }
+          const okStatus = document.location.protocol === 'file' ? 0 : 200
+          xhr.open('GET', filePath, false)
+          xhr.overrideMimeType('text/html;charset=utf-8')
+          xhr.send(null)
+          return xhr.status === okStatus ? xhr.responseText : null
+      },
+
     drawLine(){
+        this.title = this.readFile('../../../../static/les-miserables.gexf')
+        console.log(this.title)
 
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart'))
@@ -36,9 +55,17 @@ export default {
                 }).catch(()=>{
                     console.log("getGexfData fail")
                 });
-
-        $.get("http://localhost:8091/getuserr", function(xml) {  //一定要把文件放在static下
-
+           // console.log(process.enc.BASE_URL)
+//axios.get('/local/localldata').then((data)=>{console.log(data);})
+     //  var self=this
+     //  this.$http.get('../../../../static/les-miserables.gexf').then((response) => {
+      //      console.log(response.body)
+      //      self.content = response.body
+      //  })
+  //      var graph = echarts.dataTool.gexf.parse(this.title);
+//console.log(graph)
+        $.get("http://localhost:8088/hantina/getAllgexf", function(xml) {  //一定要把文件放在static下
+           //  xml=xml
               console.log("读取gexf");
               myChart.hideLoading();
 
