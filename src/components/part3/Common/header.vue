@@ -6,7 +6,7 @@
                     <el-menu-item index="0"><img :src="logoimg" class="img"></el-menu-item>
                     <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>
                     <el-menu-item index="/console">统计中心</el-menu-item>
-                    <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+                    <el-menu-item index="/riskPrediction/riskPrediction">风险评估</el-menu-item>
                     <el-menu-item index="/download">下载数据</el-menu-item>
                 </el-menu>
 
