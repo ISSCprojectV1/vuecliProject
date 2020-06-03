@@ -286,3 +286,5 @@ views:结构如下(可以参考part3里我已经整合的代码)
 vue.config.js
 是vue-cli脚手架封装好用于配置webpack相关属性的 可以自行添加
 
+开发日志：
+
