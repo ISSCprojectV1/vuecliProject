@@ -1,12 +1,12 @@
 <template>
      <div id="index">
-        <div id="main" style="width: 100%;height: 600px;"></div>
+        <div id="main" style="width: 100%;height: 800px;"></div>
     </div>
 </template>
 <script>
  //   import axios from "axios";
     import echarts from 'echarts'
-    import {getriskHistoryData,getriskPredictionData} from "@/api/part1/system/riskPrediction";
+    import {getriskHistoryData,getriskPredictionData} from "@/api/part1/riskPrediction";
     export default {
         name: "app",
         data() {
@@ -224,4 +224,8 @@
 </script>
 
 <style>
+.index{
+  width: 100%;
+  height: 800px;
+}
 </style>

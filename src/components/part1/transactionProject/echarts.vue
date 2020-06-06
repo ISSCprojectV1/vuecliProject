@@ -7,8 +7,7 @@
 <script>
 import $ from 'jQuery'
 import echarts from 'echarts'
-import {getGexfData} from "@/api/part1/system/transactionProject";
-//import axios from 'axios'
+import {getGexfData} from "@/api/part1/transactionProject";
 require('echarts/extension/dataTool')
 export default {
   name: 'les_miserables',
@@ -55,17 +54,9 @@ export default {
                 }).catch(()=>{
                     console.log("getGexfData fail")
                 });
-           // console.log(process.enc.BASE_URL)
-//axios.get('/local/localldata').then((data)=>{console.log(data);})
-     //  var self=this
-     //  this.$http.get('../../../../static/les-miserables.gexf').then((response) => {
-      //      console.log(response.body)
-      //      self.content = response.body
-      //  })
-  //      var graph = echarts.dataTool.gexf.parse(this.title);
-//console.log(graph)
-        $.get("http://localhost:8088/hantina/getAllgexf", function(xml) {  //一定要把文件放在static下
-           //  xml=xml
+
+        $.get("les-miserables.gexf", function(xml) {  //一定要把文件放在static下
+
               console.log("读取gexf");
               myChart.hideLoading();
 

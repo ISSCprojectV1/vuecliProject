@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const baseURL = "/api";
+const baseURL = "http://localhost:8088";
 
 export {baseURL}
 

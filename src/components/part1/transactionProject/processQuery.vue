@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import {getTansactionData} from "@/api/part1/system/transactionProject";
+  import {getTansactionData} from "@/api/part1/transactionProject";
  // import $ from 'jQuery'
   export default {
 
@@ -83,3 +83,13 @@
     }
   }
 </script>
+<style>
+.dormitory{
+  width: 100%;
+  height: 800px;
+}
+.dormitoryData{
+  width: 100%;
+  height: 600px;
+}
+</style>

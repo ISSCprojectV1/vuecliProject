@@ -16,34 +16,17 @@ app.use('/local', apiRoutes)
 
 module.exports = {
     devServer: {
-        before(app) {
-            app.get('/local/localldata', (req, res) => {
-                res.json({
-                    errno: 0,   // 这里是你的json内容
-                    data: localldata
-                })
-            })
-            app.get('/local/locallgexf', (req, res) => {
-                res.json({
-                    errno: 0,   // 这里是你的json内容
-                    data: locallgexf
-                })
-            })
-
-
-        },
-
-        open:true,
-        sockHost: 'http://localhost:8080',
+      port: 8088, // 端口
         proxy: {
-            '/api':{
-                target:'http://localhost:8088',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': '' //路径重写
+            '/api': {
+                target: 'http://localhost:8088', //API服务器的地址
+                ws: true,  //代理websockets
+                changeOrigin: true, // 虚拟的站点需要更管origin
+                pathRewrite: {   //重写路径 比如'/api/aaa/ccc'重写为'/aaa/ccc'
+                    '^/api': ''
                 }
-
             }
-        }
-    }
-}
+        },
+    },
+    // lintOnSave: false // 取消 eslint 验证
+  }

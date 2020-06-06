@@ -34,12 +34,6 @@
         },
         methods:
             {
-                tabclick(){
-                    this.$router.push(`/mydownload/${this.tabName}`)
-                },
-                setLabel(label){
-                    this.tabName = label
-                }
             }
 
 
