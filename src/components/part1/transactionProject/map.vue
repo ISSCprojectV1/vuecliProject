@@ -490,8 +490,11 @@ $(function () {
         myChart.setOption(optionXyMap01);
         myChart.on('click', (params)=>{
         console.log("新的点击事件"+params.name) 
+         if(params.name=="安徽"){
+        console.log("符合条件")
         var url = "http://localhost:8088/mapTest";
         window.location.href=url;
+        }
         /*
         var _self = this;
         if(opt.goDown && params.name !== name[idx]){

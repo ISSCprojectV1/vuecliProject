@@ -63,7 +63,7 @@ let routes = [
     },
     {
         path:"*",
-        component:NOTFOUND
+        component:Login
     },
     {
         path: "/login",
@@ -75,7 +75,15 @@ let routes = [
         name: "hantina",
         component:errorpage404,
         children:[
+            {
+                path:'/',
+                component:NOTFOUND
+            },
 
+            {
+                path:'score',
+                component:NOTFOUND
+            },
             {
                 path:'group',
                 component: NOTFOUND

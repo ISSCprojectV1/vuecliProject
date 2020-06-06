@@ -20,25 +20,7 @@ export default {
     this.drawLine();
      },
   methods: {
-      readFile(filePath) {
-          // 创建一个新的xhr对象
-          let xhr = null
-          if (window.XMLHttpRequest) {
-              xhr = new XMLHttpRequest()
-          } else {
-              // eslint-disable-next-line
-              xhr = new ActiveXObject('Microsoft.XMLHTTP')
-          }
-          const okStatus = document.location.protocol === 'file' ? 0 : 200
-          xhr.open('GET', filePath, false)
-          xhr.overrideMimeType('text/html;charset=utf-8')
-          xhr.send(null)
-          return xhr.status === okStatus ? xhr.responseText : null
-      },
-
     drawLine(){
-        this.title = this.readFile('../../../../static/les-miserables.gexf')
-        console.log(this.title)
 
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart'))

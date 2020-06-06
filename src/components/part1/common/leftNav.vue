@@ -8,7 +8,9 @@
       @open="handleOpen"
       @close="handleClose"
       router
-    >
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b" style="height: 100%">
 
       <el-menu-item index="/Dashboard">
         <i class="el-icon-menu"></i>

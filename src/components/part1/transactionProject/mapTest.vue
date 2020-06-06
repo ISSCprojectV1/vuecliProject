@@ -5,7 +5,6 @@
 </template>>
 
 <script>
-import axios from 'axios'
 import $ from 'jQuery'
 import echarts from 'echarts'
 
@@ -23,31 +22,42 @@ export default {
     drawLine(){
 var Echarts = {};
  
+/***
+ * 加载地图
+ * @param data
+ */
+Echarts.loadData = function (data) {
+ 
+};
+ 
  
 //基于准备好的dom,初始化echarts实例
 var myChart = echarts.init(document.getElementById('map'));
 // var uploadedDataURL = "/static/map_json/data-1528971808162-BkOXf61WX.json";
 // var uploadedDataURL = "/static/map_json/data-1528969802719-HyXIqhk-m.json";
-var uploadedDataURL = "/china.json";
+var uploadedDataURL = "/map/province/anhui.json";
 var jiangsu = "/map/province/jiangsu.json"
 //如果想要修改，请点击上方克隆，然后在自己的版本上修改，不要在lz的版本上改！！
  
 var geoGpsMap = {
-    '1': [109.1162, 34.2004],
-    '2': [116.4551, 40.2539],
-    '3': [113.12244, 23.009505],
-    '4': [87.9236, 43.5883],
-    '5': [127.9688, 45.368],
-    '6': [91.11, 29.97],
+   
 };
-// 省份坐标
+// 市区坐标
 var geoCoordMap = {
-    '安徽': [117.283042,31.86119],
-    '澳门': [113.54909,22.198951],
-    '北京': [116.405285,39.904989],
-    '山东':[117.000923,36.675807]
+    "合肥市":[117.283042,31.86119],
+    "芜湖市":[118.376451,31.326319],
+    "蚌埠市":[117.363228,32.939667],
+    "马鞍山市":[118.507906,31.689362],
+    "淮南市":[117.018329,32.647574],
+    "淮北市":[116.794664,33.971707],
+    "铜陵市":[117.816576,30.929935],
+    "安庆市":[117.043551,30.50883],
+    "黄山市":[118.317325,29.709239],
+    "滁州市":[118.316264,32.303627],
+    "阜阳市":[115.819729,32.896969],
+    "宿州市":[116.984084,33.633891]
 };
-
+ 
 var colors = [
     ["#1DE9B6", "#F46E36", "#04B9FF", "#5DBD32", "#FFC809", "#FB95D5", "#BDA29A", "#6E7074", "#546570", "#C4CCD3"],
     ["#37A2DA", "#67E0E3", "#32C5E9", "#9FE6B8", "#FFDB5C", "#FF9F7F", "#FB7293", "#E062AE", "#E690D1", "#E7BCF3", "#9D96F5", "#8378EA", "#8378EA"],
@@ -57,8 +67,7 @@ var colors = [
 var colorIndex = 0;
  
 $(function () {
-    // 下端时间轴 及侧面图表数据
-    var year = ["监管机构分布", "2015", "2016", "2017", "2018","2019"];
+    var year = ["监管机构", "棉花", "石油", "木炭", "2018","2019"];
     var mapData = [
         [],
         [],
@@ -68,7 +77,7 @@ $(function () {
         []
     ];
  
-    /*柱子Y名称 右侧表格的数据*/
+    /*柱子Y名称*/
     var categoryData = [];
     var barData = [];
     for (var key in geoCoordMap) {
@@ -106,7 +115,6 @@ $(function () {
         });
  
     }
-    console.log("mapData 的长度："+mapData[0][1].name+mapData[0][0].value)
     for (var i = 0; i < mapData.length; i++) {
         barData.push([]);
         for (var j = 0; j < mapData[i].length; j++) {
@@ -136,7 +144,7 @@ $(function () {
             for (var i = 0; i < data.length; i++) {
                 var dataItem = data[i];
                 var fromCoord = geoCoordMap[dataItem.name];
-                var toCoord = gps; 
+                var toCoord = gps; //郑州
                 //  var toCoord = geoGps[Math.random()*3];
                 if (fromCoord && toCoord) {
                     res.push([{
@@ -197,7 +205,6 @@ $(function () {
             },
             baseOption: {
                 animation: true,
-                // 初始动画的时长，支持回调函数，可以通过每个数据返回不同的时长实现更戏剧的初始动画效果：
                 animationDuration: 1000,
                 animationEasing: 'cubicInOut',
                 animationDurationUpdate: 1000,
@@ -226,8 +233,7 @@ $(function () {
                     label: {
                         emphasis: {
                             show: false
-                        },
-                        color: "#8B008B"
+                        }
                     },
                     itemStyle: {
                         normal: {
@@ -261,21 +267,17 @@ $(function () {
                 },
             },
             options: []
+ 
         };
         for (var n = 0; n < year.length; n++) {
             optionXyMap01.options.push({
                 backgroundColor: '#051b4a',
                 title: [{
-                     text: '网络图-地图示意图',
-                     subtext: '点击地图中对应省份，可以获得该省份清关所及交易平台网络关系图',
-                     left: 'left',
+                     text: '地图',
+                     subtext: '内部数据请勿外传',
+                     left: 'center',
                      textStyle: {
-                         color: '#fff',
-                         fontSize: 30
-                     },
-                     subtextStyle:{
-                         color:"#F0FFFF",
-                         fontSize:15
+                         color: '#fff'
                      }
                 },
                     {
@@ -285,11 +287,10 @@ $(function () {
                         top: '8%',
                         textStyle: {
                             color: '#fff',
-                            fontSize: 25
+                            fontSize: 30
                         }
                     }
                 ],
-                // 横坐标
                 xAxis: {
                     type: 'value',
                     scale: true,
@@ -347,19 +348,17 @@ $(function () {
                         symbolSize: function (val) {
                             return val[2] / 10;
                         },
-                        // 地图中动态的节点
                         label: {
                             normal: {
                                 formatter: '{b}',
                                 position: 'right',
-                                show: true,
+                                show: true
                             },
                             emphasis: {
-                                show: true,
+                                show: true
                             }
                         },
                         itemStyle: {
-                            // 根据旁边的字体颜色变化
                             normal: {
                                 color: colors[colorIndex][n]
                             }
@@ -374,13 +373,12 @@ $(function () {
                         showLegendSymbol: false, // 存在legend时显示
                         label: {
                             normal: {
-                                show: false,
-                                color: '#FF0000'
+                                show: false
                             },
                             emphasis: {
                                 show: false,
                                 textStyle: {
-                                    color: '#FF0000'
+                                    color: '#fff'
                                 }
                             }
                         },
@@ -430,7 +428,6 @@ $(function () {
                         zlevel: 1
                     },
                     //地图线的动画效果
-                    /*
                     {
                         type: 'lines',
                         zlevel: 2,
@@ -451,7 +448,6 @@ $(function () {
                         },
                         data: convertToLineData(mapData[n], geoGpsMap[Math.ceil(Math.random() * 6)])
                     },
-                    */
                     //柱状图
                     {
                         zlevel: 1.5,
@@ -467,16 +463,14 @@ $(function () {
                 ]
             })
         }
-        
         myChart.setOption(optionXyMap01);
         myChart.on('click', (params)=>{
         console.log("新的点击事件"+params.name) 
-        if(params.name=="安徽"){
+         if(params.name=="安徽"){
         console.log("符合条件")
         var url = "http://localhost:8088/mapTest";
         window.location.href=url;
         }
-       
         /*
         var _self = this;
         if(opt.goDown && params.name !== name[idx]){

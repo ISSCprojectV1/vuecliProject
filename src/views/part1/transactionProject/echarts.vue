@@ -20,7 +20,6 @@
     import Header from "@/components/part1/common/topNav";
     import leftNav from "@/components/part1/common/leftNav"
     import echarts from "@/components/part1/transactionProject/echarts";
-
     export default {
         components: {
             Header,

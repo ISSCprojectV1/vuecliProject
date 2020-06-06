@@ -9,7 +9,38 @@
     </el-col>
 
 
+        <div class="state-info">
 
+              <section class="panel">
+                    <div class="panel-body">
+                        <div class="summary">
+                            <span>yearly  income</span>
+                            <h3 class="green-txt">$ 45,600</h3>
+                        </div>
+                         
+                        <div id="expense" class="chart-bar"> <img src="static/img/greenincome.png"></div>
+                    </div>
+                </section>
+
+
+               <section class="panel">
+
+                 <div class="panel-body">
+                  
+                        <div class="summary">
+                            <span>yearly expense</span>
+                            <h3 class="red-txt">$ 45,600</h3>
+                        </div>
+                        <div id="income" class="chart-bar">
+                          <img src="static/img/redincome.png">
+                          
+
+                      </div>
+                  </div>
+                </section>
+
+             
+          </div>
 
 
 
@@ -119,7 +150,7 @@
 
  <el-row :gutter="16">
         <el-col :xs="12" :sm="12" :md="8" :lg="8">
-
+         
 <vue-calendar></vue-calendar>
         </el-col>
 
@@ -127,11 +158,11 @@
         <el-col :xs="12" :sm="12" :md="9" :lg="9">
             <todo-list></todo-list>
         </el-col>
-
-
+       
+      
 
         <el-col :xs="24" :sm="24" :md="7" :lg="7">
-
+       
        <div class="panel blue-box twt-info">
                         <div class="panel-body">
                             <h3>19 Februay 2014</h3>
@@ -175,7 +206,7 @@
                     </div>
 
         </el-col>
-
+     
     </el-row>
 
 

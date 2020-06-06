@@ -74,6 +74,7 @@ let routes = [
         name: "echarts",
         component:echarts,
     },
+    
 ];
 
 export default routes
