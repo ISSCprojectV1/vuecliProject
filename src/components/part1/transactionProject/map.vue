@@ -7,7 +7,7 @@
 <script>
 import $ from 'jQuery'
 import echarts from 'echarts'
-
+import {getComponyData} from "@/api/part1/transactionProject";
 export default {
      name: 'map_geo',
   data () {
@@ -29,7 +29,6 @@ var Echarts = {};
 Echarts.loadData = function (data) {
  
 };
- 
  
 //基于准备好的dom,初始化echarts实例
 var myChart = echarts.init(document.getElementById('map'));
@@ -89,55 +88,50 @@ var colors = [
 ];
  
 var colorIndex = 0;
- 
+
+   
+   //var companyVal =[];
+   //companyVal = this.companyData;
+   //console.log("companyVal的内容是" + companyVal);
+   //var equityCompany = [];
+   //equityCompany = companyVal[0].value;
+   //console.log("equityCompany的内容是" + equityCompany);
+
+
 $(function () {
-    var year = ["监管机构分布", "2015", "2016", "2017", "2018","2019"];
+    var classes = ["权益类公司", "现货类公司"];
     var mapData = [
         [],
         [],
-        [],
-        [],
-        [],
-        []
     ];
- 
-    /*柱子Y名称*/
-    var categoryData = [];
+    var companyVal = [];
+    var equityCompany = []; // 权益类公司数据
+    var spotCompony = []; // 现货类公司数据
+    var categoryData = []; 
     var barData = [];
-    for (var key in geoCoordMap) {
+   // 获取历史交易数据
+   console.log("获取公司白名单*后期补入交易数据")
+   getComponyData().then((res) => {
+   console.log("Company Json:"+res.data);
+   this.companyData =res.data;
+   companyVal = this.companyData;
+   console.log("companyVal"+companyVal);
+   equityCompany = companyVal[0].value;
+   spotCompony = companyVal[1].value;
+   var count = 0;
+   for (var key in geoCoordMap) {
         categoryData.push(key);
         mapData[0].push({
-            "year": '2014',
+            "classes": 'equityCompany',
             "name": key,
-            "value": randomNum(100, 300)
+            "value":equityCompany[count]
         });
         mapData[1].push({
-            "year": '2015',
+            "classes": 'SpotCompony',
             "name": key,
-            "value": randomNum(100, 300)
+            "value": spotCompony[count]
         });
-        mapData[2].push({
-            "year": '2016',
-            "name": key,
-            "value": randomNum(100, 300)
-        });
-        mapData[3].push({
-            "year": '2017',
-            "name": key,
-            "value": randomNum(100, 300)
-        });
-        mapData[4].push({
-            "year": '2018',
-            "name": key,
-            "value": randomNum(100, 300)
-        });
- 
-        mapData[5].push({
-            "year": '2019',
-            "name": key,
-            "value": randomNum(0, 300)
-        });
- 
+        count = count+1;
     }
     for (var i = 0; i < mapData.length; i++) {
         barData.push([]);
@@ -145,7 +139,8 @@ $(function () {
             barData[i].push(mapData[i][j].value)
         }
     }
-    // 导入中国地图
+
+        // 导入中国地图
     $.getJSON(uploadedDataURL, function (geoJson) {
  
         echarts.registerMap('china', geoJson);
@@ -184,10 +179,10 @@ $(function () {
         // 下方时间线
         var optionXyMap01 = {
             timeline: {
-                data: year,
+                data: classes,
                 axisType: 'category',
                 autoPlay: true,
-                playInterval: 3000,
+                playInterval: 5000,
                 left: '10%',
                 right: '10%',
                 bottom: '3%',
@@ -247,6 +242,7 @@ $(function () {
                             color: 'rgba(150,150,150,0.1)' //hover颜色
                         }
                     }
+
                 },
                 geo: {
                     show: true,
@@ -259,6 +255,7 @@ $(function () {
                             show: false
                         }
                     },
+                    
                     itemStyle: {
                         normal: {
                             borderColor: 'rgba(147, 235, 248, 1)',
@@ -293,20 +290,21 @@ $(function () {
             options: []
  
         };
-        for (var n = 0; n < year.length; n++) {
+        for (var n = 0; n < classes.length; n++) {
             optionXyMap01.options.push({
                 backgroundColor: '#051b4a',
                 title: [{
-                     text: '地图',
-                     subtext: '内部数据请勿外传',
+                     text: '全国大宗物流流通情况',
+                     subtext: 'XXXXXXXXXX',
                      left: 'center',
                      textStyle: {
-                         color: '#fff'
+                         color: '#fff',
+                         fontSize: 30
                      }
                 },
                     {
                         id: 'statistic',
-                        text: year[n] + "年数据统计情况",
+                        text: classes[n] + "数据统计情况",
                         left: '75%',
                         top: '8%',
                         textStyle: {
@@ -362,7 +360,6 @@ $(function () {
                     data: categoryData
                 },
                 series: [
-                    //未知作用
                     {
                         //文字和标志
                         name: 'light',
@@ -405,6 +402,18 @@ $(function () {
                                     color: '#fff'
                                 }
                             }
+                        },
+                        tooltip: {
+                         trigger : 'item',
+                         formatter : '{b}\n\n点击获得'+'{b}'+'详细信息',
+                         textStyle:{
+                              color : '#000000',
+                              fontSize : 16
+
+                         },
+                         backgroundColor : '#F0F8FF',
+                         borderColor : '#5F9EA0',
+                         borderWidth : 4
                         },
                         roam: true,
                         itemStyle: {
@@ -510,6 +519,16 @@ $(function () {
        }*/
     });
     });
+   console.log("获取公司白名单成功 ")
+   }).catch(()=>{
+   console.log("getComponyData fail")
+                });
+   
+   //console.log("equityCompany:"+equityCompany);
+    /*柱子Y名称
+    权益类公司：equityCompany；
+    现货类公司：SpotCompony
+    */
 });
  
  

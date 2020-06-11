@@ -18,3 +18,13 @@ import request from '@/utils/request'
       param:{t:new Date()}
     })
   }
+
+     // 获取公司白名单*后期补入交易数据
+     export function getComponyData() {
+      console.log("发送getComponyData请求")
+      return request({
+        url: '/getComponyData',
+        method: 'get',
+        param:{t:new Date()}
+      })
+    }

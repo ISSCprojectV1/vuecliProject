@@ -67,7 +67,7 @@ var colors = [
 var colorIndex = 0;
  
 $(function () {
-    var year = ["监管机构", "棉花", "石油", "木炭", "2018","2019"];
+    var year = ["监管机构", "棉花", "石油", "木炭", "小麦","木材"];
     var mapData = [
         [],
         [],
@@ -83,33 +83,33 @@ $(function () {
     for (var key in geoCoordMap) {
         categoryData.push(key);
         mapData[0].push({
-            "year": '2014',
+            "year": '监管机构',
             "name": key,
             "value": randomNum(100, 300)
         });
         mapData[1].push({
-            "year": '2015',
+            "year": '棉花',
             "name": key,
             "value": randomNum(100, 300)
         });
         mapData[2].push({
-            "year": '2016',
+            "year": '石油',
             "name": key,
             "value": randomNum(100, 300)
         });
         mapData[3].push({
-            "year": '2017',
+            "year": '木炭',
             "name": key,
             "value": randomNum(100, 300)
         });
         mapData[4].push({
-            "year": '2018',
+            "year": '小麦',
             "name": key,
             "value": randomNum(100, 300)
         });
  
         mapData[5].push({
-            "year": '2019',
+            "year": '木材',
             "name": key,
             "value": randomNum(0, 300)
         });
@@ -157,6 +157,34 @@ $(function () {
             }
             return res;
         };
+        //饼图数据
+var pieData = [
+    [{
+        "name": "监管机构",
+        "value": 2
+    }, {
+        "name": "石油",
+        "value": 4
+    }, {
+        "name": "棉花",
+        "value": 3
+    }, {
+        "name": "煤炭",
+        "value": 3
+    }, {
+        "name": "木材",
+        "value": 7
+    }, {
+        "name": "小麦",
+        "value": 3
+    }, ],
+    ["监管机构", "石油", "棉花", "煤炭", "木材", "小麦"]
+];
+// 折线图数据
+var yqyData = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    [600, 1150, 400, 850, 600, 650, 100, 1150, 100, 700, 600, 800, 500]
+]
         // 下方时间线
         var optionXyMap01 = {
             timeline: {
@@ -228,8 +256,9 @@ $(function () {
                     show: true,
                     map: 'china',
                     roam: true,
-                    zoom: 1,
-                    center: [113.83531246, 34.0267395887],
+                    zoom: 2.5,
+                    center: [117.53531246, 32.0267395887],
+
                     label: {
                         emphasis: {
                             show: false
@@ -273,16 +302,18 @@ $(function () {
             optionXyMap01.options.push({
                 backgroundColor: '#051b4a',
                 title: [{
-                     text: '地图',
-                     subtext: '内部数据请勿外传',
+                     text: '安徽省地图及网络情况',
+                     subtext: '展示xxxxx',
                      left: 'center',
                      textStyle: {
-                         color: '#fff'
+                         color: '#fff',
+                         fontSize: 30
+
                      }
                 },
                     {
                         id: 'statistic',
-                        text: year[n] + "年数据统计情况",
+                        text: year[n] + "统计情况",
                         left: '75%',
                         top: '8%',
                         textStyle: {
@@ -291,7 +322,7 @@ $(function () {
                         }
                     }
                 ],
-                xAxis: {
+                xAxis: [{
                     type: 'value',
                     scale: true,
                     position: 'top',
@@ -313,6 +344,8 @@ $(function () {
                         }
                     },
                 },
+                
+                ],
                 yAxis: {
                     type: 'category',
                     //  name: 'TOP 20',
@@ -459,7 +492,15 @@ $(function () {
                             }
                         },
                         data: barData[n]
-                    }
+                    },
+                    // 饼图
+                    {
+                  name: '面积模式',
+                  type: 'pie',
+                  radius: [10, 100],
+                  center: ['18%', '75%'],
+                  data: pieData[0] //饼图数据赋值
+        }
                 ]
             })
         }

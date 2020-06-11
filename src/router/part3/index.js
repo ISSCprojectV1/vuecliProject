@@ -8,7 +8,7 @@ import userdownload from "@/components/part3/User/download";
 import userscore from "@/components/part3/User/score"
 import usergroup from "@/components/part3/User/group"
 import Registry from "@/views/part3/Registry";
-
+import login_part1 from "../../views/part1/login"; 
 
 import Download from "@/views/part3/incentiveMechanism/Download/home"
 import myDownload from "@/views/part3/incentiveMechanism/Download/myDownload"
@@ -63,7 +63,7 @@ let routes = [
     },
     {
         path:"*",
-        component:Login
+        component:login_part1
     },
     {
         path: "/login",
@@ -77,16 +77,16 @@ let routes = [
         children:[
             {
                 path:'/',
-                component:NOTFOUND
+                component:Login
             },
 
             {
                 path:'score',
-                component:NOTFOUND
+                component:Login
             },
             {
                 path:'group',
-                component: NOTFOUND
+                component: Login
             }
 
         ]

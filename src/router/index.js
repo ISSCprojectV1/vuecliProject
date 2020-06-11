@@ -12,7 +12,7 @@ import routes3 from "@/router/part3"
 let routes = routes1.concat(routes2).concat(routes3);
 console.log(routes)
 const rounter = new VueRouter({
-    mode:"hash",
+    mode:"history",
     routes:routes
 });
 

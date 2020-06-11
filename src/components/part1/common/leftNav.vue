@@ -38,6 +38,16 @@
         </el-menu-item-group>
       </el-submenu>
 
+        <el-submenu index="/Taskinput">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span>模块与粒度</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/Taskinput">模块与粒度输入</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+
       <el-menu-item index="4">
         <i class="el-icon-setting"></i>
         <span slot="title">导航四</span>

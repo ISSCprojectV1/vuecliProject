@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const baseURL = "http://localhost:8088";
+const baseURL = "https://www.fastmock.site/mock/7433813b1c79b90e88d0541ef0e6767d/vueProject";
 
 export {baseURL}
 
