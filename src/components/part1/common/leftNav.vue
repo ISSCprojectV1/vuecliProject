@@ -41,11 +41,14 @@
         <el-submenu index="/Taskinput">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>模块与粒度</span>
+          <span>模态与粒度</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/Taskinput">模块与粒度输入</el-menu-item>
+          <el-menu-item index="/Taskinput">任务属性</el-menu-item>
         </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="/Time_granularity">时间粒度</el-menu-item>
+          </el-menu-item-group>
       </el-submenu>
 
       <el-menu-item index="4">

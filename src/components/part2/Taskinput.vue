@@ -1,14 +1,14 @@
 <template>
-  <div>
-  <h2 class="red"> 任务属性 {{msg}}</h2>
+  <div style="width: 100%;height: 800px">
+  <h2 class="red"> 任务属性 </h2>
   <div>
   <!-- 任务输入表格区 -->
     <el-table
       :data="tableData"
-      style="width: 100%">
+      style="width: 100%; height:100%">
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand" height: 800px>
+          <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="任务ID">
               <span>{{ props.row.id }}</span>
             </el-form-item>
@@ -137,22 +137,24 @@ export default {
 <style scoped>
 @import url("//unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css");
 .red{
-  color: #000000; 
+  color: #000000;
   text-align:center;
-  
+  style:"width: 100%; height:100%"
   }
 .demo-table-expand {
   font-size: 0;
    width: 100%;
-  height: 800px;
+  height: 100%;
 }
 .demo-table-expand label {
   width: 90px;
   color: #99a9bf;
+  height: 100%;
 }
 .demo-table-expand .el-form-item {
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+  height: 100%;
 }
 </style>

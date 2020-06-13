@@ -12,9 +12,15 @@ import mapTest from "../../views/part1/transactionProject/mapTest"
 
 import errorpage404 from "@/views/part1/HANTINA/userinffo";
 import Taskinput from "@/views/part2/Taskinput"
+import Time_granularity from "../../views/part2/Time_granularity";
 
 //import full from "@/containers/Full";
 let routes = [
+    {
+        path: "/Time_granularity",
+        name: "Time_granularity",
+        component:Time_granularity,
+    },
     {
         path: "/Taskinput",
         name: "Taskinput",
@@ -79,7 +85,6 @@ let routes = [
         name: "echarts",
         component:echarts,
     },
-    
 ];
 
 export default routes
