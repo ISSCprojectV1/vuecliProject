@@ -5,7 +5,7 @@
             </Header>
         </el-header>
         <el-container>
-            <el-aside>
+            <el-aside class="el-aside" style="width: 200px;">
                 <leftNav>
                 </leftNav>
             </el-aside>

@@ -5,12 +5,12 @@
             </Header>
         </el-header>
         <el-container>
-            <el-aside>
+            <el-aside class="el-aside" style="width: 200px;">
                 <leftNav>
                 </leftNav>
             </el-aside>
             <el-main >
-            <processQuery></processQuery>
+            <modalityAllocation></modalityAllocation>
             </el-main>
         </el-container>
     </el-container>
@@ -19,12 +19,12 @@
 <script>
     import Header from "@/components/part1/common/topNav";
     import leftNav from "@/components/part1/common/leftNav"
-    import processQuery from "@/components/part1/transactionProject/processQuery";
+    import modalityAllocation from "@/components/part1/Multimodal-multigranularity/modalityAllocation";
     export default {
         components: {
             Header,
             leftNav,
-            processQuery
+            modalityAllocation
         },
         data(){
             return {
@@ -33,12 +33,6 @@
         },
         methods:
             {
-                tabclick(){
-                    this.$router.push(`/mydownload/${this.tabName}`)
-                },
-                setLabel(label){
-                    this.tabName = label
-                }
             }
 
 
@@ -50,7 +44,6 @@
         //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
         padding 0px;
         margin-bottom 1px
-    
     .el-aside
         //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
         padding 0px;

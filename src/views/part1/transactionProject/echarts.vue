@@ -5,7 +5,7 @@
             </Header>
         </el-header>
         <el-container>
-            <el-aside>
+            <el-aside class="el-aside" style="width: 200px;">
                 <leftNav>
                 </leftNav>
             </el-aside>
@@ -18,7 +18,7 @@
 
 <script>
     import Header from "@/components/part1/common/topNav";
-    import leftNav from "@/components/part1/common/leftNav"
+    import leftNav from "@/components/part1/common/leftNav";
     import echarts from "@/components/part1/transactionProject/echarts";
     export default {
         components: {
@@ -33,6 +33,7 @@
         },
         methods:
             {
+               
             }
 
 

@@ -1,12 +1,9 @@
 <template>
   <div class="dormitory">
         <div class="title">
-      <div style="display: inline-block">检索交易记录--输入任意关键词均可完成检索</div>
+      <div style="display: inline-block">多模态 分配列表</div>
     </div>
-    <div class="searchWord">
-      <div style="display: inline-block"> 搜索：</div>
-      <el-input v-model="search" style="display: inline-block;width: 1502px" placeholder="请输入搜索内容"></el-input>
-    </div>
+    
     <div class="dormitoryData">
       <el-table
         ref="dormitoryTable"
@@ -14,42 +11,50 @@
         tooltip-effect="dark"
         stripe
         style="width: 100%">
+
         <el-table-column type="selection" width="45"></el-table-column>
-        <el-table-column label="序号"  type="index" width="65"></el-table-column>
-        <el-table-column label="出售方" prop="seller">
+        <el-table-column label="序号"  prop="taskId" width = "60"></el-table-column>
+        <el-table-column label="模态任务名称" prop="taskName">
         </el-table-column>
-        <el-table-column label="购买方" prop="buyer">
+        <el-table-column label="agentNum" prop="agentNum" >
         </el-table-column>
-        <el-table-column label="交易内容" prop="content">
+        <el-table-column label="模态ID" prop="modalityId" >
         </el-table-column>
-        <el-table-column label="交易数量" prop="amount">
-        </el-table-column>
-        <el-table-column label="交易单价" prop="unitprice">
-        </el-table-column>
-        <el-table-column label="交易总额" prop="sum">
-        </el-table-column>
-        <el-table-column label="交易时间" prop="time">
+        <el-table-column label="模态名称" prop="modalityName">
         </el-table-column>
       </el-table>
+      <div class = "textExplain" style="margin-top:30px; margin-bottom:30px;">
+      <span >*如果暂无数据，说明所有模态均已处理完毕，处理结果请看【监管任务】页面中【机器模态分布】</span>
+      <el-link type="primary" @click="solveResult">处理结果</el-link>
+      </div>
+      <div class = "buttonEnd">
+      <el-button type="success" @click="backFrontPage">确定</el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {getTansactionData} from "@/api/part1/transactionProject";
+  //import {getTansactionData} from "@/api/part1/transactionProject";
+import {moAllocation} from "@/api/part1/Multimodal-multigranularity";
  // import $ from 'jQuery'
   export default {
-
     data () {
       return {
         dormitory: [],
-        search: ''
+        search: '',
+        dialogTableVisible: false,
      }
   },
+  //在这里调用ajax请求方法
+    created(){
+      this.getData();
+    },
+
   computed: {
       // 模糊搜索
       tables () {
-        this.getData();
+        
         const search = this.search
         if (search) {
           // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
@@ -68,17 +73,25 @@
     },
     methods: {
             getData(){
-
                 // 获取表格数据
-               console.log("获取表格数据")
-                getTansactionData().then((res) => {
-                this.dormitory = res.data.data;
-                console.log("传入数据")
-                }).catch(()=>{
-                    console.log("getTransactionData fail")
-                });
+               console.log("获取表格数据222")
 
-            }     
+               moAllocation().then((res) => {
+                this.dormitory = res.data.data;
+                console.log("传入数据" + res.data.data)
+                }).catch(()=>{
+                    console.log("modalityAllocation  fail")
+                });
+            } ,
+            // 查看详情 页面跳转
+            solveResult(){
+                this.$router.push("/taskQuery");  
+            },
+            // 关闭页面 dialogAllocationVisible
+            backFrontPage(){
+            this.$parent.$parent.dialogAllocationVisible = false
+            this.$parent.$parent.getData()
+            }
 
     }
   }
@@ -91,5 +104,8 @@
 .dormitoryData{
   width: 100%;
   height: 600px;
+}
+.buttonEnd{
+    text-align: center;
 }
 </style>

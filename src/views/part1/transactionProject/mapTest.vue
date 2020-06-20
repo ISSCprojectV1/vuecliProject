@@ -5,7 +5,7 @@
             </Header>
         </el-header>
         <el-container>
-            <el-aside>
+            <el-aside class="el-aside" style="width: 200px;">
                 <leftNav>
                 </leftNav>
             </el-aside>
@@ -19,7 +19,7 @@
 <script>
     import Header from "@/components/part1/common/topNav";
     import leftNav from "@/components/part1/common/leftNav";
-    import mapGeo from "@/components/part1/transactionProject/mapTest";
+    import mapGeo from "@/components/part1/transactionProject/shandong copy";
     export default {
         components: {
             Header,

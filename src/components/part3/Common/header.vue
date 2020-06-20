@@ -2,7 +2,11 @@
     <div>
         <el-row>
             <el-col :span="16">
-                <el-menu :router="true" class="el-menu" mode="horizontal">
+                <el-menu :router="true" class="el-menu" mode="horizontal"
+                 @select="handleSelect"
+                 background-color="#545c64"
+                 text-color="#fff"
+                 active-text-color="#ffd04b">
                     <el-menu-item index="0"><img :src="logoimg" class="img"></el-menu-item>
                     <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>
                     <el-menu-item index="/console">统计中心</el-menu-item>
@@ -12,8 +16,10 @@
 
             </el-col>
             <el-col :span="8" >
-            <el-menu :router="true" class="el-menu" mode="horizontal">
-                <el-menu-item>
+            <el-menu :router="true" class="el-menu" mode="horizontal" background-color="#545c64"
+                 text-color="#fff"
+                 active-text-color="#ffd04b">
+                <el-menu-item >
                     <el-row class="demo-autocomplete">
                         <el-col :span="40">
                             <el-autocomplete

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
+  <div class = "login">
+    <el-form ref="loginForm" :model="form" :rules="rules" class="login-box">
       <h3 class="login-title">欢迎登录</h3>
       <el-form-item label="账号" prop="accountId"  ref="accountId">
         <el-input type="text" placeholder="请输入账号" v-model="form.accountId"/>
@@ -10,8 +10,8 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
-        <el-button type="primary" v-on:click="onRegister()">注册</el-button>
       </el-form-item>
+         <el-link type="primary" style="margin-left:10px" v-on:click="onRegister()">注册</el-link>
     </el-form>
 
     <el-dialog
@@ -40,6 +40,8 @@
 
 <script>
 import axios from 'axios'
+import {newlogin} from "../../api/part1/common.js"
+
 import loginByEmail from "@/api/part1/common.js"
   export default {
     name: "Login",
@@ -77,9 +79,16 @@ import loginByEmail from "@/api/part1/common.js"
             }
 
         let data = formName;
-        console.log(dataa)
-        axios.post('api/login',dataa)
-       .then(res=>{
+      /*  console.log(dataa)
+           newlogin(dataa).then((res) => {
+              console.log(res.data);
+            }).catch(()=>{
+              console.log("getPredictionData fail")
+            });*/
+      //  axios.post('api/login',dataa)
+
+            newlogin(dataa).then((res) => {
+ console.log("aaa")
         console.log('res=>',res);
         if(res.status == 200){
          console.log('响应结果：'+ res.data.message);
@@ -104,10 +113,20 @@ import loginByEmail from "@/api/part1/common.js"
 </script>
 
 <style lang="scss" scoped>
+.login{
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-image: url("~@/assets/part1/background2.jpg");
+  background-size: cover;
+}
   .login-box {
+    background: #ffffff;
+    opacity:0.97;
     border: 1px solid #DCDFE6;
     width: 350px;
-    margin: 180px auto;
+    margin: 160px auto;
     padding: 35px 35px 15px 35px;
     border-radius: 5px;
     -webkit-border-radius: 5px;

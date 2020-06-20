@@ -5,10 +5,9 @@
 </template>>
 
 <script>
-import axios from 'axios'
 import $ from 'jQuery'
 import echarts from 'echarts'
-
+import {getComponyData} from "@/api/part1/transactionProject";
 export default {
      name: 'map_geo',
   data () {
@@ -23,13 +22,20 @@ export default {
     drawLine(){
 var Echarts = {};
  
+/***
+ * 加载地图
+ * @param data
+ */
+Echarts.loadData = function (data) {
+ 
+};
  
 //基于准备好的dom,初始化echarts实例
 var myChart = echarts.init(document.getElementById('map'));
 // var uploadedDataURL = "/static/map_json/data-1528971808162-BkOXf61WX.json";
 // var uploadedDataURL = "/static/map_json/data-1528969802719-HyXIqhk-m.json";
-var uploadedDataURL = "/china.json";
-var jiangsu = "/map/province/jiangsu.json"
+var uploadedDataURL = "/map/province/shandong.json";
+var jiangsu = "/map/province/shandong.json"
 //如果想要修改，请点击上方克隆，然后在自己的版本上修改，不要在lz的版本上改！！
  
 var geoGpsMap = {
@@ -40,14 +46,149 @@ var geoGpsMap = {
     '5': [127.9688, 45.368],
     '6': [91.11, 29.97],
 };
+// 清管所
+var Management = [
+    {
+        "name": "山东交易市场清算所有限公司",
+        "value": [117.020538,36.467116],
+    },
+]
+// 白名单内的权益类公司
+var equity = [
+    {
+        "name": "齐鲁股权交易中心有限公司",
+        "value": [117.99689,36.823597],
+    },
+    {
+        "name": "山东产权交易中心有限公司",
+        "value": [117.150969,36.864913],
+    },
+    {
+        "name": "山东文化产权交易所有限公司",
+        "value": [117.043677,36.665935],
+    },
+    {
+        "name": "山东省能源环境交易中心有限公司",
+        "value": [117.147698,36.370023],
+    },
+     {
+        "name": "山东金融资产交易中心有限公司",
+        "value": [117.153411,36.665771],
+    },
+    {
+        "name": "济南产权交易中心",
+        "value": [117.079144,36.688675],
+    },
+    {
+        "name": "青岛大数据交易中心有限公司",
+        "value": [120.103168,35.903374],
+    },
+     {
+        "name": "烟台海洋产权交易中心有限公司",
+        "value": [121.080256,37.05063],
+    },
+    {
+        "name": "烟台联合产权交易中心有限公司",
+        "value": [121.45158,37.483227],
+    },  {
+        "name": "山东潍坊产权交易中心有限公司",
+        "value": [119.17158,36.628416],
+    },
+     {
+        "name": "潍坊文化产权交易中心有限公司",
+        "value": [118.811699,36.519962],
+    },
+    {
+        "name": "山东蓝色经济区产权交易中心有限公司",
+        "value": [119.537189,35.431214],
+    },{
+        "name": "临沂信用资产交易中心有限公司",
+        "value": [118.357015,35.107442],
+    },
+    {
+        "name": "青岛蓝海股权交易中心有限公司",
+        "value": [120.490935,36.152605],
+    },
+]
+
+// 白名单内的现货类公司
+var spot = [
+    {
+        "name": "山东齐鲁农产品交易中心有限公司",
+        "value": [118.169569,36.209678],
+    },
+    {
+        "name": "山东广丰橡胶轮胎交易中心有限公司",
+        "value": [118.424372,37.065187],
+    },
+    {
+        "name": "东营新华福岛能源交易中心有限公司",
+        "value": [118.942533,37.906054],
+    },
+    {
+        "name": "东亚畜牧现货产品交易所有限公司",
+        "value": [119.170355,36.909544],
+    },
+     {
+        "name": "威海国际海洋商品交易中心有限公司",
+        "value": [122.413977,37.129491],
+    },
+    {
+        "name": "日照大宗商品交易中心有限公司",
+        "value": [119.357354,35.189053],
+    },
+    {
+        "name": "临沂国际商品交易中心有限公司",
+        "value": [118.295715,35.414345],
+    },
+     {
+        "name": "黄河商品交易市场股份有限公司",
+        "value": [116.145027,37.187694],
+    },
+    {
+        "name": "山东滨海化工商务有限公司",
+        "value": [119.146863,36.216874],
+    },  {
+        "name": "日照国际铁矿石交易中心有限公司",
+        "value": [119.357035,35.723136],
+    },
+     {
+        "name": "山东海倍电子商务股份有限公司",
+        "value": [116.456601,35.505452],
+    },
+    {
+        "name": "山东蓝色经济区产权交易中心有限公司",
+        "value": [119.037189,35.431214],
+    },{
+        "name": "临沂信用资产交易中心有限公司",
+        "value": [118.357015,34.807442],
+    },
+    {
+        "name": "青岛蓝海股权交易中心有限公司",
+        "value": [120.490935,36.152605],
+    },
+]
 // 省份坐标
 var geoCoordMap = {
-    '安徽': [117.283042,31.86119],
-    '澳门': [113.54909,22.198951],
-    '北京': [116.405285,39.904989],
-    '山东':[117.000923,36.675807]
+   "青岛市":[120.355173,36.382982],
+    "淄博市":[118.047648,36.814939],
+    "枣庄市":[117.557964,34.856424],
+    "东营市":[118.66471,37.434564],
+    "潍坊市":[119.107078,36.70925],
+    "烟台市":[121.091382,37.239297],
+    "济宁市":[116.587245,35.415393],
+    "泰安市":[117.129063,36.194968],
+    "威海市":[122.116394,37.209691],
+    "日照市":[119.461208,35.428588],
+    "莱芜市":[117.677736,36.214397],
+    "临沂市":[118.326443,35.065282],
+    "德州市":[116.307428,37.453968],
+    "聊城市":[115.980367,36.456013],
+    "滨州市":[118.016974,37.383542],
+    "菏泽市":[115.469381,35.246531],
+    "济南市":[117.000923,36.675807]
 };
-
+ 
 var colors = [
     ["#1DE9B6", "#F46E36", "#04B9FF", "#5DBD32", "#FFC809", "#FB95D5", "#BDA29A", "#6E7074", "#546570", "#C4CCD3"],
     ["#37A2DA", "#67E0E3", "#32C5E9", "#9FE6B8", "#FFDB5C", "#FF9F7F", "#FB7293", "#E062AE", "#E690D1", "#E7BCF3", "#9D96F5", "#8378EA", "#8378EA"],
@@ -55,65 +196,59 @@ var colors = [
 ];
  
 var colorIndex = 0;
- 
+
+   
+   //var companyVal =[];
+   //companyVal = this.companyData;
+   //console.log("companyVal的内容是" + companyVal);
+   //var equityCompany = [];
+   //equityCompany = companyVal[0].value;
+   //console.log("equityCompany的内容是" + equityCompany);
+
+
 $(function () {
-    // 下端时间轴 及侧面图表数据
-    var year = ["监管机构分布", "2015", "2016", "2017", "2018","2019"];
+    var classes = ["权益类公司", "现货类公司"];
     var mapData = [
         [],
         [],
-        [],
-        [],
-        [],
-        []
     ];
- 
-    /*柱子Y名称 右侧表格的数据*/
-    var categoryData = [];
+    var companyVal = [];
+    var equityCompany = []; // 权益类公司数据
+    var spotCompony = []; // 现货类公司数据
+    var categoryData = []; 
     var barData = [];
-    for (var key in geoCoordMap) {
+   // 获取历史交易数据
+   console.log("获取公司白名单*后期补入交易数据")
+   getComponyData().then((res) => {
+   console.log("Company Json:"+res.data);
+   this.companyData =res.data;
+   companyVal = this.companyData;
+   console.log("companyVal"+companyVal);
+   equityCompany = companyVal[0].value;
+   spotCompony = companyVal[1].value;
+   var count = 0;
+   for (var key in geoCoordMap) {
         categoryData.push(key);
         mapData[0].push({
-            "year": '2014',
+            "classes": 'equityCompany',
             "name": key,
-            "value": randomNum(100, 300)
+            "value":equityCompany[count]
         });
         mapData[1].push({
-            "year": '2015',
+            "classes": 'SpotCompony',
             "name": key,
-            "value": randomNum(100, 300)
+            "value": spotCompony[count]
         });
-        mapData[2].push({
-            "year": '2016',
-            "name": key,
-            "value": randomNum(100, 300)
-        });
-        mapData[3].push({
-            "year": '2017',
-            "name": key,
-            "value": randomNum(100, 300)
-        });
-        mapData[4].push({
-            "year": '2018',
-            "name": key,
-            "value": randomNum(100, 300)
-        });
- 
-        mapData[5].push({
-            "year": '2019',
-            "name": key,
-            "value": randomNum(0, 300)
-        });
- 
+        count = count+1;
     }
-    console.log("mapData 的长度："+mapData[0][1].name+mapData[0][0].value)
     for (var i = 0; i < mapData.length; i++) {
         barData.push([]);
         for (var j = 0; j < mapData[i].length; j++) {
             barData[i].push(mapData[i][j].value)
         }
     }
-    // 导入中国地图
+
+        // 导入中国地图
     $.getJSON(uploadedDataURL, function (geoJson) {
  
         echarts.registerMap('china', geoJson);
@@ -136,7 +271,7 @@ $(function () {
             for (var i = 0; i < data.length; i++) {
                 var dataItem = data[i];
                 var fromCoord = geoCoordMap[dataItem.name];
-                var toCoord = gps; 
+                var toCoord = gps; //郑州
                 //  var toCoord = geoGps[Math.random()*3];
                 if (fromCoord && toCoord) {
                     res.push([{
@@ -152,10 +287,10 @@ $(function () {
         // 下方时间线
         var optionXyMap01 = {
             timeline: {
-                data: year,
+                data: classes,
                 axisType: 'category',
                 autoPlay: true,
-                playInterval: 3000,
+                playInterval: 5000,
                 left: '10%',
                 right: '10%',
                 bottom: '3%',
@@ -197,7 +332,6 @@ $(function () {
             },
             baseOption: {
                 animation: true,
-                // 初始动画的时长，支持回调函数，可以通过每个数据返回不同的时长实现更戏剧的初始动画效果：
                 animationDuration: 1000,
                 animationEasing: 'cubicInOut',
                 animationDurationUpdate: 1000,
@@ -221,14 +355,14 @@ $(function () {
                     show: true,
                     map: 'china',
                     roam: true,
-                    zoom: 1,
-                    center: [113.83531246, 34.0267395887],
+                    zoom: 4,
+                    center: [119.83531246, 35.8267395887],
                     label: {
                         emphasis: {
                             show: false
-                        },
-                        color: "#8B008B"
+                        }
                     },
+                    
                     itemStyle: {
                         normal: {
                             borderColor: 'rgba(147, 235, 248, 1)',
@@ -261,35 +395,31 @@ $(function () {
                 },
             },
             options: []
+ 
         };
-        for (var n = 0; n < year.length; n++) {
+        for (var n = 0; n < classes.length; n++) {
             optionXyMap01.options.push({
                 backgroundColor: '#051b4a',
                 title: [{
-                     text: '网络图-地图示意图',
-                     subtext: '点击地图中对应省份，可以获得该省份清关所及交易平台网络关系图',
-                     left: 'left',
+                     text: '山东省大宗物流流通情况',
+                     subtext: 'XXXXXXXXXX',
+                     left: 'center',
                      textStyle: {
                          color: '#fff',
                          fontSize: 30
-                     },
-                     subtextStyle:{
-                         color:"#F0FFFF",
-                         fontSize:15
                      }
                 },
                     {
                         id: 'statistic',
-                        text: year[n] + "年数据统计情况",
+                        text: classes[n] + "数据统计情况",
                         left: '75%',
                         top: '8%',
                         textStyle: {
                             color: '#fff',
-                            fontSize: 25
+                            fontSize: 30
                         }
                     }
                 ],
-                // 横坐标
                 xAxis: {
                     type: 'value',
                     scale: true,
@@ -337,7 +467,6 @@ $(function () {
                     data: categoryData
                 },
                 series: [
-                    //未知作用
                     {
                         //文字和标志
                         name: 'light',
@@ -347,19 +476,17 @@ $(function () {
                         symbolSize: function (val) {
                             return val[2] / 10;
                         },
-                        // 地图中动态的节点
                         label: {
                             normal: {
                                 formatter: '{b}',
                                 position: 'right',
-                                show: true,
+                                show: true
                             },
                             emphasis: {
-                                show: true,
+                                show: true
                             }
                         },
                         itemStyle: {
-                            // 根据旁边的字体颜色变化
                             normal: {
                                 color: colors[colorIndex][n]
                             }
@@ -374,15 +501,25 @@ $(function () {
                         showLegendSymbol: false, // 存在legend时显示
                         label: {
                             normal: {
-                                show: false,
-                                color: '#FF0000'
+                                show: true,
                             },
                             emphasis: {
                                 show: false,
                                 textStyle: {
-                                    color: '#FF0000'
+                                    color: '#fff'
                                 }
                             }
+                        },
+                        tooltip: {
+                         trigger : 'item',
+                         formatter : '点击获得'+'{b}'+'地区详细信息',
+                         textStyle:{
+                              color : '#000000',
+                              fontSize : 16
+
+                         },
+                         backgroundColor : '#F0F8FF',
+                         borderColor : '#5F9EA0',
                         },
                         roam: true,
                         itemStyle: {
@@ -394,9 +531,237 @@ $(function () {
                                 areaColor: '#2B91B7'
                             }
                         },
+                        
                         animation: false,
                         data: mapData
                     },
+
+                    // 山东省清管所位置标记
+                    {
+                    name: '山东省清管所',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    zlevel: 2,
+
+                    symbol: 'pin',
+                    label: {
+                        normal: {
+                         show: true,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 9,
+                    },
+                    formatter (Management){
+                        return Management.name
+                    }
+                },
+                        emphasis: {
+                            show: true,
+                            fontSize: 15,
+                            color:'#000000',
+                            backgroundColor:'#FFFFFF',
+
+                            position: 'right',
+                            formatter :[
+                        '{title|{b}}{abg|}',
+                            '{message|坐标：{c}}',
+                            '{lookup|点击查看相关企业}',
+                            '{hr|}',
+                    ].join('\n'),
+                        borderColor: '#777',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        width:250,
+                        lineHeight:25,
+                        rich: {
+                            title: {
+                                color: '#eee',
+                                align: 'center',
+                                width:250,
+                                ontSize: 20,
+                            },
+                            abg: {
+                                backgroundColor: '#333',
+                                width: '100%',
+                                align: 'right',
+                                height: 25,
+                                borderRadius: [4, 4, 0, 0]
+                            },
+                            lookup: {
+                                height: 30,
+                                color:'#DC143C',
+                                align: 'left', 
+                            },
+                            hr: {
+                                borderColor: '#777',
+                                width: '100%',
+                                borderWidth: 0.5,
+                                height: 0
+                            },
+                        }  
+                        }
+                    },
+                    symbolSize: 45,
+                    showEffectOn: 'render',
+                    itemStyle: {
+                        normal: {
+                            color: '#7FFFAA',
+                            opacity:1
+                        }
+                    },
+                    data: Management
+                },
+                    // 权益类公司白名单位置标记
+                    {
+                    name: '权益类公司白名单',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    zlevel: 2,
+
+                    symbol: 'pin',
+                    label: {
+                        normal: {
+                         show: true,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 9,
+                    },
+                    formatter (equity){
+                        return equity.name
+                    }
+                },
+                        emphasis: {
+                            show: true,
+                            fontSize: 15,
+                            color:'#000000',
+                            backgroundColor:'#FFFFFF',
+
+                            position: 'right',
+                            formatter :[
+                        '{title|{b}}{abg|}',
+                            '{message|坐标：{c}}',
+                            '{lookup|点击查看相关企业}',
+                            '{hr|}',
+                    ].join('\n'),
+                        borderColor: '#777',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        width:250,
+                        lineHeight:25,
+                        rich: {
+                            title: {
+                                color: '#eee',
+                                align: 'center',
+                                width:250,
+                                ontSize: 20,
+                            },
+                            abg: {
+                                backgroundColor: '#333',
+                                width: '100%',
+                                align: 'right',
+                                height: 25,
+                                borderRadius: [4, 4, 0, 0]
+                            },
+                            lookup: {
+                                height: 30,
+                                color:'#DC143C',
+                                align: 'left', 
+                            },
+                            hr: {
+                                borderColor: '#777',
+                                width: '100%',
+                                borderWidth: 0.5,
+                                height: 0
+                            },
+                        }  
+                        }
+                    },
+                    symbolSize: 45,
+                    showEffectOn: 'render',
+                    itemStyle: {
+                        normal: {
+                            color: '#DDA0DD',
+                            opacity:1
+                        }
+                    },
+                    data: equity
+                },
+
+                // 现货类公司白名单位置标记
+                    {
+                    name: '现货类公司白名单',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    zlevel: 2,
+
+                    symbol: 'pin',
+                    label: {
+                        normal: {
+                         show: true,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 9,
+                    },
+                    formatter (spot){
+                        return spot.name
+                    }
+                },
+                        emphasis: {
+                            show: true,
+                            fontSize: 15,
+                            color:'#000000',
+                            backgroundColor:'#FFFFFF',
+
+                            position: 'right',
+                            formatter :[
+                        '{title|{b}}{abg|}',
+                            '{message|坐标：{c}}',
+                            '{lookup|点击查看相关企业}',
+                            '{hr|}',
+                    ].join('\n'),
+                        borderColor: '#777',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        width:250,
+                        lineHeight:25,
+                        rich: {
+                            title: {
+                                color: '#eee',
+                                align: 'center',
+                                width:250,
+                                ontSize: 20,
+                            },
+                            abg: {
+                                backgroundColor: '#333',
+                                width: '100%',
+                                align: 'right',
+                                height: 25,
+                                borderRadius: [4, 4, 0, 0]
+                            },
+                            lookup: {
+                                height: 30,
+                                color:'#DC143C',
+                                align: 'left', 
+                            },
+                            hr: {
+                                borderColor: '#777',
+                                width: '100%',
+                                borderWidth: 0.5,
+                                height: 0
+                            },
+                        }  
+                        }
+                    },
+                    symbolSize: 45,
+                    showEffectOn: 'render',
+                    itemStyle: {
+                        normal: {
+                            color: '#FFFF00',
+                            opacity:1
+                        }
+                    },
+                    data: spot
+                },
                     //地图点的动画效果
                     {
                         //  name: 'Top 5',
@@ -429,8 +794,8 @@ $(function () {
                         },
                         zlevel: 1
                     },
-                    //地图线的动画效果
                     /*
+                    //地图线的动画效果
                     {
                         type: 'lines',
                         zlevel: 2,
@@ -450,8 +815,7 @@ $(function () {
                             }
                         },
                         data: convertToLineData(mapData[n], geoGpsMap[Math.ceil(Math.random() * 6)])
-                    },
-                    */
+                    },*/
                     //柱状图
                     {
                         zlevel: 1.5,
@@ -464,15 +828,50 @@ $(function () {
                         },
                         data: barData[n]
                     }
+                ],
+                legend: {
+                type: "plain",
+                show: true,
+                orient: 'vertical',
+                top: '10%',
+                left: '5%',
+                data: [
+                                         {
+                        name: "山东省清管所",
+                        icon: "pin",
+                        textStyle: {
+                            color: "#F0F8FF",
+                            fontSize: 20,
+                        } 
+                    },
+                    {
+                        name: "权益类公司白名单",
+                        icon: "pin",
+                        textStyle: {
+                            color: "#F0F8FF",
+                            fontSize: 20,
+                        } 
+                    },
+                    {
+                        name: "现货类公司白名单",
+                        icon: "pin",
+                        textStyle: {
+                            color: "#F0F8FF",
+                            fontSize: 20,
+                        } 
+                    }
                 ]
+            },
             })
         }
-        
         myChart.setOption(optionXyMap01);
         myChart.on('click', (params)=>{
         console.log("新的点击事件"+params.name) 
-        var url = "http://localhost:8088/mapTest";
-        window.location.href=url;
+        if(params.name=="山东"){
+        console.log("符合条件")
+        var url2 = "http://localhost:8088/shandong";
+        window.location.href=url2;
+        }
         /*
         var _self = this;
         if(opt.goDown && params.name !== name[idx]){
@@ -488,6 +887,16 @@ $(function () {
        }*/
     });
     });
+   console.log("获取公司白名单成功 ")
+   }).catch(()=>{
+   console.log("getComponyData fail")
+                });
+   
+   //console.log("equityCompany:"+equityCompany);
+    /*柱子Y名称
+    权益类公司：equityCompany；
+    现货类公司：SpotCompony
+    */
 });
  
  

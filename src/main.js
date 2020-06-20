@@ -8,6 +8,7 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import echarts from 'echarts'
 
+
 Vue.use(Vant);
 Vue.use(ElementUI);
 
