@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const baseURL = "https://www.fastmock.site/mock/7433813b1c79b90e88d0541ef0e6767d/vueProject";
+const baseURL = process.env.NODE_ENV==="development"?"/api":'';
 
 export {baseURL}
 

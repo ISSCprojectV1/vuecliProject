@@ -14,7 +14,7 @@
                 itemList: []
             }
         },
-        mounted() {
+        created() {
             this.getData();
         },
         methods: {
@@ -95,7 +95,11 @@
                        }
             this.charts.setOption({
                 title: {
-                       text: '风险预测'
+                       text: '风\n险\n预\n测',
+                       textStyle:{
+                           fontSize:30
+                       },
+                       left:0
                        },
                 tooltip: {
                        trigger: 'axis',
@@ -226,6 +230,6 @@
 <style>
 .index{
   width: 100%;
-  height: 800px;
+  height: 600px;
 }
 </style>

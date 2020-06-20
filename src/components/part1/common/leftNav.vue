@@ -1,6 +1,6 @@
 <template>
-<el-row class="tac" style="height: 100%">
-  <el-col :span="12" style="height: 100%">
+<el-row class="tac" style="height: 100%; width: 200px">
+  <el-col style="height: 100%">
 
     <el-menu
       default-active="2"
@@ -10,7 +10,7 @@
       router
       background-color="#545c64"
       text-color="#fff"
-      active-text-color="#ffd04b" style="height: 100%">
+      active-text-color="#ffd04b" style="height: 800px">
 
       <el-menu-item index="/Dashboard">
         <i class="el-icon-menu"></i>
@@ -24,7 +24,8 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="/transactionProject/echarts">网络图</el-menu-item>
-          <el-menu-item index="/transactionProject/processQuery">搜索功能</el-menu-item>
+          <el-menu-item index="/transactionProcess">搜索功能</el-menu-item>
+          <el-menu-item index="/map">地图功能</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -58,6 +59,21 @@
           <el-menu-item-group>
             <el-menu-item index="/other_granularity">其他粒度</el-menu-item>
           </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="/taskQuery">监管任务</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="/modalityQuery">模态任务</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="/taskExecutionQueryByid">元任务查询（BY ID）</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="/taskExecutionQuery">元任务查询（列表）</el-menu-item>
+        </el-menu-item-group>
+         <el-menu-item-group>
+          <el-menu-item index="/granularityExecution">粒度调整执行</el-menu-item>
+        </el-menu-item-group>
       </el-submenu>
 
       <el-menu-item index="4">
@@ -96,8 +112,9 @@
   }
 </script>
 <style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  height: 100%;
+.el-menu-vertical-demo{
+  padding:0px;
+  margin:0px;
+  border:0px;
 }
 </style>

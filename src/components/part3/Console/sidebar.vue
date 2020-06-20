@@ -4,7 +4,11 @@
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
-            router>
+            router
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            >
         <el-menu-item index="/console">
             <i class="el-icon-house"></i>
             <span slot="title">首页</span>

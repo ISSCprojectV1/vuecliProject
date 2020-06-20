@@ -29,3 +29,31 @@ export function loginByEmail(formName) {
       data
     })
   }
+
+export function newlogin(dataaa) {
+  console.log("发送denglu")
+  const data = {
+    " accountId":dataaa.accountId,
+    "password":dataaa.password
+  };
+  return request({
+    url: '/login',
+    method: 'post',
+    data
+
+  })
+}
+
+export function newregister(dataaa) {
+  const data = {
+    "accountId":dataaa.accountId,
+    "name":dataaa.name,
+    "password":dataaa.password
+  };
+  console.log("发送zhuce")
+  return request({
+    url: '/register',
+    method: 'post',
+    data
+  })
+}

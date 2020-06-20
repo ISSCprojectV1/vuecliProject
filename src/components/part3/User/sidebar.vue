@@ -5,6 +5,9 @@
                 @open="handleOpen"
                 @close="handleClose"
                 router
+                 background-color="#545c64"
+                 text-color="#fff"
+                 active-text-color="#ffd04b" style="height: 800px"
         >
             <el-menu-item index="/userinfo/">
                 <span slot="title">个人资料</span>

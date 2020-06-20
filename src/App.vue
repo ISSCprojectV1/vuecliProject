@@ -38,5 +38,6 @@ export default {
     text-align: center;
     color: #2c3e50;
     background-color: #f5f6f7;
+    position:relative;
 
 </style>

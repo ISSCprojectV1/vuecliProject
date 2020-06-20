@@ -1,13 +1,13 @@
 <template>
 <div class="Map" >
-<div id="map" :style="{width: '100%', height: '1000px'}"></div>
+<div id="map" :style="{width: '100%', height: '800px'}"></div>
 </div>
 </template>>
 
 <script>
 import $ from 'jQuery'
 import echarts from 'echarts'
-import {getComponyData} from "@/api/part1/transactionProject";
+import Axios from 'axios';
 export default {
      name: 'map_geo',
   data () {
@@ -46,6 +46,56 @@ var geoGpsMap = {
     '5': [127.9688, 45.368],
     '6': [91.11, 29.97],
 };
+
+var Management = [
+    {
+        "name": "山东交易市场清算所有限公司",
+        "count":'3',
+        "value": [117.1582,36.8701],
+    },
+    {
+        "name": "福建交易场所清算中心 ",
+        "count":'1',
+        "value": [119.4543,25.9222],
+        
+    },
+    {
+        "name": "广州商品清算中心股份有限公司 ",
+        "count":'1',
+        "value": [113.12244, 23.009505],
+        
+    },
+    {
+        "name": "江苏交易场所登记算有限公司  ",
+        "count":1,
+        "value": [118.8062, 31.9208], 
+    },
+    {
+        "name": "大连商品交易登记结算有限公司  ",
+        "value": [116.1582,36.8701],
+        "count":1
+    },
+    {
+        "name": "宁夏登记结算(中心)有限公司",
+        "value": [106.3586, 38.1775],
+        "count":1
+    },
+    {
+        "name": "北京登记结算有限公司",
+        "value": [116.4551, 40.2539],
+        "count":1
+    },
+    {
+        "name": "天津商品交易清算所 ",
+        "value": [117.4219, 39.4189],
+        "count":1
+    },
+    {
+        "name": "江西联交运金融服务有限公司 ",
+        "value": [116.0046, 28.6633],
+        "count":1
+    }
+]
 // 省份坐标
 var geoCoordMap = {
     '黑龙江': [127.9688, 45.368],
@@ -59,7 +109,7 @@ var geoCoordMap = {
     "陕西": [109.1162, 34.2004],
     "甘肃": [103.5901, 36.3043],
     "宁夏": [106.3586, 38.1775],
-    "青海": [101.4038, 36.8207],
+    "青海": [100.4038, 36.8207],
     "新疆": [87.9236, 43.5883],
     "西藏": [91.11, 29.97],
     "四川": [103.9526, 30.7617],
@@ -111,7 +161,7 @@ $(function () {
     var barData = [];
    // 获取历史交易数据
    console.log("获取公司白名单*后期补入交易数据")
-   getComponyData().then((res) => {
+   Axios.get('moc/getComponyData').then((res) => {
    console.log("Company Json:"+res.data);
    this.companyData =res.data;
    companyVal = this.companyData;
@@ -299,7 +349,7 @@ $(function () {
                      left: 'center',
                      textStyle: {
                          color: '#fff',
-                         fontSize: 30
+                         fontSize: 25
                      }
                 },
                     {
@@ -309,7 +359,7 @@ $(function () {
                         top: '8%',
                         textStyle: {
                             color: '#fff',
-                            fontSize: 30
+                            fontSize: 20
                         }
                     }
                 ],
@@ -394,7 +444,7 @@ $(function () {
                         showLegendSymbol: false, // 存在legend时显示
                         label: {
                             normal: {
-                                show: false
+                                show: true,
                             },
                             emphasis: {
                                 show: false,
@@ -405,7 +455,7 @@ $(function () {
                         },
                         tooltip: {
                          trigger : 'item',
-                         formatter : '{b}\n\n点击获得'+'{b}'+'详细信息',
+                         formatter : '点击获得'+'{b}'+'地区详细信息',
                          textStyle:{
                               color : '#000000',
                               fontSize : 16
@@ -413,7 +463,6 @@ $(function () {
                          },
                          backgroundColor : '#F0F8FF',
                          borderColor : '#5F9EA0',
-                         borderWidth : 4
                         },
                         roam: true,
                         itemStyle: {
@@ -425,9 +474,49 @@ $(function () {
                                 areaColor: '#2B91B7'
                             }
                         },
+                        
                         animation: false,
                         data: mapData
                     },
+                    // 清管所位置标记
+                    {
+                    name: '全国清管所位置分布',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    zlevel: 2,
+
+                    symbol: 'pin',
+                    label: {
+                        normal: {
+                         show: true,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 9,
+                    },
+                    formatter (Management){
+                        console.log("Management = "+ Management.name)
+                        return Management.name
+                    }
+                },
+                        emphasis: {
+                            show: true,
+                            fontSize: 15,
+                            color:'#000000',
+                            backgroundColor:'#FFFFFF',
+                            position: 'right',
+                            formatter: '{b}'
+                        }
+                    },
+                    symbolSize: 45,
+                    showEffectOn: 'render',
+                    itemStyle: {
+                        normal: {
+                            color: '#DDA0DD',
+                            opacity:1
+                        }
+                    },
+                    data: Management
+                },
                     //地图点的动画效果
                     {
                         //  name: 'Top 5',
@@ -460,6 +549,7 @@ $(function () {
                         },
                         zlevel: 1
                     },
+                    /*
                     //地图线的动画效果
                     {
                         type: 'lines',
@@ -480,7 +570,7 @@ $(function () {
                             }
                         },
                         data: convertToLineData(mapData[n], geoGpsMap[Math.ceil(Math.random() * 6)])
-                    },
+                    },*/
                     //柱状图
                     {
                         zlevel: 1.5,
@@ -493,7 +583,24 @@ $(function () {
                         },
                         data: barData[n]
                     }
+                ],
+                legend: {
+                type: "plain",
+                show: true,
+                orient: 'vertical',
+                top: '10%',
+                left: '5%',
+                data: [
+                    {
+                        name: "全国清管所位置分布",
+                        icon: "circle",
+                        textStyle: {
+                            color: "#F0F8FF",
+                            fontSize: 20,
+                        }
+                    }
                 ]
+            },
             })
         }
         myChart.setOption(optionXyMap01);
@@ -503,6 +610,11 @@ $(function () {
         console.log("符合条件")
         var url = "http://localhost:8088/mapTest";
         window.location.href=url;
+        }
+        if(params.name=="山东"){
+        console.log("符合条件")
+        var url2 = "http://localhost:8088/shandong";
+        window.location.href=url2;
         }
         /*
         var _self = this;
