@@ -47,7 +47,16 @@
           <el-menu-item index="/Taskinput">任务属性</el-menu-item>
         </el-menu-item-group>
           <el-menu-item-group>
+            <el-menu-item index="/resourceshow">可用资源展示</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
             <el-menu-item index="/Time_granularity">时间粒度</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="/space_granularity">空间粒度</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="/other_granularity">其他粒度</el-menu-item>
           </el-menu-item-group>
       </el-submenu>
 
