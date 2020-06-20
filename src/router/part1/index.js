@@ -13,9 +13,27 @@ import mapTest from "../../views/part1/transactionProject/mapTest"
 import errorpage404 from "@/views/part1/HANTINA/userinffo";
 import Taskinput from "@/views/part2/Taskinput"
 import Time_granularity from "../../views/part2/Time_granularity";
+import resourceshow from "../../views/part2/resourceshow";
+import space_granularity from "../../views/part2/space_granularity";
+import other_granularity from "../../views/part2/other_granularity";
 
 //import full from "@/containers/Full";
 let routes = [
+    {
+        path: "/other_granularity",
+        name: "other_granularity",
+        component:other_granularity,
+    },
+    {
+        path: "/space_granularity",
+        name: "space_granularity",
+        component:space_granularity,
+    },
+    {
+        path: "/resourceshow",
+        name: "resourceshow",
+        component:resourceshow,
+    },
     {
         path: "/Time_granularity",
         name: "Time_granularity",
