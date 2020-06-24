@@ -1,9 +1,8 @@
 <template>
    <div style="width: 100%;height: 800px">
-       <h2> 可用资源展示 </h2>
        <div id="app">
            <!--创建一个echarts的容器-->
-           <div id="echartContainer" style="width:900px; height:400px"></div>
+           <div id="echartContainer" style="width:900px; height:600px"></div>
        </div>
    </div>
 </template>
@@ -32,28 +31,57 @@
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['模态资源', '时间资源', '空间资源', '硬件资源', '其他资源']
+                        data: ['模态资源', '时间资源', '空间资源', '硬件资源']
                     },
                     series: [
                         {
-                            name: '资源数量',
+                            name: '模态资源',
                             type: 'pie',
-                            radius: '55%',
-                            center: ['50%', '60%'],
+                            radius: '25%',
+                            center: ['30%', '30%'],
                             data: [
-                                {value: 335, name: '模态资源'},
-                                {value: 310, name: '时间资源'},
-                                {value: 234, name: '空间资源'},
-                                {value: 135, name: '硬件资源'},
-                                {value: 158, name: '其他资源'}
-                            ],
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
+                                {value: 120, name: '人工资源'},
+                                {value: 180, name: '机器资源'},
+                                {value: 200, name: '在线资源'},
+                                {value: 100, name: '离线资源'},
+                                {value: 150, name: '主动资源'},
+                                {value: 150, name: '被动资源'}
+                            ]
+                        },
+                        {
+                            name: '时间资源',
+                            type: 'pie',
+                            radius: '25%',
+                            center: ['70%', '30%'],
+                            data: [
+                                {value: 335, name: '3分钟粒度'},
+                                {value: 310, name: '30分钟粒度'},
+                                {value: 234, name: '3小时粒度'},
+                                {value: 135, name: '1天粒度'},
+                                {value: 158, name: '3天粒度'}
+                            ]
+                        },
+                        {
+                            name: '空间资源',
+                            type: 'pie',
+                            radius: '25%',
+                            center: ['30%', '70%'],
+                            data: [
+                                {value: 335, name: '县级可控'},
+                                {value: 310, name: '市级可控'},
+                                {value: 234, name: '省级可控'},
+                            ]
+                        },
+                        {
+                            name: '硬件资源',
+                            type: 'pie',
+                            radius: '25%',
+                            center: ['70%', '70%'],
+                            data: [
+                                {value: 335, name: '计算资源'},
+                                {value: 310, name: '存储资源'},
+                                {value: 234, name: '其他资源'},
+                            ]
                         }
                     ]
                 });
