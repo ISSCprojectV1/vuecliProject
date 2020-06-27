@@ -83,47 +83,19 @@ let routes = [
         component:granularityExecution,
     },
 
-    // testend 
+    // testend
     {
         path: "/Time_granularity",
         name: "Time_granularity",
         component:Time_granularity,
     },
-    {
-        path: "/Taskinput",
-        name: "Taskinput",
-        component:Taskinput,
-    },
-    {
-        path: "/login",
-        name: "Login",
-        component:Login,
-    },
-    {
-        path: "/Register",
-        name: "Register",
-        component:Register
-    },
+
     {
         path: "/user/userInfo",
         name: "userInfo",
         component:userInfo,
     },
-    {
-        path: "/map",
-        name: "map",
-        component:map,
-    },
-    {
-        path: "/mapCopy",
-        name: "mapCopy",
-        component:mapCopy,
-    },
-    {
-        path: "/mapTest",
-        name: "mapTest",
-        component:mapTest,
-    },
+
     {
         path: "/shandong",
         name: "shandong",
@@ -143,11 +115,6 @@ let routes = [
         path: "/resourceshow",
         name: "resourceshow",
         component:resourceshow,
-    },
-    {
-        path: "/Time_granularity",
-        name: "Time_granularity",
-        component:Time_granularity,
     },
     {
         path: "/Taskinput",
@@ -199,7 +166,7 @@ let routes = [
         name: "echarts",
         component:echarts,
     },
-    
+
 ];
 
 export default routes

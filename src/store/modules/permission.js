@@ -1,109 +1,157 @@
-import { asyncRouterMap, constantRouterMap } from '../../router/part1';
-
-
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.role) {
-    return roles.some(role => route.meta.role.indexOf(role) >= 0)
-  } else {
-    return true
-  }
-}
-
-/**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
- * @param asyncRouterMap
- * @param roles
- */
-function filterAsyncRouter(asyncRouterMap, roles) {
-  const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(roles, route)) {
-
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
-      }
-      return true
-    }
-    return false
-  })
-  return accessedRouters
-}
-
-
-function getNowRouter(asyncRouterMap, to) {
-  return asyncRouterMap.some(route => {
-      if(to.path.indexOf(route.path) !==-1) {
-          return true;
-      }
-      else if (route.children && route.children.length) { //如果有孩子就遍历孩子
-        return  getNowRouter(route.children, to)
-      }
-  })
-
-}
-
-
+import { constantRoutes } from '@/router'
+//import { getRouters } from '@/api/menu'
 
 const permission = {
-  state: {
-    routers: constantRouterMap,
-    addRouters: [],
-    siderbar_routers:[],
-  },
-  mutations: {
-    SET_ROUTERS: (state, routers) => {
-        console.log("setRouters");
-      state.addRouters = routers;
-      state.routers = constantRouterMap.concat(routers);
-       state.routers.forEach(function(e){
-           if(e.name==="首页"){
-          state.siderbar_routers=e;
-            
-          }
-       })
-
+    state: {
+        routes: [],
+        addRoutes: []
     },
-     SET_NOW_ROUTERS: (state, to) => {
-       
-          
-          // 递归访问 accessedRouters，找到包含to 的那个路由对象，设置给siderbar_routers
-          console.log(state.addRouters)
-        state.addRouters.forEach(e => {
-          if(e.children&& e.children.length ){
-          if( getNowRouter(e.children,to)===true)
-                  state.siderbar_routers=e;
-          }
-      
-        })
-      
-
-     }
-
-  },
-  actions: {
-    GenerateRoutes({ commit }, data) {
-      return new Promise(resolve => {
-        const { roles } = data
-        let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+    mutations: {
+        SET_ROUTES: (state, routes) => {
+            state.addRoutes = routes
+            state.routes = constantRoutes.concat(routes)
         }
-
-
-        commit('SET_ROUTERS', accessedRouters);
-        resolve();
-      })
     },
- 
-  getNowRoutes({ commit }, data) {
-      return new Promise(resolve => {
-        //data => to
-        commit('SET_NOW_ROUTERS', data);
-        resolve();
-      })
-  },
-   },
-};
+    actions: {
+        // 生成路由
+        GenerateRoutes({ commit }) {
+            return new Promise(resolve => {
+                // 向后端请求路由数据
+                // getRouters().then(res => {
+                //     const accessedRoutes = filterAsyncRouter(res.data)
+                //     accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+                //     commit('SET_ROUTES', accessedRoutes)
+                //     resolve(accessedRoutes)
+                // })
 
-export default permission;
+                //前端造的数据
+                const asyncRouterMap = [
+                    {
+                        path:'/userinfo',
+                        component:"views/part3/incentiveMechanism/User/userinfo",
+                        meta:{
+                            title:"我的信息"
+                        },
+                        children:[
+                            {
+                                path:'/userinfo',
+                                component:"components/part3/User/index",
+                                meta:{
+                                    title:"个人资料"
+                                }
+                            },
+                            {
+                                path:'/userinfo/download',
+                                component:"components/part3/User/download",
+                                meta:{
+                                    title:"我的下载"
+                                }
+
+                            },
+                            {
+                                path:'/userinfo/score',
+                                component:"components/part3/User/score",
+                                meta:{
+                                    title:"我的积分"
+                                }
+                            },
+                            {
+                                path:'/userinfo/group',
+                                component: "components/part3/User/group",
+                                meta:{
+                                    title:"我的群组"
+                                }
+                            }
+
+                        ]
+                    },
+                    {
+                        path: "/console",
+                        component:"views/part3/incentiveMechanism/Console/home",
+                        meta: {
+                            title:"工作台"
+                        },
+                        children:[
+                            {
+                                path: "/console/",
+                                component:"components/part3/Console/mainHome",
+                                meta:{
+                                    title:"首页"
+                                }
+
+                            },
+                            {
+                                path: "/console/uploadResources",
+                                component:"components/part3/Console/mainuploadResource",
+                                meta:{
+                                    title:"上传资源"
+                                }
+                            },
+                            {
+                                path: "/console/upload",
+                                component:"components/part3/Common/mainUpload",
+                                meta:{
+                                    title:"上传明细"
+                                }
+                            },
+                            {
+                                path: "/console/score",
+                                component:"components/part3/Common/mainScore",
+                                meta:{
+                                    title:"积分明细"
+                                }
+                            },
+                            {
+                                path: "/console/download",
+                                component:"components/part3/Common/mainDownload",
+                                meta:{
+                                    title:"下载明细"
+                                }
+                            },
+                            {
+                                path: "/console/editorial/:id",
+                                component:"/components/part3/Console/editorial",
+                                meta:{
+                                    title:"编辑",
+                                    hidden:true
+                                }
+                            },
+                        ]
+                    },
+
+
+                ]
+                const accessedRoutes = filterAsyncRouter(asyncRouterMap)
+                accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+                commit('SET_ROUTES', accessedRoutes)
+                resolve(accessedRoutes)
+
+            })
+        }
+    }
+}
+
+// 遍历后台传来的路由字符串，转换为组件对象
+function filterAsyncRouter(asyncRouterMap) {
+    return asyncRouterMap.filter(route => {
+        if (route.component) {
+            // // Layout组件特殊处理
+            // if (route.component === 'Layout') {
+            //     route.component = Layout
+            // } else {
+            //     route.component = loadView(route.component)
+            // }
+            route.component = loadView(route.component)
+        }
+        if (route.children != null && route.children && route.children.length) {
+            route.children = filterAsyncRouter(route.children)
+        }
+        return true
+    })
+}
+
+export const loadView = (view) => { // 路由懒加载
+    return () =>  import(`@/${view}.vue`)
+}
+
+export default permission

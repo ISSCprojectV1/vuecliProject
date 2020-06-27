@@ -2,8 +2,11 @@
 module.exports = {
     // lintOnSave: false // 取消 eslint 验证
     devServer: {
-      port: 8088, // 端口
-        proxy: {
+        port: 8000, // 端口
+        open:true,
+        //sockHost: 'http://localhost:8080',
+        proxy:
+            {
             '/api': {
                 target: 'http://localhost:8088', //API服务器的地址
                 ws: true,  //代理websockets
@@ -30,13 +33,12 @@ module.exports = {
                     '^/moc': ''
                 }
             },
-
         },
     },
     // lintOnSave: false // 取消 eslint 验证
 
 
-    chainWebpack: config => {
-
-    }
+    // chainWebpack: config => {
+    //
+    // }
 }

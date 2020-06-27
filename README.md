@@ -286,7 +286,50 @@ views:结构如下(可以参考part3里我已经整合的代码)
 vue.config.js
 是vue-cli脚手架封装好用于配置webpack相关属性的 可以自行添加
 
-开发日志：
+#开发日志：
 
-2020.6.23 llx
-1.添加登录逻辑
+###2020.6.25 llx
+* 添加登录逻辑 
+<br> 1 安装包js-cookie
+<br> 2 创建@/utils/auth.js 实现存取cookie的方法
+<br> 3 创建@/permission.js 实现前端拦截器功能
+<br> 4 增加进度条效果 安装包nprogress 并添加效果逻辑到拦截器逻辑中
+<br> 5 在store中加入user模块 处理用户相关状态
+
+
+###2020.6.26 llx
+* 因为后台需要前端以application / x-www-form-urlencoded格式发送数据，根据axios官网说明
+在浏览器中，可以使用URLSearchParams API，如下所示：
+```javascript
+const params = new URLSearchParams();
+params.append('param1', 'value1');
+params.append('param2', 'value2');
+axios.post('/foo', params);
+```
+请注意，所有浏览器都不支持URLSearchParams（请参阅caniuse.com），但可以使用polyfill（确保填充全局环境）。
+
+或者，可以使用qs库编码数据：
+```javascript
+const qs = require('qs');
+axios.post('/foo', qs.stringify({ 'bar': 123 }));
+```
+或者以另一种方式（ES6），
+```javascript
+import qs from 'qs';
+const data = { 'bar': 123 };
+const options = {
+  method: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  data: qs.stringify(data),
+  url,
+};
+axios(options);
+```
+* 加入动态路由相关代码
+* 登录界面加入用户角色选项
+* 删除修改冗余代码
+
+###2020.6.27 llx
+
+* 加入管理员对动态路由的增删查改 等待后端联调
+

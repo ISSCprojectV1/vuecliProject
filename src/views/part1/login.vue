@@ -2,11 +2,17 @@
   <div class = "login">
     <el-form ref="loginForm" :model="form" :rules="rules" class="login-box">
       <h3 class="login-title">欢迎登录</h3>
-      <el-form-item label="账号" prop="accountId"  ref="accountId">
+      <el-form-item label="账号" prop="accountId">
         <el-input type="text" placeholder="请输入账号" v-model="form.accountId"/>
       </el-form-item>
-      <el-form-item label="密码" prop="password" ref="password">
+      <el-form-item label="密码" prop="password">
         <el-input type="password" placeholder="请输入密码" v-model="form.password"/>
+      </el-form-item>
+      <el-form-item label="角色" prop="role">
+        <el-radio-group v-model="form.role">
+          <el-radio label="user">普通用户</el-radio>
+          <el-radio label="admin">管理员</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
@@ -24,32 +30,23 @@
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
-
-    <el-dialog
-      title="温馨提示"
-      :visible.sync="messageVisible"
-      width="30%"
-      :before-close="handleClose">
-      <span>账号或密码错误！请检查后重新登陆！</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="messageVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import {newlogin} from "../../api/part1/common.js"
 
-import loginByEmail from "@/api/part1/common.js"
+import {setToken,getToken} from "@/utils/auth"
+
+
+
   export default {
     name: "Login",
     data() {
       return {
         form: {
           accountId: '',
-          password: ''
+          password: '',
+          role:''
         },
 
         // 表单验证，需要在 el-form-item 元素中增加 prop 属性
@@ -59,6 +56,9 @@ import loginByEmail from "@/api/part1/common.js"
           ],
           password: [
             {required: true, message: '密码不可为空', trigger: 'blur'}
+          ],
+          role: [
+            {required: true, message: '角色不可为空', trigger: 'blur'}
           ]
         },
 
@@ -71,43 +71,35 @@ import loginByEmail from "@/api/part1/common.js"
         // 为表单绑定验证功能
         this.$refs[formName].validate((valid) => {
           if (valid) {
-
-            let dataa={
-              "accountId":this.$refs.accountId.fieldValue,
-              "password":this.$refs.password.fieldValue,
-
+            const params = {
+              accountId:this.form.accountId,
+              password:this.form.password
             }
+            this.$store.dispatch('login',params).then((res)=>{
+              setToken(true)
+              console.log("登陆成功")
+              if (this.form.role === "admin") {
+                this.$router.push('/admin')
+              }
+              else{
+                this.$router.push('/Dashboard')
+              }
 
-        let data = formName;
-      /*  console.log(dataa)
-           newlogin(dataa).then((res) => {
-              console.log(res.data);
-            }).catch(()=>{
-              console.log("getPredictionData fail")
-            });*/
-      //  axios.post('api/login',dataa)
 
-            newlogin(dataa).then((res) => {
- console.log("aaa")
-        console.log('res=>',res);
-        if(res.status == 200){
-         console.log('响应结果：'+ res.data.message);
-         this.$router.push("/Dashboard");  
-        }else{
-          console.log("登陆失败");
-          this.dialogVisible = true;
-          return false;
-        }
-})   
-          } else {
-            this.dialogVisible = true;
-            return false;
+            }).catch((error,res)=>{
+              console.log(error)
+              console.log("登录失败")
+            })
           }
         });
       },
       onRegister(){
-      this.$router.push("/Register");  
+      this.$router.push("/Register");
+      },
+      handleClose(){
+        console.log("handleClose");
       }
+
     }
   }
 </script>

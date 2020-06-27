@@ -1,6 +1,8 @@
 import Vue from "vue"
 import Vuex from "vuex"
 import permission from './modules/permission';
+import user from './modules/user';
+
 import { getGrades,getSubjects,login,getuserinfo} from "@/api/part3";
 
 Vue.use(Vuex);
@@ -9,7 +11,8 @@ export default new Vuex.Store(
 
     {
         modules: {
-            permission
+            permission,
+            user
         },
         state:{
             isLogin:true,
@@ -25,35 +28,6 @@ export default new Vuex.Store(
             }
         },
         actions:{
-            loginIn({commit},data){
-                return new Promise((resolve, reject) => {
-                    login(data).then((res)=>{
-                        commit('setData',{name:'isLogin',value:true});
-                        console.log(res);
-
-                        //commit('userID',res.data.id);
-                        resolve();
-                    }).catch((error,res)=>{
-                        console.log(res)
-                        console.log(error)
-                        reject()
-                    })
-                })
-            },
-            getUserInfo({commit}){
-                return new Promise((resolve, reject) => {
-                    getuserinfo().then((res)=>{
-                        commit('setData',{name:'userID',value:res.data.data.id});
-                        console.log(res);
-                        //commit('userID',res.data.id);
-                        resolve();
-                    }).catch((error,res)=>{
-                        console.log(res)
-                        console.log(error)
-                        reject()
-                    })
-                })
-            },
 
 
             getChosen({state,commit}){

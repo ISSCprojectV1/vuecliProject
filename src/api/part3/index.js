@@ -1,22 +1,24 @@
 import request from '@/utils/request'
-//import request from "@/utils/request";
-//import {myresponseInterceptorservice} from "./utils/request";
+import qs from 'qs';
+
 
 
 export function register(data) {
-    let param = new URLSearchParams()
-    for(let key  in data){
-        param.append(key, data[key])
-    }
-    return request.post('/register',param)
+    return request({
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: qs.stringify(data),
+        url:'/register',
+    })
 }
 
 export function login(data) {
-    let param = new URLSearchParams()
-    for(let key  in data){
-        param.append(key, data[key])
-    }
-    return request.post('/login',param)
+    return request({
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: qs.stringify(data),
+        url:'/login',
+    })
 }
 
 export function getuserinfo() {
