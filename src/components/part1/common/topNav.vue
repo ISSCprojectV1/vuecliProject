@@ -12,7 +12,7 @@
   text-color="#fff"
   active-text-color="#ffd04b">
  <el-menu-item index="/Dashboard"><img :src="headImg" class="img">大宗商品交易平台</el-menu-item>
-  <el-menu-item index="workSpace">工作台</el-menu-item>
+  <el-menu-item index="/Dashboard">工作台</el-menu-item>
   <el-submenu index="2" class = "memu-part-two">
     <template slot="title">激励机制</template>
     <el-menu-item index="/userinfo">用户主页</el-menu-item>

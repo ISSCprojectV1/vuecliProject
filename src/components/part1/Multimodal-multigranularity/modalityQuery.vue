@@ -116,7 +116,7 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
                 this.dormitory = dataConvert
                 console.log("传入4数据" + res.data.data)
                 }).catch(()=>{
-                    console.log("modalityQuery fail")
+                    console.log("获取modalityQuery表格数据 步骤三 请求失败")
                 });
 
             } ,

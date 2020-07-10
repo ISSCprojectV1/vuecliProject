@@ -7,7 +7,7 @@
                  background-color="#545c64"
                  text-color="#fff"
                  active-text-color="#ffd04b">
-                    <el-menu-item index="0"><img :src="logoimg" class="img"></el-menu-item>
+                    <el-menu-item index="/Dashboard"><img :src="logoimg" class="img"></el-menu-item>
                     <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>
                     <el-menu-item index="/console">统计中心</el-menu-item>
                     <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>

@@ -22,16 +22,13 @@ import modalityInput from "../../views/part1/Multimodal-multigranularity/modalit
 import modalityQuery from "../../views/part1/Multimodal-multigranularity/modalityQuery"
 import modalityAllocation from "../../views/part1/Multimodal-multigranularity/modalityAllocation"
 import taskExecutionQueryByid from "../../views/part1/Multimodal-multigranularity/taskExecutionQueryByid"
-import taskExecutionQuery from "../../views/part1/Multimodal-multigranularity/taskExecutionQuery"
+import ExecutionQuery from "../../views/part1/Multimodal-multigranularity/ExecutionQuery"
 import granularityExecution from "../../views/part1/Multimodal-multigranularity/granularityExecution"
 
 
 import errorpage404 from "@/views/part1/HANTINA/userinffo";
 import Taskinput from "@/views/part2/Taskinput"
 import Time_granularity from "../../views/part2/Time_granularity";
-import resourceshow from "../../views/part2/resourceshow";
-import space_granularity from "../../views/part2/space_granularity";
-import other_granularity from "../../views/part2/other_granularity";
 
 //import full from "@/containers/Full";
 let routes = [
@@ -73,9 +70,9 @@ let routes = [
         component:taskExecutionQueryByid,
     },
     {
-        path: "/taskExecutionQuery",
-        name: "taskExecutionQuery",
-        component:taskExecutionQuery,
+        path: "/ExecutionQuery",
+        name: "ExecutionQuery",
+        component:ExecutionQuery,
     },
     {
         path: "/granularityExecution",
@@ -83,38 +80,11 @@ let routes = [
         component:granularityExecution,
     },
 
-    // testend
+    // testend 
     {
         path: "/Time_granularity",
         name: "Time_granularity",
         component:Time_granularity,
-    },
-
-    {
-        path: "/user/userInfo",
-        name: "userInfo",
-        component:userInfo,
-    },
-
-    {
-        path: "/shandong",
-        name: "shandong",
-        component:shandong,
-    },
-    {
-        path: "/other_granularity",
-        name: "other_granularity",
-        component:other_granularity,
-    },
-    {
-        path: "/space_granularity",
-        name: "space_granularity",
-        component:space_granularity,
-    },
-    {
-        path: "/resourceshow",
-        name: "resourceshow",
-        component:resourceshow,
     },
     {
         path: "/Taskinput",
@@ -132,6 +102,11 @@ let routes = [
         component:Register
     },
     {
+        path: "/user/userInfo",
+        name: "userInfo",
+        component:userInfo,
+    },
+    {
         path: "/map",
         name: "map",
         component:map,
@@ -145,6 +120,11 @@ let routes = [
         path: "/mapTest",
         name: "mapTest",
         component:mapTest,
+    },
+    {
+        path: "/shandong",
+        name: "shandong",
+        component:shandong,
     },
     {
         path: "/Dashboard",
@@ -166,7 +146,7 @@ let routes = [
         name: "echarts",
         component:echarts,
     },
-
+    
 ];
 
 export default routes

@@ -48,18 +48,9 @@
           <el-menu-item index="/Taskinput">任务属性</el-menu-item>
         </el-menu-item-group>
           <el-menu-item-group>
-            <el-menu-item index="/resourceshow">可用资源展示</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group>
             <el-menu-item index="/Time_granularity">时间粒度</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
-            <el-menu-item index="/space_granularity">空间粒度</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group>
-            <el-menu-item index="/other_granularity">其他粒度</el-menu-item>
-          </el-menu-item-group>
-        <el-menu-item-group>
           <el-menu-item index="/taskQuery">监管任务</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
@@ -69,7 +60,7 @@
           <el-menu-item index="/taskExecutionQueryByid">元任务查询（BY ID）</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="/taskExecutionQuery">元任务查询（列表）</el-menu-item>
+          <el-menu-item index="/ExecutionQuery">元任务查询（列表）</el-menu-item>
         </el-menu-item-group>
          <el-menu-item-group>
           <el-menu-item index="/granularityExecution">粒度调整执行</el-menu-item>

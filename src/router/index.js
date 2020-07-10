@@ -13,9 +13,19 @@ import admin from "@/router/admin"
 let routes = admin.concat(routes1).concat(routes2).concat(routes3);
 console.log(routes)
 const rounter = new VueRouter({
-    mode:"history",
+    mode:"hash",
     routes:routes
 });
 
+//全局前置守卫
+import store from "@/store"
+rounter.beforeEach((to,from,next)=>{
+    console.log(store.state.isLogin)
+    if (!store.state.isLogin && to.path!="/Login")
+    {
+        next('/Dashboard');
+    }
+    next();
+})
 
 export default rounter;

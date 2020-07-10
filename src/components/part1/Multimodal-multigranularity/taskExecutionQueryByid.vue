@@ -58,7 +58,7 @@ import {taskExecutionQueryByid} from "@/api/part1/Multimodal-multigranularity";
                 // 获取表格数据
                console.log("获取搜索数据")
                var dataConvert = [];
-               var URL ='api/solution/'+this.search;
+               var URL ='/solution/'+this.search;
                console.log("URL:"+URL)
 
                taskExecutionQueryByid(URL).then((res) => {

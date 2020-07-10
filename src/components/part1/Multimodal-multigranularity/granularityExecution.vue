@@ -58,7 +58,7 @@ postData(){
 
                var date=new Date();
               var timer=date.getTime().toString();
-               var URL ='api/granularityExecution/'+this.input+"?t=";
+               var URL ='/granularityExecution/'+this.input+"?t=";
                console.log("URL:"+URL)
                granularityExecution_api(URL+timer).then((res) => {
                  if(res.data.code != "200")
