@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div class="box" v-loading="loading" element-loading-text="拼命加载中">
 
     </div>
 </template>
@@ -13,7 +13,7 @@
         name: "riskVolatility",
         data(){
             return {
-
+                loading:true,
             }
         },
         created(){
@@ -109,6 +109,7 @@
                         }
                     }
                     this.echarts.setOption(option);
+                    this.loading = false;
                 }).catch(error=>{
                     console.log(error)
                 })

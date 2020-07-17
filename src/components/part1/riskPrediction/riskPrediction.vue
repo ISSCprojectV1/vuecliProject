@@ -1,6 +1,6 @@
 <template>
-     <div id="index">
-        <div id="main" style="width: 100%;height: 800px;"></div>
+     <div id="index" v-loading="loading" element-loading-text="拼命加载中">
+        <div id="main" class="box"></div>
     </div>
 </template>
 <script>
@@ -11,7 +11,8 @@
         name: "app",
         data() {
             return {
-                itemList: []
+                itemList: [],
+                loading:true
             }
         },
         created() {
@@ -51,7 +52,7 @@
                     console.log("error");
                 });*/
             },
-            
+
             drawLine(id){
             this.charts = echarts.init(document.getElementById(id))
             var upColor = '#ec0000';
@@ -76,7 +77,7 @@
                 priceData.push(price);
             }
             console.log("cataData的内容是" + cataData);
-            
+
             function calculateMA(dayCount) {
                     var result = [];
                     for (var i = 0, len = priceData.length; i < len; i++) {
@@ -120,7 +121,7 @@
                     splitNumber: 20,
                     min: 'dataMin',
                     max: 'dataMax'
-                      }, 
+                      },
                 yAxis: {
                     scale: true,
                     splitArea: {
@@ -189,7 +190,7 @@
                           return param.name + '<br>' + (param.data.coord || '');
                          }
                        }
-                       },           
+                       },
                 },
                      {
                     name: 'PREDICTION',
@@ -218,9 +219,10 @@
                     opacity: 0.5
                        }
                        },
-                       
+
                 ]
             })
+                this.loading = false
 
             }
         }
@@ -232,4 +234,9 @@
   width: 100%;
   height: 600px;
 }
+.box{
+    width: 1000px;
+    height: 600px
+}
+
 </style>

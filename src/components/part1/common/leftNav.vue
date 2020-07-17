@@ -1,6 +1,6 @@
 <template>
-<el-row class="tac" style="height: 100%; width: 200px">
-  <el-col style="height: 100%">
+<el-row>
+  <el-col>
 
     <el-menu
       default-active="2"
