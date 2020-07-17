@@ -9,30 +9,34 @@
                  text-color="#fff"
                  active-text-color="#ffd04b" style="height: 800px"
         >
-            <el-menu-item index="/userinfo/">
-                <span slot="title">个人资料</span>
-            </el-menu-item>
-            <el-menu-item index="/userinfo/download">
-                <span slot="title">我的下载</span>
-            </el-menu-item>
-            <el-menu-item index="/userinfo/score">
-                <span slot="title">我的积分</span>
-            </el-menu-item>
-            <el-menu-item index="/userinfo/group">
-                <span slot="title">我的群组</span>
-            </el-menu-item>
-            <el-menu-item index="5">
-                <span slot="title">个人资料5</span>
-            </el-menu-item>
-            <el-menu-item index="6">
-                <span slot="title">个人资料6</span>
-            </el-menu-item>
-            <el-menu-item index="7">
-                <span slot="title">个人资料7</span>
-            </el-menu-item>
-            <el-menu-item index="8">
-                <span slot="title">个人资料8</span>
-            </el-menu-item>
+            <el-menu-item :index="route.path" v-for="route in this.viewRoutes" :key="route.path">
+                                <span slot="title">{{route.meta.title}}</span>
+                            </el-menu-item>
+
+<!--            <el-menu-item index="/userinfo/">-->
+<!--                <span slot="title">个人资料</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="/userinfo/download">-->
+<!--                <span slot="title">我的下载</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="/userinfo/score">-->
+<!--                <span slot="title">我的积分</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="/userinfo/group">-->
+<!--                <span slot="title">我的群组</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="5">-->
+<!--                <span slot="title">个人资料5</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="6">-->
+<!--                <span slot="title">个人资料6</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="7">-->
+<!--                <span slot="title">个人资料7</span>-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="8">-->
+<!--                <span slot="title">个人资料8</span>-->
+<!--            </el-menu-item>-->
         </el-menu>
         </div>
 </template>
@@ -40,6 +44,19 @@
 <script>
     export default {
         name: "sidebar",
+        data(){
+            return{
+                viewRoutes:[]
+            }
+        },
+        created(){
+            console.log("路由");
+            let routes = this.$store.state.permission.routes;
+            this.viewRoutes = routes.find(function(element) {
+                return element.path === "/userinfo";
+            }).children;
+            console.log(this.viewRoutes)
+        },
         methods:{
             handleOpen(key, keyPath) {
                 console.log(key,keyPath)

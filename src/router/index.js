@@ -10,12 +10,10 @@ import routes3 from "@/router/part3"
 import admin from "@/router/admin"
 
 
-let routes = admin.concat(routes1).concat(routes2).concat(routes3);
-console.log(routes)
+export const constantRoutes = admin.concat(routes1).concat(routes2).concat(routes3);
 const rounter = new VueRouter({
     mode:"history",
-    routes:routes
+    routes:constantRoutes
 });
-
 
 export default rounter;

@@ -7,31 +7,27 @@ import {setToken,getToken,removeToken} from "./utils/auth"
 
 
 
-const whiteList = ['/login','/register'];
+const whiteList = ['/login','/register',];
 
 
 router.beforeEach((to,from,next)=>{
     NProgress.start();
+
+    console.log("addRoutes:"+store.state.permission.addRoutes)
     if (whiteList.indexOf(to.path)!== -1){
         //在免登陆白名单,直接进入
         next();
     }
     else{
         if (getToken()){
-            console.log("getToken:"+getToken())
-            if (store.state.role === '')
-            {
-                store.dispatch('getUserInfo').then(res => {
-                    const role = res.data.role
-                    store.dispatch('GenerateRoutes').then(accessRoutes=>{
-                        router.addRoutes(accessRoutes)
-                        next({...to,replace:true})
-                    })
-                    })
-                    .catch(err=>{
-                        console.log("动态获取路由失败，跳回登录界面")
-                        next({path:'/login'})
-                    })
+            if (store.state.permission.addRoutes.length==0){
+                store.dispatch('GenerateRoutes',getToken()).then(accessRoutes=>{
+                    router.addRoutes(accessRoutes)
+                    next({...to,replace:true})
+                }).catch(err=>{
+                    console.log("动态获取路由失败，跳回登录界面")
+                    next({path:'/login'})
+                })
             }
             else {
                 next()

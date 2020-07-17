@@ -38,33 +38,30 @@ import errorpage404 from "@/views/part1/HANTINA/userinffo";
 //import full from "@/containers/Full";
 let routes = [
 
-    {
-        path:'/userinfo',
-        component:Userinfo,
-        children:[
-            {
-                path:'/',
-                component:userindex
-            },
-            {
-                path:'download',
-                component:userdownload
-            },
-            {
-                path:'score',
-                component:userscore
-            },
-            {
-                path:'group',
-                component: usergroup
-            }
+    // {
+    //     path:'/userinfo',
+    //     component:Userinfo,
+    //     children:[
+    //         {
+    //             path:'/',
+    //             component:userindex
+    //         },
+    //         {
+    //             path:'download',
+    //             component:userdownload
+    //         },
+    //         {
+    //             path:'score',
+    //             component:userscore
+    //         },
+    //         {
+    //             path:'group',
+    //             component: usergroup
+    //         }
+    //
+    //     ]
+    // },
 
-        ]
-    },
-    {
-        path:"*",
-        component:login_part1
-    },
 
     {
         path: "/registry",

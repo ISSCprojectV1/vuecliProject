@@ -57,9 +57,9 @@ import {setToken,getToken} from "@/utils/auth"
           password: [
             {required: true, message: '密码不可为空', trigger: 'blur'}
           ],
-          role: [
-            {required: true, message: '角色不可为空', trigger: 'blur'}
-          ]
+          // role: [
+          //   {required: true, message: '角色不可为空', trigger: 'blur'}
+          // ]
         },
 
         // 对话框显示和隐藏
@@ -76,15 +76,15 @@ import {setToken,getToken} from "@/utils/auth"
               password:this.form.password
             }
             this.$store.dispatch('login',params).then((res)=>{
-              setToken(true)
-              console.log("登陆成功")
+              setToken(res.data.userid)
+              // console.log("登陆成功")
+              // console.log(res)
               if (this.form.role === "admin") {
                 this.$router.push('/admin')
               }
               else{
-                this.$router.push('/Dashboard')
+                this.$router.push('/trade')
               }
-
 
             }).catch((error,res)=>{
               console.log(error)

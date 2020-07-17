@@ -12,20 +12,20 @@
       text-color="#fff"
       active-text-color="#ffd04b" style="height: 800px">
 
-      <el-menu-item index="/Dashboard">
+      <el-menu-item index="/trade/Dashboard">
         <i class="el-icon-menu"></i>
         <span slot="title">首页</span>
       </el-menu-item>
 
-      <el-submenu index="/transactionProject">
+      <el-submenu index="/trade/transactionProject">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span>网络图</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/transactionProject/echarts">网络图</el-menu-item>
-          <el-menu-item index="/transactionProcess">搜索功能</el-menu-item>
-          <el-menu-item index="/map">地图功能</el-menu-item>
+          <el-menu-item index="/trade/transactionProject/echarts">网络图</el-menu-item>
+          <el-menu-item index="/trade/transactionProject/transactionProcess">搜索功能</el-menu-item>
+          <el-menu-item index="/trade/transactionProject/map">地图功能</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -35,7 +35,10 @@
           <span>风险评估</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/riskPrediction/riskPrediction">风险预测图</el-menu-item>
+          <el-menu-item index="/trade/riskPrediction/riskPrediction">风险预测图</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>
+          <el-menu-item index="/trade/riskPrediction/riskVolatility">价格条件波动率图</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -45,41 +48,36 @@
           <span>模态与粒度</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/Taskinput">任务属性</el-menu-item>
+          <el-menu-item index="/trade/Multimodal-multigranularity/taskInput">任务属性</el-menu-item>
         </el-menu-item-group>
           <el-menu-item-group>
-            <el-menu-item index="/resourceshow">可用资源展示</el-menu-item>
+            <el-menu-item index="/trade/Multimodal-multigranularity/resourceShow">可用资源展示</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
-            <el-menu-item index="/Time_granularity">时间粒度</el-menu-item>
+            <el-menu-item index="/trade/Multimodal-multigranularity/timeGranularity">时间粒度</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
-            <el-menu-item index="/space_granularity">空间粒度</el-menu-item>
+            <el-menu-item index="/trade/Multimodal-multigranularity/spaceGranularity">空间粒度</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
-            <el-menu-item index="/other_granularity">其他粒度</el-menu-item>
+            <el-menu-item index="/trade/Multimodal-multigranularity/otherGranularity">其他粒度</el-menu-item>
           </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="/taskQuery">监管任务</el-menu-item>
+          <el-menu-item index="/trade/Multimodal-multigranularity/taskQuery">监管任务</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="/modalityQuery">模态任务</el-menu-item>
+          <el-menu-item index="/trade/Multimodal-multigranularity/modalityQuery">模态任务</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="/taskExecutionQueryByid">元任务查询（BY ID）</el-menu-item>
+          <el-menu-item index="/trade/Multimodal-multigranularity/taskExecutionQueryByid">元任务查询（BY ID）</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>
-          <el-menu-item index="/taskExecutionQuery">元任务查询（列表）</el-menu-item>
+          <el-menu-item index="/trade/Multimodal-multigranularity/taskExecutionQuery">元任务查询（列表）</el-menu-item>
         </el-menu-item-group>
          <el-menu-item-group>
-          <el-menu-item index="/granularityExecution">粒度调整执行</el-menu-item>
+          <el-menu-item index="/trade/Multimodal-multigranularity/granularityExecution">粒度调整执行</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
     </el-menu>
   </el-col>
 </el-row>

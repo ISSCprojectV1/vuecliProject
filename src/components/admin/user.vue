@@ -1,30 +1,18 @@
 <template>
     <div>
-        <el-button type="primary" @click="open" class="button">新增</el-button>
-        <el-button type="success" @click="open" class="button">修改</el-button>
-        <el-button type="danger" @click="open" class="button">删除</el-button>
+        <el-button type="primary" @click="dialogFormAddInit" class="button">新增</el-button>
         <el-table
+                ref="userTable"
                 :data="tableData"
+                highlight-current-row
+                @cell-dblclick="handleCelldbClink"
         >
             <el-table-column
-                    label="编号"
-                    width="180"
-                    prop="id">
-            </el-table-column>
-            <el-table-column
-                    label="用户名"
-                    width="180"
-                    prop="name">
-            </el-table-column>
-            <el-table-column
-                    label="手机号码"
-                    width="180"
-                    prop="telephone">
-            </el-table-column>
-            <el-table-column
-                    label="创建时间"
-                    width="180"
-                    prop="createdDate">
+                    v-for="(value,name,index) in tableData[0]"
+                    :label=name
+                    width="100"
+                    :prop=name
+                    :key=index>
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -32,35 +20,96 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click=dialogFormInit(scope.row)>修改</el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.row)">删除</el-button>
+                            type="success"
+                            @click=dialogFormUpdateInit(scope.row)>修改</el-button>
+
+                    <el-popconfirm
+                            confirmButtonText='确定'
+                            cancelButtonText='取消'
+                            icon="el-icon-info"
+                            iconColor="red"
+                            title="确定删除该用户吗？"
+                            @onConfirm="handleDelete(scope.row.id)"
+                    >
+                        <el-button  size="mini" type="danger" slot="reference">删除</el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
 
-        <el-dialog title="修改用户" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-                <el-form-item label="用户名" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-pagination
+                style="text-align: center"
+                background
+                layout="prev, pager, next"
+                @current-change = "pageChange"
+                :total="total">
+        </el-pagination>
+
+        <el-dialog title="新增用户" :visible.sync="dialogFormAddVisible">
+            <el-form :model="addUserform">
+                <el-form-item label="name" :label-width="formLabelWidth">
+                    <el-input v-model="addUserform.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="角色" :label-width="formLabelWidth">
-                    <el-select v-model="form.role" clearable placeholder="请选择">
+                <el-form-item label="accountId" :label-width="formLabelWidth">
+                    <el-input v-model="addUserform.accountId" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="password" :label-width="formLabelWidth">
+                    <el-input v-model="addUserform.password" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="role" :label-width="formLabelWidth">
+                    <el-select v-model="addUserform.roleId" clearable placeholder="请选择">
                         <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in roleOptions"
+                                :key="item.id"
+                                :label="item.roleName"
+                                :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
 
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="dialogFormAddCancel">取 消</el-button>
+                <el-button type="primary" @click="dialogFormAddConfirm(addUserform)">确 定</el-button>
+            </div>
+        </el-dialog>
+
+
+
+
+        <el-dialog title="修改用户信息" :visible.sync="dialogFormUpdateVisible">
+            <el-form :model="form">
+                <el-form-item label="name" :label-width="formLabelWidth">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="accountId" :label-width="formLabelWidth">
+                    <el-input v-model="form.accountId" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="email" :label-width="formLabelWidth">
+                    <el-input v-model="form.email" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="score" :label-width="formLabelWidth">
+                    <el-input v-model="form.score" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="reputation" :label-width="formLabelWidth">
+                    <el-input v-model="form.reputation" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="role" :label-width="formLabelWidth">
+                    <el-select v-model="form.roleId" clearable placeholder="请选择">
+                        <el-option
+                                v-for="item in roleOptions"
+                                :key="item.id"
+                                :label="item.roleName"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                    <el-button type="primary" @click="changeRole(form)" class="button">修改角色</el-button>
+                </el-form-item>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormUpdateCancel">取 消</el-button>
+                <el-button type="primary" @click="dialogFormUpdateConfirm(form)">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -69,90 +118,252 @@
 </template>
 
 <script>
+    import {
+        getUsers,
+        getroles,
+        adminUpdateUser,
+        adminAddUser,
+        adminDeleteUser,
+        getUserinfoByUserId,
+        UserchangeRole
+    } from "@/api/part3";
+
     export default {
         name: "user",
+
+
+        created(){
+            this.init();
+        },
         data(){
             return{
-                form:{},
+                form:{
+                    id:"",
+                    accountId:"",
+                    name:"",
+                    email:"",
+                    score:"",
+                    reputation:"",
+                    roleId:""
+                },
 
-                dialogFormVisible: false,
+                dialogFormUpdateVisible: false,
+                dialogFormAddVisible: false,
                 formLabelWidth: '120px',
+                total:0,//用户总数
 
 
-                options: [
+                roleOptions: [
                     {
-                    value: 1,
-                    label: '管理员'
+                    id: 1,
+                    roleName: '管理员'
                     },
                     {
-                    value: 2,
-                    label: '普通用户'
+                    id: 2,
+                    roleName: '普通用户'
                     },
                 ],
                 tableData:[
-                    {
-                        id:1,
-                        name:"admin",
-                        telephone:"18851001980",
-                        createdDate:"2019-03-16 11:30:00",
-                        role:1
-                    },
-                    {
-                        id:2,
-                        name:"user1",
-                        telephone:"18851004444",
-                        createdDate:"2019-03-18 11:30:00",
-                        role:2
-                    },
-                ]
+                    // {
+                    //     "id": 4,
+                    //     "accountId": "333",
+                    //     "password": "8c389b98e0e361813d9a10c373c7738a",
+                    //     "name": "yyy",
+                    //     "gmtCreate": 1589860197682,
+                    //     "gmtModified": 1589860197682,
+                    //     "score": 1,
+                    //     "reputation": 0,
+                    //     "email": null,
+                    //     "role": 1
+                    // },
+                ],
+                addUserform:{
+                    name:"",
+                    accountId:"",
+                    password:"",
+                    roleId:""
+                }
             }
         },
         methods: {
-            open() {
-                this.$prompt('请输入邮箱', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-                    inputErrorMessage: '邮箱格式不正确'
-                }).then(({ value }) => {
-                    this.$message({
-                        type: 'success',
-                        message: '你的邮箱是: ' + value
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消输入'
-                    });
+            getUsersAPI(){
+                getUsers(1).then(res => {
+                    console.log("请求用户列表api成功")
+                    console.log(res.data)
+                    this.tableData = res.data.list
+                    this.total = res.data.total;
+                }).catch(err => {
+                    console.log(err);
+                    console.log("请求用户列表api失败")
                 });
             },
-            handleDelete(row) {
-                this.$confirm('是否删除角色:'+row.name, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    console.log("删除菜单的id:"+row.id);//加上删除的后端代码
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
+            getrolesAPI(){
+                getroles().then(res =>{
+                    console.log("请求角色列表api成功");
+                    console.log(res);
+                    this.roleOptions = res.data.roleList;
+                }).catch(err=>{
+                    console.log(err);
+                    console.log("请求角色列表api失败")
+                })
+            },
+            getUserDetailAPI(id){
+                getUserinfoByUserId(id).then(res =>{
+                    console.log("请求用户详情api成功");
+                    console.log(res);
+                    let user = res.data.user
+                    let role = res.data.role
+                    this.form.id = user.id
+                    this.form.accountId = user.accountId
+                    this.form.name = user.name
+                    this.form.email = user.email
+                    this.form.score = user.score
+                    this.form.reputation = user.reputation
+                    this.form.roleId = role.id
+                }).catch(err=>{
+                    console.log(err);
+                    console.log("请求用户详情api失败")
+                })
+            },
+            changeRole(form){
 
+                console.log(form.id)
+                console.log(form.roleId)
+                let params = {}
+                params.userId = form.id
+                params.roleId = form.roleId
+                UserchangeRole(params).then(res=>{
+                    console.log("角色修改成功");
+                    this.$message({
+                        showClose: true,
+                        message: '角色修改成功',
+                        type: 'success'
+                    });
+                    this.getUsersAPI();//刷新
+                }).catch(err=>{
+                    console.log("角色修改失败");
+                    this.$message({
+                        showClose: true,
+                        message: '角色修改失败',
+                        type: 'error'
+                    });
+                })
             },
+
+
+            init() {
+                this.getUsersAPI();
+                this.getrolesAPI();
+            },
+
+            handleDelete(id) {
+                adminDeleteUser(id).then(res=>{
+                    console.log("用户删除api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '用户删除成功',
+                        type: 'success'
+                    });
+                    this.getUsersAPI();//刷新
+                }).catch(err=>{
+                    console.log("用户删除api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '用户删除失败',
+                        type: 'error'
+                    });
+                })
+            },
+
+
+            handleCelldbClink(row){
+                this.dialogFormUpdateInit(row);
+            },
+
+
             handleCheckChange(data, checked, indeterminate) {
                 console.log(this.$refs.tree.getCheckedKeys())
                 console.log(data, checked, indeterminate);
             },
-            dialogFormInit(row){
-                this.dialogFormVisible = true
-                this.form = row
-            }
+            dialogFormUpdateInit(row){
+                this.dialogFormUpdateVisible = true
+                console.log(row)
+                this.getUserDetailAPI(row.id)
+            },
+            dialogFormUpdateCancel(){
+                this.dialogFormUpdateVisible = false
+
+            },
+            dialogFormUpdateConfirm(data){
+                let params={}
+                params.name = data.name
+                params.accountId = data.accountId
+                params.email = data.email
+                params.score = data.score
+                params.reputation = data.reputation
+
+                this.dialogFormUpdateVisible = false
+                adminUpdateUser(params).then(res=>{
+                    console.log("用户修改api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '用户信息修改成功',
+                        type: 'success'
+                    });
+                    this.getUsersAPI();
+                }).catch(err=>{
+                    console.log("用户修改api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '用户信息修改失败',
+                        type: 'error'
+                    });
+
+                })
+            },
+
+            dialogFormAddInit(){
+                this.dialogFormAddVisible = true;
+                this.addUserform = {}
+            },
+            dialogFormAddCancel(){
+                this.dialogFormAddVisible = false
+
+            },
+            dialogFormAddConfirm(data){
+                this.dialogFormAddVisible = false
+                adminAddUser(data).then(res=>{
+                    console.log("用户新增api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '用户新增成功',
+                        type: 'success'
+                    });
+                    this.getUsersAPI();//页面更新
+                }).catch(err=>{
+                    console.log("用户新增api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '用户新增失败',
+                        type: 'error'
+                    });
+
+                })
+            },
+
+
+
+
+            //换页请求
+            pageChange(page){
+                console.log(page)
+            },
+            // prevClick(page){
+            //     console.log("当前页"+page)
+            // },
+            // nextClick(page){
+            //     console.log("当前页"+page)
+            // },
         }
     }
 </script>

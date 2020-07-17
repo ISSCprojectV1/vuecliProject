@@ -1,8 +1,6 @@
 <template>
     <div>
-        <el-button type="primary" @click="open" class="button">新增</el-button>
-        <el-button type="success" @click="open" class="button">修改</el-button>
-        <el-button type="danger" @click="open" class="button">删除</el-button>
+        <el-button type="primary" @click="dialogFormAddInit" class="button">新增</el-button>
         <el-table
         :data="tableData"
         row-key="id"
@@ -17,8 +15,13 @@
             </el-table-column>
             <el-table-column
                     prop="path"
-                    label="组件路径"
+                    label="组件url"
                     width="400">
+            </el-table-column>
+            <el-table-column
+                    prop="component"
+                    label="组件路径"
+                    width="200">
             </el-table-column>
             <el-table-column
                     label="操作"
@@ -26,26 +29,88 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click=dialogFormInit(scope.row)>修改</el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.row)">删除</el-button>
+                            @click=dialogFormUpdateInit(scope.row)>修改</el-button>
+                    <el-popconfirm
+                            confirmButtonText='确定'
+                            cancelButtonText='取消'
+                            icon="el-icon-info"
+                            iconColor="red"
+                            title="确定删除该项吗？"
+                            @onConfirm="handleDelete(scope.row.id)"
+                    >
+                        <el-button  size="mini" type="danger" slot="reference">删除</el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="修改菜单" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-                <el-form-item label="菜单名称" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+
+        <el-dialog title="新增菜单" :visible.sync="dialogFormAddVisible">
+            <el-tree
+            :data="tableData"
+            node-key="id"
+            :props="{
+                label:'name',
+                children:'children'
+            }"
+            @node-click="addDialogClickChange"
+            v-if="!addNewPid"
+            :highlight-current="true"
+            ></el-tree>
+
+
+            <el-form :model="addMenuForm">
+                <el-form-item label="请选择" :label-width="formLabelWidth2" >
+                    <el-switch
+                            style="text-align: center"
+                            v-model="addNewPid"
+                            active-text="增加新父节点"
+                            inactive-text="选择已有父节点"
+                            v-on:change="changeAddNewPid"
+                    >
+                    </el-switch>
                 </el-form-item>
-                <el-form-item label="组件路径" :label-width="formLabelWidth">
-                    <el-input v-model="form.path" autocomplete="off"></el-input>
+
+                <el-form-item label="pid" :label-width="formLabelWidth" >
+                    <el-input v-model="addMenuForm.pid" autocomplete="off" :disabled="addNewPid"></el-input>
+                </el-form-item>
+                <el-form-item label="name" :label-width="formLabelWidth">
+                    <el-input v-model="addMenuForm.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="type" :label-width="formLabelWidth">
+                    <el-input v-model="addMenuForm.type" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="path" :label-width="formLabelWidth">
+                    <el-input v-model="addMenuForm.url" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item label="component" :label-width="formLabelWidth2">
+                    <el-input v-model="addMenuForm.component" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="score" :label-width="formLabelWidth">
+                    <el-input v-model="addMenuForm.score" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="dialogFormAddCancel">取 消</el-button>
+                <el-button type="primary" @click="dialogFormAddConfirm(addMenuForm)">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <el-dialog title="修改菜单" :visible.sync="dialogFormUpdateVisible">
+            <el-form :model="form">
+                <el-form-item label="name" :label-width="formLabelWidth2">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="path" :label-width="formLabelWidth2">
+                    <el-input v-model="form.url" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="component" :label-width="formLabelWidth2">
+                    <el-input v-model="form.component" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormUpdateCancel">取 消</el-button>
+                <el-button type="primary" @click="dialogFormUpdateConfirm(form)">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -53,127 +118,283 @@
 </template>
 
 <script>
+    import {
+        adminAddMenu,
+        adminDeleteMenu,
+        adminUpdateMenu, getmenu,
+    } from "@/api/part3";
+
     export default {
         name: "menu",
         data(){
             return {
-                formLabelWidth: '120px',
-                dialogFormVisible: false,
-
+                addNewPid:false,
+                formLabelWidth: '50px',
+                formLabelWidth2: '90px',
+                dialogFormUpdateVisible: false,
+                dialogFormAddVisible: false,
+                addMenuForm: {
+                    pid:0
+                },
                 form:{},
                 tableData:[
-                            {
-                                id:1,
-                                name:"我的信息",
-                                path:"views/part3/incentiveMechanism/User/userinfo",
-                                children:[
-                                    {
-                                        id:2,
-                                        name:"个人资料",
-                                        path:"views/part3/incentiveMechanism/User/userinfo"
-                                    },
-                                    {
-                                        id:3,
-                                        name:"我的下载",
-                                        path:"views/part3/incentiveMechanism/User/userinfo"
-                                    },
-                                    {
-                                        id:4,
-                                        name:"我的积分",
-                                        path:"views/part3/incentiveMechanism/User/userinfo"
-                                    },
-                                    {
-                                        id:5,
-                                        name:"我的群组",
-                                        path:"views/part3/incentiveMechanism/User/userinfo"
-                                    },
-                                ]
-                            },
-                                {
-                                    id:6,
-                                    name:"工作台",
-                                    path:"views/part3/incentiveMechanism/User/userinfo",
-                                    children:[
-                                        {
-                                            id:7,
-                                            name:"首页",
-                                            path:"views/part3/incentiveMechanism/User/userinfo"
-                                        },
-                                        {
-                                            id:8,
-                                            name:"上传资源",
-                                            path:"views/part3/incentiveMechanism/User/userinfo"
-                                        },
-                                        {
-                                            id:9,
-                                            name:"上传明细",
-                                            path:"views/part3/incentiveMechanism/User/userinfo"
-                                        },
-                                        {
-                                            id:10,
-                                            name:"积分明细",
-                                            path:"views/part3/incentiveMechanism/User/userinfo"
-                                        },
-                                        {
-                                            id:11,
-                                            name:"下载明细",
-                                            path:"views/part3/incentiveMechanism/User/userinfo"
-                                        },
-                                        {
-                                            id:12,
-                                            name:"编辑",
-                                            path:"views/part3/incentiveMechanism/User/userinfo"
-                                        },
-                                    ]
-                    }
+                    // {
+                    //     "id": 1,
+                    //     "name": "动态联盟自组织",
+                    //     "url": "/transactionProject",
+                    //     "icon": null,
+                    //     "childMenus": [
+                    //         {
+                    //             "id": 5,
+                    //             "name": "网络图",
+                    //             "url": "/transctionProject/echarts",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         },
+                    //         {
+                    //             "id": 6,
+                    //             "name": "联盟查询",
+                    //             "url": "/transctionProject/processQuery",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     "id": 2,
+                    //     "name": "激励机制",
+                    //     "url": "/incentiveMechanism",
+                    //     "icon": null,
+                    //     "childMenus": [
+                    //         {
+                    //             "id": 7,
+                    //             "name": "激励机制主页",
+                    //             "url": "/transactionProject/processQuery",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         },
+                    //         {
+                    //             "id": 8,
+                    //             "name": "上传资源",
+                    //             "url": "/IncentiveMechanism/console/uploadResource",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         },
+                    //         {
+                    //             "id": 9,
+                    //             "name": "下载主页",
+                    //             "url": "/IncentiveMechanism/Download/downloadHome",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         },
+                    //         {
+                    //             "id": 10,
+                    //             "name": "我的资源",
+                    //             "url": "IncentiveMechanism/Download/myDownload",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         },
+                    //         {
+                    //             "id": 11,
+                    //             "name": "上传明细",
+                    //             "url": "/IncentiveMechanism/Download/resourceDetail",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         },
+                    //         {
+                    //             "id": 12,
+                    //             "name": "用户信息",
+                    //             "url": "/IncentiveMechanism/User/userinfo",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     "id": 3,
+                    //     "name": "模块与粒度",
+                    //     "url": "/granularityProject",
+                    //     "icon": null,
+                    //     "childMenus": [
+                    //         {
+                    //             "id": 14,
+                    //             "name": "模块与粒度输入",
+                    //             "url": "/ModuleProject /moduleInput",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     "id": 4,
+                    //     "name": "风险预测",
+                    //     "url": "/riskPredictionProject",
+                    //     "icon": null,
+                    //     "childMenus": [
+                    //         {
+                    //             "id": 13,
+                    //             "name": "价格预测示意图",
+                    //             "url": "/riskPredictionProject/riskPrediction",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     "id": 21,
+                    //     "name": "权限管理",
+                    //     "url": "/admin/manage",
+                    //     "icon": null,
+                    //     "childMenus": []
+                    // },
+                    // {
+                    //     "id": 15,
+                    //     "name": "数据审核",
+                    //     "url": "/admin",
+                    //     "icon": null,
+                    //     "childMenus": [
+                    //         {
+                    //             "id": 16,
+                    //             "name": "上传数据审核",
+                    //             "url": "/admin/checkfile",
+                    //             "icon": null,
+                    //             "childMenus": []
+                    //         }
+                    //     ]
+                    // }
                 ]
             }
         },
+        created(){
+            this.init();
+        },
         methods:{
-            open() {
-                this.$prompt('请输入邮箱', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-                    inputErrorMessage: '邮箱格式不正确'
-                }).then(({ value }) => {
-                    this.$message({
-                        type: 'success',
-                        message: '你的邮箱是: ' + value
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '取消输入'
-                    });
-                });
+            init(){
+                this.getMenuAPI();
             },
-            handleDelete(row) {
-                this.$confirm('是否删除菜单:'+row.name, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    console.log("删除菜单的id:"+row.id);//加上删除的后端代码
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
+            getMenuAPI(){
+                getmenu().then(res=>{
+                    console.log("请求菜单列表api成功");
+                    console.log(res.data);
+                    this.handleName(res.data);
+                    console.log(res.data)
+                    this.tableData = res.data;
 
+                }).catch(err=>{
+                    console.log(err);
+                    console.log("请求角色列表api失败")
+                })
+            },
+            handleName(list){
+                if(list.length>0){
+                    for(let i=0;i<list.length;i++)
+                    {
+                        list[i].name = list[i].meta.title
+                        list[i].url = list[i].path
+                        this.handleName(list[i].children)
+                    }
+                }
+
+            },
+            handleDelete(id) {
+                adminDeleteMenu(id).then(res=>{
+                    console.log("菜单删除api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '菜单删除成功',
+                        type: 'success'
+                    });
+                    this.getMenuAPI();
+                }).catch(err=>{
+                    console.log("菜单删除api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '菜单删除失败',
+                        type: 'error'
+                    });
+                })
             },
             handleCheckChange(data, checked, indeterminate) {
                 console.log(this.$refs.tree.getCheckedKeys())
                 console.log(data, checked, indeterminate);
             },
-            dialogFormInit(row){
-                this.dialogFormVisible = true
+
+
+
+
+            dialogFormUpdateInit(row){
+                this.dialogFormUpdateVisible = true
                 this.form = row
+            },
+
+            dialogFormUpdateCancel(){
+                this.dialogFormUpdateVisible = false
+
+            },
+            dialogFormUpdateConfirm(data){
+                this.dialogFormUpdateVisible = false
+                adminUpdateMenu(data).then(res=>{
+                    console.log("菜单修改api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '菜单修改成功',
+                        type: 'success'
+                    });
+                    this.getMenuAPI();
+                }).catch(err=>{
+                    console.log("菜单修改api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '菜单修改失败',
+                        type: 'error'
+                    });
+
+                })
+            },
+
+
+
+
+            dialogFormAddInit(){
+                this.dialogFormAddVisible = true;
+                this.addMenuForm = {
+                    pid:0
+                }
+            },
+
+            dialogFormAddCancel(){
+                this.dialogFormAddVisible = false
+
+            },
+            dialogFormAddConfirm(data){
+                this.dialogFormAddVisible = false
+                adminAddMenu(data).then(res=>{
+                    console.log("菜单新增api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '菜单新增成功',
+                        type: 'success'
+                    });
+                    this.getMenuAPI();
+                }).catch(err=>{
+                    console.log("菜单新增api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '菜单新增失败',
+                        type: 'error'
+                    });
+
+                })
+            },
+            addDialogClickChange(node){
+                this.addMenuForm.pid = node.id
+            },
+
+            changeAddNewPid(IsaddNewPid){
+                if (IsaddNewPid){
+                    this.addMenuForm.pid=0;
+                }
+
             }
         }
     }

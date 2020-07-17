@@ -26,7 +26,7 @@ const user = {
         login({commit},data){
             return new Promise((resolve, reject) => {
                 login(data).then((res)=>{
-                    resolve();
+                    resolve(res);
                 }).catch((error,res)=>{
                     console.log(res)
                     console.log(error)

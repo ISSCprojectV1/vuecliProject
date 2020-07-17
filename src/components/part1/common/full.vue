@@ -10,7 +10,7 @@
                 </leftNav>
             </el-aside>
             <el-main >
-            
+            <router-view></router-view>
             </el-main>
         </el-container>
     </el-container>
@@ -30,7 +30,7 @@
         },
         methods:
             {
-               
+
             }
 
 
@@ -42,7 +42,7 @@
         //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
         padding 0px;
         margin-bottom 1px
-    
+
     .el-aside
         //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
         padding 0px;
