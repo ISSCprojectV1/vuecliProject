@@ -37,7 +37,7 @@
 
 <script>
   //import {getTansactionData} from "@/api/part1/transactionProject";
-import Axios from 'axios';
+import {getTansactionData} from "@/api/part1/transactionProject";
  // import $ from 'jQuery'
   export default {
 
@@ -72,7 +72,7 @@ import Axios from 'axios';
 
                 // 获取表格数据
                console.log("获取表格数据")
-               Axios.get('moc/getTansactionData').then((res) => {
+               getTansactionData().then((res) => {
                 this.dormitory = res.data.data;
                 console.log("传入数据")
                 }).catch(()=>{

@@ -10,6 +10,7 @@ import echarts from 'echarts'
 import '@/permission'
 
 
+
 Vue.use(Vant);
 Vue.use(ElementUI);
 

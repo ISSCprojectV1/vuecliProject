@@ -47,55 +47,7 @@ var geoGpsMap = {
     '6': [91.11, 29.97],
 };
 
-var Management = [
-    {
-        "name": "山东交易市场清算所有限公司",
-        "count":'3',
-        "value": [117.1582,36.8701],
-    },
-    {
-        "name": "福建交易场所清算中心 ",
-        "count":'1',
-        "value": [119.4543,25.9222],
-        
-    },
-    {
-        "name": "广州商品清算中心股份有限公司 ",
-        "count":'1',
-        "value": [113.12244, 23.009505],
-        
-    },
-    {
-        "name": "江苏交易场所登记算有限公司  ",
-        "count":1,
-        "value": [118.8062, 31.9208], 
-    },
-    {
-        "name": "大连商品交易登记结算有限公司  ",
-        "value": [116.1582,36.8701],
-        "count":1
-    },
-    {
-        "name": "宁夏登记结算(中心)有限公司",
-        "value": [106.3586, 38.1775],
-        "count":1
-    },
-    {
-        "name": "北京登记结算有限公司",
-        "value": [116.4551, 40.2539],
-        "count":1
-    },
-    {
-        "name": "天津商品交易清算所 ",
-        "value": [117.4219, 39.4189],
-        "count":1
-    },
-    {
-        "name": "江西联交运金融服务有限公司 ",
-        "value": [116.0046, 28.6633],
-        "count":1
-    }
-]
+var Management = []
 // 省份坐标
 var geoCoordMap = {
     '黑龙江': [127.9688, 45.368],
@@ -189,6 +141,21 @@ $(function () {
             barData[i].push(mapData[i][j].value)
         }
     }
+    Axios.get('api/HMM/getAllQing').then((res) => {
+                console.log("传入数据 api/HMM/getAllQing" + res.data.data)
+
+                for(var i = 0; i < res.data.data.length;i++){
+                    console.log(res.data.data[i].name)
+                    Management.push(
+                        {
+                            "name":res.data.data[i].name,
+                            "count":res.data.data[i].count,
+                            "value":[res.data.data[i].x,res.data.data[i].y]
+                            })                
+                            }
+                console.log("到这里了吗？"+Management[3].name+Management[3].count+Management[3].value)
+
+                
 
         // 导入中国地图
     $.getJSON(uploadedDataURL, function (geoJson) {
@@ -345,7 +312,7 @@ $(function () {
                 backgroundColor: '#051b4a',
                 title: [{
                      text: '全国大宗物流流通情况',
-                     subtext: 'XXXXXXXXXX',
+                     subtext: '目前支持跳转山东，请点击地图中【山东省】位置',
                      left: 'center',
                      textStyle: {
                          color: '#fff',
@@ -494,7 +461,6 @@ $(function () {
                         fontSize: 9,
                     },
                     formatter (Management){
-                        console.log("Management = "+ Management.name)
                         return Management.name
                     }
                 },
@@ -613,7 +579,7 @@ $(function () {
         }
         if(params.name=="山东"){
         console.log("符合条件")
-        var url2 = "http://localhost:8088/shandong";
+        var url2 = "http://localhost:8088/mapTest";
         window.location.href=url2;
         }
         /*
@@ -632,6 +598,9 @@ $(function () {
     });
     });
    console.log("获取公司白名单成功 ")
+   }).catch(()=>{
+                    console.log("getTransactionData fail")
+                });
    }).catch(()=>{
    console.log("getComponyData fail")
                 });

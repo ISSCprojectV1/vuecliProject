@@ -26,21 +26,39 @@ data() {
   },
 methods:{
 postAddress(){
-  console.log("发送请求前")
-  var URL = 'lips/geocoding/v3/?address='+this.input+'&output=json&ak=RZmkBlXu9cw8fYl09epjMrCoqTuyd3kB';
-  console.log("URL:"+URL)
-  
-  Axios.get(URL)
+  var location = [];
+  console.log("请求清管所名单 步骤一：")
+Axios.get('moc/HMM/getAllQing')
   .then((response) => {
-    console.log("已经发送了请求"+response.data.result.location.lng)
-
-    this.Execution = "x坐标："+response.data.result.location.lng+"y坐标："+response.data.result.location.lat;
+    console.log("已经发送了 moc/HMM/getAllWhite 请求 步骤一"+response.data.data[0].name);
+    for (var i = 0; i<response.data.data.length;i++){
+    location[i] = response.data.data[i].name;
+    }
+      console.log("请求清管所名单 请求结果location："+ location[7])
+      console.log("发送 请求百度API 步骤一")
+      this.getBaiduApi(location)
   })
   .catch(function (error) {
     console.log(error);
   });
-}
+  
+},
 
+getBaiduApi(location){
+  var result = []
+   var xAddress,yAddress=[];
+  for (var i = 0;i<location.length;i++){
+  var URL = 'lips/geocoding/v3/?address='+location[i]+'&output=json&ak=RZmkBlXu9cw8fYl09epjMrCoqTuyd3kB';
+  console.log("地址"+URL)
+  Axios.get(URL)
+  .then((response) => {
+    console.log(URL+"X坐标："+response.data.result.location.lng + "Y坐标" + response.data.result.location.lat)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  }
+}
 }
   }
 

@@ -7,6 +7,7 @@
 <script>
 import $ from 'jQuery'
 import echarts from 'echarts'
+import Axios from 'axios';
 
 export default {
      name: 'map_geo',
@@ -40,23 +41,9 @@ var jiangsu = "/map/province/jiangsu.json"
 //如果想要修改，请点击上方克隆，然后在自己的版本上修改，不要在lz的版本上改！！
  
 var geoCoordMap = {
-    "青岛市":[120.355173,36.382982],
-    "淄博市":[118.047648,36.814939],
-    "枣庄市":[117.557964,34.856424],
-    "东营市":[118.66471,37.434564],
-    "潍坊市":[119.107078,36.70925],
-    "烟台市":[120.091382,37.239297],
-    "济宁市":[116.587245,35.415393],
-    "泰安市":[117.129063,36.194968],
-    "威海市":[122.116394,37.209691],
-    "日照市":[119.461208,35.428588],
-    "莱芜市":[117.677736,36.214397],
-    "临沂市":[118.326443,35.065282],
-    "德州市":[116.307428,37.453968],
-    "聊城市":[115.980367,36.456013],
-    "滨州市":[118.016974,37.383542],
-    "菏泽市":[115.469381,35.246531],
-    "济南市":[117.000923,36.675807],
+};
+/*
+geoCoordMap = geoCoordMap +{
     "山东交易市场清算所有限公司":[117.020538,36.467116],
     "齐鲁股权交易中心有限公司": [117.99689,36.823597],
     "山东产权交易中心有限公司": [117.150969,36.864913],
@@ -84,7 +71,7 @@ var geoCoordMap = {
      "日照国际铁矿石交易中心有限公司": [119.357035,35.723136],
      "山东海倍电子商务股份有限公司": [116.456601,35.505452],
 };
-
+*/
 var ManaData = [
     [{name:'山东交易市场清算所有限公司'}, {name:'山东蓝色经济区产权交易中心有限公司',value:95}],
     [{name:'山东交易市场清算所有限公司'}, {name:'山东省能源环境交易中心有限公司',value:15}],
@@ -93,20 +80,23 @@ var ManaData = [
 ];
 
 // 权益类公司关系图
+/*
 var equityData = [
    [{name:'齐鲁股权交易中心有限公司'}, {name:'山东蓝色经济区产权交易中心有限公司',value:95}],
     [{name:'齐鲁股权交易中心有限公司'}, {name:'山东金融资产交易中心有限公司',value:15}],
     [{name:'山东金融资产交易中心有限公司'}, {name:'山东潍坊产权交易中心有限公司',value:40}],
     [{name:'临沂信用资产交易中心有限公司'}, {name:'青岛蓝海股权交易中心有限公司',value:5}],
 ];
+*/
 //现货类公司关系图
+/*
 var spotData = [
    [{name:'威海国际海洋商品交易中心有限公司'}, {name:'黄河商品交易市场股份有限公司',value:95}],
     [{name:'山东广丰橡胶轮胎交易中心有限公司'}, {name:'山东滨海化工商务有限公司',value:15}],
     [{name:'潍坊文化产权交易中心有限公司'}, {name:'临沂国际商品交易中心有限公司',value:40}],
     [{name:'潍坊文化产权交易中心有限公司'}, {name:'山东广丰橡胶轮胎交易中心有限公司',value:5}],
 ];
- 
+*/
 // 清管所
 var Management = [
     {
@@ -116,120 +106,10 @@ var Management = [
 ]
 
 // 白名单内的权益类公司
-var equity = [
-    {
-        "name": "齐鲁股权交易中心有限公司",
-        "value": [117.99689,36.823597],
-    },
-    {
-        "name": "山东产权交易中心有限公司",
-        "value": [117.150969,36.864913],
-    },
-    {
-        "name": "山东文化产权交易所有限公司",
-        "value": [117.043677,36.665935],
-    },
-    {
-        "name": "山东省能源环境交易中心有限公司",
-        "value": [117.147698,36.370023],
-    },
-     {
-        "name": "山东金融资产交易中心有限公司",
-        "value": [117.153411,36.665771],
-    },
-    {
-        "name": "济南产权交易中心",
-        "value": [117.079144,36.688675],
-    },
-    {
-        "name": "青岛大数据交易中心有限公司",
-        "value": [120.103168,35.903374],
-    },
-     {
-        "name": "烟台海洋产权交易中心有限公司",
-        "value": [121.080256,37.05063],
-    },
-    {
-        "name": "烟台联合产权交易中心有限公司",
-        "value": [121.45158,37.483227],
-    },  {
-        "name": "山东潍坊产权交易中心有限公司",
-        "value": [119.17158,36.628416],
-    },
-     {
-        "name": "潍坊文化产权交易中心有限公司",
-        "value": [118.811699,36.519962],
-    },
-    {
-        "name": "山东蓝色经济区产权交易中心有限公司",
-        "value": [119.537189,35.431214],
-    },{
-        "name": "临沂信用资产交易中心有限公司",
-        "value": [118.357015,35.107442],
-    },
-    {
-        "name": "青岛蓝海股权交易中心有限公司",
-        "value": [120.490935,36.152605],
-    },
-]
+var equity = []
 
 // 白名单内的现货类公司
-var spot = [
-    {
-        "name": "山东齐鲁农产品交易中心有限公司",
-        "value": [118.169569,36.209678],
-    },
-    {
-        "name": "山东广丰橡胶轮胎交易中心有限公司",
-        "value": [118.424372,37.065187],
-    },
-    {
-        "name": "东营新华福岛能源交易中心有限公司",
-        "value": [118.942533,37.906054],
-    },
-    {
-        "name": "东亚畜牧现货产品交易所有限公司",
-        "value": [119.170355,36.909544],
-    },
-     {
-        "name": "威海国际海洋商品交易中心有限公司",
-        "value": [122.413977,37.129491],
-    },
-    {
-        "name": "日照大宗商品交易中心有限公司",
-        "value": [119.357354,35.189053],
-    },
-    {
-        "name": "临沂国际商品交易中心有限公司",
-        "value": [118.295715,35.414345],
-    },
-     {
-        "name": "黄河商品交易市场股份有限公司",
-        "value": [116.145027,37.187694],
-    },
-    {
-        "name": "山东滨海化工商务有限公司",
-        "value": [119.146863,36.216874],
-    },  {
-        "name": "日照国际铁矿石交易中心有限公司",
-        "value": [119.357035,35.723136],
-    },
-     {
-        "name": "山东海倍电子商务股份有限公司",
-        "value": [116.456601,35.505452],
-    },
-    {
-        "name": "山东蓝色经济区产权交易中心有限公司",
-        "value": [119.037189,35.431214],
-    },{
-        "name": "临沂信用资产交易中心有限公司",
-        "value": [118.357015,34.807442],
-    },
-    {
-        "name": "青岛蓝海股权交易中心有限公司",
-        "value": [120.490935,36.152605],
-    },
-]
+var spot = []
 // 饼图数据
 var pieData = [{
     name: '权益类公司',
@@ -241,7 +121,53 @@ var pieData = [{
     name: '拟保留公司',
     value: 5
 }];
+
 $(function () {
+
+    // 获得山东省市区的坐标
+    Axios.get('api/HMM/getShengshi').then((res) => {
+                console.log("传入数据 api/HMM/getShengshi" + res.data.data)
+                for(var i = 0;i<res.data.data.length;i++){
+                    var city = res.data.data[i].name
+                geoCoordMap[city] = [res.data.data[i].x,res.data.data[i].y]
+                console.log("传入getShengshi数据" + geoCoordMap[city])
+                }
+    // 获得所有山东省公司信息
+     Axios.get('api/HMM/getAllWhite').then((res) => {
+                console.log("传入getAllWhite数据")
+                var companyNum = 0; // 山东省公司的数量
+                for(var q = 0;q<res.data.data.length;q++){
+                    // 存入所有山东省公司的地理位置
+                    if(res.data.data[q].location == "山东"){
+                    var company = res.data.data[q].name
+                    geoCoordMap[company] = [res.data.data[q].x,res.data.data[q].y]
+                    if(res.data.data[q].type == "权益类"){
+                    equity.push(
+                        {
+                        "name":res.data.data[q].name,
+                        "value":[res.data.data[q].x,res.data.data[q].y]
+                            }) 
+                    }
+                    if(res.data.data[q].type == "现货类"){
+                    spot.push(
+                        {
+                        "name":res.data.data[q].name,
+                        "value":[res.data.data[q].x,res.data.data[q].y]
+                            }) 
+                    }
+                    }
+                }
+                console.log("zhhgiewgie"+equity[3].name+equity[3].value)
+                console.log("zhhgiewgie"+spot[3].name+spot[3].value)
+
+    // 传入关系图逻辑
+    Axios.get('api/HMM/getAllGuanxi').then((res) => {
+                console.log("传入getAllGuanxi关系数据")
+                
+                
+                
+                
+                                  
 
     // 导入中国地图
     $.getJSON(uploadedDataURL, function (geoJson) {
@@ -573,7 +499,7 @@ series.push(
                 },
 
                 );
-[['山东省清管所关系图', ManaData],['山东省权益类公司关系图', equityData],['山东省现货类公司关系图', spotData]].forEach(function (item, i) {
+[['山东省关系图', ManaData]].forEach(function (item, i) {
     series.push({
         name: item[0],
         type: 'lines',
@@ -794,9 +720,18 @@ var option = {
        }*/
     });
     });
-});
+     }).catch(()=>{
+                    console.log("getTransactionData fail")
+                });  
+    }).catch(()=>{
+                    console.log("api/HMM/getAllWhite fail")
+                });   
+}).catch(()=>{
+          console.log("api/HMM/getShengshi fail")
+                });
+});// 这里是function结束
  
-    }
+    } //这里是drawline的结尾
   }
 }
 </script>>

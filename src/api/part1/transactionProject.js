@@ -4,7 +4,7 @@ import request from '@/utils/request'
   export function getTansactionData() {
     console.log("发送getTansactionData请求")
     return request({
-      url: '/getTansactionData',
+      url: '/hantina/getdoms',
       method: 'get',
       param:{t:new Date()}
     })
