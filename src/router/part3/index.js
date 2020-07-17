@@ -38,29 +38,41 @@ import errorpage404 from "@/views/part1/HANTINA/userinffo";
 //import full from "@/containers/Full";
 let routes = [
 
-    // {
-    //     path:'/userinfo',
-    //     component:Userinfo,
-    //     children:[
-    //         {
-    //             path:'/',
-    //             component:userindex
-    //         },
-    //         {
-    //             path:'download',
-    //             component:userdownload
-    //         },
-    //         {
-    //             path:'score',
-    //             component:userscore
-    //         },
-    //         {
-    //             path:'group',
-    //             component: usergroup
-    //         }
-    //
-    //     ]
-    // },
+    {
+        path:'/userinfo',
+        component:Userinfo,
+        children:[
+            {
+                path:'/userinfo',
+                component:userindex,
+                meta:{
+                    title:"我的信息"
+                }
+            },
+            {
+                path:'/userinfo/download',
+                component:userdownload,
+                meta:{
+                    title:"我的下载"
+                }
+            },
+            {
+                path:'/userinfo/score',
+                component:userscore,
+                meta:{
+                    title:"我的积分"
+                }
+            },
+            {
+                path:'/userinfo/group',
+                component: usergroup,
+                meta:{
+                    title:"我的群组"
+                }
+            }
+
+        ]
+    },
 
 
     {
