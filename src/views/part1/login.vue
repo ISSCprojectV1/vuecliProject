@@ -83,7 +83,7 @@ import {setToken,getToken} from "@/utils/auth"
                 this.$router.push('/admin')
               }
               else{
-                this.$router.push('/trade')
+                this.$router.push('/trade/Dashboard')
               }
 
             }).catch((error,res)=>{

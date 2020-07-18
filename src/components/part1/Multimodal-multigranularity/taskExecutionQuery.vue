@@ -34,7 +34,7 @@
 
 <script>
   //import {getTansactionData} from "@/api/part1/transactionProject";
-import {taskExecutionQuery} from "@/api/part1/Multimodal-multigranularity";
+import {ExecutionQuery} from "@/api/part1/Multimodal-multigranularity";
  // import $ from 'jQuery'
   export default {
 
@@ -72,10 +72,10 @@ import {taskExecutionQuery} from "@/api/part1/Multimodal-multigranularity";
     methods: {
             getData(){
                 // 获取表格数据
-               console.log("获取表格数据")
+               console.log("获取modalityQuery表格数据 步骤一")
                var dataConvert = [];
 
-               taskExecutionQuery().then((res) => {
+               ExecutionQuery().then((res) => {
                 dataConvert = res.data.data;
                 for(var i = 0;i<dataConvert.length;i++){
                   if(dataConvert[i].isException) // true

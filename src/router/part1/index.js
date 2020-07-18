@@ -8,7 +8,7 @@ import Dashboard from "@/components/part1/common/Dashboard";
 
 //trade网络图
 import map from "@/components/part1/transactionProject/map";
-import transactionProcess from "@/components/part1/transactionProject/transactionProcess";
+import shandong from "@/components/part1/transactionProject/shandong";
 import echart from "@/components/part1/transactionProject/echarts"
 
 //trade风险评估
@@ -32,7 +32,6 @@ import riskVolatility from "@/components/part1/riskPrediction/riskVolatility";
 
 //其他
 
-import shandong from "../../views/part1/transactionProject/province/shandong"
 import userInfo from "../../views/part1/user/userInfo"
 import baiduMap from "../../components/part1/transactionProject/map/addressRoll"
 import modalityInput from "../../views/part1/Multimodal-multigranularity/modalityInput"
@@ -76,8 +75,8 @@ let routes = [
                 component: map
             },
             {
-                path:"/trade/transactionProject/transactionProcess",
-                component: transactionProcess
+                path:"/trade/transactionProject/shandong",
+                component: shandong
             },
             {
                 path:"/trade/transactionProject/echarts",

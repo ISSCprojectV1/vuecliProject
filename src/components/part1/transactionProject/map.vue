@@ -8,6 +8,8 @@
 import $ from 'jQuery'
 import echarts from 'echarts'
 import Axios from 'axios';
+import {getAllQingApi} from "@/api/part1/transactionProject";
+
 export default {
      name: 'map_geo',
   data () {
@@ -34,8 +36,7 @@ Echarts.loadData = function (data) {
 var myChart = echarts.init(document.getElementById('map'));
 // var uploadedDataURL = "/static/map_json/data-1528971808162-BkOXf61WX.json";
 // var uploadedDataURL = "/static/map_json/data-1528969802719-HyXIqhk-m.json";
-var uploadedDataURL = "/china.json";
-var jiangsu = "/map/province/jiangsu.json"
+var uploadedDataURL = "/map/china.json";
 //如果想要修改，请点击上方克隆，然后在自己的版本上修改，不要在lz的版本上改！！
  
 var geoGpsMap = {
@@ -112,14 +113,11 @@ $(function () {
     var categoryData = []; 
     var barData = [];
    // 获取历史交易数据
+    myChart.showLoading(); // 显示加载中
    console.log("获取公司白名单*后期补入交易数据")
-   Axios.get('moc/getComponyData').then((res) => {
-   console.log("Company Json:"+res.data);
-   this.companyData =res.data;
-   companyVal = this.companyData;
-   console.log("companyVal"+companyVal);
-   equityCompany = companyVal[0].value;
-   spotCompony = companyVal[1].value;
+
+   equityCompany =  [2,4,5,4,6,4,8,9,5,2,10,22,15,10,22,12,20,11,14,20,13,11,20,11,20,12,14,15,12,13,10];
+   spotCompony = [2,4,5,4,6,7,8,9,5,2,10,12,5,10,2,12,8,11,14,20,3,11,10,11,10,12,14,5,12,13,10];
    var count = 0;
    for (var key in geoCoordMap) {
         categoryData.push(key);
@@ -141,8 +139,10 @@ $(function () {
             barData[i].push(mapData[i][j].value)
         }
     }
-    Axios.get('api/HMM/getAllQing').then((res) => {
+   
+    getAllQingApi().then((res) => {
                 console.log("传入数据 api/HMM/getAllQing" + res.data.data)
+                myChart.hideLoading();
 
                 for(var i = 0; i < res.data.data.length;i++){
                     console.log(res.data.data[i].name)
@@ -574,12 +574,12 @@ $(function () {
         console.log("新的点击事件"+params.name) 
          if(params.name=="安徽"){
         console.log("符合条件")
-        var url = "http://localhost:8088/mapTest";
+        var url = "/trade/transactionProject/shandong";
         window.location.href=url;
         }
         if(params.name=="山东"){
         console.log("符合条件")
-        var url2 = "http://localhost:8088/mapTest";
+        var url2 = "/trade/transactionProject/shandong";
         window.location.href=url2;
         }
         /*
@@ -600,9 +600,6 @@ $(function () {
    console.log("获取公司白名单成功 ")
    }).catch(()=>{
                     console.log("getTransactionData fail")
-                });
-   }).catch(()=>{
-   console.log("getComponyData fail")
                 });
    
    //console.log("equityCompany:"+equityCompany);

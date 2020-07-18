@@ -24,7 +24,6 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="/trade/transactionProject/echarts">网络图</el-menu-item>
-          <el-menu-item index="/trade/transactionProject/transactionProcess">搜索功能</el-menu-item>
           <el-menu-item index="/trade/transactionProject/map">地图功能</el-menu-item>
         </el-menu-item-group>
       </el-submenu>

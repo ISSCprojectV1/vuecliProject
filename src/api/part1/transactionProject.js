@@ -1,30 +1,28 @@
 import request from '@/utils/request'
+import Axios from 'axios';
 
-  // 获取交易信息 表格查询	
-  export function getTansactionData() {
-    console.log("发送getTansactionData请求")
+    // 获取省份信息 
+export function Provinces() {
+  console.log("获取getshengshiApi表格数据 步骤二 发送taskQuery请求 ")
     return request({
-      url: '/hantina/getdoms',
-      method: 'get',
-      param:{t:new Date()}
-    })
+      url: '/HMM/getShengshi',
+      method: 'get'
+        })
   }
-   // 获取交易信息 传入gexf图谱
-   export function getGexfData() {
-    console.log("发送getGexfData请求")
-    return request({
-      url: '/hantina/getAllGexf ',
-      method: 'get',
-      param:{t:new Date()}
-    })
-  }
-
-     // 获取公司白名单*后期补入交易数据
-     export function getComponyData() {
-      console.log("发送getComponyData请求")
+  // 获取白名单列表  
+  export function getAllWhiteApi() {
+    console.log("获取getAllWhiteApi表格数据 步骤二 发送getAllWhiteApi请求 ")
       return request({
-        url: '/getComponyData',
-        method: 'get',
-        param:{t:new Date()}
-      })
+        url: '/HMM/getAllWhite',
+        method: 'get'
+          })
+    }
+
+      // 获取清管所列表  
+  export function getAllQingApi() {
+    console.log("获取getAllQing表格数据 步骤二 发送getAllQing请求 ")
+      return request({
+        url: '/HMM/getAllQing',
+        method: 'get'
+          })
     }

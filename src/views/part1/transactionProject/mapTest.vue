@@ -19,7 +19,7 @@
 <script>
     import Header from "@/components/part1/common/topNav";
     import leftNav from "@/components/part1/common/leftNav";
-    import mapGeo from "@/components/part1/transactionProject/shandong copy";
+    import mapGeo from "@/components/part1/transactionProject/shandong";
     export default {
         components: {
             Header,
