@@ -12,14 +12,10 @@
   text-color="#fff"
   active-text-color="#ffd04b">
  <el-menu-item index="/Dashboard"><img :src="headImg" class="img">大宗商品交易平台</el-menu-item>
-  <el-menu-item index="/Dashboard">工作台</el-menu-item>
-  <el-submenu index="2" class = "memu-part-two">
-    <template slot="title">激励机制</template>
-    <el-menu-item index="/userinfo">用户主页</el-menu-item>
-    <el-menu-item index="2-2">选项2</el-menu-item>
-    <el-menu-item index="2-3">选项3</el-menu-item>
-  </el-submenu >
-  <el-menu-item index="3" disabled>无权限查看</el-menu-item>
+    <el-menu-item index="/trade/Dashboard">主页</el-menu-item>
+    <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>
+    <el-menu-item index="/console">个人工作台</el-menu-item>
+    <el-menu-item index="/download">下载数据</el-menu-item>
 </el-menu>
 </el-col>
 

@@ -7,10 +7,10 @@
                  background-color="#545c64"
                  text-color="#fff"
                  active-text-color="#ffd04b">
-                    <el-menu-item index="/Dashboard"><img :src="logoimg" class="img"></el-menu-item>
+                    <el-menu-item index="/trade/Dashboard"><img :src="logoimg" class="img">大宗商品交易平台</el-menu-item>
+                    <el-menu-item index="/trade/Dashboard">主页</el-menu-item>
                     <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>
-                    <el-menu-item index="/console">统计中心</el-menu-item>
-                    <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+                    <el-menu-item index="/console">个人工作台</el-menu-item>
                     <el-menu-item index="/download">下载数据</el-menu-item>
                 </el-menu>
 
@@ -44,7 +44,7 @@
                         选项3<el-badge class="mark" :value="1" />
                     </el-menu-item>
                 </el-submenu>
-                <el-menu-item index="/userinfo"><img :src="userimg" class="img userprofile"></el-menu-item>
+                <el-menu-item index="/console/userinfo"><img :src="userimg" class="img userprofile"></el-menu-item>
             </el-menu>
             </el-col>
         </el-row>

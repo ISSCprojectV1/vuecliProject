@@ -7,6 +7,7 @@ import userindex from "@/components/part3/User/index";
 import userdownload from "@/components/part3/User/download";
 import userscore from "@/components/part3/User/score"
 import usergroup from "@/components/part3/User/group"
+import changePassword from "@/components/part3/User/changePassword"
 import Registry from "@/views/part3/Registry";
 import login_part1 from "../../views/part1/login";
 
@@ -37,6 +38,14 @@ import errorpage404 from "@/views/part1/HANTINA/userinffo";
 
 //import full from "@/containers/Full";
 let routes = [
+    {
+        path:"/",
+        redirect: "/login"
+    },
+    {
+        path:"/index",
+        redirect: "/login"
+    },
 
     {
         path:'/userinfo',
@@ -155,6 +164,41 @@ let routes = [
             {
                 path: "",
                 component:mainHome,
+            },
+            {
+                path:'/console/userinfo',
+                component:userindex,
+                meta:{
+                    title:"我的信息"
+                }
+            },
+            // {
+            //     path:'/console/userinfo/download',
+            //     component:userdownload,
+            //     meta:{
+            //         title:"我的下载"
+            //     }
+            // },
+            // {
+            //     path:'/console/userinfo/score',
+            //     component:userscore,
+            //     meta:{
+            //         title:"我的积分"
+            //     }
+            // },
+            {
+                path:'/console/userinfo/changePassword',
+                component: changePassword,
+                meta:{
+                    title:"修改密码"
+                }
+            },
+            {
+                path:'/console/userinfo/group',
+                component: usergroup,
+                meta:{
+                    title:"我的群组"
+                }
             },
             {
                 path: "uploadResources",

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import Header from "@/components/part1/common/topNav";
+    import Header from "@/components/part3/Common/header";
     import leftNav from "@/components/part1/common/leftNav";
     export default {
         components: {

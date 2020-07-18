@@ -13,14 +13,23 @@
             <i class="el-icon-house"></i>
             <span slot="title">首页</span>
         </el-menu-item>
+
         <el-submenu index="1">
             <template slot="title">
-                <i class="el-icon-download"></i>
-                <span>下载管理</span>
+                <i class="el-icon-user"></i>
+                <span>个人中心</span>
             </template>
-            <el-menu-item index="/console/uploadResources">
-                上传资源
-            </el-menu-item>
+
+        <el-menu-item :index="route.path" v-for="route in this.viewRoutes" :key="route.path">
+            <span slot="title">{{route.meta.title}}</span>
+        </el-menu-item>
+        </el-submenu>
+
+        <el-submenu index="2">
+            <template slot="title">
+                <i class="el-icon-download"></i>
+                <span>明细管理</span>
+            </template>
             <el-menu-item index="/console/upload">
                 上传明细
             </el-menu-item>
@@ -29,9 +38,6 @@
             </el-menu-item>
             <el-menu-item index="/console/download">
                 下载明细
-            </el-menu-item>
-            <el-menu-item index="">
-                荣誉明细
             </el-menu-item>
         </el-submenu>
     </el-menu>
@@ -52,16 +58,21 @@
         },
         data(){
             return{
-                defaultActive:"/console/score"
+                defaultActive:"/console/score",
+                viewRoutes:[]
             }
         },
         mounted(){
-            console.log(11)
+            console.log(this.$router.currentRoute.path)
             this.defaultActive = this.$router.currentRoute.path
         },
         created(){
-            console.log(22)
-            console.log(this.$router.currentRoute);
+            let routes = this.$store.state.permission.routes;
+            let childrenRoutes = routes.find(function(element) {
+                return element.path === "/console";
+            }).children;
+            this.viewRoutes = childrenRoutes.filter(route => route.path.startsWith("/console/userinfo"));
+            console.log(this.viewRoutes)
             //this.defaultActive = this.$router.currentRoute.path
         }
     }
