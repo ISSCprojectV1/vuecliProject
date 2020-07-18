@@ -5,11 +5,11 @@
                 <Header>
                 </Header>
             </el-header>
-            <el-divider class="el-divider"></el-divider>
-            <el-header>
-                <sub-header>
-                </sub-header>
-            </el-header>
+<!--            <el-divider class="el-divider"></el-divider>-->
+<!--            <el-header>-->
+<!--                <sub-header>-->
+<!--                </sub-header>-->
+<!--            </el-header>-->
 
 
             <el-container>
@@ -29,7 +29,7 @@
 
 <script>
     import Header from "@/components/part3/Common/header";
-    import subHeader from "@/components/part3/Download/header";
+    //import subHeader from "@/components/part3/Download/header";
     import searchBar from "@/components/part3/Download/searchBar";
     import mainUpload from "@/components/part3/Common/mainUpload2";
     import filterBar from "@/components/part3/Download/filterBar";
@@ -39,7 +39,7 @@
         components: {
             mainUpload,
             Header,
-            subHeader,
+            //subHeader,
             searchBar,
             filterBar,
             profileBar
