@@ -7,7 +7,7 @@ import {setToken,getToken,removeToken} from "./utils/auth"
 
 
 
-const whiteList = ['/login','/register',];
+const whiteList = ['/login','/Register',];
 
 
 router.beforeEach((to,from,next)=>{
@@ -23,7 +23,7 @@ router.beforeEach((to,from,next)=>{
             if (store.state.permission.addRoutes.length==0){
                 store.dispatch('GenerateRoutes',getToken()).then(accessRoutes=>{
                     router.addRoutes(accessRoutes)
-                    next({...to,replace:true})
+                        next({...to,replace:true})
                 }).catch(err=>{
                     console.log("动态获取路由失败，跳回登录界面")
                     next({path:'/login'})
