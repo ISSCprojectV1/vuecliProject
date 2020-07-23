@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const baseURL = process.env.NODE_ENV==="development"?"/api":'';
+const baseURL = process.env.NODE_ENV==="development"?"/api":'/api';
 
 export {baseURL}
 
