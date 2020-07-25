@@ -88,13 +88,17 @@ import {setToken,getToken} from "@/utils/auth"
 
             }).catch((error,res)=>{
               console.log(error)
-              console.log("登录失败")
+              this.$message({
+                showClose: true,
+                message: '【登录失败】请检查账号密码',
+                type: 'error'
+              });
             })
           }
         });
       },
       onRegister(){
-      this.$router.push("/Register");
+      this.$router.push("/register");
       },
       handleClose(){
         console.log("handleClose");

@@ -8,8 +8,6 @@ const permission = {
     },
     mutations: {
         SET_ROUTES: (state, routes) => {
-            console.log(constantRoutes)
-            console.log(routes)
             state.addRoutes = routes
             state.routes = constantRoutes.concat(routes)
         }
@@ -156,6 +154,7 @@ function filterAsyncRouter(asyncRouterMap) {
 
 export const loadView = (view) => { // 路由懒加载
     return () =>  import(`@/${view}.vue`)
+
 }
 
 export default permission

@@ -1,42 +1,6 @@
-import View_1_1 from "@/views/part3/incentiveMechanism/module_1/view_1_1";
-import View_1_1_detail from "@/views/part3/incentiveMechanism/module_1/view_1_1_detail";
-import View_2_1 from "@/views/part3/incentiveMechanism/module_2/view_2_1";
-import Login from "@/views/part3/Login";
-import Userinfo from "@/views/part3/incentiveMechanism/User/userinfo"
-import userindex from "@/components/part3/User/index";
-import userdownload from "@/components/part3/User/download";
-import userscore from "@/components/part3/User/score"
-import usergroup from "@/components/part3/User/group"
-import changePassword from "@/components/part3/User/changePassword"
-import Registry from "@/views/part3/Registry";
-import login_part1 from "../../views/part1/login";
-
-import Download from "@/views/part3/incentiveMechanism/Download/home"
-import myDownload from "@/views/part3/incentiveMechanism/Download/myDownload"
-import resourceDetail from "@/views/part3/incentiveMechanism/Download/resourceDetail";
-
-import detailBar from "@/components/part3/Download/detailBar";
 import comment from "@/components/part3/Download/comment";
 
-import mainDownload from "@/components/part3/Common/mainDownload";
-import mainFavs from "@/components/part3/Common/mainFavs";
-import mainScore from "@/components/part3/Common/mainScore";
-import mainUpload from "@/components/part3/Common/mainUpload";
 
-
-
-
-import Home from "@/views/part3/incentiveMechanism/Console/home"
-import Editorial from "@/components/part3/Console/editorial"
-import mainHome from "@/components/part3/Console/mainHome";
-import mainuploadResource from "@/components/part3/Console/mainuploadResource";
-
-import NOTFOUND from "@/views/part3/NOTFOUND";
-
-
-import errorpage404 from "@/views/part1/HANTINA/userinffo";
-
-//import full from "@/containers/Full";
 let routes = [
     {
         path:"/",
@@ -47,82 +11,62 @@ let routes = [
         redirect: "/login"
     },
 
-    {
-        path:'/userinfo',
-        component:Userinfo,
-        children:[
-            {
-                path:'/userinfo',
-                component:userindex,
-                meta:{
-                    title:"我的信息"
-                }
-            },
-            {
-                path:'/userinfo/download',
-                component:userdownload,
-                meta:{
-                    title:"我的下载"
-                }
-            },
-            {
-                path:'/userinfo/score',
-                component:userscore,
-                meta:{
-                    title:"我的积分"
-                }
-            },
-            {
-                path:'/userinfo/group',
-                component: usergroup,
-                meta:{
-                    title:"我的群组"
-                }
-            }
+    // {
+    //     path:'/userinfo',
+    //     component:()=>import("@/views/part3/incentiveMechanism/User/userinfo"),
+    //     children:[
+    //         {
+    //             path:'/userinfo',
+    //             component:()=>import("@/components/part3/User/index"),
+    //             meta:{
+    //                 title:"我的信息"
+    //             }
+    //         },
+    //         {
+    //             path:'/userinfo/download',
+    //             component:()=>import("@/components/part3/User/download"),
+    //             meta:{
+    //                 title:"我的下载"
+    //             }
+    //         },
+    //         {
+    //             path:'/userinfo/score',
+    //             component:()=>import("@/components/part3/User/score"),
+    //             meta:{
+    //                 title:"我的积分"
+    //             }
+    //         },
+    //         {
+    //             path:'/userinfo/group',
+    //             component: ()=>import("@/components/part3/User/group"),
+    //             meta:{
+    //                 title:"我的群组"
+    //             }
+    //         }
+    //
+    //     ]
+    // },
 
-        ]
-    },
 
-
-    {
-        path: "/registry",
-        name: "Registry",
-        component:Registry,
-    },
-    {
-        path: "/view_1_1",
-        name: "View_1_1",
-        component:View_1_1,
-    },
-    {
-        path: "/view_1_1_detail/:id",
-        name: "View_1_1_detail",
-        component:View_1_1_detail,
-    },
-    {
-        path: "/view_2_1",
-        name: "View_2_1",
-        component:View_2_1,
-    },
 
 
     {
         path: "/download",
-        component:Download,
+        component:()=>import("@/views/part3/incentiveMechanism/Download/home"),
     },
 
 
     {
         path:"/download/:id",
-        component:resourceDetail,
+        component:()=>import("@/views/part3/incentiveMechanism/Download/resourceDetail"),
         children:[
             {
                 path:"",
-                component:detailBar,
+                component:()=>import("@/components/part3/Download/detailBar"),
                 children:[
                     {
                         path:"comment",
-                        component:comment
+                        component:()=>import("@/components/part3/Download/comment")
                     }
                 ]
             }
@@ -131,98 +75,93 @@ let routes = [
 
     {
         path: "/mydownload",
-        component:myDownload,
+        component:()=>import("@/views/part3/incentiveMechanism/Download/myDownload"),
         children:[
             {
                 path: "",
-                component:mainUpload,
+                component:()=>import("@/components/part3/Common/mainUpload"),
             },
             {
                 path: "upload",
-                component:mainUpload,
+                component:()=>import("@/components/part3/Common/mainUpload"),
             },
             {
                 path: "score",
-                component:mainScore,
+                component:()=>import("@/components/part3/Common/mainScore"),
             },
             {
                 path: "download",
-                component:mainDownload,
+                component:()=>import("@/components/part3/Common/mainDownload"),
             },
             {
                 path: "favs",
-                component:mainFavs,
+                component:()=>import("@/components/part3/Common/mainFavs"),
             },
         ]
     },
 
 
-    {
-        path: "/console",
-        component:Home,
-        children:[
-            {
-                path: "",
-                component:mainHome,
-            },
-            {
-                path:'/console/userinfo',
-                component:userindex,
-                meta:{
-                    title:"我的信息"
-                }
-            },
-            // {
-            //     path:'/console/userinfo/download',
-            //     component:userdownload,
-            //     meta:{
-            //         title:"我的下载"
-            //     }
-            // },
-            // {
-            //     path:'/console/userinfo/score',
-            //     component:userscore,
-            //     meta:{
-            //         title:"我的积分"
-            //     }
-            // },
-            {
-                path:'/console/userinfo/changePassword',
-                component: changePassword,
-                meta:{
-                    title:"修改密码"
-                }
-            },
-            {
-                path:'/console/userinfo/group',
-                component: usergroup,
-                meta:{
-                    title:"我的群组"
-                }
-            },
-            {
-                path: "uploadResources",
-                component:mainuploadResource,
-            },
-            {
-                path: "upload",
-                component:mainUpload,
-            },
-            {
-                path: "score",
-                component:mainScore,
-            },
-            {
-                path: "download",
-                component:mainDownload,
-            },
-            {
-                path: "editorial/:id",
-                component:Editorial,
-            },
-
-        ]
-    },
+    // {
+    //     path: "/console",
+    //     component:()=>import("@/views/part3/incentiveMechanism/Console/home"),
+    //     children:[
+    //         {
+    //             path: "/concole/index",
+    //             component:()=>import("@/components/part3/Console/mainHome"),
+    //         },
+    //         {
+    //             path:'/console/userinfo',
+    //             component:()=>import("@/components/part3/User/index"),
+    //             meta:{
+    //                 title:"我的信息"
+    //             }
+    //         },
+    //         {
+    //             path:'/console/userinfo/changePassword',
+    //             component: ()=>import("@/components/part3/User/changePassword"),
+    //             meta:{
+    //                 title:"修改密码"
+    //             }
+    //         },
+    //         {
+    //             path:'/console/userinfo/group',
+    //             component: ()=>import("@/components/part3/User/group"),
+    //             meta:{
+    //                 title:"我的群组"
+    //             }
+    //         },
+    //         {
+    //             path: "/console/uploadResources",
+    //             component:()=>import("@/components/part3/Console/mainuploadResource"),
+    //         },
+    //         {
+    //             path: "/console/manage/upload",
+    //             component:()=>import("@/components/part3/Common/mainUpload"),
+    //             meta:{
+    //                 title:"上传明细"
+    //             }
+    //         },
+    //         {
+    //             path: "/console/manage/score",
+    //             component:()=>import("@/components/part3/Common/mainScore"),
+    //             meta:{
+    //                 title:"积分明细"
+    //             }
+    //         },
+    //         {
+    //             path: "/console/manage/download",
+    //             component:()=>import("@/components/part3/Common/mainDownload"),
+    //             meta:{
+    //                 title:"下载明细"
+    //             }
+    //         },
+    //         {
+    //             path: "editorial/:id",
+    //             component:()=>import("@/components/part3/Console/editorial"),
+    //         },
+    //
+    //     ]
+    // },
 ];
 
 export default routes

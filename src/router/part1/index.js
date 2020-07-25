@@ -1,43 +1,3 @@
-//登录注册
-import Login from "../../views/part1/login"
-import Register from "../../views/part1/register"
-//trade主界面
-import full from "../../components/part1/common/full";
-//trade主页
-import Dashboard from "@/components/part1/common/Dashboard";
-
-//trade网络图
-import map from "@/components/part1/transactionProject/map";
-import shandong from "@/components/part1/transactionProject/shandong";
-import echart from "@/components/part1/transactionProject/echarts"
-
-//trade风险评估
-import taskInput from "@/components/part2/Taskinput"
-import resourceShow from "@/components/part2/resourceshow";
-import timeGranularity from "@/components/part2/Time_granularity";
-import spaceGranularity from "@/components/part2/space_granularity";
-import otherGranularity from "@/components/part2/other_granularity";
-import taskQuery from "@/components/part1/Multimodal-multigranularity/taskQuery"
-import modalityQuery from "@/components/part1/Multimodal-multigranularity/modalityQuery"
-import taskExecutionQuery from "@/components/part1/Multimodal-multigranularity/taskExecutionQuery"
-import modalityAllocation from "@/components/part1/Multimodal-multigranularity/modalityAllocation"
-import taskExecutionQueryByid from "@/components/part1/Multimodal-multigranularity/taskExecutionQueryByid"
-import granularityExecution from "@/components/part1/Multimodal-multigranularity/granularityExecution"
-
-
-//trade模态与粒度
-import riskPrediction from "@/components/part1/riskPrediction/riskPrediction";
-import riskVolatility from "@/components/part1/riskPrediction/riskVolatility";
-
-
-//其他
-
-import userInfo from "../../views/part1/user/userInfo"
-import baiduMap from "../../components/part1/transactionProject/map/addressRoll"
-import modalityInput from "../../views/part1/Multimodal-multigranularity/modalityInput"
-
-
-
 
 
 let routes = [
@@ -46,103 +6,147 @@ let routes = [
     {
         path: "/login",
         name: "Login",
-        component:Login,
+        component:() => import("@/views/part1/login"),
     },
     {
-        path: "/Register",
+        path: "/register",
         name: "Register",
-        component:Register
+        component:() => import("@/views/part1/register")
     },
 
 
-
-    {
-        path:"/trade",
-        component: full,
-        children:[
-
-            //trade主页
-            {
-                path:'/trade/Dashboard',
-                component: Dashboard
-            },
-
+    // {
+    //     path:"/trade",
+    //     component: () => import("@/components/part1/common/full"),
+    //     children:[
+    //
+    //         //trade主页
+    //         {
+    //             path:'/trade/Dashboard',
+    //             component: () => import("@/components/part1/common/Dashboard")
+    //         },
 
 
-            //trade网络图
-            {
-                path:"/trade/transactionProject/map",
-                component: map
-            },
-            {
-                path:"/trade/transactionProject/shandong",
-                component: shandong
-            },
-            {
-                path:"/trade/transactionProject/echarts",
-                component: echart
-            },
 
-
-            //trade风险评估
-            {
-                path:"/trade/riskPrediction/riskPrediction",
-                component:riskPrediction,
-            },
-            {
-                path:"/trade/riskPrediction/riskVolatility",
-                component:riskVolatility,
-            },
-
-            //trade模态与粒度
-
-            {
-                path:"/trade/Multimodal-multigranularity/taskInput",
-                component: taskInput
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/resourceShow",
-                component: resourceShow
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/timeGranularity",
-                component: timeGranularity
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/spaceGranularity",
-                component: spaceGranularity
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/otherGranularity",
-                component: otherGranularity
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/taskQuery",
-                component: taskQuery
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/modalityQuery",
-                component: modalityQuery
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/taskExecutionQuery",
-                component: taskExecutionQuery
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/modalityAllocation",
-                component: modalityAllocation
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/taskExecutionQueryByid",
-                component: taskExecutionQueryByid
-            },
-            {
-                path:"/trade/Multimodal-multigranularity/granularityExecution",
-                component: granularityExecution
-            },
-
-        ]
-    },
+    //
+    //         {
+    //             path:"/trade/transactionProject/map",
+    //             component: () => import("@/components/part1/transactionProject/map"),
+    //             meta:{
+    //                 title:"网络图"
+    //             }
+    //         },
+    //         {
+    //             path:"/transactionProject/shandong",
+    //             component: () => import("@/components/part1/transactionProject/shandong"),
+    //         },
+    //         {
+    //             path:"/trade/transactionProject/echarts",
+    //             component: () => import("@/components/part1/transactionProject/echarts"),
+    //             meta:{
+    //                 title:"地图功能"
+    //             }
+    //         },
+    //
+    //
+    //         //trade风险评估
+    //         {
+    //             path:"/trade/riskPrediction/riskPrediction",
+    //             component: () => import("@/components/part1/riskPrediction/riskPrediction"),
+    //             meta:{
+    //                 title:"风险预测图"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/riskPrediction/riskVolatility",
+    //             component: () => import("@/components/part1/riskPrediction/riskVolatility"),
+    //             meta:{
+    //                 title:"价格条件波动率图"
+    //             }
+    //         },
+    //
+    //         //trade模态与粒度
+    //
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/taskInput",
+    //             component: () => import("@/components/part2/Taskinput"),
+    //             meta:{
+    //                 title:"任务属性"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/resourceShow",
+    //             component: () => import("@/components/part2/resourceshow"),
+    //             meta:{
+    //                 title:"可用资源展示"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/timeGranularity",
+    //             component: () => import("@/components/part2/Time_granularity"),
+    //             meta:{
+    //                 title:"时间粒度"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/spaceGranularity",
+    //             component: () =>import("@/components/part2/space_granularity"),
+    //             meta:{
+    //                 title:"空间粒度"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/otherGranularity",
+    //             component:  () =>import("@/components/part2/other_granularity"),
+    //             meta:{
+    //                 title:"其他粒度"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/taskQuery",
+    //             component:  () =>import("@/components/part1/Multimodal-multigranularity/taskQuery"),
+    //             meta:{
+    //                 title:"监管任务"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/modalityQuery",
+    //             component: () =>import("@/components/part1/Multimodal-multigranularity/modalityQuery"),
+    //             meta:{
+    //                 title:"模态任务"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/taskExecutionQuery",
+    //             component: ()=>import("@/components/part1/Multimodal-multigranularity/taskExecutionQuery"),
+    //             meta:{
+    //                 title:"元任务查询（列表）"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/modalityAllocation",
+    //             component: ()=>import("@/components/part1/Multimodal-multigranularity/modalityAllocation"),
+    //             meta:{
+    //                 title:"模态分配"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/taskExecutionQueryByid",
+    //             component: ()=>import("@/components/part1/Multimodal-multigranularity/taskExecutionQueryByid"),
+    //             meta:{
+    //                 title:"元任务查询（BY ID）"
+    //             }
+    //         },
+    //         {
+    //             path:"/trade/Multimodal-multigranularity/granularityExecution",
+    //             component: ()=>import("@/components/part1/Multimodal-multigranularity/granularityExecution"),
+    //             meta:{
+    //                 title:"粒度调整执行"
+    //             }
+    //         },
+    //
+    //     ]
+    //  },
 
 
 
@@ -152,24 +156,19 @@ let routes = [
     {
         path: "/baiduMap",
         name: "baiduMap",
-        component:baiduMap,
+        component:()=>import("@/components/part1/transactionProject/map/addressRoll"),
     },
-    {
-        path: "/modalityInput",
-        name: "modalityInput",
-        component:modalityInput,
-    },
+    // {
+    //     path: "/modalityInput",
+    //     name: "modalityInput",
+    //     component:()=>import("@/views/part1/Multimodal-multigranularity/modalityInput"),
+    // },
 
-    {
-        path: "/user/userInfo",
-        name: "userInfo",
-        component:userInfo,
-    },
 
     {
         path: "/shandong",
         name: "shandong",
-        component:shandong,
+        component:()=>import("@/components/part1/transactionProject/shandong"),
     },
 
 

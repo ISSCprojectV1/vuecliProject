@@ -1,10 +1,15 @@
 <template>
+    <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 10px">
         <el-breadcrumb-item v-for="urlPath in currentUrl" :key="urlPath">{{urlPath}}</el-breadcrumb-item>
+        <el-button @click="logOut" >登出</el-button>
     </el-breadcrumb>
+    </div>
 </template>
 
 <script>
+    import {removeToken} from "@/utils/auth";
+
     export default {
         name: "header",
         data(){
@@ -30,6 +35,12 @@
                 return urls
             }
         },
+        methods:{
+            logOut(){
+                removeToken();
+                this.$router.push("/login")
+            }
+        }
     }
 </script>
 

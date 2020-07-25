@@ -19,6 +19,16 @@ export function register(data) {
     })
 }
 
+export function changePassword(data) {
+    return request({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        data: data,
+        url:'/updatepassword',
+    })
+
+}
+
 export function getRouters(UserId) {
     return request.get('getMenusByUserId/'+UserId);
 }

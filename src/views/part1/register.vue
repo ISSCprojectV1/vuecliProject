@@ -92,7 +92,7 @@ import loginByEmail from "@/api/part1/common.js"
         if(res.data.status == 200){
          console.log('响应结果：'+ res.data.message);
          // 注册成功，回到登录页面
-         this.$router.push("/Login");  
+         this.$router.push("/login");
           }else{
           console.log("登陆失败");
           this.dialogVisible = true;
@@ -106,7 +106,7 @@ import loginByEmail from "@/api/part1/common.js"
         });
       },
       backLogin(){
-         this.$router.push("/Login"); 
+         this.$router.push("/login");
       }
     }
   }

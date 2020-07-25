@@ -17,65 +17,14 @@
         <span slot="title">首页</span>
       </el-menu-item>
 
-      <el-submenu index="/trade/transactionProject">
+      <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>网络图</span>
+          <span>{{routes.title}}</span>
         </template>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/transactionProject/echarts">网络图</el-menu-item>
-          <el-menu-item index="/trade/transactionProject/map">地图功能</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-
-      <el-submenu index="/riskPrediction">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span>风险评估</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/riskPrediction/riskPrediction">风险预测图</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/riskPrediction/riskVolatility">价格条件波动率图</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-
-        <el-submenu index="/Taskinput">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span>模态与粒度</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/Multimodal-multigranularity/taskInput">任务属性</el-menu-item>
-        </el-menu-item-group>
-          <el-menu-item-group>
-            <el-menu-item index="/trade/Multimodal-multigranularity/resourceShow">可用资源展示</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group>
-            <el-menu-item index="/trade/Multimodal-multigranularity/timeGranularity">时间粒度</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group>
-            <el-menu-item index="/trade/Multimodal-multigranularity/spaceGranularity">空间粒度</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group>
-            <el-menu-item index="/trade/Multimodal-multigranularity/otherGranularity">其他粒度</el-menu-item>
-          </el-menu-item-group>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/Multimodal-multigranularity/taskQuery">监管任务</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/Multimodal-multigranularity/modalityQuery">模态任务</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/Multimodal-multigranularity/taskExecutionQueryByid">元任务查询（BY ID）</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group>
-          <el-menu-item index="/trade/Multimodal-multigranularity/taskExecutionQuery">元任务查询（列表）</el-menu-item>
-        </el-menu-item-group>
-         <el-menu-item-group>
-          <el-menu-item index="/trade/Multimodal-multigranularity/granularityExecution">粒度调整执行</el-menu-item>
-        </el-menu-item-group>
+        <el-menu-item :index="route.path" v-for="route in routes.routes" :key="route.path">
+          <span slot="title">{{route.meta.title}}</span>
+        </el-menu-item>
       </el-submenu>
     </el-menu>
   </el-col>
@@ -84,20 +33,40 @@
 
 <script>
   export default {
-    data() {
-      return {
-
-      };
-    },
+    data(){
+      return{
+        defaultActive:"",
+        accessRoutes:[
+          {
+            title:"网络图",
+            routes:[],
+            path:"/trade/transactionProject"
+          },
+          {
+            title:"风险评估",
+            routes:[],
+            path: "/trade/riskPrediction"
+          },
+          {
+            title:"模态与粒度",
+            routes: [],
+            path: "/trade/Multimodal-multigranularity"
+          }
+        ]
+      }
+      },
        mounted(){
-            console.log(11)
             this.defaultActive = this.$router.currentRoute.path
         },
-        created(){
-            console.log(22)
-            console.log(this.$router.currentRoute);
-            //this.defaultActive = this.$router.currentRoute.path
-        },
+    created(){
+      let routes = this.$store.state.permission.routes.find(function(element) {
+        return element.path === "/trade";
+      }).children;
+      for(let i=0;i<this.accessRoutes.length;i++){
+        this.accessRoutes[i].routes = routes.filter(route => route.path.startsWith(this.accessRoutes[i].path));
+      }
+      console.log(this.accessRoutes)
+    },
     methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);

@@ -7,13 +7,13 @@ import {setToken,getToken,removeToken} from "./utils/auth"
 
 
 
-const whiteList = ['/login','/Register',];
+const whiteList = ['/login','/register',];
 
 
 router.beforeEach((to,from,next)=>{
     NProgress.start();
 
-    console.log("addRoutes:"+store.state.permission.addRoutes)
+    // console.log("addRoutes:"+store.state.permission.addRoutes)
     if (whiteList.indexOf(to.path)!== -1){
         //在免登陆白名单,直接进入
         next();
@@ -22,15 +22,19 @@ router.beforeEach((to,from,next)=>{
         if (getToken()){
             if (store.state.permission.addRoutes.length==0){
                 store.dispatch('GenerateRoutes',getToken()).then(accessRoutes=>{
-                    router.addRoutes(accessRoutes)
-                        next({...to,replace:true})
+                    // console.log(router.options.routes.length);
+                    router.addRoutes(accessRoutes);
+                    next({...to,replace:true});
+                    // console.log(router.options.routes.length);
                 }).catch(err=>{
-                    console.log("动态获取路由失败，跳回登录界面")
-                    next({path:'/login'})
+                    console.log(err);
+                    next({path:'/login'});
                 })
             }
             else {
-                next()
+                next();
+                console.log(router.options.routes.length);
+
             }
         }
         else{
