@@ -88,12 +88,13 @@
                                 children:'children'
                                 }"
                             show-checkbox
-                            @check="handleCheckChange"
                             ref="Tree"
                             node-key="id"
-                            default-expand-all
-                            :check-strictly="true"
-                    ></el-tree>
+                            default-expand-all>
+<!--                            @check="handleCheckChange"-->
+<!--                            :check-strictly="true">-->
+
+                    </el-tree>
                 </el-form-item>
 
             </el-form>
