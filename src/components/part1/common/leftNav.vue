@@ -51,7 +51,17 @@
             title:"模态与粒度",
             routes: [],
             path: "/trade/Multimodal-multigranularity"
-          }
+          },
+          {
+            title:"主被动任务",
+            routes: [],
+            path: "/trade/acpassTask"
+          },
+          {
+            title:"关联分析",
+            routes: [],
+            path: "/trade/relationAnalysis"
+          },
         ]
       }
       },
