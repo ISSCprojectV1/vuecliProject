@@ -16,14 +16,6 @@
     </el-select>
   </el-form-item>
 
-   <el-form-item label="监管目标">
-    <el-select v-model="targetId" placeholder="请选择监管目标">
-      <el-option label="级别一" value="1"></el-option>
-      <el-option label="级别二" value="2"></el-option>
-      <el-option label="级别三" value="3"></el-option>
-    </el-select>
-  </el-form-item>
-
   <el-form-item label="是否人工分配">
     <el-switch v-model="humanUse"></el-switch>
   </el-form-item>
@@ -48,6 +40,10 @@
     </el-col>
   </el-form-item>
 
+     <el-form-item label="workingTime">
+<el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
+   </el-form-item>
+
 <el-button type="success" @click="postAddress">立即创建</el-button>
 <el-button type="info" @click="abortForm">取消创建</el-button>
 
@@ -64,12 +60,12 @@ data() {
     return {
       input: '',
       priority: '',
-      targetId:'',
       humanUse: false,
       dateStart: '',
       dateStart2: '',
       dateEnd: '',
-      dateEnd2: ''
+      dateEnd2: '',
+      workingTime:'',
     }
   },
       created(){
@@ -101,13 +97,12 @@ console.log("发送请求前")
   var startData = new Date(this.dateStart2).getTime();
   var endData = new Date(this.dateEnd2).getTime();
   console.log("elementui 时间形式"+ startData +"时间2：" + endData)
-
   var data = { "name":this.input,  
   "priority":this.priority, 
-  "targetId":this.targetId, 
   "humanUse":this.humanUse,  
   "startTime":startData,  
-  "endTime":endData };
+  "endTime":endData,
+  "workingTime":this.workingTime };
 
   taskInput(data).then(function (response) {
     console.log("已经发送了请求")
@@ -129,11 +124,11 @@ cleanForm(){
       this.input = '',
       this.priority = '',
       this.humanUse= false,
-      this.targetId = '',
       this.dateStart= '',
       this.dateStart2= '',
       this.dateEnd= '',
-      this.dateEnd2= ''
+      this.dateEnd2= '',
+      this.workingTime = ''
 }
 
 }

@@ -26,3 +26,12 @@ export function Provinces() {
         method: 'get'
           })
     }
+
+    // 获得任务流程图
+    export function getTaskApi() {
+      console.log("获取getTaskApi数据")
+        return request({
+          url: '/task',
+          method: 'get'
+            })
+      }

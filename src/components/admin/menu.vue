@@ -234,7 +234,7 @@
                     //         {
                     //             "id": 13,
                     //             "name": "价格预测示意图",
-                    //             "url": "/riskPredictionProject/riskPrediction",
+                    //             "url": "/riskPredictionProject/",
                     //             "icon": null,
                     //             "childMenus": []
                     //         }

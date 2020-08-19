@@ -1,10 +1,10 @@
 <template>
   <div class="dormitory">
         <div class="title">
-      <div style="display: inline-block; margin-bottom:20px">监管任务查询列表</div>
+      <div style="display: inline-block; margin-bottom:20px" >监管任务查询列表</div>
     </div>
     <div class="searchWord" style="margin-bottom:20px">
-      <el-input v-model="search" style="display: inline-block; width: 1000px" placeholder="请输入搜索关键词"></el-input>
+      <el-input v-model="search" style="display: inline-block; width: 800px" placeholder="请输入搜索关键词"></el-input>
       <el-button type="primary" @click="addNewTask" style="margin-left:15px;margin-right:14px">添加新任务</el-button>
       <el-dialog title="添加新任务" 
       :visible.sync="dialogTableVisible" center :append-to-body='true' 
@@ -13,15 +13,18 @@
       >
       <taskInput></taskInput>
       </el-dialog>
-    </div>
-    
-    <div class="dormitoryData">
+      <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">分配任务</el-button>
+
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="表格视图" name="first" lazy>
+        <div class="dormitoryData">
       <el-table
         ref="dormitoryTable"
         :data="tables"
         tooltip-effect="dark"
         stripe
         style="width: 100%"
+        border :cell-style="columnStyle"
         >
 
         <el-table-column type="selection" width="45"></el-table-column>
@@ -34,9 +37,7 @@
         </el-table-column>
         <el-table-column label="任务优先级" prop="priority" width = "60">
         </el-table-column>
-        <el-table-column label="商品信息" prop="commodityId">
-        </el-table-column>
-        <el-table-column label="监管目标" prop="targetId">
+        <el-table-column label="workingTime" prop="workingTime" width = "60">
         </el-table-column>
         <el-table-column label="开始时间" prop="startTime">
         </el-table-column>
@@ -44,29 +45,40 @@
         </el-table-column>
         <el-table-column label="人模态分布" prop="humanUse" width = "80">
         </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width = "80">
+        <el-table-column label="机器模态分布数" prop="agentNum" width = "80" >
         </el-table-column>
       </el-table>
     </div>
+      </el-tab-pane>
+    
+    <el-tab-pane label="流程图视图" name="second" lazy>
+      * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
+      <method1></method1>
+      </el-tab-pane>
+  </el-tabs>
+    </div>
+    
   </div>
 </template>
 
 <script>
   //import {getTansactionData} from "@/api/part1/transactionProject";
-import {taskQuery} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
+import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 
  // import $ from 'jQuery'
   export default {
     components: {
-      taskInput,
+      taskInput,method1
     },
 
     data () {
       return {
         dormitory: [],
         search: '',
-        dialogTableVisible: false     
+        dialogTableVisible: false,
+        activeName:'first'
         }
   },
   //在这里调用ajax请求方法
@@ -120,7 +132,7 @@ import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput"
                   else // false
                     dataConvert[i].humanUse = "否"
                 }
-                this.dormitory = dataConvert
+                this.dormitory = dataConvert;
                 console.log("传入444数据" + res.data.data)
                 }).catch(()=>{
                     console.log("getTransactionData fail")
@@ -143,6 +155,51 @@ import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput"
           addNewTask(){
             this.dialogTableVisible=true;
           },
+          // 获得任务流程图展示
+          getTaskMap(){
+            this.taskMapVisible = true;
+          },
+
+          // 分配任务
+          allocateTask(){
+            this.$confirm('是否确认进行任务分配', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.getAllocateDate();
+          this.$message({
+            type: 'success',
+            message: '已执行分配!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });          
+        });
+          },
+          // 发送get请求--getAllocateTask
+          getAllocateDate(){
+
+                taskAllocation().then((res) => {
+                console.log("传入数据allocateTask")
+                if(res.data.data.length === 0){
+               this.$message({
+               type: 'warning',
+               message: '当前无需要分配的任务!'
+          });
+                }
+                else{
+                this.$message({
+                 type: 'success',
+                  message: '任务分配已完成!'
+          });
+                }
+                }).catch(()=>{
+                    console.log("taskAllocation fail")
+                });
+          },
 
           // 关闭弹窗
           closeDialog(){
@@ -161,5 +218,9 @@ import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput"
 .dormitoryData{
   width: 100%;
   height: 600px;
+}
+.searchWord span{
+  float: left;
+  text-align:center;
 }
 </style>

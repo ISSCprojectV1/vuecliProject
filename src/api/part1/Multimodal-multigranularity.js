@@ -11,6 +11,15 @@ export function taskInput(data) {
         })
   }
 
+  // 新建任务
+export function taskAllocation() {
+  console.log("发送taskAllocation 请求")
+    return request({
+      url: '/taskAllocation',
+      method: 'get'
+        })
+  }
+
     // 获取任务列表  
 export function taskQuery() {
   console.log("获取taskQuery表格数据 步骤二 发送taskQuery请求 ")

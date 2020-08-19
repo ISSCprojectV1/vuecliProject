@@ -68,7 +68,7 @@
             var cataData = [];// 储存读入的日期
             var priceData = [];// 存储读入的价格信息
             for(var i= 0;i<values.length;i++){
-                cataData.push(values[i].day);
+                cataData.push(values[i].day.split('T')[0]);
                 var price=[];
                 price.push(values[i].openprice);
                 price.push(values[i].closeprice);
