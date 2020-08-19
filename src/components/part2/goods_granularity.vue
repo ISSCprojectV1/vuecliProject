@@ -153,6 +153,10 @@
         },
         methods: {
             onSubmit() {
+                this.$message({
+                    message: '提交成功！',
+                    type: 'success'
+                });
                 console.log('submit!');
             }
         }
