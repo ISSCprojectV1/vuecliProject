@@ -72,3 +72,14 @@ export function handleOption(rawData){
     };
     return myoption
 }
+
+export function timeForAuction(time){
+    let y = time.getFullYear();
+    let m = time.getMonth()+1;
+    let d = time.getDate();
+    let h = time.getHours();
+    let min = time.getMinutes();
+    let s = time.getSeconds();
+    let result = y+'-'+m+'-'+d+' '+h+':'+min+':'+s;
+    return result;
+}

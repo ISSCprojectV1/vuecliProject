@@ -2,6 +2,9 @@ import Layout from "@/views/admin/Layout";
 import user from "@/components/admin/user";
 import role from "@/components/admin/role";
 import menu from "@/components/admin/menu";
+import auction from "@/components/admin/auction";
+import data from "@/components/admin/data";
+
 
 let routes = [{
     path:'/admin',
@@ -18,7 +21,16 @@ let routes = [{
         {
             path:'/admin/menu',
             component: menu
+        },
+        {
+            path:'/admin/auction',
+            component: auction
+        },
+        {
+            path:'/admin/data',
+            component: data
         }
+
 
     ]
 }]

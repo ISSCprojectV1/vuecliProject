@@ -5,20 +5,40 @@
         <el-col :span="20">
             <div class="mainResource">
                 <h3><router-link :to="`/download/${item.name}`" class="router-link">{{item.name}}</router-link></h3>
-            <div class="content">{{item.content}}</div>
-            <span>上传者:{{item.owner}}</span>
-            <span>上传时间:{{item.time}}</span>
+            <div class="content">{{item.description}}</div>
+            <span>开始时间:{{item.startTime}}</span>
+            <span>结束时间:{{item.endTime}}</span>
+
             </div>
         </el-col>
         <el-col :span="4">
-            <span>积分:</span>
-            <span class="score">{{item.score}}</span>
+            <span>起拍价:</span>
+            <span class="score">{{item.startPrice}}</span>
+            <br/>
+            <span>最新价:</span>
+            <span class="score">{{item.updatedPrice}}</span>
+            <br/>
+            <span>状态:</span>
+            <span class="score">{{item.status}}</span>
+            <br/>
+            <el-button @click="AuctionDetail(item.id)">竞拍</el-button>
         </el-col>
     </el-row>
+    <el-pagination
+            ref="pagination"
+            style="text-align: center"
+            background
+            layout="prev, pager, next"
+            @current-change = "pageChange"
+            :total="total"
+    >
+    </el-pagination>
 </div>
 </template>
 
 <script>
+    import { getAuctions} from "@/api/part3/auction";
+
     export default {
         name: "mainUpload2",
         props:['filterTab','addTab'],
@@ -30,7 +50,29 @@
                 this.resources.reverse()
             },
         },
+        methods:{
+            getAuctions(currentPage,pageSize=10){
+                getAuctions(currentPage,pageSize).then(res=>{
+                    this.resources = res.data.list
+                    this.total = res.data.total
+                }).catch(err=>{
+                    console.log(err)
+                })
+            },
+            AuctionDetail(id){
+                this.$router.push("auction/"+id)
+                console.log(id)
+            },
+            //换页请求
+            pageChange(page){
+                this.currentPage=page;
+                this.getAuctions(page);
+            },
+        },
 
+        created() {
+            this.getAuctions(1);
+        },
         data(){
             return {
                 state:"all",
@@ -39,80 +81,14 @@
                         id:1,
                         name:"钢铁交易数据",
                         content:"钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验",
-                        owner:"lllx",
-                        time:"2020-04-23",
+                        endingtime:"2020-04-23",
+                        startingtime:"2020-04-23",
                         score:"5",
                         state:"ready"
-
                     },
-                    {
-                        id:2,
-                        name:"钢铁交易数据",
-                        content:"钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验",
-                        owner:"lllx",
-                        time:"2020-04-23",
-                        score:"5",
-                        state:"ready"
-
-                    },
-                    {
-                        id:3,
-                        name:"小麦交易数据",
-                        content:"小麦交易模拟数据用于系统测试与试验",
-                        owner:"poi",
-                        time:"2020-04-23",
-                        score:"5",
-                        state: "pass"
-
-                    },
-                    {
-                        id:4,
-                        name:"小麦交易数据",
-                        content:"小麦交易模拟数据用于系统测试与试验",
-                        owner:"poi",
-                        time:"2020-04-23",
-                        score:"5",
-                        state: "pass"
-
-                    },
-                    {
-                        id:5,
-                        name:"玉米交易数据",
-                        content:"玉米交易模拟数据用于系统测试与试验",
-                        owner:"qwer",
-                        time:"2020-04-23",
-                        score:"5",
-                        state:"reject"
-                    },
-                    {
-                        id:6,
-                        name:"玉米交易数据",
-                        content:"玉米交易模拟数据用于系统测试与试验",
-                        owner:"qwer",
-                        time:"2020-04-23",
-                        score:"5",
-                        state:"reject"
-                    },
-                    {
-                        id:7,
-                        name:"棉花交易数据",
-                        content:"棉花交易模拟数据用于系统测试与试验",
-                        owner:"qwer",
-                        time:"2020-04-23",
-                        score:"5",
-                        state:"private"
-                    },
-                    {
-                        id:8,
-                        name:"棉花交易数据",
-                        content:"棉花交易模拟数据用于系统测试与试验",
-                        owner:"qwer",
-                        time:"2020-04-23",
-                        score:"5",
-                        state:"private"
-
-                    }
-                ]
+                ],
+                total:0,
+                currentPage:1
             }
         }
 

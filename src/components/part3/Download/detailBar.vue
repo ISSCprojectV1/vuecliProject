@@ -2,76 +2,87 @@
 <div class="detailBar">
     <el-row>
         <el-col :span="18">
-            <h2>{{file.fileName}}</h2>
+            <h2>{{auction.name}}</h2>
         </el-col>
-        <el-col :span="6">
-            <div style="margin-top: 30px">
-            <span>评分</span>
-            <el-rate
-                    v-model="file.fileScore"
-                    disabled
-                    show-score
-                    text-color="#ff9900"
-                    score-template="{value}"
-                    style="display: inline"
-            >
-            </el-rate>
-            </div>
-        </el-col>
+
+<!--        <el-col :span="6">-->
+<!--            <div style="margin-top: 30px">-->
+<!--            <span>评分</span>-->
+<!--            <el-rate-->
+<!--                    v-model="file.fileScore"-->
+<!--                    disabled-->
+<!--                    show-score-->
+<!--                    text-color="#ff9900"-->
+<!--                    score-template="{value}"-->
+<!--                    style="display: inline"-->
+<!--            >-->
+<!--            </el-rate>-->
+<!--            </div>-->
+<!--        </el-col>-->
     </el-row>
     <el-row>
     <el-col :span="24">
-        <p>{{file.fileDescription}}</p>
+        <p>{{auction.description}}</p>
     </el-col>
-        <el-col>
-                <el-tag size="mini" type="info" effect="plain" v-for="tag in file.fileTags.split(',')" :key="tag" style="margin-right: 10px">{{tag}}</el-tag>
-        </el-col>
+<!--        <el-col>-->
+<!--                <el-tag size="mini" type="info" effect="plain" v-for="tag in file.fileTags.split(',')" :key="tag" style="margin-right: 10px">{{tag}}</el-tag>-->
+<!--        </el-col>-->
 
         <el-col>
             <ul>
                 <li>
-                    所需积分:<span class="score">{{file.fileScore}}</span>
+                    起拍价:<span class="score">{{auction.startPrice}}</span>
                 </li>
                 <li>
-                    上传时间:<span class="time">{{file.gmtModified}}</span>
+                    最新价:<span class="score">{{auction.updatedPrice}}</span>
                 </li>
                 <li>
-                    资源大小:<span class="size">{{resource.size}}</span>
+                    开始时间:<span class="time">{{auction.startTime}}</span>
+                </li>
+                <li>
+                    结束时间:<span class="size">{{auction.endTime}}</span>
                 </li>
             </ul>
         </el-col>
 
         <el-col :span="18">
-            <el-button @click="openDialog">立即下载</el-button>
+            <el-form :model="form">
+                <el-form-item label="出价" label-width="50">
+                    <el-input v-model="form.price" autocomplete="off"></el-input>
+                </el-form-item>
+                    <el-button type="primary" @click="doAuction(form)">竞拍</el-button>
+                    <el-button @click="flush(auction.id)">刷新</el-button>
+            </el-form>
         </el-col>
-        <el-col :span="6" style="text-align: right">
-            <span v-if="resource.collected" @click="collect"><i class=el-icon-star-on></i>已收藏</span>
-            <span v-else @click="collect"><i class=el-icon-star-off></i>收藏</span>
-        </el-col>
+<!--        <el-col :span="6" style="text-align: right">-->
+<!--            <span v-if="resource.collected" @click="collect"><i class=el-icon-star-on></i>已收藏</span>-->
+<!--            <span v-else @click="collect"><i class=el-icon-star-off></i>收藏</span>-->
+<!--        </el-col>-->
     </el-row>
-    <router-view></router-view>
-    <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleClose">
-        <span>
-            <div>
-                <h2>下载所需积分:{{file.fileScore}}</h2>
-                <h2>用户拥有积分:{{score}}</h2>
-            </div>
-        </span>
-        <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取消下载</el-button>
-                <el-button @click="download">确认下载</el-button>
-            <el-link :href='downloadUrl' id="el-link" style="display:none"></el-link>
-        </span>
-    </el-dialog>
+<!--    <router-view></router-view>-->
+<!--    <el-dialog-->
+<!--            title="提示"-->
+<!--            :visible.sync="dialogVisible"-->
+<!--            width="30%"-->
+<!--            :before-close="handleClose">-->
+<!--        <span>-->
+<!--            <div>-->
+<!--                <h2>下载所需积分:{{file.fileScore}}</h2>-->
+<!--                <h2>用户拥有积分:{{score}}</h2>-->
+<!--            </div>-->
+<!--        </span>-->
+<!--        <span slot="footer" class="dialog-footer">-->
+<!--    <el-button @click="dialogVisible = false">取消下载</el-button>-->
+<!--                <el-button @click="download">确认下载</el-button>-->
+<!--            <el-link :href='downloadUrl' id="el-link" style="display:none"></el-link>-->
+<!--        </span>-->
+<!--    </el-dialog>-->
 </div>
 </template>
 
 <script>
     import {buyData, getuserinfo} from "@/api/part3";
+    import {doAuction, getAuction} from "@/api/part3/auction";
 
     export default {
         name: "resourceDetail",
@@ -82,8 +93,8 @@
             },
     },
         created(){
-            //console.log(this.file);
-            console.log(this.file);
+            const id = this.$router.currentRoute.params.id;
+            this.getAuction(id);
         },
         computed:{
             downloadUrl(){
@@ -105,10 +116,53 @@
                     size:"639KB",
                     value:4.1,
                     collected:true
+                },
+                auction:{},
+                form:{
+                    price:""
                 }
             }
         },
         methods:{
+            getAuction(id){
+                getAuction(id).then(res=>{
+                    this.auction = res.data
+                }).catch(err=>{
+                    console.log(err)
+                })
+            },
+            doAuction(data){
+                doAuction(this.auction.id,data.price).then(res=>{
+                    this.$message({
+                        showClose: true,
+                        message: '竞价成功',
+                        type: 'success'
+                    });
+                    this.getAuction(this.auction.id);
+                }).catch(err=>{
+                    this.$message({
+                        showClose: true,
+                        message: '竞价失败',
+                        type: 'error'
+                    });
+                })
+                this.form.price = "";
+            },
+            flush(id){
+                getAuction(id).then(res=>{
+                    this.$message({
+                        showClose: true,
+                        message: '刷新成功',
+                        type: 'success'
+                    });
+                }).catch(err=>{
+                    this.$message({
+                        showClose: true,
+                        message: '刷新失败',
+                        type: 'error'
+                    });
+                })
+            },
             download(){
                 buyData(this.file.id).then(()=>{
                     document.getElementById('el-link').click();

@@ -21,6 +21,12 @@
             <el-menu-item index="/admin/menu">
                 菜单管理
             </el-menu-item >
+            <el-menu-item index="/admin/auction">
+                拍卖管理
+            </el-menu-item >
+            <el-menu-item index="/admin/data">
+                数据管理
+            </el-menu-item >
         </el-submenu>
     </el-menu>
 </div>

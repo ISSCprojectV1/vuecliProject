@@ -21,98 +21,130 @@
                 <el-button type="primary" @click="onSubmit(formInline)">查询</el-button>
             </el-form-item>
         </el-form>
-        <h3>用户交易频率统计</h3>
-        <el-table
-                :default-sort = "{prop: 'count', order: 'descending'}"
-                :data="supportData"
-                stripe
-                style="width: 100%">
-            <el-table-column
-                    prop="uid"
-                    label="用户id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="oid"
-                    label="商品id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    sortable
-                    prop="count"
-                    label="交易频次"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    sortable
-                    prop="support"
-                    label="频次系数"
-                    width="180">
-            </el-table-column>
-        </el-table>
-        <h3>用户关联分析</h3>
-        <el-table
-                :default-sort = "{prop: 'similarity', order: 'descending'}"
-                :data="SimilarityUser"
-                stripe
-                style="width: 100%">
-            <el-table-column
-                    prop="uid1"
-                    label="关联用户id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="uid2"
-                    label="关联用户id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="oid"
-                    label="关联商品id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    sortable
-                    prop="similarity"
-                    label="用户关联度"
-                    width="180">
-            </el-table-column>
-            <el-table-column label="关联交易">
-                <template slot-scope="scope">
-                    <el-button
-                            @click="Tradesimilar(scope.row)">查看</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
 
-        <h3>交易关联分析</h3>
-        <el-table
-                :data="SimilarityTrade"
-                stripe
-                :default-sort = "{prop: 'similarity', order: 'descending'}"
-                style="width: 100%">
-            <el-table-column
-                    prop="tid1"
-                    label="关联交易id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="tid2"
-                    label="关联交易id"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    sortable
-                    prop="similarity"
-                    label="用户关联相似度"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop=""
-                    label="关联交易id"
-                    width="180">
-            </el-table-column>
-        </el-table>
+
+
+        <el-row :gutter="20">
+            <el-col :span="12"><div class="grid-content bg-purple">
+                <h3>用户交易频率统计表</h3>
+                <el-table
+                        :default-sort = "{prop: 'count', order: 'descending'}"
+                        :data="supportData"
+                        stripe
+                        style="width: 100%">
+                    <el-table-column
+                            prop="uid"
+                            label="用户id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="oid"
+                            label="商品id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            sortable
+                            prop="count"
+                            label="交易频次"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            sortable
+                            prop="support"
+                            label="频次权重"
+                            min-width="180">
+                    </el-table-column>
+                </el-table>
+            </div></el-col>
+            <el-col :span="12"><div class="grid-content bg-purple">
+                <h3>用户交易频率统计图</h3>
+                <div id="echart1" style="width: 1000px;height: 300px;text-align: center" v-show="showing1"></div>
+
+            </div></el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+            <el-col :span="12">
+                <h3>用户关联分析表</h3>
+                <el-table
+                        :default-sort = "{prop: 'similarity', order: 'descending'}"
+                        :data="SimilarityUser"
+                        stripe
+                        style="width: 100%">
+                    <el-table-column
+                            prop="uid1"
+                            label="关联用户id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="uid2"
+                            label="关联用户id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="oid"
+                            label="关联商品id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            sortable
+                            prop="similarity"
+                            label="用户关联度"
+                            min-width="180">
+                        <template slot-scope="scope">
+                            <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="关联交易">
+                        <template slot-scope="scope">
+                            <el-button
+                                    @click="Tradesimilar(scope.row)">查看</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-col>
+            <el-col :span="12">
+                <h3>用户关联图</h3>
+                <div id="echart2" style="width: 1000px;height: 500px;text-align: center" v-show="showing1"></div>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+            <el-col :span="12">
+                <h3>交易关联分析表</h3>
+                <el-table
+                        :data="SimilarityTrade"
+                        stripe
+                        :default-sort = "{prop: 'similarity', order: 'descending'}"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="tid1"
+                            label="关联交易id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tid2"
+                            label="关联交易id"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            sortable
+                            prop="similarity"
+                            label="交易关联度"
+                            min-width="180">
+                        <template slot-scope="scope">
+                            <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
+                        </template>
+
+                    </el-table-column>
+                </el-table>
+            </el-col>
+            <el-col :span="12">
+                <h3>交易关联图</h3>
+                <div id="echart3" style="width: 1000px;height: 600px;text-align: center" v-show="showing1"></div>
+
+            </el-col>
+        </el-row>
 
 
     </div>
@@ -120,6 +152,7 @@
 
 <script>
     import {tradesimilar, userrelation, usersupport} from "@/api/part1/relation";
+    import echart from "echarts";
 
     export default {
         name: "relationQuery",
@@ -131,39 +164,379 @@
                 },
                 supportData:[],
                 SimilarityUser:[],
-                SimilarityTrade:[]
+                SimilarityTrade:[],
+                showing1:false,
+                echart1:"",
+                echart2:"",
+                echart3:"",
             }
         },
+        mounted(){
+        },
         methods: {
+            drawecharts1(data){
+                let mySeries=[]
+                let countall=[]
+                for (let i = 1; i < data.length; i++) {
+                    let name = data[i][0];
+                    let count = 0;
+                    for(let j=1;j< data[i].length;j++)
+                        count+=data[i][j]
+                    countall.push({
+                        name:name,
+                        value:count
+                    })
+                }
+                for (let i = 0; i < data.length-1; i++) {
+                    mySeries.push({
+                    type: 'line', smooth: true, seriesLayoutBy: 'row'
+                    })
+                }
+                mySeries.push({
+                    type: 'pie',
+                    id: 'pie',
+                    radius: '30%',
+                    center: ['66%', '25%'],
+                    tooltip: {
+                        trigger: 'item',
+                        showContent: true
+                    },
+                    label: {
+                        formatter: '{b}: {@[' + 1 + ']} ({d}%)'
+                    },
+                    encode: {
+                        itemName: 'users',
+                        value: [1],
+                    }
+                },            {
+                    type: 'pie',
+                    id: 'pie2',
+                    radius: '30%',
+                    tooltip: {
+                        trigger: 'item',
+                        showContent: true
+                    },
+                    center: ['33%', '25%'],
+                    label: {
+                        formatter: '{b}: {c} ({d}%)'
+                    },
+                    data:countall,
+                })
+                    this.echart1 = echart.init(document.querySelector("#echart1"));
+                    let option = {
+                        legend: {},
+                        tooltip: {
+                            trigger: 'axis',
+                            showContent: true
+                        },
+                        dataset: {
+                            source: data
+                        },
+                        xAxis: {type: 'category'},
+                        yAxis: {gridIndex: 0},
+                        grid: {top: '55%'},
+                        series: mySeries,
+                    }
+                    let chart = this.echart1;
+                this.echart1.on('updateAxisPointer', function (event) {
+                        var xAxisInfo = event.axesInfo[0];
+                        if (xAxisInfo) {
+                            var dimension = xAxisInfo.value + 1;
+                            chart.setOption({
+                                series: {
+                                    id: 'pie',
+                                    label: {
+                                        formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                                    },
+                                    encode: {
+                                        value: dimension,
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    this.echart1.clear();
+                    this.echart1.setOption(option);
+            },
+            drawechart2(data,lastData){
+                this.echart2 = echart.init(document.querySelector("#echart2"));
+                let uids = []
+                for (let i = 0; i < data.length; i++) {
+                        uids.push(data[i].uid1,data[i].uid2)
+                }
+                uids = [...new Set(uids)]
+                let categories=[]
+                for (let i = 0; i < uids.length; i++) {
+                    categories.push(
+                        {name: "用户"+uids[i]}
+                    )
+                }
+                let countall=[]
+                for (let i = 1; i < lastData.length; i++) {
+                    let name = lastData[i][0];
+                    let count = 0;
+                    for(let j=1;j< lastData[i].length;j++)
+                        count+=lastData[i][j]
+                    countall.push({
+                        name:name,
+                        value:count
+                    })
+                }
+                console.log(categories)
+                console.log(countall)
+                let nodes=[];
+                for (let i = 0; i <categories.length ; i++) {
+                    for (let j = 0; j < countall.length ; j++) {
+                        if(categories[i].name===countall[j].name)
+                        {
+                            nodes.push({
+                                name:categories[i].name,
+                                value: countall[j].value,
+                                category:categories[i].name
+                            })
+                        }
+                        }
+
+                }
+                let links=[];
+                for (let i = 0; i < data.length; i++) {
+                    links.push(
+                        {
+                            source:"用户"+data[i].uid1,
+                            target:"用户"+data[i].uid2,
+                            value:data[i].similarity.toFixed(2),
+                            label: {
+                                show:true,
+                                formatter:"关联度:{c}"
+                            },
+                            lineStyle:{
+                                width: 10*data[i].similarity+1
+                            }
+                        }
+                    )
+                }
+                let option = {
+                    tooltip: {},
+                    legend: [{
+                        // selectedMode: 'single',
+                        data: categories.map(function (a) {
+                            return a.name;
+                        })
+                    }],
+
+                    animationDuration: 1500,
+                    animationEasingUpdate: 'quinticInOut',
+                    series : [
+                        {
+                            name: 'Les Miserables',
+                            type: 'graph',
+                            layout: 'circular',
+                            symbolSize:(value)=>value+1,
+                            data: nodes,
+                            links: links,
+                            categories: categories,
+                            roam: true,
+                            focusNodeAdjacency: true,
+                            itemStyle: {
+                                borderColor: '#fff',
+                                borderWidth: 1,
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.3)'
+                            },
+                            label: {
+                                show:true,
+                                position: 'right',
+                                formatter: '{b} \n交易频次：{c}'
+                            },
+                            lineStyle: {
+                                color: 'source',
+                                curveness: 0.3
+                            },
+                            emphasis: {
+                                lineStyle: {
+                                    width: 10
+                                }
+                            }
+                        }
+                    ]
+                };
+                this.echart2.clear();
+                this.echart2.setOption(option);
+            },
+            drawecharts3(data){
+                this.echart3 = echart.init(document.querySelector("#echart3"));
+                let categories=[]
+                let tids=[]
+                for (let i = 0; i < data.length; i++) {
+                    tids.push(data[i].tid1,data[i].tid2)
+                }
+                tids = [...new Set(tids)]
+                for (let i = 0; i < tids.length; i++) {
+                    categories.push({name:"交易"+tids[i]})
+                }
+                console.log(categories)
+                let nodes=[]
+                let links=[]
+                for (let i = 0; i < categories.length; i++) {
+                    nodes.push({
+                        name: categories[i].name,
+                        category: categories[i].name
+                    })
+                }
+                for (let i = 0; i < data.length; i++) {
+                    links.push(
+                        {
+                            source:"交易"+data[i].tid1,
+                            target:"交易"+data[i].tid2,
+                            value:data[i].similarity.toFixed(2),
+                            label: {
+                                show:true,
+                                formatter:"关联度:{c}"
+                            },
+                            lineStyle:{
+                                width: 5*data[i].similarity+1
+                            }
+                        }
+                    )
+                }
+
+                let option = {
+                    tooltip: {},
+                    legend: [{
+                        // selectedMode: 'single',
+                        data: categories.map(function (a) {
+                            return a.name;
+                        })
+                    }],
+
+                    animationDuration: 1500,
+                    animationEasingUpdate: 'quinticInOut',
+                    series : [
+                        {
+                            name: 'Les Miserables',
+                            type: 'graph',
+                            layout: 'circular',
+                            data: nodes,
+                            links: links,
+                            categories: categories,
+                            roam: true,
+                            focusNodeAdjacency: true,
+                            itemStyle: {
+                                borderColor: '#fff',
+                                borderWidth: 1,
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.3)'
+                            },
+                            label: {
+                                show:true,
+                                position: 'right',
+                            },
+                            lineStyle: {
+                                color: 'source',
+                                curveness: 0.3
+                            },
+                            emphasis: {
+                                lineStyle: {
+                                    width: 10
+                                }
+                            }
+                        }
+                    ]
+                };
+                this.echart3.clear();
+                this.echart3.setOption(option);
+            },
             init(){
                 this.supportData=[];
                 this.SimilarityTrade=[];
                 this.SimilarityUser=[];
+                if(this.echart1!="")
+                    this.echart1.clear()
+                if(this.echart2!="")
+                    this.echart2.clear()
+                if(this.echart3!="")
+                    this.echart3.clear()
+
+            },
+            prepareData(time,data){
+                let start = time[0];
+                let end = time[1];
+                let startY = time[0].getFullYear();
+                let endY = time[1].getFullYear();
+                let startM = time[0].getMonth();
+                let endM = time[1].getMonth();
+                let gapM = (endY-startY)*12+(endM-startM)+1;
+                let months = ['users'];
+                let TY = startY;
+                let TM = startM+1;
+                for (let i = 0; i <gapM ; i++) {
+                    if(TM==13)
+                    {
+                        TY+=1;
+                        TM=1;
+                    }
+                    months.push(TY+'.'+TM);
+                    TM+=1;
+                }
+                let sourcedata=[];
+                sourcedata.push(months);
+                for (let i = 0; i < data.length; i++) {
+                    sourcedata.push(["用户"+data[i].uid])
+                    for (let j = 0; j < gapM; j++) {
+                        sourcedata[i+1].push(0)
+                    }
+                    for (let j = 0; j <data[i].relationtrades.length ; j++) {
+                         let index = new Date(data[i].relationtrades[j].date).getMonth()-startM+1
+                         sourcedata[i+1][index]+=1
+                    }
+                }
+                console.log(sourcedata)
+                return sourcedata;
+
             },
             onSubmit(formInline) {
                 this.init();
-                usersupport(formInline.itemid).then(res=>{
+                this.showing1=true;
+                let params = {
+                    itemid:formInline.itemid,
+                    start:formInline.time[0],
+                    end:formInline.time[1],
+                }
+                usersupport(params).then(res=>{
                     console.log(res.data.data)
-                    this.supportData = res.data.data
+                    this.supportData = res.data.data;
+                    let prepared = this.prepareData(formInline.time,res.data.data)
+                    this.drawecharts1(prepared);
+                    userrelation(params).then(res=>{
+                        console.log(res.data.data)
+                        this.SimilarityUser = res.data.data
+                        this.drawechart2(res.data.data,prepared);
+                    }).catch(err=>{
+                        console.log(err)
+                    })
                 }).catch(err=>{
                     console.log(err)
                 })
-                userrelation(formInline.itemid).then(res=>{
-                    console.log(res.data.data)
-                    this.SimilarityUser = res.data.data
-                }).catch(err=>{
-                    console.log(err)
-                })
+
 
             },
             Tradesimilar(row){
                 let data={
                     uid1:row.uid1,
                     uid2:row.uid2,
-                    itemid:row.oid,
+                    itemid:this.formInline.itemid,
+                    start:this.formInline.time[0],
+                    end:this.formInline.time[1],
                 }
                 tradesimilar(data).then(res=>{
-                    this.SimilarityTrade = res.data.data
+                    //取交易关联度大的前30个交易对
+                    if (res.data.data.length<=30)
+                        this.SimilarityTrade = res.data.data;
+                    else
+                    {
+                        this.SimilarityTrade = res.data.data.sort((a,b)=>b.similarity-a.similarity).slice(0,30)
+                    }
+                    this.drawecharts3(this.SimilarityTrade)
                 }).catch(err=>{
                     console.log(err)
                 })

@@ -1,0 +1,204 @@
+<template>
+    <div>
+        <el-row>
+            <el-col :span="8">
+                <el-form>
+                    <el-form-item label="交易商名称检索">
+                        <el-input v-model="queryform.company"></el-input>
+                        <el-button @click="lookupcompany(queryform.company)">查找</el-button>
+                    </el-form-item>
+                    <el-form-item label="交易商税号检索">
+                        <el-input v-model="queryform.taxnum"></el-input>
+                        <el-button @click="lookuptaxnum(queryform.taxnum)">查找</el-button>
+                    </el-form-item>
+                </el-form>
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>公司简介</span>
+                    </div>
+                    <div class="text item">
+                        {{'公司名称: ' + companyData.name }}
+                    </div>
+                    <div class="text item">
+                        {{'税号: ' + companyData.taxnumer }}
+                    </div>
+                    <div class="text item">
+                        {{'法人: ' + companyData.legaler}}
+                    </div>
+                </el-card>
+            </el-col>
+            <el-col :span="16">
+                <div id="echart1" style="width: 1000px;height: 500px"></div>
+            </el-col>
+        </el-row>
+        <el-table
+                :data="tableData"
+                style="width: 100%">
+            <el-table-column
+                    prop="id"
+                    label="编号"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="buyername"
+                    label="买方"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="sellername"
+                    label="卖方"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="category"
+                    label="商品"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="价格"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="amount"
+                    label="数量"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="time"
+                    label="日期"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="belong"
+                    label="交易平台"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="transport[0]"
+                    label="始发地"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="transport[1]"
+                    label="中转站"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="transport[2]"
+                    label="目的地"
+                    min-width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="transportplatform"
+                    label="物流平台"
+                    min-width="180">
+            </el-table-column>
+        </el-table>
+    </div>
+</template>
+
+<script>
+    import echart from "echarts";
+    import {companydataname, multibyname, multidatagraph} from "@/api/part1/dataFusion";
+
+    export default {
+        name: "dataquery",
+        methods:{
+            drawechart(data){
+                    let echarts = echart.init(document.querySelector("#echart1"));
+                    let option={
+                        title: {
+                            text: '交易数据',
+                            //subtext: '纯属虚构',
+                            left: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b} : {c} ({d}%)'
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: data[0]
+                        },
+                        series: [
+                            {
+                                name: '访问来源',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '60%'],
+                                data: data[1],
+                                emphasis: {
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    echarts.setOption(option);
+                },
+            lookupcompany(name){
+                companydataname(name).then(res=>{
+                    this.companyData = res.data.data
+                    multibyname(this.companyData.name).then(res=>{
+                        this.tableData = res.data.data
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                    multidatagraph(this.companyData.name).then(res=>{
+                        this.drawechart(res.data.data)
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                }).catch(err=>{
+                    console.log(err)
+                });
+
+            },
+            lookuptaxnum(name){
+
+            },
+        },
+        data(){
+            return {
+                queryform: {
+                    company: "",
+                    taxnum: ""
+                },
+                companyData:{
+                    name:"",
+                    taxnumer:"",
+                    legaler:""
+                },
+                tableData:[]
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .text {
+        font-size: 14px;
+    }
+
+    .item {
+        margin-bottom: 18px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+
+    .box-card {
+        width: 480px;
+    }
+</style>

@@ -10,11 +10,12 @@
                     <el-menu-item index="/trade/Dashboard"><img :src="logoimg" class="img">大宗商品交易平台</el-menu-item>
                     <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
                     <el-menu-item index="/console/index">个人中心</el-menu-item>
-                    <el-submenu index="2">
-                        <template slot="title">数据中心</template>
-                        <el-menu-item index="/download">下载数据</el-menu-item>
-                        <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>
-                    </el-submenu>
+                    <el-menu-item index="/auction">拍卖中心</el-menu-item>
+<!--                    <el-submenu index="2">-->
+<!--                        <template slot="title">拍卖中心</template>-->
+<!--                        <el-menu-item index="/auction">下载数据</el-menu-item>-->
+<!--                        <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>-->
+<!--                    </el-submenu>-->
                 </el-menu>
 
             </el-col>

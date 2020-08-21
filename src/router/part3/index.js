@@ -51,13 +51,13 @@ let routes = [
 
 
     {
-        path: "/download",
+        path: "/auction",
         component:()=>import("@/views/part3/incentiveMechanism/Download/home"),
     },
 
 
     {
-        path:"/download/:id",
+        path:"/auction/:id",
         component:()=>import("@/views/part3/incentiveMechanism/Download/resourceDetail"),
         children:[
             {

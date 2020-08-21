@@ -172,7 +172,8 @@
                 this.dialogAddVisible=true
             },
             gotoActive(id){
-                this.$router.push(`/trade/acpassTask/activetradeaction/${id}`);
+                this.$router.push(`/trade/acpassTask/activetask/${id}`);
+                //this.$router.push(`/trade/acpassTask/activetradeaction/${id}`);
             },
             gotoPassive(id){
                 this.$router.push(`/trade/acpassTask/passivetradeaction/${id}`);
