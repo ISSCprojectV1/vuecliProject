@@ -13,32 +13,23 @@ let routes = [
         name: "Register",
         component:() => import("@/views/part1/register")
     },
+    {
+        path: "/trade/taskDictionary",
+        name: "userTaskInput",
+        component:() => import("@/components/part1/transactionProject/taskDictionary/userTaskInput")
+    },
 
 
     // {
-    //     path: "/trade",
+    //     path:"/trade",
     //     component: () => import("@/components/part1/common/full"),
-    //     children: [
+    //     children:[
     //
     //         //trade主页
     //         {
-    //             path: '/trade/Dashboard',
+    //             path:'/trade/Dashboard',
     //             component: () => import("@/components/part1/common/Dashboard")
     //         },
-    //         {
-    //             path: '/trade/acpassTask/acpassTask',
-    //             component: () => import("@/components/part1/acpassTask/acpassTask")
-    //         },
-    //         {
-    //             path: '/trade/acpassTask/activetradeaction',
-    //             component: () => import("@/components/part1/acpassTask/tradeaction")
-    //         },
-    //         {
-    //             path: '/trade/acpassTask/passivetradeaction',
-    //             component: () => import("@/components/part1/acpassTask/tradeaction")
-    //         },
-    //     ]
-    // },
 
 
 

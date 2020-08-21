@@ -38,6 +38,7 @@ export default {
               node.priority = input.data[i].priority;
               node.startTime = input.data[i].startTime;
               node.endTime = input.data[i].endTime;
+              node.workingTime = input.data[i].workingTime;
               // humanuse
               if(input.data[i].humanUse === true)
                node.humanUse = '人工监管参与';
@@ -195,7 +196,7 @@ const tooltip = new G6.Tooltip({
     outDiv.style.width = '180px';
     outDiv.style.textAlign = 'left';
     outDiv.innerHTML = `
-      <h4>自定义tooltip</h4>
+      <h4>${e.item.getModel().label}任务详情</h4>
       <ul>
         <li>* 任务ID: ${e.item.getModel().id}</li>
       </ul>
@@ -214,7 +215,10 @@ const tooltip = new G6.Tooltip({
       <ul>
         <li>* humanUse: ${e.item.getModel().humanUse}</li>
       </ul>
-      `
+      <ul>
+        <li>* workingTime: ${e.item.getModel().workingTime}</li>
+      </ul>
+`
     return outDiv
   },
   itemTypes: ['node']

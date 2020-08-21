@@ -107,6 +107,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
       }
     },
     methods: {
+
             getData(){
                 // 获取表格数据
                console.log("获取表格数据")

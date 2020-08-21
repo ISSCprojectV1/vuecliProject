@@ -47,11 +47,11 @@
                         选项3<el-badge class="mark" :value="1" />
                     </el-menu-item>
                 </el-submenu>
-                <el-menu-item index="/console/index"><img :src="userimg" class="img userprofile"></el-menu-item>
-                <el-menu-item index="/console/index">
-                    <el-button @click="logOut" >登出</el-button>
-                </el-menu-item>
-
+                <el-submenu index="/console/index">
+                 <template slot="title"><img :src="userimg" class="img userprofile"></template>
+                <el-menu-item index="/console/index">个人中心</el-menu-item>
+                <el-button type="text" @click="logOut">登出</el-button>
+                </el-submenu>
             </el-menu>
             </el-col>
         </el-row>

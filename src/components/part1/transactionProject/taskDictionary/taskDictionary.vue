@@ -6,15 +6,24 @@
 </template>
 
 <script>
-
+import {getTaskDecompositionApi} from "@/api/part1/transactionProject";
     export default {
         name: "Time_granularity",
         mounted() {
-            this.drawLine();
+            this.getData();
         },
 
+        
         methods: {
-            drawLine() {
+            getData(){
+                getTaskDecompositionApi().then((res) => {
+                 console.log(res.data.data[0])
+                 this.drawLine(res.data.data[0]);
+                }).catch(()=>{
+                    console.log("getTaskApi fail")
+                });  
+            },
+            drawLine(inputData) {
                 // 基于准备好的dom，初始化echarts实例
                 let myChart = this.$echarts.init(document.getElementById('echartContainer'))
   var colorMap = {
@@ -22,7 +31,8 @@
     warn: '#FFC125',
     error: '#FF0000',
 };
-
+var data = inputData;
+/*
    var data = {
     "name": "信贷监管",
     "children": [
@@ -32,8 +42,8 @@
                 {
                     "name": "主体查验",
                     "children": [
-                        {"name": "仓管主体查验", "value": 721},
-                        {"name": "交易主体查验", "value": 4294}
+                        {"name": "仓管主体查验"},
+                        {"name": "交易主体查验"}
                     ]
                 },
                 {
@@ -71,7 +81,7 @@
             ]
         },
     ]
-};
+};*/
                 // 绘制图表
     myChart.setOption({
     tooltip: {

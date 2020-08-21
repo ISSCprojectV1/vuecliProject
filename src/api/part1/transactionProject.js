@@ -35,3 +35,22 @@ export function Provinces() {
           method: 'get'
             })
       }
+
+      // 获得任务分解图
+    export function getTaskDecompositionApi() {
+      console.log("获取getTaskDecompositionApi数据")
+        return request({
+          url: '/taskDecomposition',
+          method: 'get'
+            })
+      }
+
+// 获得分解任务
+export function postTaskDecompositionApi(data) {
+  console.log("发送postTaskDecompositionApi请求")
+    return request({
+      url: '/taskDecompositionInput',
+      method: 'post',
+      data
+        })
+  }

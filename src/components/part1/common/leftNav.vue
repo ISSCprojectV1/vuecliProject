@@ -32,11 +32,17 @@
 </template>>
 
 <script>
+ import userTaskInput from "@/components/part1/transactionProject/taskDictionary/userTaskInput";
   export default {
     data(){
       return{
         defaultActive:"",
         accessRoutes:[
+          {
+            title:"测试",
+            routes:[userTaskInput],
+            path:"/trade/taskDictionary"
+          },
           {
             title:"网络图",
             routes:[],
@@ -51,17 +57,7 @@
             title:"模态与粒度",
             routes: [],
             path: "/trade/Multimodal-multigranularity"
-          },
-          {
-            title:"主被动任务",
-            routes: [],
-            path: "/trade/acpassTask"
-          },
-          {
-            title:"关联分析",
-            routes: [],
-            path: "/trade/relationAnalysis"
-          },
+          }
         ]
       }
       },
