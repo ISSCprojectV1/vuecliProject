@@ -54,3 +54,11 @@ export function postTaskDecompositionApi(data) {
       data
         })
   }
+// 获得联盟图
+export function getbendiApi() {
+  console.log("发送getbendiApi请求")
+    return request({
+      url: '/hantina/getbendi',
+      method: 'get'
+        })
+  }

@@ -28,7 +28,7 @@
     <div class="dormitoryData">
       <el-table
         ref="dormitoryTable"
-        :data="tables"
+        :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
         tooltip-effect="dark"
         stripe
         style="width: 100%">
@@ -39,13 +39,20 @@
         </el-table-column>
         <el-table-column label="属性值" prop="num" >
         </el-table-column>
-        <el-table-column label="分配状态" prop="allocation" >
+        <el-table-column label="资源类型" prop="type" >
         </el-table-column>
         <el-table-column label="任务代码" prop="taskId" width = "60">
         </el-table-column>
         <el-table-column label="释放时间" prop="releaseTime">
         </el-table-column>
       </el-table>
+      <el-pagination @size-change="handleSizeChange"
+             @current-change="handleCurrentChange"
+             :current-page="currentPage"
+             :page-sizes="pageSizes"
+             :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+             :total="totalCount">
+       </el-pagination>
     </div>
   </div>
 </template>
@@ -68,7 +75,15 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
         dormitory: [],
         search: '',
         dialogTableVisible: false,
-        dialogAllocationVisible:false
+        dialogAllocationVisible:false,
+        // 默认显示第几页
+      currentPage:1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount:1,
+      // 个数选择器（可修改）
+      pageSizes:[5,10],
+      // 默认每页显示的条数（可修改）
+      PageSize:10,
      }
   },
   //在这里调用ajax请求方法
@@ -105,8 +120,6 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
                modalityQuery().then((res) => {
                 dataConvert = res.data.data;
                 for(var i = 0;i<dataConvert.length;i++){
-                  var data = this.timestampToTime(dataConvert[i].releaseTime)
-                  dataConvert[i].releaseTime = data
 
                   if(dataConvert[i].allocation) // true
                     dataConvert[i].allocation = "是"
@@ -153,7 +166,19 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
                 });
                 
          },
-
+// 分页
+    // 每页显示的条数
+    handleSizeChange(val) {
+      // 改变每页显示的条数 
+      this.PageSize=val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage=1
+    },
+     // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage=val
+    },
           // 关闭弹窗
           closeDialog(){
             console.log*("成功调用")

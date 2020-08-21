@@ -48,7 +48,6 @@ export default {
                // 节点状态--用颜色表示
                if(input.data[i].workStatus === 0){
                node.workStatus = '任务未执行';
-
                }
                else if(input.data[i].workStatus === 1){
                node.workStatus = '任务已执行';
@@ -59,6 +58,13 @@ export default {
                else{
                node.workStatus = '无任务状态返回';
                }
+
+               // 任务执行时间
+               if(input.data[i].workingStartTime == null)
+               node.workingStartTime = "当前任务未分配";
+               else
+               node.workingStartTime = input.data[i].workingStartTime;
+
                node.workStatusColor = input.data[i].workStatus;
                node.description =node.humanUse + '   ' + node.workStatus;
               result_nodes.push(node);
@@ -189,7 +195,7 @@ const data = {
     */
 };
 const tooltip = new G6.Tooltip({
-  offsetX: 200,
+  pageX: 10,
   offsetY: 20,
   getContent(e) {
     const outDiv = document.createElement('div');
@@ -207,10 +213,7 @@ const tooltip = new G6.Tooltip({
         <li>* 任务优先级: ${e.item.getModel().priority}</li>
       </ul>
       <ul>
-        <li>* startTime: ${e.item.getModel().startTime}</li>
-      </ul>
-       <ul>
-        <li>* endTime: ${e.item.getModel().endTime}</li>
+        <li>* 任务完成时间: ${e.item.getModel().workingStartTime}</li>
       </ul>
       <ul>
         <li>* humanUse: ${e.item.getModel().humanUse}</li>

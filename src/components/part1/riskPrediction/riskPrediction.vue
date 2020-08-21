@@ -63,8 +63,11 @@
             var values=[];
             values = this.opinionData;
             var predictionVAL = [];
-            predictionVAL = this.predictionData;
-            console.log("pricetionVAL的内容是" + predictionVAL);
+            var predictionDate = [];
+            for(let i=0; i<this.predictionData.length;i++){
+                predictionVAL.push(this.predictionData[i].closeprice);
+                predictionDate.push(this.predictionData[i].day.split('T')[0]);
+            }
             var cataData = [];// 储存读入的日期
             var priceData = [];// 存储读入的价格信息
             for(var i= 0;i<values.length;i++){
@@ -76,6 +79,7 @@
                 price.push(values[i].lowprice);
                 priceData.push(price);
             }
+            cataData.push.apply(cataData,predictionDate);
             console.log("cataData的内容是" + cataData);
 
             function calculateMA(dayCount) {

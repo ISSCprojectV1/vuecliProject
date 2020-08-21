@@ -51,8 +51,8 @@
         任务分解情况（目前仅为单笔）
         <div id="echartContainer" style="width:900px; height:400px"></div>
     </el-tab-pane>
-    <el-tab-pane label="监管联盟图" name="graph">
-      <echarts></echarts>
+    <el-tab-pane label="监管联盟图" name="graphTwo"  @click="getMap" lazy>
+    <div id="container" style="width:900px; height:600px"></div>
     </el-tab-pane>
   </el-tabs>
         </div>
@@ -60,14 +60,14 @@
 </template>
 
 <script>
-    import echarts from "@/components/part1/transactionProject/echarts";
-    import {postTaskDecompositionApi} from "@/api/part1/transactionProject";
+    import G6 from '@antv/g6'
+    import {postTaskDecompositionApi,getbendiApi} from "@/api/part1/transactionProject";
 
     export default {
         name: "Time_granularity",
         
         components: {
-            echarts
+            
         },
         mounted() {
         },
@@ -113,7 +113,6 @@
         },
       };
     },
-
         methods: {
           // 创建监管任务
           postAddress(){
@@ -259,10 +258,198 @@ var data = inputData;
     }
 }
             },
+
+            // 第二个图
+            getData_map(){
+          getbendiApi().then((res) => {
+              var input  = res.data.data;
+              var result_nodes = [];
+              var result_target = [];
+              var taskList = Object.keys(input);
+              //获得关系--任务关系
+              for(let n = 0; n < taskList.length-2;n++){
+                  var target = {};
+                  target.source = taskList[n];
+                  target.target = taskList[n+1];
+                  result_target.push(target);
+              }
+              for (let i = 0; i<taskList.length;i++){
+                  var node = {};
+                  node.id = taskList[i];
+                  node.label = taskList[i];
+                  node.agent = false;
+                  result_nodes.push(node);
+                  var attr = node.id;
+                  console.log("nodeaaaaaaaa" + i + ":" + input[attr]);
+
+                  // 任务对应的agent遍历出来 
+                  for(let j = 0; j< input[attr][j];j++){
+                      var node_agent = {};
+                      node_agent.id = input[attr][j];
+                      node_agent.label = input[attr][j];
+                      node_agent.agent = true;
+                      result_nodes.push(node_agent);
+                      // 获得任务--agent对应关系
+                      var targer_agent = {};
+                      targer_agent.source = attr;
+                      targer_agent.target = node_agent.id;
+                      result_target.push(targer_agent);
+                  }
+                  console.log("node" + i + ":" + node.id);
+              }
+              this.getChart_map(result_nodes,result_target);
+               this.$message({
+                 type: 'success',
+                  message: '已形成联盟！'
+          });
+                }).catch(()=>{
+                    console.log("getTaskApi fail")
+                });         
+      },
+      getChart_map(nodes_new,edges_new){
+      console.log("刷新了这个页面-所以可以显示");
+var color = ['#40E0D0','#1E90FF'];
+const data = {
+    nodes:nodes_new,
+    edges:edges_new
+};
+const tooltip = new G6.Tooltip({
+  pageX: 10,
+  offsetY: 20,
+  getContent(e) {
+    const outDiv = document.createElement('div');
+    outDiv.style.width = '180px';
+    outDiv.style.textAlign = 'left';
+    outDiv.innerHTML = `
+      <h4>${e.item.getModel().label}</h4>
+      <ul>
+        <li>* 任务ID: ${e.item.getModel().id}</li>
+      </ul>
+      <ul>
+        <li>* 任务名称: ${e.item.getModel().label}</li>
+      </ul>
+`
+    return outDiv
+  },
+  itemTypes: ['node']
+});
+const width = document.getElementById('container').scrollWidth;
+const height = document.getElementById('container').scrollHeight || 500;
+const graph = new G6.Graph({
+    container: 'container',
+    width,
+    height,
+    fitView: true,
+    plugins: [tooltip], // 配置 Tooltip 插件
+    modes: {
+        default: ['drag-canvas', 'drag-node',
+        ],
+    },
+    nodeStateStyles: {
+    hover: {
+      lineWidth: 2,
+      stroke: '#1890ff',
+      fill: '#e6f7ff',
+    },
+  },
+    layout: {
+        type: 'dagre',
+        rankdir: 'LR',
+        align: 'UL',
+        controlPoints: true,
+        nodesepFunc: () => 1,
+        ranksepFunc: () => 1,
+    },
+      defaultNode: {
+    style: {
+      radius: 2,
+      stroke: '#69c0ff',
+      fill: data.nodes[2].ccc, // 底色
+      lineWidth: 1.5,
+      fillOpacity: 1,
+    },
+    // label configurations
+    labelCfg: {
+      style: {
+        fill: '#595959',
+        fontSize: 20,
+      },
+      offset: 30,
+    },
+    // left rect
+    preRect: {
+      show: true,
+      width: 10,
+      fill: '#40a9ff',
+      radius: 2,
+    },
+    // configurations for the four linkpoints
+    linkPoints: {
+      top: false,
+      right: false,
+      bottom: false,
+      left: false,
+      // the size of the linkpoints' circle
+      size: 10,
+      lineWidth: 1,
+      fill: '#72CC4A',
+      stroke: '#72CC4A',
+    },
+    // configurations for the icon
+  },
+    defaultEdge: {
+        type: 'polyline',
+        size: 1,
+        color: '#4169E1',
+        style: {
+            endArrow: {
+                path: 'M 0,0 L 8,4 L 8,-4 Z',
+                fill: '#e2e2e2'
+            },
+            radius: 10
+        },
+    },
+});
+graph.node(function (node) {
+    // depth 类似节点标识
+                        if(node.agent == true){
+                            console.log(node)
+                            return {
+                                type:'circle',
+                                size: [100, 80],
+                            }
+                        }
+                        if(node.agent == false){
+                            console.log(node)
+                            return {
+                                type:'modelRect',
+                                size: [270, 80],
+                            }
+                        }
+                        return {
+                            labelCfg: {
+                                // position: node.children && node.children.length > 0 ? 'left' : node.x > centerX ? 'right' : 'left', // 设置显示左右
+                                offset: 5
+                            }
+                        };
+                    });
+graph.data(data);
+graph.render();
+graph.on('node:mouseenter', evt => {
+  const { item } = evt;
+  graph.setItemState(item, 'hover', true);
+});
+
+graph.on('node:mouseleave', evt => {
+  const { item } = evt;
+  graph.setItemState(item, 'hover', false);
+});
+console.log("刷新了这个页面-页面结束");
+      },
      handleClick(tab, event) {
         console.log(tab, event);
-        if(this.activeName == 'others'){
-        this.isUpdatastrategy = true;
+        if(this.activeName == 'graphTwo'){
+            this.getData_map();
     }
       }
         },

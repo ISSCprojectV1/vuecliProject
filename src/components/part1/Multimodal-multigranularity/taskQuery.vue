@@ -20,7 +20,7 @@
         <div class="dormitoryData">
       <el-table
         ref="dormitoryTable"
-        :data="tables"
+        :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
         tooltip-effect="dark"
         stripe
         style="width: 100%"
@@ -48,6 +48,13 @@
         <el-table-column label="机器模态分布数" prop="agentNum" width = "80" >
         </el-table-column>
       </el-table>
+      <el-pagination @size-change="handleSizeChange"
+             @current-change="handleCurrentChange"
+             :current-page="currentPage"
+             :page-sizes="pageSizes"
+             :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+             :total="totalCount">
+       </el-pagination>
     </div>
       </el-tab-pane>
     
@@ -78,7 +85,15 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
         dormitory: [],
         search: '',
         dialogTableVisible: false,
-        activeName:'first'
+        activeName:'first',
+         // 默认显示第几页
+      currentPage:1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount:100,
+      // 个数选择器（可修改）
+      pageSizes:[5,10],
+      // 默认每页显示的条数（可修改）
+      PageSize:10,
         }
   },
   //在这里调用ajax请求方法
@@ -201,7 +216,19 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
                     console.log("taskAllocation fail")
                 });
           },
-
+// 分页
+    // 每页显示的条数
+    handleSizeChange(val) {
+      // 改变每页显示的条数 
+      this.PageSize=val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage=1
+    },
+     // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage=val
+    },
           // 关闭弹窗
           closeDialog(){
             console.log*("成功调用")

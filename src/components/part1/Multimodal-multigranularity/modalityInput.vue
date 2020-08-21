@@ -5,7 +5,12 @@
    <el-form-item label="模态名称">
 <el-input v-model="name" placeholder="请输入内容"></el-input>
    </el-form-item>
-
+<el-form-item label="模态类型">
+    <el-select v-model="type" placeholder="请选择任务优先级">
+      <el-option label="类型一 机器" value="1"></el-option>
+      <el-option label="类型二 操作员" value="2"></el-option>
+    </el-select>
+  </el-form-item>
    <el-form-item label="属性值">
 <el-input v-model="num" placeholder="请输入属性值"></el-input>
    </el-form-item>
@@ -24,6 +29,7 @@ export default {
 data() {
     return {
       name:'',
+      type:'',
       num:''
     }
   },
@@ -53,7 +59,8 @@ postAddress(){
 postData(){
 console.log("发送请求前")
   var data = { 
-  "name":this.name,  
+  "name":this.name,
+  "type":this.type,  
   "num":this.num, 
   };
   modalityInput_api(data)
