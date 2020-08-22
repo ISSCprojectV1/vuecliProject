@@ -446,6 +446,7 @@ graph.on('node:mouseleave', evt => {
 });
 console.log("刷新了这个页面-页面结束");
       },
+      // 分页激活调用
      handleClick(tab, event) {
         console.log(tab, event);
         if(this.activeName == 'graphTwo'){

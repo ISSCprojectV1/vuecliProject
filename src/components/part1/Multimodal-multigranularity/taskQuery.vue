@@ -60,7 +60,7 @@
     
     <el-tab-pane label="流程图视图" name="second" lazy>
       * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
-      <method1></method1>
+      <method1 ref="method1_child"></method1>
       </el-tab-pane>
   </el-tabs>
     </div>
@@ -233,7 +233,14 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
           closeDialog(){
             console.log*("成功调用")
             this.dialogTableVisible = false;
-          }
+          },
+          // 分页激活调用
+          handleClick(tab, event) {
+        console.log(tab, event);
+        if(this.activeName == 'second'){
+            this.$refs.method1_child.getData();
+    }
+      }
 
     }
   }

@@ -17,7 +17,9 @@
   </el-form-item>
 
   <el-form-item label="是否人工分配">
-    <el-switch v-model="humanUse"></el-switch>
+    <el-switch v-model="humanUse"
+    active-text="人工分配"
+    ></el-switch>
   </el-form-item>
 
 <el-form-item label="任务开始时间">
@@ -97,7 +99,9 @@ console.log("发送请求前")
   var startData = new Date(this.dateStart2).getTime();
   var endData = new Date(this.dateEnd2).getTime();
   console.log("elementui 时间形式"+ startData +"时间2：" + endData)
-  var data = { "name":this.input,  
+  console.log("humanuse:"+ this.humanUse )
+  var data = { 
+  "name":this.input,  
   "priority":this.priority, 
   "humanUse":this.humanUse,  
   "startTime":startData,  

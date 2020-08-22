@@ -33,6 +33,7 @@ export default {
           for(let i = 0; i<input.data.length;i++){
               var node = {};
               // 找到点的属性
+              node.userId = input.data[i].id;
               node.id = input.data[i].name;
               node.label = input.data[i].name;
               node.priority = input.data[i].priority;
@@ -204,7 +205,7 @@ const tooltip = new G6.Tooltip({
     outDiv.innerHTML = `
       <h4>${e.item.getModel().label}任务详情</h4>
       <ul>
-        <li>* 任务ID: ${e.item.getModel().id}</li>
+        <li>* 任务ID: ${e.item.getModel().userId}</li>
       </ul>
       <ul>
         <li>* 任务名称: ${e.item.getModel().label}</li>

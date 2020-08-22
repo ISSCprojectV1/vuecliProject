@@ -59,7 +59,11 @@
                 cataData.push(values[i].day.split('T')[0]);
                 priceData.push(values[i].closeprice);
             }
-
+            var pridictResult = [];
+            for(let i=0; i<priceData.length;i++){
+                pridictResult.push(null);
+            }
+            pridictResult.push.apply(pridictResult,predictionVAL)
             cataData.push.apply(cataData,predictionDate);
             //priceData.push.apply(priceData,predictionVAL);
             console.log(priceData);
@@ -82,7 +86,6 @@
 
             this.charts.setOption({
                 title: {
-                       text: '风\n险\n预\n测',
                        textStyle:{
                            fontSize:30
                        },
@@ -109,7 +112,7 @@
                 {
                     name:"预测数据",
                     type: 'line',
-                    data: [null,null,30],
+                    data: pridictResult,
                 },
                 ]
             })
