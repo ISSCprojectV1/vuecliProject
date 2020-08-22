@@ -58,13 +58,13 @@
                         v-if="activeOrpassive()"
                 >
                 </el-table-column>
-                <el-table-column
-                        prop=""
-                        label="交易模式">
-                    <template slot-scope="scope">
-                        <el-button @click="look(scope.row)" type="button" size="small">查看</el-button>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column-->
+<!--                        prop=""-->
+<!--                        label="交易模式">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-button @click="look(scope.row)" type="button" size="small">查看</el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
             </el-table-column>
         </el-table>
     </div>
