@@ -1,13 +1,17 @@
 import request from "@/utils/request";
 
-export function activetask() {
-    return request.get('/activetask')
+export function activetask(currentPage,pageSize) {
+    return request.get('/activetask?'+"currentPage="+currentPage+"&pageSize="+pageSize)
 }
 
-export function passivetradeaction(id) {
+export function passivetradeaction(id,currentPage,pageSize) {
     return request({
         method: 'GET',
-        params: {id:id},
+        params: {
+            id:id,
+            currentPage:currentPage,
+            pageSize:pageSize
+        },
         url:'/passivetradeaction',
     })
 }
@@ -30,26 +34,37 @@ export function addactivetask(data) {
 
 
 
-export function activetradegroup(id) {
+export function activetradegroup(id,currentPage,pageSize) {
     return request({
         method: 'GET',
-        params: {taskid:id},
+        params: {
+            taskid:id,
+            currentPage:currentPage,
+            pageSize:pageSize
+        },
         url:'/activetradegroup',
     })
 }
 
-export function activetaskgraph(id) {
+export function activetaskgraph(id,limit) {
     return request({
         method: 'GET',
-        params: {id:id},
+        params: {
+            id:id,
+            limit:limit
+        },
         url:'/activetaskgraph',
     })
 }
 
-export function activetradedetailinfo(id) {
+export function activetradedetailinfo(id,currentPage,pageSize) {
     return request({
         method: 'GET',
-        params: {groupid:id},
+        params: {
+            groupid:id,
+            currentPage:currentPage,
+            pageSize:pageSize
+        },
         url:'/activetradedetailinfo',
     })
 }

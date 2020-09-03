@@ -54,6 +54,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination
+                ref="pagination"
+                style="text-align: center"
+                background
+                layout="prev, pager, next"
+                @current-change = "pageChange"
+                :total="total"
+        >
+        </el-pagination>
         <el-dialog title="新增新任务" :visible.sync="dialogAddVisible">
             <el-form :model="addForm" align="left">
                 <el-form-item label="监管任务名称" >
@@ -86,8 +95,8 @@
                 <el-form-item label="介绍" >
                     <el-input v-model="addForm.introduction" placeholder="请输入内容"></el-input>
                 </el-form-item>
-
             </el-form>
+
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormAddCancel">取 消</el-button>
                 <el-button type="primary" @click="dialogFormAddConfirm(addForm)">确 定</el-button>
@@ -103,18 +112,11 @@
     export default {
         name: "acpassTask",
         created(){
-            activetask().then(res =>{
-                console.log("请求列表api成功");
-                console.log(res);
-                this.tableData = res.data.data;
-
-            }).catch(err=>{
-                console.log(err);
-                console.log("请求列表api失败")
-            })
+            this.activetaskList(1,10);
         },
         data() {
             return {
+                total:0,
                 addForm:{
                     taskname:"",
                     startingtime: "",
@@ -142,6 +144,24 @@
             }
         },
         methods:{
+            activetaskList(currentPage,pageSize){
+                activetask(currentPage,pageSize).then(res =>{
+                    console.log("请求列表api成功");
+                    console.log(res);
+                    this.total = res.data.data.total
+                    this.tableData = res.data.data.reslist
+                }).catch(err=>{
+                    console.log(err);
+                    console.log("请求列表api失败")
+                })
+            },
+
+
+            //换页请求
+            pageChange(page){
+                this.currentPage=page;
+                this.activetaskList(page,10);
+            },
             dialogFormAddConfirm(addForm){
                 addForm.creatingtime = Date.now();
                 console.log(addForm.startingtime)

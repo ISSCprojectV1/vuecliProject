@@ -3,26 +3,25 @@
   <el-col>
 
     <el-menu
-      default-active="2"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
-      router
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b" style="height: 800px">
-
-      <el-menu-item index="/trade/Dashboard">
-        <i class="el-icon-menu"></i>
+            :default-active="defaultActive"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            router
+            background-color="#1479D7"
+            text-color="#FFFFFF"
+            active-text-color="#ffd04b" style="height: 800px">
+      <el-menu-item index="/trade/Dashboard" style="text-align: left">
+        <i class="el-icon-house"></i>
         <span slot="title">首页</span>
       </el-menu-item>
 
-      <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title">
+      <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span>{{routes.title}}</span>
         </template>
-        <el-menu-item :index="route.path" v-for="route in routes.routes" :key="route.path">
+        <el-menu-item :index="route.path" v-for="route in routes.routes" :key="route.path" style="text-align: left;padding-left: 100px">
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>
       </el-submenu>
@@ -54,11 +53,6 @@
             path: "/trade/Multimodal-multigranularity"
           },
           {
-            title:"主被动任务",
-            routes: [],
-            path: "/trade/acpassTask"
-          },
-          {
             title:"关联分析",
             routes: [],
             path: "/trade/relationAnalysis"
@@ -79,7 +73,7 @@
         return element.path === "/trade";
       }).children;
       for(let i=0;i<this.accessRoutes.length;i++){
-        this.accessRoutes[i].routes = routes.filter(route => route.path.startsWith(this.accessRoutes[i].path));
+        this.accessRoutes[i].routes = routes.filter(route => route.path.startsWith(this.accessRoutes[i].path)&&route.type==1);
       }
       console.log(this.accessRoutes)
     },
@@ -98,5 +92,18 @@
   padding:0px;
   margin:0px;
   border:0px;
+}
+.el-icon-arrow-down:before {
+  content: "\e6df";
+  color: #ffffff;
+}
+
+.el-icon-menu:before {
+  content: "\e798";
+  color: #FFFFFF;
+}
+.el-icon-house:before {
+  content: "\e754";
+  color: #FFFFFF;
 }
 </style>

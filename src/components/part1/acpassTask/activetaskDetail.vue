@@ -66,6 +66,15 @@
                     min-width="180">
             </el-table-column>
         </el-table>
+        <el-pagination
+                ref="pagination"
+                style="text-align: center"
+                background
+                layout="prev, pager, next"
+                @current-change = "pageChange"
+                :total="total"
+        >
+        </el-pagination>
     </div>
 </template>
 
@@ -77,17 +86,10 @@
         name: "activetaskDetail",
         created(){
             const id = this.$router.currentRoute.params.id;
-            activetradedetailinfo(id).then(res=>{
-                let data = res.data.data;
-                this.tableData = data
-            }).catch(err=>{
-                console.log("请求失败")
-                console.log(err)
-            })
+            this.Activetradedetailinfo(id,1,10);
         },
         mounted(){
-            activetradegraph(0).then(res=>{
-                console.log(res.data.data)
+            activetradegraph(1).then(res=>{
                 let data=res.data.data;
                 let nodes=[];
                 let links=[];
@@ -150,10 +152,28 @@
         },
         data(){
             return{
+                total:0,
                 tableData:[]
             }
         },
         methods:{
+            Activetradedetailinfo(id,currentPage,pageSize){
+                activetradedetailinfo(id,currentPage,pageSize).then(res=>{
+                    let data = res.data.data.reslist;
+                    this.total = res.data.data.total;
+                    this.tableData = data
+                }).catch(err=>{
+                    console.log("请求失败")
+                    console.log(err)
+                })
+            },
+
+            //换页请求
+            pageChange(page){
+                const id = this.$router.currentRoute.params.id;
+                this.currentPage=page;
+                this.Activetradedetailinfo(id,page,10);
+            },
         }
     }
 </script>

@@ -1,11 +1,11 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="16">
+            <el-col :span="23">
                 <el-menu :router="true" class="el-menu" mode="horizontal"
                  @select="handleSelect"
-                 background-color="#545c64"
-                 text-color="#fff"
+                 background-color="#1479D7"
+                 text-color="#FFFFFF"
                  active-text-color="#ffd04b">
                     <el-menu-item index="/trade/Dashboard"><img :src="logoimg" class="img">大宗商品交易平台</el-menu-item>
                     <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
@@ -19,35 +19,38 @@
                 </el-menu>
 
             </el-col>
-            <el-col :span="8" >
-            <el-menu :router="true" class="el-menu" mode="horizontal" background-color="#545c64"
-                 text-color="#fff"
-                 active-text-color="#ffd04b">
-                <el-menu-item >
-                    <el-row class="demo-autocomplete">
-                        <el-col :span="40">
-                            <el-autocomplete
-                                    class="inline-input"
-                                    placeholder="请输入内容"
-                            >
-                                <i class="el-icon-search el-input__icon" slot="suffix"></i>
-                            </el-autocomplete>
-                        </el-col>
-                    </el-row>
-                                </el-menu-item>
+            <el-col :span="1">
+            <el-menu :router="true"
+                     class="el-menu"
+                     mode="horizontal"
+                     background-color="#1479D7"
+                     text-color="#FFFFFF"
+                     active-text-color="#ffd04b">
+<!--                <el-menu-item >-->
+<!--                    <el-row class="demo-autocomplete">-->
+<!--                        <el-col :span="40">-->
+<!--                            <el-autocomplete-->
+<!--                                    class="inline-input"-->
+<!--                                    placeholder="请输入内容"-->
+<!--                            >-->
+<!--                                <i class="el-icon-search el-input__icon" slot="suffix"></i>-->
+<!--                            </el-autocomplete>-->
+<!--                        </el-col>-->
+<!--                    </el-row>-->
+<!--                                </el-menu-item>-->
 
-                <el-submenu index="">
-                    <template slot="title"><i class="el-icon-bell"></i><el-badge class="mark" is-dot /></template>
-                    <el-menu-item index="2-1">
-                        选项1<el-badge class="mark" :value="1" />
-                    </el-menu-item>
-                    <el-menu-item index="2-2">
-                        选项2<el-badge class="mark" :value="12" :max="10" />
-                    </el-menu-item>
-                    <el-menu-item index="2-3">
-                        选项3<el-badge class="mark" :value="1" />
-                    </el-menu-item>
-                </el-submenu>
+<!--                <el-submenu index="">-->
+<!--                    <template slot="title"><i class="el-icon-bell"></i><el-badge class="mark" is-dot /></template>-->
+<!--                    <el-menu-item index="2-1">-->
+<!--                        选项1<el-badge class="mark" :value="1" />-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="2-2">-->
+<!--                        选项2<el-badge class="mark" :value="12" :max="10" />-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="2-3">-->
+<!--                        选项3<el-badge class="mark" :value="1" />-->
+<!--                    </el-menu-item>-->
+<!--                </el-submenu>-->
                 <el-submenu index="/console/index">
                  <template slot="title"><img :src="userimg" class="img userprofile"></template>
                 <el-menu-item index="/console/index">个人中心</el-menu-item>

@@ -5,8 +5,8 @@
                 @open="handleOpen"
                 @close="handleClose"
                 router
-                 background-color="#545c64"
-                 text-color="#fff"
+                background-color="#1479D7"
+                text-color="#FFFFFF"
                  active-text-color="#ffd04b" style="height: 800px"
         >
             <el-menu-item :index="route.path" v-for="route in this.viewRoutes" :key="route.path">
@@ -77,5 +77,15 @@
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         color : #909399;
     }
+    .el-icon-arrow-down:before {
+        content: "\e6df";
+        color: #ffffff;
+    }
+
+    .el-icon-menu:before {
+        content: "\e798";
+        color: #FFFFFF;
+    }
+
 
 </style>

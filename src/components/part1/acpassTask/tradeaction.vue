@@ -67,6 +67,15 @@
 <!--                </el-table-column>-->
             </el-table-column>
         </el-table>
+        <el-pagination
+                ref="pagination"
+                style="text-align: center"
+                background
+                layout="prev, pager, next"
+                @current-change = "pageChange"
+                :total="total"
+        >
+        </el-pagination>
     </div>
 
 
@@ -94,13 +103,7 @@
                 })
             }
             else{
-                passivetradeaction(id).then(res=>{
-                    this.tableData = res.data.data
-                    this.handleData();
-                }).catch(err=>{
-                    console.log(err);
-                    console.log("出现错误")
-                })
+                this.passivetradeactionList(id,1,10)
             }
             //this.handleData();
             // console.log(this.$router)
@@ -110,6 +113,7 @@
         },
         data() {
             return {
+                total:0,
                 loading:false,
                 show:false,
                 Data:[],
@@ -119,6 +123,23 @@
             };
         },
         methods: {
+            passivetradeactionList(id,currentPage,pageSize){
+                passivetradeaction(id,currentPage,pageSize).then(res=>{
+                    this.tableData = res.data.data.reslist
+                    this.total = res.data.data.total
+                    this.handleData();
+                }).catch(err=>{
+                    console.log(err);
+                    console.log("出现错误")
+                })
+            },
+
+            //换页请求
+            pageChange(page){
+                const id = this.$router.currentRoute.params.id;
+                this.currentPage=page;
+                this.passivetradeactionList(id,page,10)
+            },
             drawPic(){
                 let echarts = echart.init(document.querySelector("#test"));
                 let option = {
@@ -354,6 +375,8 @@
             },
             handleData(){
                 let cnt=0;
+                this.Data=[];
+                this.spanarray=[];
                 for(let i=0;i<this.tableData.length;i++){
                     this.spanarray.push({
                         row:cnt,

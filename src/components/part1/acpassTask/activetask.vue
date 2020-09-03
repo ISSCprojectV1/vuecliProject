@@ -1,6 +1,14 @@
 <template>
     <div>
-        <div id="echart1" style="width: 1500px;height: 800px"></div>
+        <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="筛选条件">
+                <el-input v-model="form.limit"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+            </el-form-item>
+        </el-form>
+        <div id="echart1" style="width: 1000px;height: 800px"></div>
         <el-table
                 :data="tableData"
                 style="width: 100%">
@@ -43,6 +51,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination
+                ref="pagination"
+                style="text-align: center"
+                background
+                layout="prev, pager, next"
+                @current-change = "pageChange"
+                :total="total"
+        >
+        </el-pagination>
     </div>
 </template>
 
@@ -54,32 +71,49 @@
         name: "activetask",
         created(){
             const id = this.$router.currentRoute.params.id;
-            activetradegroup(id).then(res=>{
-                let data = res.data.data;
-                for (let i = 0; i < data.length; i++) {
-                    data[i].id=i+1
-                }
-                this.tableData = data
-            }).catch(err=>{
-                console.log("请求失败")
-                console.log(err)
-            })
-
+            this.Activetradegroup(id,1,10);
         },
         data(){
             return{
-                tableData:[]
+                total:0,
+                tableData:[],
+                form:{}
             }
         },
         mounted(){
             const id = this.$router.currentRoute.params.id;
-            activetaskgraph(id).then(res=>{
-                this.drawechart(res.data.data)
-            }).catch(err=>{
-                console.log(err)
-            })
+            this.Activetaskgraph(id,15);
         },
         methods:{
+            Activetaskgraph(id,limit){
+                activetaskgraph(id,limit).then(res=>{
+                    this.drawechart(res.data.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            },
+            pageChange(page){
+                const id = this.$router.currentRoute.params.id;
+                this.currentPage=page;
+                this.Activetradegroup(id,page,10);
+            },
+            Activetradegroup(id,currentPage,pageSize){
+                activetradegroup(id,currentPage,pageSize).then(res=>{
+                    let data = res.data.data.reslist;
+                    this.total = res.data.data.total;
+                    for (let i = 0; i < data.length; i++) {
+                        data[i].id=i+1
+                    }
+                    this.tableData = data
+                }).catch(err=>{
+                    console.log("请求失败")
+                    console.log(err)
+                })
+            },
+            onSubmit(limit){
+                const id = this.$router.currentRoute.params.id;
+                this.Activetaskgraph(id,limit);
+            },
             gotoDetail(id){
                 this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
                 console.log(id)
@@ -125,12 +159,12 @@
                         xAxisIndex : 0, //x轴坐标 有多种坐标系轴坐标选项
                         yAxisIndex : 0, //y轴坐标
                         force: {
-                            repulsion: 150,//相距距离
-                            edgeLength: [75, 100],
+                            repulsion: 70,//相距距离
+                            edgeLength: [70, 150],
                             layoutAnimation: true
                         },
                         roam : true,//是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移，可以设置成 'scale' 或者 'move'。设置成 true 为都开启
-                        nodeScaleRatio : 0.6,//鼠标漫游缩放时节点的相应缩放比例，当设为0时节点不随着鼠标的缩放而缩放
+                        nodeScaleRatio : 0.9,//鼠标漫游缩放时节点的相应缩放比例，当设为0时节点不随着鼠标的缩放而缩放
                         draggable : true,//节点是否可拖拽，只在使用力引导布局的时候有用。
                         focusNodeAdjacency : true,//是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
                         edgeSymbol : [ 'none', 'arrow' ],//边两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定。默认不显示标记，常见的可以设置为箭头，如下：edgeSymbol: ['circle', 'arrow']
