@@ -1,65 +1,73 @@
 <template>
     <div>
-        <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="筛选条件">
-                <el-input v-model="form.limit"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
-            </el-form-item>
-        </el-form>
-        <div id="echart1" style="width: 1000px;height: 800px"></div>
-        <el-table
-                :data="tableData"
-                style="width: 100%">
-            <el-table-column
-                    prop="id"
-                    label="编号"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="user1"
-                    label="交易用户1"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="user2"
-                    label="交易用户2"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="tradetotal"
-                    label="总交易数"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="suspicioustrasaction"
-                    label="可疑交易数"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="tasksize"
-                    label="空间粒度"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    label="详细信息"
-                    fixed="right"
-                    min-width="180">
-                <template slot-scope="scope">
-                    <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">详情</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <el-pagination
-                ref="pagination"
-                style="text-align: center"
-                background
-                layout="prev, pager, next"
-                @current-change = "pageChange"
-                :total="total"
-        >
-        </el-pagination>
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="表格模式" name="table">
+                <el-table
+                        :data="tableData"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="id"
+                            label="编号"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="user1"
+                            label="交易用户1"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="user2"
+                            label="交易用户2"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tradetotal"
+                            label="总交易数"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="suspicioustrasaction"
+                            label="可疑交易数"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="tasksize"
+                            label="空间粒度"
+                            min-width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="详细信息"
+                            fixed="right"
+                            min-width="180">
+                        <template slot-scope="scope">
+                            <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">详情</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        ref="pagination"
+                        style="text-align: center"
+                        background
+                        layout="prev, pager, next"
+                        @current-change = "pageChange"
+                        :total="total"
+                >
+                </el-pagination>
+            </el-tab-pane>
+            <el-tab-pane label="流程图模式" name="flow">
+
+                <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="筛选条件">
+                        <el-input v-model="form.limit"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                    </el-form-item>
+                </el-form>
+                <div id="echart1" style="width: 1000px;height: 800px"></div>
+            </el-tab-pane>
+
+        </el-tabs>
     </div>
 </template>
 
@@ -75,6 +83,7 @@
         },
         data(){
             return{
+                activeName:"table",
                 total:0,
                 tableData:[],
                 form:{}
