@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <button @click="toUpdate">切换数据</button> -->
-    <div id="container" style="width:900px; height:600px"></div>
+    <div id="container" style="width:1200px; height:600px"></div>
   </div>
 </template>
 
@@ -67,7 +67,7 @@ export default {
                node.workingStartTime = input.data[i].workingStartTime;
 
                node.workStatusColor = input.data[i].workStatus;
-               node.description =node.humanUse + '   ' + node.workStatus;
+               node.description =node.humanUse + ':' + node.workStatus;
               result_nodes.push(node);
 
               // 找到target节点
@@ -75,13 +75,11 @@ export default {
                   var target = {};
                   target.source = input.data[i].name;
                   target.target = input.data[i].target[j];
-                  console.log("target.source:" + target.source + "target.target" + target.target)
                   result_target.push(target)
               }
 
           }
           result_nodes[0].ccc = 0;
-          console.log("这里是多少？"+result_nodes[0].ccc);
           this.getChart(result_nodes,result_target);
                 }).catch(()=>{
                     console.log("getTaskApi fail")
@@ -89,7 +87,6 @@ export default {
       },
 
       getChart(nodes_new,edges_new){
-      console.log("刷新了这个页面-所以可以显示");
 var color = ['#40E0D0','#1E90FF'];
 const data = {
     nodes:nodes_new,
@@ -203,32 +200,37 @@ const tooltip = new G6.Tooltip({
     outDiv.style.width = '180px';
     outDiv.style.textAlign = 'left';
     outDiv.innerHTML = `
-      <h4>${e.item.getModel().label}任务详情</h4>
+      <h2>${e.item.getModel().label}任务详情</h2>
       <ul>
-        <li>* 任务ID: ${e.item.getModel().userId}</li>
+        <h3>* 任务ID: ${e.item.getModel().userId}</h3>
       </ul>
       <ul>
-        <li>* 任务名称: ${e.item.getModel().label}</li>
+        <h3>* 任务名称: ${e.item.getModel().label}</h3>
       </ul>
        <ul>
-        <li>* 任务优先级: ${e.item.getModel().priority}</li>
+        <h3>* 任务优先级: ${e.item.getModel().priority}</h3>
       </ul>
       <ul>
-        <li>* 任务完成时间: ${e.item.getModel().workingStartTime}</li>
+        <h3>* 任务开始时间: ${e.item.getModel().workingStartTime}</h3>
       </ul>
       <ul>
-        <li>* humanUse: ${e.item.getModel().humanUse}</li>
+        <h3>* ${e.item.getModel().humanUse}</h3>
       </ul>
       <ul>
-        <li>* workingTime: ${e.item.getModel().workingTime}</li>
+        <h3>* 工作时间: ${e.item.getModel().workingTime}</h3>
       </ul>
 `
     return outDiv
   },
   itemTypes: ['node']
 });
+let fixSelectedItems = {
+  fixAll: true,
+  fixState: 'yourStateName', // 'selected' by default
+};
 const width = document.getElementById('container').scrollWidth;
 const height = document.getElementById('container').scrollHeight || 500;
+const graphDiv = document.getElementById('container');
 const graph = new G6.Graph({
     container: 'container',
     width,
@@ -237,6 +239,10 @@ const graph = new G6.Graph({
     plugins: [tooltip], // 配置 Tooltip 插件
     modes: {
         default: ['drag-canvas', 'drag-node',
+        {
+        type: 'zoom-canvas',
+        fixSelectedItems,
+      },
         ],
     },
     nodeStateStyles: {
@@ -256,7 +262,7 @@ const graph = new G6.Graph({
     },
       defaultNode: {
     type: 'modelRect',
-    size: [270, 80],
+    size: [300, 100],
     style: {
       radius: 2,
       stroke: '#69c0ff',
@@ -268,10 +274,18 @@ const graph = new G6.Graph({
     labelCfg: {
       style: {
         fill: '#595959',
+        fontSize: 27,
+      },
+    },
+    // label configurations
+    descriptionCfg: {
+      style: {
+        x:12,
+        y:8,
+        fill: '	#708090',
         fontSize: 20,
       },
-      offset: 30,
-    },
+          },
     // left rect
     preRect: {
       show: true,
@@ -292,6 +306,10 @@ const graph = new G6.Graph({
       stroke: '#72CC4A',
     },
     // configurations for the icon
+       stateIcon: {
+      // whether to show the icon
+      show: false,
+    },
   },
     defaultEdge: {
         type: 'polyline',
@@ -306,6 +324,78 @@ const graph = new G6.Graph({
         },
     },
 });
+const legendContainer = document.createElement('div');
+legendContainer.id = 'legendContainer';
+const legendGraphDiv = document.createElement('div');
+legendGraphDiv.id = 'legend';
+legendContainer.appendChild(legendGraphDiv);
+graphDiv.parentNode.appendChild(legendContainer);
+const legendGraph = new G6.Graph({
+  container: 'legend',
+  width: 300,
+  height: 200,
+  defaultNode: {
+    size: 15,
+    shape: 'circle',
+    labelCfg: {
+      position: 'right',
+      offset: 10,
+      style: {
+        fontSize: 18,
+        fill: '#2F4F4F',
+      },
+    },
+  },
+});
+const legendX = 20;
+const legendBeginY = 50;
+const legendYPadding = 25;
+const legendData = {
+  nodes: [
+    {
+      id: 'level1',
+      x: legendX,
+      y: legendBeginY,
+      label: '任务未分配',
+      style: {
+        fill: '#6495ED',
+        lineWidth: 0,
+      },
+    },
+    {
+      id: 'level2',
+      x: legendX,
+      y: legendBeginY + legendYPadding,
+      label: '任务未执行',
+      style: {
+        fill: '#778899',
+        lineWidth: 0,
+      },
+    },
+    {
+      id: 'level3',
+      label: '任务已执行',
+      x: legendX,
+      y: legendBeginY + legendYPadding * 2,
+      style: {
+        fill: '#30BF78',
+        lineWidth: 0,
+      },
+    },
+    {
+      id: 'level4',
+      label: '任务异常',
+      x: legendX,
+      y: legendBeginY + legendYPadding * 3,
+      style: {
+        fill: '#DC143C',
+        lineWidth: 0,
+      },
+    },
+  ],
+};
+legendGraph.data(legendData);
+legendGraph.render();
 graph.node(function (node) {
                         // depth 类似节点标识
                         if(node.workStatusColor === null){
@@ -363,6 +453,7 @@ graph.on('node:mouseleave', evt => {
   const { item } = evt;
   graph.setItemState(item, 'hover', false);
 });
+
 console.log("刷新了这个页面-页面结束");
       },
   },
@@ -384,4 +475,17 @@ console.log("刷新了这个页面-页面结束");
       padding: 10px 8px;
       box-shadow: rgb(174, 174, 174) 0px 0px 10px;
     }
+ #legendContainer{
+    position: absolute;
+    top: 0px;
+    right: 300px;
+    width: 150px;
+    height: 100px;
+  }
+.g6-minimap-container {
+  border: 1px solid #e2e2e2;
+}
+.g6-minimap-viewport {
+  border: 2px solid rgb(25, 128, 255);
+}
 </style>

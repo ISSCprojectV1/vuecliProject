@@ -1,6 +1,5 @@
 <template>
     <div class="box" v-loading="loading" element-loading-text="拼命加载中">
-
     </div>
 </template>
 
@@ -40,14 +39,13 @@
                     console.log("数据到位")
                     this.echarts = echart.init(document.querySelector(".box"));
                     let option = {
-                        title: {
-                            text: '',
-                            textStyle:{
-                                fontSize:25
-                            },
-                            left:'center',
-                            top:'0%'
-                        },
+                         title: {
+                       text: '商品收盘价格走势图',
+                       textStyle:{
+                           fontSize:20
+                       },
+                       right:0
+                       },
                         tooltip: {
                             trigger: 'axis'
                         },
@@ -125,7 +123,10 @@
 </script>
 
 <style lang="stylus" scoped>
-    .box
-        width 1000px
-        height 600px
+    .box{
+        width 600px
+        height 500px
+        position: absolute
+        left:60%
+    }
 </style>

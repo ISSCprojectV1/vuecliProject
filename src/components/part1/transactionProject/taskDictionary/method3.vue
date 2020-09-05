@@ -1,13 +1,12 @@
 <template>
      <div id="index" v-loading="loading" element-loading-text="拼命加载中">
-        <div id="main" class="box_close">
-        </div>
+        <div id="main" class="box"></div>
     </div>
 </template>
 <script>
  //   import axios from "axios";
     import echarts from 'echarts'
-    import {getriskHistoryData,getriskPredictionData} from "@/api/part1/riskPrediction";
+    import {getriskHistoryData,getriskPredictionData,getbendiApi} from "@/api/part1/riskPrediction";
     export default {
         name: "app",
         data() {
@@ -21,21 +20,50 @@
         },
         methods: {
             getData() {
-                // 获取历史交易数据
-                getriskHistoryData().then((res) => {
-                this.opinionData =res.data;
-                }).catch(()=>{
-                    console.log("getHistoryData fail")
-                });
+                getbendiApi().then((res) => {
+              var input  = res.data.data;
+              var result_nodes = [];
+              var result_target = [];
+              var taskList = Object.keys(input);
+              //获得关系--任务关系
+              for(let n = 0; n < taskList.length-2;n++){
+                  var target = {};
+                  target.source = taskList[n];
+                  target.target = taskList[n+1];
+                  result_target.push(target);
+              }
+              for (let i = 0; i<taskList.length;i++){
+                  var node = {};
+                  node.id = taskList[i];
+                  node.name = taskList[i];
+                  node.symbol = 'roundRect';
+                  result_nodes.push(node);
+                  var attr = node.id;
+                  console.log("nodeaaaaaaaa" + i + ":" + input[attr]);
 
-                // 获取第二天预测交易数据
-                console.log("获取预测数据")
-                getriskPredictionData().then((res) => {
-                this.predictionData =res.data;
-                this.drawLine('main');
+                  // 任务对应的agent遍历出来 
+                  for(let j = 0; j< input[attr][j];j++){
+                      var node_agent = {};
+                      node_agent.id = input[attr][j];
+                      node_agent.name = input[attr][j];
+                      node_agent.symbol = 'circle';
+                      result_nodes.push(node_agent);
+                      // 获得任务--agent对应关系
+                      var targer_agent = {};
+                      targer_agent.source = attr;
+                      targer_agent.target = node_agent.id;
+                      result_target.push(targer_agent);
+                  }
+                  console.log("node" + i + ":" + node.id);
+              }
+              this.getChart_map(result_nodes,result_target);
+               this.$message({
+                 type: 'success',
+                  message: '已形成联盟！'
+          });
                 }).catch(()=>{
-                    console.log("getPredictionData fail")
-                });
+                    console.log("getTaskApi fail")
+                }); 
             },
 
             drawLine(id){
@@ -86,13 +114,6 @@
                        }
 
             this.charts.setOption({
-                title: {
-                       text: '商品收盘价格走势图',
-                       textStyle:{
-                           fontSize:20
-                       },
-                       left:0
-                       },
                  legend: {
                   data:['历史数据','预测数据']
           },
@@ -197,13 +218,13 @@
 </script>
 
 <style>
-#index{
-  width: 600px;
-  height: 500px;
+.index{
+  width: 1200px;
+  height: 600px;
 }
-.box_close{
-    width: 600px;
-    height: 500px
+.box{
+    width: 1200px;
+    height: 600px
 }
 
 </style>

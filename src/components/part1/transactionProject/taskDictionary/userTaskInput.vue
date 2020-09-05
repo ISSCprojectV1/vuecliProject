@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%;height: 800px">
-        <h2 class="red"> 监管与服务任务-- </h2>
+        <h2 class="red"> 监管与服务任务 </h2>
         <div class="block" style="height:80px;text-align:left">
   <el-form ref="form" :model="form" label-width="130px">
    <el-form-item label="监管与服务地区">

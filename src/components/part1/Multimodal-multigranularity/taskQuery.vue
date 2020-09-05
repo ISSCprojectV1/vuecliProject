@@ -16,6 +16,11 @@
       <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">分配任务</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
+
+      <el-tab-pane label="用户使用说明" name="third" lazy>
+      <userQuery></userQuery>
+      </el-tab-pane>
+
     <el-tab-pane label="表格视图" name="first" lazy>
         <div class="dormitoryData">
       <el-table
@@ -72,12 +77,13 @@
   //import {getTansactionData} from "@/api/part1/transactionProject";
 import {taskQuery,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
+import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 
  // import $ from 'jQuery'
   export default {
     components: {
-      taskInput,method1
+      taskInput,method1,userQuery
     },
 
     data () {
@@ -258,4 +264,5 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
   float: left;
   text-align:center;
 }
+
 </style>
