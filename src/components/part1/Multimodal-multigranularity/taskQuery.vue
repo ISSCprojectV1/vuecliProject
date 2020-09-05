@@ -6,9 +6,9 @@
     <div class="searchWord" style="margin-bottom:20px">
       <el-input v-model="search" style="display: inline-block; width: 800px" placeholder="请输入搜索关键词"></el-input>
       <el-button type="primary" @click="addNewTask" style="margin-left:15px;margin-right:14px">添加新任务</el-button>
-      <el-dialog title="添加新任务" 
-      :visible.sync="dialogTableVisible" center :append-to-body='true' 
-      :lock-scroll="false" width="30%" 
+      <el-dialog title="添加新任务"
+      :visible.sync="dialogTableVisible" center :append-to-body='true'
+      :lock-scroll="false" width="30%"
       :close-on-click-modal="false"
       >
       <taskInput></taskInput>
@@ -57,14 +57,14 @@
        </el-pagination>
     </div>
       </el-tab-pane>
-    
+
     <el-tab-pane label="流程图视图" name="second" lazy>
       * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
       <method1 ref="method1_child"></method1>
       </el-tab-pane>
   </el-tabs>
     </div>
-    
+
   </div>
 </template>
 
@@ -102,7 +102,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
     },
 
   computed: {
-    
+
       // 模糊搜索
       tables () {
         const search = this.search
@@ -127,7 +127,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
                 // 获取表格数据
                console.log("获取表格数据")
                var dataConvert = [];
-  
+
                taskQuery().then((res) => {
                 dataConvert = res.data.data;
                 for(var i = 0;i<dataConvert.length;i++){
@@ -166,7 +166,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
              var s = date.getSeconds()
              return Y+M+D+h+m+s
     },
-        
+
          // 新增监控任务
           addNewTask(){
             this.dialogTableVisible=true;
@@ -192,7 +192,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
           this.$message({
             type: 'info',
             message: '已取消'
-          });          
+          });
         });
           },
           // 发送get请求--getAllocateTask
@@ -219,7 +219,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
 // 分页
     // 每页显示的条数
     handleSizeChange(val) {
-      // 改变每页显示的条数 
+      // 改变每页显示的条数
       this.PageSize=val
       // 注意：在改变每页显示的条数时，要将页码显示到第一页
       this.currentPage=1

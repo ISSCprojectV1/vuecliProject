@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>关联分析</h2>
+        <h2>交易频次查询</h2>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="查询商品">
                 <el-select v-model="formInline.itemid" placeholder="选择商品">
@@ -24,93 +24,42 @@
 
         <el-tabs v-model="activeName">
             <el-tab-pane label="表格模式" name="table">
-                <h3>用户关联分析表</h3>
+                <h3>用户交易频率统计表</h3>
                 <el-table
-                        :default-sort = "{prop: 'similarity', order: 'descending'}"
-                        :data="SimilarityUser"
+                        :default-sort = "{prop: 'count', order: 'descending'}"
+                        :data="supportData"
                         stripe
                         style="width: 100%">
                     <el-table-column
-                            prop="uid1"
-                            label="关联用户id"
-                            min-width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="uid2"
-                            label="关联用户id"
+                            prop="uid"
+                            label="用户id"
                             min-width="180">
                     </el-table-column>
                     <el-table-column
                             prop="oid"
-                            label="关联商品id"
+                            label="商品id"
                             min-width="180">
                     </el-table-column>
                     <el-table-column
                             sortable
-                            prop="similarity"
-                            label="用户关联度"
+                            prop="count"
+                            label="交易频次"
                             min-width="180">
-                        <template slot-scope="scope">
-                            <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
-                        </template>
                     </el-table-column>
-                    <el-table-column label="关联交易">
-                        <template slot-scope="scope">
-                            <el-popover
-                                    placement="top-start"
-                                    width="1000"
-                                    trigger="hover"
-                                    @show="Tradesimilar(scope.row)"
-                            >
-                                <h3>交易关联分析表</h3>
-                                <el-table
-                                        :data="SimilarityTrade"
-                                        stripe
-                                        :default-sort = "{prop: 'similarity', order: 'descending'}"
-                                        style="width: 100%">
-                                    <el-table-column
-                                            prop="tid1"
-                                            label="关联交易id"
-                                            min-width="180">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="tid2"
-                                            label="关联交易id"
-                                            min-width="180">
-                                    </el-table-column>
-                                    <el-table-column
-                                            sortable
-                                            prop="similarity"
-                                            label="交易关联度"
-                                            min-width="180">
-                                        <template slot-scope="scope">
-                                            <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
-                                        </template>
-
-                                    </el-table-column>
-                                </el-table>
-                                <h3>交易关联图</h3>
-                                <div id="echart3" style="width: 1000px;height: 600px;text-align: center"></div>
-
-                                <el-button slot="reference">查看</el-button>
-                            </el-popover>
-                            <!--                            <el-button-->
-                            <!--                                    @click="Tradesimilar(scope.row)">查看-->
-                            <!--                            </el-button>-->
-                        </template>
+                    <el-table-column
+                            sortable
+                            prop="support"
+                            label="频次权重"
+                            min-width="180">
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
 
-        <el-tab-pane label="关系图模式" name="diagram">
-
-            <h3>用户关联图</h3>
-            <div id="echart2" style="width: 1000px;height: 500px;text-align: center" v-show="showing1"></div>
-        </el-tab-pane>
-
+            <el-tab-pane label="统计图模式" name="diagram">
+                <h3>用户交易频率统计图</h3>
+                <div id="echart1" style="width: 1000px;height: 300px;text-align: center" v-show="showing1"></div>
+            </el-tab-pane>
         </el-tabs>
-
-
 
 
 
@@ -474,7 +423,7 @@
                     console.log(res.data.data)
                     this.supportData = res.data.data;
                     let prepared = this.prepareData(formInline.time,res.data.data)
-                    //this.drawecharts1(prepared);
+                    this.drawecharts1(prepared);
                     userrelation(params).then(res=>{
                         console.log(res.data.data)
                         this.SimilarityUser = res.data.data
