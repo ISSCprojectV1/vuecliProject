@@ -7,7 +7,7 @@
                  background-color="#1479D7"
                  text-color="#FFFFFF"
                  active-text-color="#ffd04b">
-                    <el-menu-item index="/trade/Dashboard"><img :src="logoimg" class="img">大宗商品交易平台</el-menu-item>
+                    <el-menu-item index="/trade/Dashboard"><img :src="logoimg" class="img"> 大宗商品交易市场监管服务——模式资源调配与数据关联分析系统 </el-menu-item>
                     <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
                     <el-menu-item index="/console/index">个人中心</el-menu-item>
                     <el-menu-item index="/auction">拍卖中心</el-menu-item>

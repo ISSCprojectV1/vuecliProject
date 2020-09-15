@@ -10,7 +10,7 @@
             router
             background-color="#1479D7"
             text-color="#FFFFFF"
-            active-text-color="#ffd04b" style="height: 800px">
+            active-text-color="#ffd04b">
       <el-menu-item index="/trade/Dashboard" style="text-align: left">
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
@@ -48,7 +48,7 @@
             path: "/trade/riskPrediction"
           },
           {
-            title:"模态与粒度",
+            title:"多模态多粒度监管服务",
             routes: [],
             path: "/trade/Multimodal-multigranularity"
           },
