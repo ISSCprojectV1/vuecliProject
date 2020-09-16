@@ -11,7 +11,17 @@ export function taskInput(data) {
         })
   }
 
-  // 新建任务
+// 搜索任务
+export function searchTask(data) {
+  console.log("发送searchTask请求")
+    return request({
+      url: '/taskQuery',
+      method: 'post',
+      data
+        })
+  }
+
+  // 分配任务
 export function taskAllocation() {
   console.log("发送taskAllocation 请求")
     return request({

@@ -3,8 +3,27 @@
         <div class="title">
       <div style="display: inline-block; margin-bottom:20px" >监管任务查询列表</div>
     </div>
+
     <div class="searchWord" style="margin-bottom:20px">
-      <el-input v-model="search" style="display: inline-block; width: 800px" placeholder="请输入搜索关键词"></el-input>
+
+      <el-autocomplete
+      class="inline-input"
+      v-model="state1"
+      :fetch-suggestions="querySearch"
+      placeholder="请输入内容"
+      @select="handleSelect"
+      style="width:600px"
+    ></el-autocomplete>
+
+      <el-button type="primary" @click="searchTask_btn" style="margin-left:29px;margin-right:14px;">搜索</el-button>
+      <el-dialog title="搜索结果"
+      :visible.sync="searchTableVisible" center :append-to-body='true'
+      :lock-scroll="false" width="60%"
+      :close-on-click-modal="false"
+      >
+      <taskSearch ref="taskSearch"></taskSearch>
+      </el-dialog>
+
       <el-button type="primary" @click="addNewTask" style="margin-left:15px;margin-right:14px">添加新任务</el-button>
       <el-dialog title="添加新任务"
       :visible.sync="dialogTableVisible" center :append-to-body='true'
@@ -13,11 +32,19 @@
       >
       <taskInput></taskInput>
       </el-dialog>
-      <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">分配任务</el-button>
+      <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">执行分配任务</el-button>
+      <el-link type="primary" icon="el-icon-question" @click="userHelp">首次使用，查看用户使用说明</el-link>
+      <el-dialog title="用户使用说明"
+      :visible.sync="userHelpVisible" center :append-to-body='true'
+      :lock-scroll="false" width="60%"
+      :close-on-click-modal="false"
+      >
+      <userQuery></userQuery>
+      </el-dialog>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
 
-      <el-tab-pane label="用户使用说明" name="third" lazy>
+      <el-tab-pane label="用户使用帮助手册" name="third" lazy>
       <userQuery></userQuery>
       </el-tab-pane>
 
@@ -42,7 +69,7 @@
         </el-table-column>
         <el-table-column label="任务优先级" prop="priority" width = "60">
         </el-table-column>
-        <el-table-column label="workingTime" prop="workingTime" width = "60">
+        <el-table-column label="任务执行时间" prop="workingTime" width = "60">
         </el-table-column>
         <el-table-column label="开始时间" prop="startTime">
         </el-table-column>
@@ -75,22 +102,28 @@
 
 <script>
   //import {getTansactionData} from "@/api/part1/transactionProject";
-import {taskQuery,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,taskAllocation,searchTask} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
 import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
+import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearch";
+
 
  // import $ from 'jQuery'
   export default {
     components: {
-      taskInput,method1,userQuery
+      taskInput,method1,userQuery,taskSearch
     },
 
     data () {
       return {
         dormitory: [],
-        search: '',
+        taskLists:[],
+        state1:'',
+        searchData :'',
         dialogTableVisible: false,
+        searchTableVisible: false,
+        userHelpVisible:false,
         activeName:'first',
          // 默认显示第几页
       currentPage:1,
@@ -106,34 +139,55 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
     created(){
       this.getData();
     },
-
-  computed: {
-
-      // 模糊搜索
-      tables () {
-        const search = this.search
-        if (search) {
-          // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
-          // 注意： filter() 不会对空数组进行检测。
-          // 注意： filter() 不会改变原始数组。
-          return this.dormitory.filter(data => {
-            return Object.keys(data).some(key => {
-              // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
-              // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
-              return String(data[key]).toLowerCase().indexOf(search) > -1
-            })
-          })
-        }
-        return this.dormitory
-      }
-    },
     methods: {
-
+      loadAll() {
+        // 获取表格数据
+               console.log("获取表格数据")
+               var dataConvert = [];
+               var taskNames = [];
+               taskQuery().then((res) => {
+                dataConvert = res.data.data;
+                for(var i = 0;i<dataConvert.length;i++){
+                    var taskName = {};
+                    taskName = {"value":dataConvert[i].name};
+                    taskNames.push(taskName);
+                } 
+                }).catch(()=>{
+                    console.log("taskQuery fail")
+                });        
+                return taskNames;     
+                
+      },
+      // 搜索 从服务器获得数据
+      querySearch(queryString, cb) {
+        var taskLists = this.taskLists;
+        var results = queryString ? taskLists.filter(this.createFilter(queryString)) : taskLists;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (taskName) => {
+          return (taskName.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      handleSelect(item) {
+        console.log(item);
+      },
+      // 搜索按钮
+      searchTask_btn(){
+        this.searchData = this.state1;
+        console.log("state1:" + this.state1 + "searchData:" + this.searchData)
+        this.searchTableVisible = true; 
+        this.$refs.taskSearch.getSearchData(this.state1);
+      },
+      // 用户手册 弹窗
+      userHelp(){
+        this.userHelpVisible = true;
+      },
             getData(){
                 // 获取表格数据
                console.log("获取表格数据")
                var dataConvert = [];
-
                taskQuery().then((res) => {
                 dataConvert = res.data.data;
                 for(var i = 0;i<dataConvert.length;i++){
@@ -153,13 +207,11 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
                     dataConvert[i].humanUse = "是"
                   else // false
                     dataConvert[i].humanUse = "否"
-                }
+             }
                 this.dormitory = dataConvert;
-                console.log("传入444数据" + res.data.data)
                 }).catch(()=>{
                     console.log("getTransactionData fail")
-                });
-
+                });                       
             } ,
             // 转换时间戳
             timestampToTime (cjsj) {
@@ -248,7 +300,10 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
     }
       }
 
-    }
+    },
+    mounted() {
+      this.taskLists = this.loadAll();
+    },
   }
 </script>
 <style>

@@ -1,6 +1,6 @@
 <template>
 <div>
-   <h1 id = "title">大宗商品风险预测</h1>
+   <h1 id = "title">大宗商品价格波动风险演化</h1>
 <div class = "task-input-box">
 <div class="block">
   <el-cascader

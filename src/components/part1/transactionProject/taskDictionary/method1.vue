@@ -57,7 +57,7 @@ export default {
                node.workStatus = '任务有异常';
                }
                else{
-               node.workStatus = '无任务状态返回';
+               node.workStatus = '无任务状态';
                }
 
                // 任务执行时间
@@ -348,7 +348,8 @@ const legendGraph = new G6.Graph({
   },
 });
 const legendX = 20;
-const legendBeginY = 50;
+const legendBeginY = 100;
+const legendXPadding = 125;
 const legendYPadding = 25;
 const legendData = {
   nodes: [
@@ -359,17 +360,15 @@ const legendData = {
       label: '任务未分配',
       style: {
         fill: '#6495ED',
-        lineWidth: 0,
       },
     },
     {
       id: 'level2',
-      x: legendX,
-      y: legendBeginY + legendYPadding,
+      x: legendX+legendXPadding,
+      y: legendBeginY,
       label: '任务未执行',
       style: {
         fill: '#778899',
-        lineWidth: 0,
       },
     },
     {
@@ -379,17 +378,15 @@ const legendData = {
       y: legendBeginY + legendYPadding * 2,
       style: {
         fill: '#30BF78',
-        lineWidth: 0,
       },
     },
     {
       id: 'level4',
       label: '任务异常',
-      x: legendX,
-      y: legendBeginY + legendYPadding * 3,
+      x: legendX+legendXPadding,
+      y: legendBeginY + legendYPadding * 2,
       style: {
         fill: '#DC143C',
-        lineWidth: 0,
       },
     },
   ],
@@ -477,7 +474,7 @@ console.log("刷新了这个页面-页面结束");
     }
  #legendContainer{
     position: absolute;
-    top: 0px;
+    top: 10px;
     right: 300px;
     width: 150px;
     height: 100px;

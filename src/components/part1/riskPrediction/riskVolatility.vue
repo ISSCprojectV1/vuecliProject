@@ -44,14 +44,14 @@
                        textStyle:{
                            fontSize:20
                        },
-                       right:0
+                       right:'20%'
                        },
                         tooltip: {
                             trigger: 'axis'
                         },
                         legend: {
                             data: [],
-                            left:'right',
+                            right:'25%',
                             top:'6%'
                         },
                         grid: {

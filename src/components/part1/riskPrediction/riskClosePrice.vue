@@ -56,15 +56,19 @@
 
             var cataData = [];// 储存读入的日期
             var priceData = [];// 存储读入的价格信息
-            for(var i= 0;i<values.length;i++){
+            for(var i= 0;i<values.length-1;i++){
                 cataData.push(values[i].day.split('T')[0]);
                 priceData.push(values[i].closeprice);
             }
+            console.log("values.length-1:" + values.length)
+            var historyLength = 27;
             var pridictResult = [];
             for(let i=0; i<priceData.length;i++){
                 pridictResult.push(null);
             }
-            pridictResult.push.apply(pridictResult,predictionVAL)
+            pridictResult.push.apply(pridictResult,predictionVAL);
+            var allPrice = priceData.concat(predictionVAL);
+            var allPriceData = cataData.concat(predictionDate);
             cataData.push.apply(cataData,predictionDate);
             //priceData.push.apply(priceData,predictionVAL);
             console.log(priceData);
@@ -91,17 +95,29 @@
                        textStyle:{
                            fontSize:20
                        },
-                       left:0
+                       right:'35%'
                        },
                  legend: {
-                  data:['历史数据','预测数据']
+                     right:'30%',
+                     top:'6%',
+                  data:['完整数据','历史数据','预测数据']
           },
             tooltip: {
             trigger: 'axis'
         },
+        toolbox: {
+                            left:'left',
+                            feature: {
+                                saveAsImage: {
+                                    show:true,
+                                    title:'保存为图片'
+                                },
+                                
+                            }
+                        },
                xAxis: {
                     type: 'category',
-                    data: cataData,
+                    data: allPriceData,
                       },
                  yAxis: {
               type: 'value',
@@ -152,13 +168,29 @@
             ]
         }
               ],
+              visualMap: {
+        show: false,
+        dimension: 0,
+        pieces: [{
+            gt:0,
+            lte: 8,
+            color: 'green'
+        }, {
+            gt: 8,
+            lte: historyLength,
+            color: 'green'
+        } , {
+            gt: historyLength,
+            color: 'red'
+        }]
+    },
                 series: [
-                {
-                    name:"预测数据",
+                    {
+                    name:"完整数据",
                     type: 'line',
                     label:"预测数据",
                     show:true,
-                     markArea: {
+                    markArea: {
                 silent: true,
                 color:'#778899',
                 data: [
@@ -169,6 +201,36 @@
                     }]
                 ]
             },
+                    data: allPrice,
+                },
+                {
+                    name:"预测数据",
+                    type: 'line',
+                    label:"预测数据",
+                    show:true,
+                     markArea: [{
+                silent: true,
+                color:'#778899',
+                data: [
+                    [{
+                        xAxis: '2017-12-28'
+                    }, {
+                        xAxis: '2018-12-30'
+                    }]
+                ]
+            },
+            {
+                silent: true,
+                color:'#778899',
+                data: [
+                    [{
+                        xAxis: '2017-11-19'
+                    }, {
+                        xAxis: '2017-12-28'
+                    }]
+                ]
+            },
+            ],
                     data: pridictResult,
                 },
                 {
@@ -187,7 +249,12 @@
             },
                     data: priceData,
                 },
-                ]
+                ],
+                dataZoom:[
+                            {
+                                type:'slider'
+                            }
+                        ]
             })
                 this.loading = false
 
