@@ -1,10 +1,10 @@
 <template>
-<div>
+<div id="diceng">
 
     <el-row v-for="item in resources" :key="item.id" class="elrow">
         <el-col :span="20">
             <div class="mainResource">
-                <h3><router-link :to="`/download/${item.name}`" class="router-link">{{item.name}}</router-link></h3>
+                <h3><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h3>
             <div class="content">{{item.description}}</div>
             <span>开始时间:{{item.startTime}}</span>
             <span>结束时间:{{item.endTime}}</span>
@@ -69,7 +69,9 @@
                 this.getAuctions(page);
             },
         },
-
+        mounted(){
+          document.getElementById("diceng").style.height=window.innerHeight;
+        },
         created() {
             this.getAuctions(1);
         },

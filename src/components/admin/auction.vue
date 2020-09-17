@@ -64,6 +64,17 @@
                     >
                         <el-button  size="mini" type="danger" slot="reference">删除</el-button>
                     </el-popconfirm>
+
+                    <el-popconfirm
+                            confirmButtonText='确定'
+                            cancelButtonText='取消'
+                            icon="el-icon-info"
+                            iconColor="red"
+                            title="确定结束吗？"
+                            @onConfirm="handleEnd(scope.row.id)"
+                    >
+                        <el-button  size="mini" type="primary" slot="reference">结束</el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
@@ -159,7 +170,14 @@
         getUserinfoByUserId,
         UserchangeRole
     } from "@/api/part3";
-    import {addAuction, deleteAuction, getAllAuctions, getAuction, updateAuction} from "@/api/part3/auction";
+    import {
+        addAuction,
+        deleteAuction,
+        endAuction,
+        getAllAuctions,
+        getAuction,
+        updateAuction
+    } from "@/api/part3/auction";
     import {timeForAuction} from "@/utils/part3";
 
     export default {
@@ -198,6 +216,24 @@
             }
         },
         methods: {
+            handleEnd(id){
+                endAuction(id,0).then(res=>{
+                    console.log("拍卖结束api成功");
+                    this.$message({
+                        showClose: true,
+                        message: '拍卖结束成功',
+                        type: 'success'
+                    });
+                    this.getAuctions(this.currentPage);
+                }).catch(err=>{
+                    console.log("拍卖结束api失败");
+                    this.$message({
+                        showClose: true,
+                        message: '拍卖结束失败',
+                        type: 'error'
+                    });
+                })
+            },
             getAuctions(currentPage,pageSize=10){
                 getAllAuctions(currentPage,pageSize).then(res=>{
                     this.tableData = res.data.list

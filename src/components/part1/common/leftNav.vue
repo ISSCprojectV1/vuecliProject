@@ -1,5 +1,4 @@
 <template>
-  <div>
 <el-row>
   <el-col>
 
@@ -9,11 +8,10 @@
             @open="handleOpen"
             @close="handleClose"
             router
-            background-color="#1479D7"
+            background-color="#4e6ef2"
             text-color="#FFFFFF"
-
-            active-text-color="#ffd04b" style="height: 100%">
-      <el-menu-item index="/trade/Dashboard" style="text-align: left">
+            active-text-color="#ffd04b" style="height: 800px">
+      <el-menu-item index="/trade/Dashboard" style="text-align: left;font-size: 20px">
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
       </el-menu-item>
@@ -21,16 +19,15 @@
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>{{routes.title}}</span>
+          <span style="font-size: 20px">{{routes.title}}</span>
         </template>
-        <el-menu-item :index="route.path" v-for="route in routes.routes" :key="route.path" style="text-align: left;padding-left: 100px">
+        <el-menu-item :index="route.path" v-for="route in routes.routes" :key="route.path" style="text-align: left;padding-left: 80px;font-size: 18px">
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>
       </el-submenu>
     </el-menu>
   </el-col>
 </el-row>
-  </div>
 </template>>
 
 <script>
@@ -51,7 +48,7 @@
             path: "/trade/riskPrediction"
           },
           {
-            title:"多模态多粒度监管服务",
+            title:"模态与粒度",
             routes: [],
             path: "/trade/Multimodal-multigranularity"
           },
@@ -70,7 +67,6 @@
       },
        mounted(){
             this.defaultActive = this.$router.currentRoute.path
-         console.log("1")
         },
     created(){
       let routes = this.$store.state.permission.routes.find(function(element) {

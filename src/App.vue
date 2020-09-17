@@ -40,4 +40,10 @@ export default {
     background-color: #f5f6f7;
     position:relative;
 
+  html {
+    min-height: 100%;
+    _height:100%;
+    height:100%;
+  }
+
 </style>

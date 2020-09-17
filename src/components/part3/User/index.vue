@@ -14,33 +14,27 @@
                 <div class="grid-content">
                     <span>ID:{{user.id}}</span><el-link style="margin-left: 400px" type="primary" @click="modify=true">修改资料</el-link>
                     <p>昵称:{{user.name}}</p>
-                    <p>性别:{{user.sex}}</p>
                     <p>邮箱:{{user.email}}</p>
-                    <p>行业:{{user.industry}}</p>
-                    <p>公司:{{user.company}}</p>
-                    <p>简介:{{user.introduction}}</p>
+                    <p>积分:{{user.score}}</p>
+                    <p>荣誉值:{{user.reputation}}</p>
                 </div>
             </el-col>
             <el-col :span="18" style="text-align: left" v-else>
-                <span>ID:{{user.id}}</span><el-link style="margin-left: 400px" type="primary" @click="modify=true">修改资料</el-link>
                 <el-form :model="user" class="form" ref="user" status-icon >
-                    <el-form-item label="昵称" prop="checkPass">
+                    <el-form-item label="ID">
+                        <el-input v-model="user.id" disabled="disabled"></el-input>
+                    </el-form-item>
+                    <el-form-item label="昵称">
                         <el-input v-model="user.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="性别" prop="checkPass">
-                        <el-input v-model="user.sex"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱" prop="checkPass">
+                    <el-form-item label="邮箱">
                         <el-input v-model="user.email"></el-input>
                     </el-form-item>
-                    <el-form-item label="行业" prop="telephone">
-                        <el-input v-model="user.telephone"></el-input>
+                    <el-form-item label="积分">
+                        <el-input v-model="user.score" disabled="disabled"></el-input>
                     </el-form-item>
-                    <el-form-item label="公司" prop="email">
-                        <el-input v-model="user.company"></el-input>
-                    </el-form-item>
-                    <el-form-item label="简介" prop="email">
-                        <el-input v-model="user.introduction"></el-input>
+                    <el-form-item label="荣誉值">
+                        <el-input v-model="user.reputation" disabled="disabled"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateForm(user)">修改</el-button>
@@ -59,6 +53,7 @@
     export default {
         name: "index",
         created(){
+            this.$emit("label","userinfo");
             getuserinfo().then((res)=>{
                 this.init(res.data.data);
                 console.log("getuserinfo success!")
@@ -77,6 +72,8 @@
                 this.user.name = data.name;
                 this.user.score = data.score;
                 this.user.email = data.email;
+                this.user.reputation = data.reputation;
+
 
             },
             updateForm(user){
@@ -87,8 +84,18 @@
                 updateuserinfo(data).then((res)=>{
                     this.init(res.data.data);
                     this.modify=false;
+                    this.$message({
+                        showClose: true,
+                        message: '修改成功',
+                        type: 'success'
+                    });
                     console.log("updateuserinfo success!")
                 }).catch(()=>{
+                    this.$message({
+                        showClose: true,
+                        message: '修改失败',
+                        type: 'error'
+                    });
                     console.log("updateuserinfo fail")
                 })
             }
@@ -98,15 +105,11 @@
             return {
                 logo:logo,
                 user:{
-                    id:1234,
-                    score:88,
-                    coin:99,
+                    id:"",
                     name:"",
-                    email:"",
-                    sex:"男",
-                    industry:"",
-                    company:"",
-                    introduction:""
+                    score:"",
+                    reputation:"",
+                    email:""
                 },
                 modify: false
             }

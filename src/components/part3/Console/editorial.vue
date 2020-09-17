@@ -14,39 +14,39 @@
                         <el-option label="类型二" value="类型二"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item
-                        label="所需积分"
-                >
-                    <el-input v-model="file.fileScore"></el-input>
-                </el-form-item>
-                <el-form-item
-                        label="资源标签"
-                        placeholder="请填入标签"
-                >
-                    <el-tag
-                            :key="tag"
-                            v-for="tag in this.dynamicTags"
-                            closable
-                            :disable-transitions="false"
-                            @close="handleClose(tag)">
-                        {{tag}}
-                    </el-tag>
-                    <el-input
-                            class="input-new-tag"
-                            v-if="inputVisible"
-                            v-model="inputValue"
-                            ref="saveTagInput"
-                            size="small"
-                            @keyup.enter.native="handleInputConfirm"
-                            @blur="handleInputConfirm"
-                    >
-                    </el-input>
-                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-                </el-form-item>
-                <el-form-item label="资源描述">
-                    <el-input type="textarea" v-model="file.fileDescription"></el-input>
-                </el-form-item>
-                <p style="color: #f9a7a7">声明：请确保您上传的内容合法合规，涉及侵权内容将会被移除，详见《资源共享规则》</p>
+<!--                <el-form-item-->
+<!--                        label="所需积分"-->
+<!--                >-->
+<!--                    <el-input v-model="file.fileScore"></el-input>-->
+<!--                </el-form-item>-->
+<!--                <el-form-item-->
+<!--                        label="资源标签"-->
+<!--                        placeholder="请填入标签"-->
+<!--                >-->
+<!--                    <el-tag-->
+<!--                            :key="tag"-->
+<!--                            v-for="tag in this.dynamicTags"-->
+<!--                            closable-->
+<!--                            :disable-transitions="false"-->
+<!--                            @close="handleClose(tag)">-->
+<!--                        {{tag}}-->
+<!--                    </el-tag>-->
+<!--                    <el-input-->
+<!--                            class="input-new-tag"-->
+<!--                            v-if="inputVisible"-->
+<!--                            v-model="inputValue"-->
+<!--                            ref="saveTagInput"-->
+<!--                            size="small"-->
+<!--                            @keyup.enter.native="handleInputConfirm"-->
+<!--                            @blur="handleInputConfirm"-->
+<!--                    >-->
+<!--                    </el-input>-->
+<!--                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="资源描述">-->
+<!--                    <el-input type="textarea" v-model="file.fileDescription"></el-input>-->
+<!--                </el-form-item>-->
+<!--                <p style="color: #f9a7a7">声明：请确保您上传的内容合法合规，涉及侵权内容将会被移除，详见《资源共享规则》</p>-->
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">提交</el-button>
                 </el-form-item>

@@ -3,11 +3,11 @@
         <div>
                     <el-upload
                             drag
-                            action="/api/upload"
+                            action="/api/uploadfile"
                             ref="upload"
                             :auto-upload=false
                             :data=form
-                            name="file"
+                            name="multipartFile"
                     >
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -21,48 +21,47 @@
                             <el-input v-model="form.fileName"></el-input>
                         </el-form-item>
                         <el-form-item label="所属类型">
-                            <el-select v-model="form.category" placeholder="请选择">
-                                <el-option label="钢铁" value="钢铁"></el-option>
-                                <el-option label="棉花" value="棉花"></el-option>
+                            <el-select v-model="form.auctionId" placeholder="请选择">
+                                <el-option v-for="auction in auctions" :key="auction.auctionId" :label="auction.auctionName" :value="auction.auctionId"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item
-                                label="所需积分"
-                        >
-                            <el-input v-model="form.fileScore"></el-input>
-                        </el-form-item>
-                            <el-form-item
-                                    label="资源标签"
-                                    placeholder="请填入标签"
-                            >
-                                <el-tag
-                                        :key="tag"
-                                        v-for="tag in dynamicTags"
-                                        closable
-                                        :disable-transitions="false"
-                                        @close="handleClose(tag)">
-                                    {{tag}}
-                                </el-tag>
-                                <el-input
-                                        class="input-new-tag"
-                                        v-if="inputVisible"
-                                        v-model="inputValue"
-                                        ref="saveTagInput"
-                                        size="small"
-                                        @keyup.enter.native="handleInputConfirm"
-                                        @blur="handleInputConfirm"
-                                >
-                                </el-input>
-                                <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-                            </el-form-item>
-                        <el-form-item label="资源描述">
-                            <el-input type="textarea" v-model="form.fileDescription"></el-input>
-                        </el-form-item>
-                        <el-form-item label="">
-                            <el-radio-group>
-                                <el-radio label="同意数据共享规则"></el-radio>
-                            </el-radio-group>
-                        </el-form-item>
+<!--                        <el-form-item-->
+<!--                                label="所需积分"-->
+<!--                        >-->
+<!--                            <el-input v-model="form.fileScore"></el-input>-->
+<!--                        </el-form-item>-->
+<!--                            <el-form-item-->
+<!--                                    label="资源标签"-->
+<!--                                    placeholder="请填入标签"-->
+<!--                            >-->
+<!--                                <el-tag-->
+<!--                                        :key="tag"-->
+<!--                                        v-for="tag in dynamicTags"-->
+<!--                                        closable-->
+<!--                                        :disable-transitions="false"-->
+<!--                                        @close="handleClose(tag)">-->
+<!--                                    {{tag}}-->
+<!--                                </el-tag>-->
+<!--                                <el-input-->
+<!--                                        class="input-new-tag"-->
+<!--                                        v-if="inputVisible"-->
+<!--                                        v-model="inputValue"-->
+<!--                                        ref="saveTagInput"-->
+<!--                                        size="small"-->
+<!--                                        @keyup.enter.native="handleInputConfirm"-->
+<!--                                        @blur="handleInputConfirm"-->
+<!--                                >-->
+<!--                                </el-input>-->
+<!--                                <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>-->
+<!--                            </el-form-item>-->
+<!--                        <el-form-item label="资源描述">-->
+<!--                            <el-input type="textarea" v-model="form.fileDescription"></el-input>-->
+<!--                        </el-form-item>-->
+<!--                        <el-form-item label="">-->
+<!--                            <el-radio-group>-->
+<!--                                <el-radio label="同意数据共享规则"></el-radio>-->
+<!--                            </el-radio-group>-->
+<!--                        </el-form-item>-->
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit(form)">提交</el-button>
                         </el-form-item>
@@ -72,19 +71,23 @@
 </template>
 
 <script>
+    import {getAuctionNames} from "@/api/part3/auction";
+
     export default {
         name: "mainuploadResource",
         created(){
-            this.$emit("label","uploadResource")
+            this.$emit("label","uploadResource");
+            this.getAuctions();
             },
         data(){
             return {
+                auctions:[],
                 form:{
                     fileName:"",
-                    category:"",
-                    fileScore:"",
-                    fileTags:"",
-                    fileDescription:"",
+                    auctionId:"",
+                    // fileScore:"",
+                    // fileTags:"",
+                    // fileDescription:"",
                     //agree:"",
                 },
                 dynamicTags: [],
@@ -93,11 +96,17 @@
             }
         },
         methods:{
+            getAuctions(){
+                getAuctionNames().then(res=>{
+                    this.auctions = res.data.auctionNames;
+                    console.log(res.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
+            },
             onSubmit(form){
-                form.fileTags = this.dynamicTags.toString();
-                console.log(form);
                 this.$refs.upload.submit();
-                this.$router.push('/console/upload');
+                //this.$router.push('/console/upload');
             },
             handleClose(tag) {
                 this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);

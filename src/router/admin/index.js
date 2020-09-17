@@ -4,6 +4,7 @@ import role from "@/components/admin/role";
 import menu from "@/components/admin/menu";
 import auction from "@/components/admin/auction";
 import data from "@/components/admin/data";
+import score from "@/components/admin/score";
 
 
 let routes = [{
@@ -29,6 +30,10 @@ let routes = [{
         {
             path:'/admin/data',
             component: data
+        },
+        {
+            path:'/admin/score',
+            component: score
         }
 
 

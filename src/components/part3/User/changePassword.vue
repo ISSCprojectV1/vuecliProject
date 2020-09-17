@@ -32,6 +32,7 @@
     export default {
         name: "changePassword",
         created(){
+            this.$emit("label","password");
             getuserinfo().then((res)=>{
                 this.user.username = res.data.data.accountId
                 this.user.id = res.data.data.id

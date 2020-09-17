@@ -44,6 +44,14 @@ export function getAuctionRule() {
     return request.get('/getAuctionRule');
 }
 
+export function endAuction(auctionId,status) {
+    return request.get('/admin/changeAucstatus/'+auctionId+"/"+status);
+}
+
+export function getsettlement(currentPage,pageSize) {
+    return request.get('/admin/getsettlement/'+currentPage+'/'+pageSize);
+}
+
 
 
 

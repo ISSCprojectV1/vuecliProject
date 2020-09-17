@@ -61,13 +61,14 @@ export function handleOption(rawData){
     console.log(varPredictVol)
 
     let myoption=  {
-        legend:['Diff','Volatility','PredictVol'],
-        title:"Price Conditional Volatility Graph",
+        //legend:['Diff','Volatility','PredictVol'],
+        legend:['对数收益率','历史收益率波动','预测收益率波动'],
+        title:"价格收益率波动率图",
         xAxis:timexAxis,
         data:{
-            'Diff':varDiff,
-            'Volatility':varVolatility,
-            'PredictVol':varPredictVol
+            '对数收益率':varDiff,
+            '历史收益率波动':varVolatility,
+            '预测收益率波动':varPredictVol
         }
     };
     return myoption

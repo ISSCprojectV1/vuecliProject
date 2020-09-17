@@ -9,14 +9,13 @@
                 <sidebar>
                 </sidebar>
             </el-aside>
-            <el-main >
+            <el-main>
                 <el-tabs v-model="activeName" v-show="label">
                     <el-tab-pane name="first">
                         <span slot="label">{{label}}</span>
                     </el-tab-pane>
                 </el-tabs>
                 <router-view @label="setLabel"></router-view>
-
             </el-main>
         </el-container>
     </el-container>
@@ -43,12 +42,14 @@
                     this.label = "上传明细";
                 else if (label==="score")
                     this.label = "积分明细";
-                else if (label==="download")
-                    this.label = "下载明细";
+                else if (label==="index")
+                    this.label = "首页";
+                else if (label==="userinfo")
+                    this.label = "我的信息";
+                else if (label==="password")
+                    this.label = "修改密码";
                 else if (label==="uploadResource")
-                    this.label = "上传资源";
-                else if (label==="editorial")
-                    this.label = "上传资源";
+                    this.label = "上传资源"
             }
         }
 

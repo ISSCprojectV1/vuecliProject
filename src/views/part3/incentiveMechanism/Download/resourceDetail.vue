@@ -4,16 +4,14 @@
             <el-header>
                 <Header></Header>
             </el-header>
-            <el-header>
-                <subHeader></subHeader>
-            </el-header>
             <el-container>
                 <el-main>
+                    <announcement></announcement>
                     <router-view :file="file"></router-view>
                 </el-main>
-                <el-aside>
-                    <profile-bar></profile-bar>
-                </el-aside>
+<!--                <el-aside>-->
+<!--                    <profile-bar></profile-bar>-->
+<!--                </el-aside>-->
             </el-container>
         </el-container>
     </div>
@@ -21,16 +19,16 @@
 
 <script>
     import Header from "@/components/part3/Common/header";
-    import subHeader from "@/components/part3/Download/header";
-    import profileBar from "@/components/part3/Common/profileBar";
+    //import profileBar from "@/components/part3/Common/profileBar";
+    import announcement from "@/components/part3/Common/announcement";
     import {getfileDetail} from "@/api/part3";
     import {timestampToTime} from "@/utils/part3";
     export default {
         name: "resourceDetail",
         components:{
             Header,
-            subHeader,
-            profileBar
+            //profileBar
+            announcement
         },
         data(){
             return{

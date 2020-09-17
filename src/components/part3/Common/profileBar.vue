@@ -5,38 +5,41 @@
             <img :src="logoimg" class="img">
         </el-col>
         <el-col :span="18">
-            <span>{{owner.name}}</span>
-            <span class="label">下载积分:</span>
-            <span class="score">{{owner.score}}</span>
-            <br><img :src="down1" class="down">
+            <div class="grid-content">
+                <span>ID:{{user.id}}</span>
+                <p>昵称:{{user.name}}</p>
+                <p>邮箱:{{user.email}}</p>
+                <p>积分:{{user.score}}</p>
+                <p>荣誉值:{{user.reputation}}</p>
+            </div>
         </el-col>
-    </el-row>
-        <el-row>
-            <el-col>
-                    <el-popover
-                            placement="top-start"
-                            title="勋章说明"
-                            width="200"
-                            trigger="hover"
-                            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-                        <img :src="badge1" class="badge" slot="reference">
-                    </el-popover>
-                <el-popover
-                        placement="top-start"
-                        title="勋章说明"
-                        width="200"
-                        trigger="hover"
-                        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-                    <img :src="badge3" class="badge" slot="reference">
-                </el-popover>
+<!--    </el-row>-->
+<!--        <el-row>-->
+<!--            <el-col>-->
+<!--                    <el-popover-->
+<!--                            placement="top-start"-->
+<!--                            title="勋章说明"-->
+<!--                            width="200"-->
+<!--                            trigger="hover"-->
+<!--                            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">-->
+<!--                        <img :src="badge1" class="badge" slot="reference">-->
+<!--                    </el-popover>-->
+<!--                <el-popover-->
+<!--                        placement="top-start"-->
+<!--                        title="勋章说明"-->
+<!--                        width="200"-->
+<!--                        trigger="hover"-->
+<!--                        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">-->
+<!--                    <img :src="badge3" class="badge" slot="reference">-->
+<!--                </el-popover>-->
 
-            </el-col>
+<!--            </el-col>-->
         </el-row>
-        <el-row>
-            <el-col>
-                <div class="upload"><a style="color: white" href="/console/uploadResources">上传资源赚积分,得勋章</a></div>
-            </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--            <el-col>-->
+<!--                <div class="upload"><a style="color: white" href="/console/uploadResources">上传资源赚积分,得勋章</a></div>-->
+<!--            </el-col>-->
+<!--        </el-row>-->
 
 
     </div>
@@ -47,9 +50,24 @@
     import badge1 from "@/assets/part3/badge1.png"
     import badge3 from "@/assets/part3/badge3.png"
     import down1 from "@/assets/part3/down1.png"
+    import {getuserinfo} from "@/api/part3";
 
     export default {
         name: "profileBar",
+        created(){
+            getuserinfo().then((res)=>{
+                let data = res.data.data;
+                this.user.id = data.id;
+                this.user.name = data.name;
+                this.user.score = data.score;
+                this.user.email = data.email;
+                this.user.reputation = data.reputation;
+
+                console.log(data)
+            }).catch(()=>{
+                console.log("getuserinfo fail")
+            });
+        },
         data(){
             return{
                 logoimg:userprofile,
@@ -59,6 +77,12 @@
                 owner:{
                     name:"AS-LLX",
                     score:75
+                },
+                user:{
+                    id:"",
+                    name:"",
+                    score:"",
+                    email:""
                 }
             }
         },

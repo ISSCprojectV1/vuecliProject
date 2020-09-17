@@ -122,7 +122,6 @@
     import echart from "echarts";
 
     export default {
-
         name: "relationQuery",
         data() {
             return {

@@ -18,6 +18,11 @@ let routes = [
         name: "userTaskInput",
         component:() => import("@/components/part1/transactionProject/taskDictionary/userTaskInput")
     },
+    {
+        path: "/notification",
+        name: "notification",
+        component:() => import("@/components/part3/Common/notification")
+    },
 
 
     // {

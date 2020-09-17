@@ -1,5 +1,6 @@
 <template>
     <div class="searchBar">
+        <announcement></announcement>
         <el-row>
             <el-col :span="24">
                 <div>
@@ -28,8 +29,13 @@
 </template>
 
 <script>
+    import announcement from "@/components/part3/Common/announcement";
+
     export default {
         name: "searchBar",
+        components:{
+            announcement
+        },
         data(){
             return {
                 searchWord:{

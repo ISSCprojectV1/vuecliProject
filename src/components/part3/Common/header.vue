@@ -1,16 +1,17 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="23">
+            <el-col :span="18">
                 <el-menu :router="true" class="el-menu" mode="horizontal"
                  @select="handleSelect"
-                 background-color="#1479D7"
+                 background-color="#4e6ef2"
                  text-color="#FFFFFF"
                  active-text-color="#ffd04b">
-                    <el-menu-item index="/trade/Dashboard"><img :src="logoimg" class="img"> 大宗商品交易市场监管服务——模式资源调配与数据关联分析系统 </el-menu-item>
-                    <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
-                    <el-menu-item index="/console/index">个人中心</el-menu-item>
-                    <el-menu-item index="/auction">拍卖中心</el-menu-item>
+                    <el-menu-item index="/trade/Dashboard" style="font-size: 18px;padding: 0">
+                        <img :src="logoimg" class="img" >
+                        大宗商品交易市场监管服务模式与资源调配系统
+                    </el-menu-item>
+
 <!--                    <el-submenu index="2">-->
 <!--                        <template slot="title">拍卖中心</template>-->
 <!--                        <el-menu-item index="/auction">下载数据</el-menu-item>-->
@@ -19,11 +20,11 @@
                 </el-menu>
 
             </el-col>
-            <el-col :span="1">
+            <el-col :span="6">
             <el-menu :router="true"
                      class="el-menu"
                      mode="horizontal"
-                     background-color="#1479D7"
+                     background-color="#4e6ef2"
                      text-color="#FFFFFF"
                      active-text-color="#ffd04b">
 <!--                <el-menu-item >-->
@@ -51,10 +52,17 @@
 <!--                        选项3<el-badge class="mark" :value="1" />-->
 <!--                    </el-menu-item>-->
 <!--                </el-submenu>-->
+                <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
+                <el-menu-item index="/console/index">个人中心</el-menu-item>
+                <el-menu-item index="/auction">拍卖中心</el-menu-item>
                 <el-submenu index="/console/index">
                  <template slot="title"><img :src="userimg" class="img userprofile"></template>
-                <el-menu-item index="/console/index">个人中心</el-menu-item>
-                <el-button type="text" @click="logOut">登出</el-button>
+                    <el-menu-item index="/console/index">
+                        个人中心
+                    </el-menu-item>
+                    <el-menu-item @click="logOut">
+                        <el-button type="text">登出</el-button>
+                    </el-menu-item>
                 </el-submenu>
             </el-menu>
             </el-col>
@@ -66,7 +74,7 @@
 </template>
 
 <script>
-    import logoimg from "@/assets/part3/seu.png"
+    import  logoimg from "@/assets/part3/seu.png"
     import userprofile from "@/assets/part3/userprofile.jpg"
     import {removeToken} from "@/utils/auth"
 
@@ -92,8 +100,8 @@
 
 <style scoped lang="stylus">
     .img{
-        height 40px;
-        width 40px;
+        height 59px;
+        width 50px;
     }
     .userprofile{
         border-radius:50%;

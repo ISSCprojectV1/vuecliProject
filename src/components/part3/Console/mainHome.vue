@@ -3,6 +3,8 @@
         <div class="announcement">
             <span class="announcement"> <i class="el-icon-bell"></i> <a href="/notification">公告：《数据共享规则》</a></span>
         </div>
+    <div>
+        <announcement></announcement>
         <div class="block">
             <profile-bar style="border: 0px"></profile-bar>
         </div>
@@ -20,27 +22,28 @@
                 </li>
                 <li>
                     <span>
-                        <i class="el-icon-download"></i><el-link @click="gotodownload">下载数据</el-link>
+                        <i class="el-icon-user"></i><el-link @click="gotouserinfo">个人信息</el-link>
                     </span>
                 </li>
                 <li>
                     <span>
-                        <i class="el-icon-wallet"></i><el-link @click="gotouserinfo">收益中心</el-link>
+                        <i class="el-icon-wallet"></i><el-link @click="gotoscore">积分明细</el-link>
                     </span>
                 </li>
             </ul>
         </div>
-
     </div>
-
+    </div>
 </template>
 
 <script>
     import profileBar from "@/components/part3/Download/profileBar";
+    import announcement from "@/components/part3/Common/announcement";
     export default {
         name: "mainHome",
         components:{
-            profileBar
+            profileBar,
+            announcement
         },
         created(){
             this.$emit("label","")
@@ -61,10 +64,10 @@
         methods:
             {
                 gotouserinfo(){
-                    this.$router.push('/userinfo')
+                    this.$router.push('/console/userinfo')
                 },
-                gotodownload(){
-                    this.$router.push('/download')
+                gotoscore(){
+                    this.$router.push('/console/manage/score')
                 },
                 gotoupload(){
                     this.$router.push('/console/uploadResources')
@@ -74,10 +77,6 @@
 </script>
 
 <style scoped lang="stylus">
-    .announcement
-        padding  10px
-        background #f9f9f9
-        text-align left
 
     .block
         padding 10px

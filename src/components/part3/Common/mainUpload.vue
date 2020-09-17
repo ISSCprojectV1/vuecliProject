@@ -1,13 +1,15 @@
 <template>
     <div style="text-align: left" id="diceng">
-        <ul>
-            <li v-for="item in filterTabs" :key="item.label">
-                <span>
-                    <a @click="changeFilter(item.state)">{{item.label}}</a>
-                </span>
-            </li>
-        </ul>
-        <el-divider></el-divider>
+<!--        <ul>-->
+<!--            <li v-for="item in filterTabs" :key="item.label">-->
+<!--                <span>-->
+<!--                    <a @click="changeFilter(item.state)">{{item.label}}</a>-->
+<!--                </span>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--        <el-divider></el-divider>-->
+    <div style="text-align: left">
+
     <el-row v-for="item in filterResources" :key="item.id" class="elrow" >
         <el-col :span="20">
             <div class="mainResource">
@@ -52,6 +54,7 @@
                     :total="total">
             </el-pagination>
         </div>
+    </div>
     </div>
 </template>
 

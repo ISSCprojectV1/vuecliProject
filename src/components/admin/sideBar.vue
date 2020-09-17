@@ -24,6 +24,9 @@
             <el-menu-item index="/admin/auction">
                 拍卖管理
             </el-menu-item >
+            <el-menu-item index="/admin/score">
+                积分管理
+            </el-menu-item >
             <el-menu-item index="/admin/data">
                 数据管理
             </el-menu-item >
