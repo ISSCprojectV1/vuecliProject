@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="diceng">
         <el-row>
             <el-col :span="8">
                 <el-form>
@@ -108,6 +108,14 @@
 
     export default {
         name: "dataquery",
+      mounted() {
+        let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+        let announcement=document.getElementById("announcement");
+        console.log(tiankong)
+      },
         methods:{
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);

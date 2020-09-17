@@ -1,7 +1,13 @@
 <template>
-    <div>
+    <div class="dashboard-editor-container"  id ="diceng">
         <div id="force" style="width: 500px;height: 500px"></div>
+      <div class="" style="height: 800px">
+
+
+
+      </div>
     </div>
+
 </template>
 
 <script>
@@ -17,6 +23,8 @@
                 console.log("getGroup fail")
             });
             this.drawForce();
+          let tiankong= document.getElementById("diceng");
+          tiankong.style.height=window.innerHeight+"px"
         },
         methods: {
             drawForce() {
@@ -233,5 +241,11 @@
 </script>
 
 <style scoped>
+.dashboard-editor-container {
+  padding: 32px;
 
+  position: relative;
+
+
+}
 </style>

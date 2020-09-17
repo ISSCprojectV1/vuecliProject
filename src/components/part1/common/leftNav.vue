@@ -1,4 +1,5 @@
 <template>
+  <div>
 <el-row>
   <el-col>
 
@@ -10,7 +11,9 @@
             router
             background-color="#1479D7"
             text-color="#FFFFFF"
-            active-text-color="#ffd04b">
+
+            active-text-color="#ffd04b" style="height: 100%">
+
       <el-menu-item index="/trade/Dashboard" style="text-align: left">
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
@@ -28,6 +31,7 @@
     </el-menu>
   </el-col>
 </el-row>
+  </div>
 </template>>
 
 <script>

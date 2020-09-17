@@ -1,5 +1,8 @@
 <template>
+  <div style="height: 100%">
     <el-menu
+        style="height: 100%"
+            ref="caidan"
             :default-active="defaultActive"
             class="el-menu-vertical-demo"
             @open="handleOpen"
@@ -25,12 +28,14 @@
         </el-submenu>
 
     </el-menu>
+  </div>
 </template>
 
 <script>
     export default {
         methods: {
             handleOpen(key, keyPath) {
+
                 console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
@@ -38,10 +43,25 @@
             },
             test(){
                 console.log("test")
-            }
+            },
+          resetHeight() {
+            return new Promise((resolve, reject) => {
+              this.tableH = 0
+              resolve()
+            })
+          },
+          // 设置table高度
+          fetTableHeight() {
+            this.resetHeight().then(res => {
+              this.tableH = this.$refs.tableWrapper.getBoundingClientRect().height - 10
+            })
+          }
         },
         data(){
             return{
+
+                tableH: 0,
+
                 defaultActive:"/console/score",
                 accessRoutes:[
                     {
@@ -60,9 +80,17 @@
         },
         mounted(){
             this.defaultActive = this.$router.currentRoute.path
+          let t=document.getElementsByClassName("el-menu-vertical-demo")
+          console.log(t[0])
+          let height=window.innerHeight
+          console.log(height)
+          console.log(this.$refs.caidan.$el.clientHeight)
+         // this.fetTableHeight();
         },
         created(){
-            let routes = this.$store.state.permission.routes.find(function(element) {
+
+
+          let routes = this.$store.state.permission.routes.find(function(element) {
                 return element.path === "/console";
             }).children;
             console.log(routes)
@@ -75,6 +103,12 @@
 </script>
 
 <style scoped>
+body,html{
+  margin: 0;
+  width: 100%;
+  height: 100%;
+overflow: hidden;
+}
     .el-icon-arrow-down:before {
         content: "\e6df";
         color: #ffffff;

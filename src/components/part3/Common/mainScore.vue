@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="diceng">
     <el-table
             :data="tableData"
             style="width: 100%">
@@ -53,6 +53,14 @@
         created(){
             this.$emit("label","score")
         },
+      mounted() {
+        let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+        let announcement=document.getElementById("announcement");
+        console.log(tiankong)
+      },
     }
 </script>
 

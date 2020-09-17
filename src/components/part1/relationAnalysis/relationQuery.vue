@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="diceng">
         <h2>关联分析</h2>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="查询商品">
@@ -122,6 +122,7 @@
     import echart from "echarts";
 
     export default {
+
         name: "relationQuery",
         data() {
             return {
@@ -139,8 +140,14 @@
                 echart3:"",
             }
         },
-        mounted(){
-        },
+      mounted() {
+        let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+        let announcement=document.getElementById("announcement");
+        console.log(tiankong)
+      },
         methods: {
             drawecharts1(data){
                 let mySeries=[]

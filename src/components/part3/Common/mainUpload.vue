@@ -1,5 +1,5 @@
 <template>
-    <div style="text-align: left">
+    <div style="text-align: left" id="diceng">
         <ul>
             <li v-for="item in filterTabs" :key="item.label">
                 <span>
@@ -83,6 +83,14 @@
                 })
             }
         },
+      mounted() {
+        let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+        let announcement=document.getElementById("announcement");
+        console.log(tiankong)
+      },
         computed:{
             filterResources:function () {
                 let state = this.state;

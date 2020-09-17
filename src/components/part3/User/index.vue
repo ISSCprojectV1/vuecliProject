@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dashboard-editor-container" id="diceng">
         <el-row class="row1">
 
             <el-col :span="24"><h1>个人资料 </h1></el-col>
@@ -67,7 +67,11 @@
             });
 
         },
-        methods:{
+      mounted() {
+       let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+      },
+      methods:{
             init(data){
                 this.user.id = data.id;
                 this.user.name = data.name;
@@ -111,6 +115,13 @@
 </script>
 
 <style scoped lang="stylus">
+.dashboard-editor-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
+  position: relative;
+
+
+}
     .row1
         border-bottom: 1px solid #e0e0e0
         line-height 20px

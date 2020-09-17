@@ -50,14 +50,22 @@
             }
         },
         created(){
-            console.log("路由");
+          let height=window.innerHeight
+          console.log(height)
+          console.log(document.getElementById("sidebar").style.height)
+
+          console.log("路1由");
             let routes = this.$store.state.permission.routes;
             this.viewRoutes = routes.find(function(element) {
                 return element.path === "/userinfo";
             }).children;
             console.log(this.viewRoutes)
+
         },
-        methods:{
+      mounted() {
+
+      },
+      methods:{
             handleOpen(key, keyPath) {
                 console.log(key,keyPath)
             },

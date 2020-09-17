@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="dashboard-editor-container"   id ="diceng">
         <el-form :model=user style="width: 500px">
             <el-form-item label-width="100px">
                     <span slot="label">
@@ -40,7 +40,11 @@
             });
 
         },
-        data(){
+      mounted() {
+        let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+          },
+      data(){
             return {
                 user:{
                     id:"",
@@ -73,5 +77,11 @@
 </script>
 
 <style scoped>
+.dashboard-editor-container {
+  padding: 32px;
 
+  position: relative;
+
+
+}
 </style>

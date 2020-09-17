@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id ="diceng">
         <div class="announcement">
             <span class="announcement"> <i class="el-icon-bell"></i> <a href="/notification">公告：《数据共享规则》</a></span>
         </div>
@@ -30,7 +30,9 @@
                 </li>
             </ul>
         </div>
+
     </div>
+
 </template>
 
 <script>
@@ -43,7 +45,15 @@
         created(){
             this.$emit("label","")
         },
-        data(){
+      mounted() {
+       let tiankong= document.getElementById("diceng");
+       tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+       let announcement=document.getElementById("announcement");
+       console.log(tiankong)
+      },
+      data(){
             return{
                 part:"first"
             }

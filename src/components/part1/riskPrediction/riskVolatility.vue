@@ -1,5 +1,6 @@
 <template>
-    <div class="box" v-loading="loading" element-loading-text="拼命加载中">
+    <div id="diceng" class="box" v-loading="loading" element-loading-text="拼命加载中">
+
     </div>
 </template>
 
@@ -15,6 +16,14 @@
                 loading:true,
             }
         },
+      mounted() {
+        let tiankong= document.getElementById("index");
+        tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+        let announcement=document.getElementById("announcement");
+        console.log(tiankong)
+      },
         created(){
                 let varDiff=[];
                 let varPredictVol=[];
@@ -39,19 +48,19 @@
                     console.log("数据到位")
                     this.echarts = echart.init(document.querySelector(".box"));
                     let option = {
-                         title: {
-                       text: '商品收盘价格走势图',
-                       textStyle:{
-                           fontSize:20
-                       },
-                       right:'20%'
-                       },
+                      title: {
+                        text: '商品收盘价格走势图',
+                        textStyle:{
+                          fontSize:20
+                        },
+                        right:'20%'
+                      },
                         tooltip: {
                             trigger: 'axis'
                         },
                         legend: {
                             data: [],
-                            right:'25%',
+                          right:'25%',
                             top:'6%'
                         },
                         grid: {
@@ -123,10 +132,7 @@
 </script>
 
 <style lang="stylus" scoped>
-    .box{
-        width 600px
-        height 500px
-        position: absolute
-        left:60%
-    }
+    .box
+        width 1000px
+        height 600px
 </style>
