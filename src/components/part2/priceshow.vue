@@ -11,8 +11,6 @@
                                      :options="options"
                                      :props="{ multiple: true }"
                                      filterable></el-cascader>
-                    </el-form-item>
-                    <el-form-item>
                         <el-button type="primary" @click="ok">确定</el-button>
                     </el-form-item>
                 </el-form>

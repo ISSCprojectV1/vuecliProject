@@ -1,6 +1,5 @@
 <template>
     <div style="width: 100%;height: 800px">
-        <h2 class="red"> 时间粒度 </h2>
         <div class="block" style="height:80px;text-align:left">
             <span class="demonstration">选择你需要监控的时间范围：   </span>
             <el-date-picker

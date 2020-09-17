@@ -2,7 +2,7 @@
     <div id="app">
         <h2> 监控时间粒度推荐 </h2>
         <div class="block" style="height:80px;text-align:left">
-            <span class="demonstration">系统推荐的时间粒度范围：   </span>
+            <span class="demonstration">推荐的时间粒度：   </span>
             <el-date-picker
                     v-model="value1"
                     type="datetimerange"
@@ -30,6 +30,7 @@
             <i class="el-icon-right"></i>
             <el-button class="btn1" type="primary" round>提交</el-button>
         </div>
+        <el-button type="primary" @click="goTo()">限定时间内需响应任务数</el-button>
     </div>
 </template>
 
@@ -68,6 +69,12 @@
                 value1: [new Date(2020, 6, 10, 0, 0), new Date(2020, 7, 11, 0, 0)],
                 value2: ''
             };
+        },
+        methods: {
+            goTo() {
+                //直接跳转
+                this.$router.push('/trade/Multimodal-multigranularity/timeGranularity');
+            },
         }
     }
 </script>
