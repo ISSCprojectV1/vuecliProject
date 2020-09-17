@@ -36,9 +36,6 @@
           let height=window.innerHeight;
           console.log(height);
         let left=document.getElementById("changdu")
-console.log(this.$refs.changdu);
-        console.log(left )
-
       }
 
 
