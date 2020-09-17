@@ -24,6 +24,30 @@
               show-checkbox
               @check-change="handleCheckChange">
       </el-tree>
+    <div>
+      <h2> </h2>
+      <el-button type="primary" @click="dialogFormVisible = true">添加新品类</el-button>
+      <el-dialog title="添加新品类" :visible.sync="dialogFormVisible">
+        <el-form ref="form" :model="form">
+          <el-form-item label="品名名称">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+          <el-form-item label="品名代码">
+            <el-input v-model="form.id"></el-input>
+          </el-form-item>
+          <el-form-item label="品名单位">
+            <el-input v-model="form.unit"></el-input>
+          </el-form-item>
+          <el-form-item label="分类代码">
+            <el-input v-model="form.idcate"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button @click="dialogFormVisible = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
     </el-aside>
     <el-container style="height: 800px; border: 10px solid #eee">
       <el-header style="text-align: center">
@@ -69,6 +93,15 @@ export default {
   },
   data() {
     return {
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: '',
+        id: '',
+        idcate:'',
+        unit:'',
+      },
+      formLabelWidth: '120px',
       filterText: '',
       data: [{
         id: 1000,
