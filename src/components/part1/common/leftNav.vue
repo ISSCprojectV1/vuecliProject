@@ -13,7 +13,6 @@
             text-color="#FFFFFF"
 
             active-text-color="#ffd04b" style="height: 100%">
-
       <el-menu-item index="/trade/Dashboard" style="text-align: left">
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
@@ -71,6 +70,7 @@
       },
        mounted(){
             this.defaultActive = this.$router.currentRoute.path
+         console.log("1")
         },
     created(){
       let routes = this.$store.state.permission.routes.find(function(element) {
