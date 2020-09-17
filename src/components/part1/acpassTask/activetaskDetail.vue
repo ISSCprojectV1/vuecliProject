@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="diceng">
 
       <div class="title">
         <div style="display: inline-block; margin-bottom:20px;font-size: 30px;" >  多模态多粒度监管与服务模式——主被动模态与空间粒度</div>
@@ -99,6 +99,14 @@
             this.Activetradedetailinfo(id,1,10);
         },
         mounted(){
+
+            let tiankong= document.getElementById("diceng");
+            tiankong.style.height=window.innerHeight+"px"
+
+            console.log(tiankong.style.height)
+            let announcement=document.getElementById("announcement");
+            console.log(tiankong)
+
             activetradegraph(1).then(res=>{
                 let data=res.data.data;
                 let nodes=[];

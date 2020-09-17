@@ -1,5 +1,5 @@
 <template>
-  <div class="dormitory">
+  <div class="dormitory" id="diceng">
         <div class="title">
       <div style="display: inline-block; margin-bottom:20px" >监管任务查询列表</div>
     </div>
@@ -139,6 +139,7 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
     created(){
       this.getData();
     },
+
     methods: {
       loadAll() {
         // 获取表格数据
@@ -303,6 +304,12 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
     },
     mounted() {
       this.taskLists = this.loadAll();
+      let tiankong= document.getElementById("diceng");
+      tiankong.style.height=window.innerHeight+"px"
+
+      console.log(tiankong.style.height)
+      let announcement=document.getElementById("announcement");
+      console.log(tiankong)
     },
   }
 </script>

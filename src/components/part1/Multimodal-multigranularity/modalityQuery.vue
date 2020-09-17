@@ -1,5 +1,5 @@
 <template>
-  <div class="dormitory">
+  <div id="diceng" class="dormitory">
         <div class="title">
       <div style="display: inline-block; margin-bottom:30px">多模态 查询列表</div>
     </div>
@@ -68,6 +68,14 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
     components: {
       modalityInput,
       modalityAllocation
+    },
+    mounted() {
+      let tiankong= document.getElementById("diceng");
+      tiankong.style.height=window.innerHeight+"px"
+
+      console.log(tiankong.style.height)
+      let announcement=document.getElementById("announcement");
+      console.log(tiankong)
     },
 
     data () {
