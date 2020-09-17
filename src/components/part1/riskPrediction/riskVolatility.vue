@@ -17,7 +17,7 @@
             }
         },
       mounted() {
-        let tiankong= document.getElementById("index");
+        let tiankong= document.getElementById("diceng");
         tiankong.style.height=window.innerHeight+"px"
 
         console.log(tiankong.style.height)
