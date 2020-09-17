@@ -1,5 +1,10 @@
 <template>
     <div>
+
+      <div class="title">
+        <div style="display: inline-block; margin-bottom:20px;font-size: 30px;" >  多模态多粒度监管与服务模式——主被动模态与空间粒度</div>
+      </div>
+
         <el-button type="primary" @click="dialogFormAddInit">添加新任务</el-button>
         <el-table
                 :data="tableData"

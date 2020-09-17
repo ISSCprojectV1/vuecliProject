@@ -1,5 +1,10 @@
 <template>
     <div>
+
+      <div class="title">
+        <div style="display: inline-block; margin-bottom:20px;font-size: 30px;" > 多模态多粒度监管与服务模式——主被动模态与空间粒度</div>
+      </div>
+
         <div class="box" v-loading="loading" element-loading-text="拼命加载中" v-show="show"> </div>
         <el-table
                 :data="Data"
