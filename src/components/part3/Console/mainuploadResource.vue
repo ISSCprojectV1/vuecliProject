@@ -1,5 +1,5 @@
 <template>
-    <div class="all">
+    <div class="all" id="diceng">
         <div>
                     <el-upload
                             drag
@@ -95,6 +95,14 @@
                 inputValue: ''
             }
         },
+      mounted() {
+        let tiankong= document.getElementById("diceng");
+        tiankong.style.height=window.innerHeight+"px"
+
+        console.log(tiankong.style.height)
+        let announcement=document.getElementById("announcement");
+        console.log(tiankong)
+      },
         methods:{
             getAuctions(){
                 getAuctionNames().then(res=>{

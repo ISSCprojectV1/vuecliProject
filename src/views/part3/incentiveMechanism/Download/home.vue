@@ -44,6 +44,12 @@
             filterBar,
             profileBar
         },
+      mounted() {
+        let tiankong= document.getElementById("main");
+        tiankong.style.height=window.innerHeight+"px"
+        console.log( tiankong.style.height)
+
+      },
         data(){
             return{
                 filterTab:"test",
