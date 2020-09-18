@@ -8,6 +8,8 @@
                             :auto-upload=false
                             :data=form
                             name="multipartFile"
+                            :on-error="uploadError"
+                            :on-success="uploadSuccess"
                     >
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -104,6 +106,18 @@
         console.log(tiankong)
       },
         methods:{
+            uploadSuccess(){
+                this.$message({
+                    message: '上传成功',
+                    type: 'success',
+                })
+            },
+            uploadError(){
+                this.$message({
+                    message: '上传失败',
+                    type: 'error'
+                });
+            },
             getAuctions(){
                 getAuctionNames().then(res=>{
                     this.auctions = res.data.auctionNames;

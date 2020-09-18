@@ -57,9 +57,9 @@
                     <el-table-column label="关联交易">
                         <template slot-scope="scope">
                             <el-popover
-                                    placement="top-start"
+                                    placement="left-start"
                                     width="1000"
-                                    trigger="hover"
+                                    trigger="click"
                                     @show="Tradesimilar(scope.row)"
                             >
                                 <h3>交易关联分析表</h3>
@@ -90,9 +90,9 @@
                                     </el-table-column>
                                 </el-table>
                                 <h3>交易关联图</h3>
-                                <div id="echart3" style="width: 1000px;height: 600px;text-align: center"></div>
+                                <div id="echart3" style="width: 1000px;height: 600px;text-align: center" ref="echart3"></div>
 
-                                <el-button slot="reference">查看</el-button>
+                                <el-button slot="reference">点击查看</el-button>
                             </el-popover>
                             <!--                            <el-button-->
                             <!--                                    @click="Tradesimilar(scope.row)">查看-->
@@ -339,6 +339,8 @@
             },
             drawecharts3(data){
                 this.echart3 = echart.init(document.querySelector("#echart3"));
+                //this.echart3 = echart.init(this.$refs.echart3)
+                console.log(document.querySelector("#echart3"))
                 let categories=[]
                 let tids=[]
                 for (let i = 0; i < data.length; i++) {
@@ -510,11 +512,9 @@
                     {
                         this.SimilarityTrade = res.data.data.sort((a,b)=>b.similarity-a.similarity).slice(0,10)
                     }
-                    setTimeout(() => {
                         //  执行echarts画图方法
-                        console.log(this.SimilarityTrade)
-                        this.drawecharts3(this.SimilarityTrade)
-                    }, 0);
+                    console.log(this.SimilarityTrade)
+                    this.drawecharts3(this.SimilarityTrade)
                 }).catch(err=>{
                     console.log(err)
                 })
