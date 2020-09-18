@@ -5,7 +5,7 @@
             </Header>
         </el-header>
         <el-container>
-            <el-aside style="width: 250px" ref="changdu">
+            <el-aside style="width: 250px;height: 100%" ref="changdu" >
                 <leftNav >
                 </leftNav>
             </el-aside>

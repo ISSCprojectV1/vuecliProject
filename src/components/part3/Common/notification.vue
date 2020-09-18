@@ -16,11 +16,12 @@
                 console.log(err)
             })
         },
-        data(){
-            return
-            {
-                notification:""
-            }
+      mounted() {
+        this.notification+="";
+    //  console.log(notification)
+          },
+      data(){
+
         }
     }
 </script>

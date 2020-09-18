@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="dashboard-editor-container" id="diceng">
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
@@ -48,6 +48,13 @@ export default {
     return {
       lineChartData: lineChartData.newVisitis
     }
+  },
+  mounted() {
+    let tiankong= document.getElementById("diceng");
+    console.log(window.innerHeight)
+    console.log(document.body.scrollHeight)
+    tiankong.style.height=(window.innerHeight>document.body.scrollHeight?window.innerHeight:document.body.scrollHeight)+"px"
+    console.log(tiankong.style.height)
   },
   methods: {
     handleSetLineChartData(type) {

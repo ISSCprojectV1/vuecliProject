@@ -1,4 +1,5 @@
 <template>
+  <div id="diceng" style="background-color:#4e6ef2 ">
 <el-row>
   <el-col>
 
@@ -10,7 +11,7 @@
             router
             background-color="#4e6ef2"
             text-color="#FFFFFF"
-            active-text-color="#ffd04b" style="height: 800px">
+            active-text-color="#ffd04b" style="height: 100%">
       <el-menu-item index="/trade/Dashboard" style="text-align: left;font-size: 20px">
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
@@ -28,7 +29,8 @@
     </el-menu>
   </el-col>
 </el-row>
-</template>>
+  </div>
+</template>
 
 <script>
  import userTaskInput from "@/components/part1/transactionProject/taskDictionary/userTaskInput";
@@ -67,6 +69,11 @@
       },
        mounted(){
             this.defaultActive = this.$router.currentRoute.path
+         let tiankong= document.getElementById("diceng");
+         console.log(window.innerHeight)
+         console.log(document.body.scrollHeight)
+         tiankong.style.height=(window.innerHeight>document.body.scrollHeight?window.innerHeight:document.body.scrollHeight)+"px"
+         console.log(tiankong.style.height)
         },
     created(){
       let routes = this.$store.state.permission.routes.find(function(element) {
