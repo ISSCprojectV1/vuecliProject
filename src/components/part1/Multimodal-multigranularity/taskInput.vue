@@ -81,6 +81,8 @@ postAddress(){
           type: 'warning'
         }).then(() => {
           this.postData();
+          //this.$parent.$parent.getData()
+         this.$parent.$parent.reloadPage()
           this.$message({
             type: 'success',
             message: '创建成功!'
@@ -91,8 +93,8 @@ postAddress(){
             message: '已取消'
           });          
         });
-        this.$parent.$parent.getData()
-    this.$parent.$parent.dialogTableVisible = false
+        this.$parent.$parent.dialogTableVisible = false
+
 },
 postData(){
 console.log("发送请求前")
@@ -109,14 +111,11 @@ console.log("发送请求前")
   "workingTime":this.workingTime };
 
   taskInput(data).then(function (response) {
-    console.log("已经发送了请求")
-    console.log(response);
-    console.log("请求返回值："+response.data.message);
+
   })
   .catch(function (error) {
     console.log(error);
   });
-   this.$parent.$parent.getData()
 },
 abortForm(){
   console.log("zhioiiiiiii")

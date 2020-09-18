@@ -1,7 +1,7 @@
 <template>
 <div>
-   <h1 id = "title">大宗商品价格波动风险演化</h1>
-<div class = "task-input-box">
+   <h2 id = "title">大宗商品价格波动风险演化</h2>
+    <div class = "task-input-box">
 <div class="block">
   <el-cascader
     v-model="value"

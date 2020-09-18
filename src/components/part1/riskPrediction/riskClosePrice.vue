@@ -2,6 +2,15 @@
      <div id="index" v-loading="loading" element-loading-text="拼命加载中">
         <div id="main" class="box_close">
         </div>
+         <div>
+             <h5  style="height: 25px;font-size: 15px;text-align:left;">
+                 价格预测图：
+                 由该商品收盘价的历史价格与预测价格组成，
+                 其中预测价格根据国内大宗商品供需平衡率，
+                 该商品成交量，该商品近期价格涨跌，人民币利率，
+                 平台的空间因素和该商品品种的关联性预测而来
+             </h5>
+         </div>
     </div>
 </template>
 <script>
@@ -30,9 +39,14 @@
 
                 // 获取第二天预测交易数据
                 console.log("获取预测数据")
+                Promise.all([
                 getriskPredictionData().then((res) => {
                 this.predictionData =res.data;
-                this.drawLine('main');
+                })
+                ]).then(()=>{
+                    console.log("数据到位 画图");
+                    this.drawLine('main');
+
                 }).catch(()=>{
                     console.log("getPredictionData fail")
                 });
@@ -266,7 +280,6 @@
 <style>
 #index{
   width: 600px;
-  height: 500px;
 }
 .box_close{
     width: 600px;

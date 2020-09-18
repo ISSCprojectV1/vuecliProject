@@ -21,7 +21,7 @@
       :lock-scroll="false" width="60%"
       :close-on-click-modal="false"
       >
-      <taskSearch ref="taskSearch"></taskSearch>
+      <taskSearch ref="taskSearch" :searchData = this.state1></taskSearch>
       </el-dialog>
 
       <el-button type="primary" @click="addNewTask" style="margin-left:15px;margin-right:14px">添加新任务</el-button>
@@ -49,7 +49,7 @@
       </el-tab-pane>
 
     <el-tab-pane label="表格视图" name="first" lazy>
-        <div class="dormitoryData">
+        <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
       <el-table
         ref="dormitoryTable"
         :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -111,6 +111,7 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
 
  // import $ from 'jQuery'
   export default {
+    inject:['reload'],
     components: {
       taskInput,method1,userQuery,taskSearch
     },
@@ -297,8 +298,12 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
           handleClick(tab, event) {
         console.log(tab, event);
         if(this.activeName == 'second'){
-            this.$refs.method1_child.getData();
+            //this.$refs.method1_child.getData();
     }
+      },
+      // 刷新当前页面
+      reloadPage(){
+        this.reload();
       }
 
     },

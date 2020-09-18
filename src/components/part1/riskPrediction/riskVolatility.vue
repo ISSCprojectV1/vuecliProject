@@ -1,6 +1,12 @@
 <template>
-    <div id="diceng" class="box" v-loading="loading" element-loading-text="拼命加载中">
-
+    <div class = "main">
+    <div class="box" v-loading="loading" element-loading-text="拼命加载中">
+    </div>
+        <h5  style="height: 25px;font-size: 15px;text-align:left;">
+            价格波动图：价格波动以该商品价格的对数收益率进行衡量（对数收益率=log(今日收盘价/昨日收盘价)），
+            价格波动图由历史价格波动与未来价格波动组成，
+            其中未来价格波动由预测出来的未来价格进行评估
+        </h5>
     </div>
 </template>
 
@@ -132,7 +138,14 @@
 </script>
 
 <style lang="stylus" scoped>
-    .box
-        width 1000px
-        height 600px
+    .main{
+        width 600px
+        height 500px
+        position: absolute
+        left:60%
+    }
+    .box{
+        width: 600px;
+        height: 500px
+    }
 </style>

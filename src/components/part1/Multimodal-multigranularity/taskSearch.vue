@@ -1,5 +1,5 @@
 <template>
-    <div class="dormitoryData">
+    <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
       <el-table
         ref="dormitoryTable"
         :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -45,7 +45,7 @@ export default {
   props:["searchData"],
   data () {
       return {
-        dormitory: [],
+      dormitory: [],
          // 默认显示第几页
       currentPage:1,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
