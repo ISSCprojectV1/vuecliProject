@@ -1,7 +1,7 @@
 <template>
   <div class="dormitory" id="diceng">
         <div class="title">
-      <div style="display: inline-block; margin-bottom:20px" >监管任务查询列表</div>
+      <div style="display: inline-block; margin-bottom:20px; font-size:40px" >监管任务查询列表</div>
     </div>
 
     <div class="searchWord" style="margin-bottom:20px">

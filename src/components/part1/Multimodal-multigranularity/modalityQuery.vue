@@ -1,7 +1,7 @@
 <template>
   <div id="diceng" class="dormitory">
         <div class="title">
-      <div style="display: inline-block; margin-bottom:30px">多模态 查询列表</div>
+      <div style="display: inline-block; margin-bottom:30px; font-size:40px">人机模态查询列表</div>
     </div>
     <div class="searchWord" style="margin-bottom:30px">
       <el-input v-model="search" style="display: inline-block; width: 500px;" placeholder="请输入搜索关键词"></el-input>
