@@ -136,6 +136,25 @@
                     //     text: 'Graph 简单示例'
                     // },
                     tooltip: {},
+                  color:['red',
+
+                    'blue'],
+                  legend: { //=========小图标，圖表控件
+                    show:true,
+                    data: [{
+                      name: '用户编号',
+                      icon: 'circle' //'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+                      //icon:'image://./images/icon1.png'  //如果用图片img，格式为'image://+icon文件地址'，其中image::后的//不能省略
+                    },
+
+
+                      {
+                        name: '交易节点',
+                        icon: 'circle'
+                      }
+
+                    ]
+                  },
                     animationDurationUpdate: 1500,
                     animationEasingUpdate: 'quinticInOut',
                     series: [
@@ -159,9 +178,22 @@
                                 opacity: 0.9,
                                 width: 2,
                                 curveness: 0
+                            },
+                          categories: [ //symbol name：用于和 legend 对应以及格式化 tooltip 的内容。 label有效
+                            {
+                              name: '用户编号',
+                              icon: 'circle' //'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+                              //icon:'image://./images/icon1.png'  //如果用图片img，格式为'image://+icon文件地址'，其中image::后的//不能省略
+                            },
+
+                            {
+                              name: '交易节点',
+                              symbol: 'circle'
                             }
+                          ]
                         }
                     ]
+
                 };
                 echarts.setOption(option);
             }).catch(err=>{
