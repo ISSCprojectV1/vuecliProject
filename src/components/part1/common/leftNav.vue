@@ -4,6 +4,7 @@
   <el-col>
 
     <el-menu
+        unique-opened="true"
             :default-active="defaultActive"
             class="el-menu-vertical-demo"
             @open="handleOpen"
