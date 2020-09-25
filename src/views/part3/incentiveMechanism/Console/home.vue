@@ -5,7 +5,7 @@
             </Header>
         </el-header>
         <el-container>
-            <el-aside>
+            <el-aside style="width: 250px">
                 <sidebar>
                 </sidebar>
             </el-aside>
@@ -59,7 +59,7 @@
 <style lang="stylus" scoped>
     .el-header
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
-        margin-bottom: 20px;
+        margin-bottom: 1px;
         padding 0px;
     .el-main
         background-color white

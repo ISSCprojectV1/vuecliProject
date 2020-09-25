@@ -5,7 +5,7 @@
             <side-bar>
             </side-bar>
         </el-aside>
-        <el-container>
+        <el-container style="min-height: 1000px">
             <el-header height="20px">
                 <Header></Header>
             </el-header>

@@ -1,6 +1,6 @@
 <template>
     <div id="diceng">
-        <h2>关联分析</h2>
+        <h2>交易关联查询</h2>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="查询商品">
                 <el-select v-model="formInline.itemid" placeholder="选择商品">
@@ -58,39 +58,52 @@
                         <template slot-scope="scope">
                             <el-popover
                                     placement="left-start"
-                                    width="1000"
                                     trigger="click"
-                                    @show="Tradesimilar(scope.row)"
+                                    @after-enter="Tradesimilar(scope.row)"
+                                    offset="2000"
+                                    width="1000"
                             >
-                                <h3>交易关联分析表</h3>
-                                <el-table
-                                        :data="SimilarityTrade"
-                                        stripe
-                                        :default-sort = "{prop: 'similarity', order: 'descending'}"
-                                        style="width: 100%">
-                                    <el-table-column
-                                            prop="tid1"
-                                            label="关联交易id"
-                                            min-width="180">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="tid2"
-                                            label="关联交易id"
-                                            min-width="180">
-                                    </el-table-column>
-                                    <el-table-column
-                                            sortable
-                                            prop="similarity"
-                                            label="交易关联度"
-                                            min-width="180">
-                                        <template slot-scope="scope">
-                                            <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
-                                        </template>
 
-                                    </el-table-column>
-                                </el-table>
-                                <h3>交易关联图</h3>
-                                <div id="echart3" style="width: 1000px;height: 600px;text-align: center" ref="echart3"></div>
+                                <el-tabs v-model="activeName1" @tab-click="tabclick">
+                                    <el-tab-pane label="交易关联分析表" name="table1">
+                                        <el-table
+                                                :data="SimilarityTrade"
+                                                stripe
+                                                :default-sort = "{prop: 'similarity', order: 'descending'}"
+                                                style="width: 100%">
+                                            <el-table-column
+                                                    prop="tid1"
+                                                    label="关联交易id"
+                                                    min-width="180">
+                                            </el-table-column>
+                                            <el-table-column
+                                                    prop="tid2"
+                                                    label="关联交易id"
+                                                    min-width="180">
+                                            </el-table-column>
+                                            <el-table-column
+                                                    sortable
+                                                    prop="similarity"
+                                                    label="交易关联度"
+                                                    min-width="180">
+                                                <template slot-scope="scope">
+                                                    <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
+                                                </template>
+
+                                            </el-table-column>
+                                        </el-table>
+
+                                    </el-tab-pane>
+
+<!--                                    <el-tab-pane label="交易关联图" name="diagram1">-->
+<!--                                        <h3>交易关联图</h3>-->
+<!--                                        <div id="echart3" style="width: 1000px;height: 300px;text-align: center" ref="echart3"></div>-->
+<!--                                    </el-tab-pane>-->
+                                </el-tabs>
+
+
+
+
 
                                 <el-button slot="reference">点击查看</el-button>
                             </el-popover>
@@ -100,12 +113,21 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        ref="pagination"
+                        style="text-align: center"
+                        background
+                        layout="prev, pager, next"
+                        @current-change = "pageChange"
+                        :total="total"
+                >
+                </el-pagination>
             </el-tab-pane>
 
         <el-tab-pane label="关系图模式" name="diagram">
 
             <h3>用户关联图</h3>
-            <div id="echart2" style="width: 1000px;height: 500px;text-align: center" v-show="showing1"></div>
+            <div id="echart2" style="width: 700px;height: 700px;text-align: center" v-show="showing1"></div>
         </el-tab-pane>
 
         </el-tabs>
@@ -126,6 +148,7 @@
         data() {
             return {
                 activeName:"table",
+                activeName1:"table1",
                 formInline: {
                     itemid: '',
                     time: [],
@@ -137,17 +160,26 @@
                 echart1:"",
                 echart2:"",
                 echart3:"",
+                total:1,
+                echartOption:""
             }
         },
       mounted() {
         let tiankong= document.getElementById("diceng");
-        tiankong.style.height=window.innerHeight+"px"
-
-        console.log(tiankong.style.height)
+        tiankong.style.height=window.innerHeight+"px";
         let announcement=document.getElementById("announcement");
-        console.log(tiankong)
       },
         methods: {
+            tabclick(t){
+                let tableName = t.$options.propsData.label
+                // if(tableName=="交易关联图"){
+                //     this.drawecharts3(this.SimilarityTrade);
+                // }
+                    },
+            pageChange(){
+
+
+            },
             drawecharts1(data){
                 let mySeries=[]
                 let countall=[]
@@ -337,10 +369,10 @@
                 this.echart2.clear();
                 this.echart2.setOption(option);
             },
-            drawecharts3(data){
-                this.echart3 = echart.init(document.querySelector("#echart3"));
-                //this.echart3 = echart.init(this.$refs.echart3)
-                console.log(document.querySelector("#echart3"))
+            drawecharts3(){
+                let data = this.SimilarityTrade
+                // this.echart3 = echart.init(this.$refs['echart3'])
+                // console.log(this.$refs['echart3'])
                 let categories=[]
                 let tids=[]
                 for (let i = 0; i < data.length; i++) {
@@ -350,7 +382,6 @@
                 for (let i = 0; i < tids.length; i++) {
                     categories.push({name:"交易"+tids[i]})
                 }
-                console.log(categories)
                 let nodes=[]
                 let links=[]
                 for (let i = 0; i < categories.length; i++) {
@@ -376,7 +407,7 @@
                     )
                 }
 
-                let option = {
+                this.echartOption = {
                     tooltip: {},
                     legend: [{
                         // selectedMode: 'single',
@@ -385,8 +416,8 @@
                         })
                     }],
 
-                    animationDuration: 1500,
-                    animationEasingUpdate: 'quinticInOut',
+                    //animationDuration: 1500,
+                    //animationEasingUpdate: 'quinticInOut',
                     series : [
                         {
                             name: 'Les Miserables',
@@ -419,8 +450,8 @@
                         }
                     ]
                 };
-                this.echart3.clear();
-                this.echart3.setOption(option);
+                //this.echart3.setOption(option);
+
             },
             init(){
                 this.supportData=[];
@@ -497,27 +528,52 @@
 
             },
             Tradesimilar(row){
-                let data={
-                    uid1:row.uid1,
-                    uid2:row.uid2,
-                    itemid:this.formInline.itemid,
-                    start:this.formInline.time[0],
-                    end:this.formInline.time[1],
-                }
-                tradesimilar(data).then(res=>{
-                    //取交易关联度大的前10个交易对
-                    if (res.data.data.length<=10)
-                        this.SimilarityTrade = res.data.data;
-                    else
-                    {
-                        this.SimilarityTrade = res.data.data.sort((a,b)=>b.similarity-a.similarity).slice(0,10)
+                this.$nextTick(()=>{
+                    this.activeName1="table1";
+                    let data={
+                        uid1:row.uid1,
+                        uid2:row.uid2,
+                        itemid:this.formInline.itemid,
+                        start:this.formInline.time[0],
+                        end:this.formInline.time[1],
                     }
-                        //  执行echarts画图方法
-                    console.log(this.SimilarityTrade)
-                    this.drawecharts3(this.SimilarityTrade)
-                }).catch(err=>{
-                    console.log(err)
+                    tradesimilar(data).then(res=>{
+                        //取交易关联度大的前10个交易对
+                        if (res.data.data.length<=10)
+                            this.SimilarityTrade = res.data.data;
+                        else
+                        {
+                            this.SimilarityTrade = res.data.data.sort((a,b)=>b.similarity-a.similarity).slice(0,10);
+                        }
+                        //this.drawecharts3(this.SimilarityTrade)
+                        // setInterval(() => {
+                        //     //  执行echarts方法
+                        //     this.drawecharts3(this.SimilarityTrade);
+                        // }, 500);
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+
                 })
+
+            }
+        },
+        watch:{
+            SimilarityTrade: {
+                deep: true,
+                handler(newVal, oldValue) {
+                    if (this.echart3) {
+                        if (newVal) {
+                            console.log("更新值")
+                            this.drawecharts3();
+                            this.echart3.setOption(this.echartOption);
+                        }
+                    } else {
+                        if (document.querySelector("#echart3")) {
+                            this.echart3 = echart.init(document.querySelector("#echart3"));
+                        }
+                    }
+                }
             }
         }
     }

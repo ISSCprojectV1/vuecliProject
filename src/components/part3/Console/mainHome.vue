@@ -1,8 +1,5 @@
 <template>
     <div id ="diceng">
-        <div class="announcement">
-            <span class="announcement"> <i class="el-icon-bell"></i> <a href="/notification">公告：《数据共享规则》</a></span>
-        </div>
     <div>
         <announcement></announcement>
         <div class="block">

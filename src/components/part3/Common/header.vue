@@ -4,11 +4,11 @@
             <el-col :span="18">
                 <el-menu :router="true" class="el-menu" mode="horizontal"
                  @select="handleSelect"
-                 background-color="#4e6ef2"
+                 background-color="#00659B"
                  text-color="#FFFFFF"
                  active-text-color="#ffd04b">
                     <el-menu-item index="/trade/Dashboard" style="font-size: 18px;padding: 0">
-                        <img :src="logoimg" class="img" >
+                        <img :src="logoimg" class="userprofile" style="width: 45px;height: 45px">
                         大宗商品交易市场监管服务模式与资源调配系统
                     </el-menu-item>
 
@@ -24,7 +24,7 @@
             <el-menu :router="true"
                      class="el-menu"
                      mode="horizontal"
-                     background-color="#4e6ef2"
+                     background-color="#00659B"
                      text-color="#FFFFFF"
                      active-text-color="#ffd04b">
 <!--                <el-menu-item >-->
@@ -61,7 +61,7 @@
                         个人中心
                     </el-menu-item>
                     <el-menu-item @click="logOut">
-                        <el-button type="text">登出</el-button>
+                        登出
                     </el-menu-item>
                 </el-submenu>
             </el-menu>

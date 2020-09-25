@@ -7,8 +7,9 @@
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
+            :unique-opened= "true"
             router
-            background-color="#4e6ef2"
+            background-color="#00659B"
             text-color="#FFFFFF"
             active-text-color="#ffd04b"
             >

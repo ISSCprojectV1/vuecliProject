@@ -46,6 +46,11 @@
                     prop=status>
             </el-table-column>
             <el-table-column
+                    label="价格减少单位"
+                    min-width="100"
+                    prop=minimumDecreasePrice>
+            </el-table-column>
+            <el-table-column
                     label="操作"
                     width="180">
                 <template slot-scope="scope">
@@ -73,7 +78,7 @@
                             title="确定结束吗？"
                             @onConfirm="handleEnd(scope.row.id)"
                     >
-                        <el-button  size="mini" type="primary" slot="reference">结束</el-button>
+<!--                        <el-button  size="mini" type="primary" slot="reference">结束</el-button>-->
                     </el-popconfirm>
                 </template>
             </el-table-column>
@@ -100,6 +105,10 @@
                 <el-form-item label="起拍价" :label-width="formLabelWidth">
                     <el-input v-model="addAuctionform.startPrice" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="价格减少单位" :label-width="formLabelWidth">
+                    <el-input v-model="addAuctionform.minimumDecreasePrice" autocomplete="off"></el-input>
+                </el-form-item>
+
                 <el-form-item label="时间" :label-width="formLabelWidth">
                     <el-date-picker
                             v-model="addAuctionform.time"
@@ -140,6 +149,9 @@
                 </el-form-item>
                 <el-form-item label="状态" :label-width="formLabelWidth">
                     <el-input v-model="form.status" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="价格减少单位" :label-width="formLabelWidth">
+                    <el-input v-model="form.minimumDecreasePrice" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="时间" :label-width="formLabelWidth">
                     <el-date-picker
@@ -211,7 +223,8 @@
                     description:"",
                     startPrice:"",
                     status:"",
-                    time:[]
+                    time:[],
+                    minimumDecreasePrice:"",
                 }
             }
         },
@@ -366,7 +379,9 @@
                     updatedPrice:data.updatedPrice,
                     startTime:data.time[0],
                     endTime:data.time[1],
-                    status:data.status
+                    status:data.status,
+                    minimumDecreasePrice:data.minimumDecreasePrice
+
                 }
                 this.dialogFormUpdateVisible = false
                 updateAuction(params).then(res=>{
@@ -405,8 +420,9 @@
                     startPrice:data.startPrice,
                     startTime:timeForAuction(data.time[0]),
                     endTime:timeForAuction(data.time[1]),
-                    status:data.status
-                }
+                    status:data.status,
+                    minimumDecreasePrice:data.minimumDecreasePrice
+            }
                 addAuction(params).then(res=>{
                     console.log("新增拍卖成功");
                     this.$message({

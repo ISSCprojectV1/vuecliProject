@@ -72,4 +72,8 @@
 <style scoped lang="stylus">
     .el-aside
         padding 20px 10px 20px 10px
+    .el-header
+        padding 0
+    .el-container
+        min-height 700px
 </style>

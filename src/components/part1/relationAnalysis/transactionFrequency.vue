@@ -53,7 +53,18 @@
                             min-width="180">
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        ref="pagination"
+                        style="text-align: center"
+                        background
+                        layout="prev, pager, next"
+                        @current-change = "pageChange"
+                        :total="total"
+                >
+                </el-pagination>
             </el-tab-pane>
+
+
 
             <el-tab-pane label="统计图模式" name="diagram">
                 <h3>用户交易频率统计图</h3>
@@ -86,11 +97,15 @@
                 echart1:"",
                 echart2:"",
                 echart3:"",
+                total:1
             }
         },
         mounted(){
         },
         methods: {
+            pageChange(){
+
+            },
             drawecharts1(data){
                 let mySeries=[]
                 let countall=[]
@@ -175,111 +190,7 @@
                     this.echart1.clear();
                     this.echart1.setOption(option);
             },
-            drawechart2(data,lastData){
-                this.echart2 = echart.init(document.querySelector("#echart2"));
-                let uids = []
-                for (let i = 0; i < data.length; i++) {
-                        uids.push(data[i].uid1,data[i].uid2)
-                }
-                uids = [...new Set(uids)]
-                let categories=[]
-                for (let i = 0; i < uids.length; i++) {
-                    categories.push(
-                        {name: "用户"+uids[i]}
-                    )
-                }
-                let countall=[]
-                for (let i = 1; i < lastData.length; i++) {
-                    let name = lastData[i][0];
-                    let count = 0;
-                    for(let j=1;j< lastData[i].length;j++)
-                        count+=lastData[i][j]
-                    countall.push({
-                        name:name,
-                        value:count
-                    })
-                }
-                console.log(categories)
-                console.log(countall)
-                let nodes=[];
-                for (let i = 0; i <categories.length ; i++) {
-                    for (let j = 0; j < countall.length ; j++) {
-                        if(categories[i].name===countall[j].name)
-                        {
-                            nodes.push({
-                                name:categories[i].name,
-                                value: countall[j].value,
-                                category:categories[i].name
-                            })
-                        }
-                        }
 
-                }
-                let links=[];
-                for (let i = 0; i < data.length; i++) {
-                    links.push(
-                        {
-                            source:"用户"+data[i].uid1,
-                            target:"用户"+data[i].uid2,
-                            value:data[i].similarity.toFixed(2),
-                            label: {
-                                show:true,
-                                formatter:"关联度:{c}"
-                            },
-                            lineStyle:{
-                                width: 10*data[i].similarity+1
-                            }
-                        }
-                    )
-                }
-                let option = {
-                    tooltip: {},
-                    legend: [{
-                        // selectedMode: 'single',
-                        data: categories.map(function (a) {
-                            return a.name;
-                        })
-                    }],
-
-                    animationDuration: 1500,
-                    animationEasingUpdate: 'quinticInOut',
-                    series : [
-                        {
-                            name: 'Les Miserables',
-                            type: 'graph',
-                            layout: 'circular',
-                            symbolSize:(value)=>value+1,
-                            data: nodes,
-                            links: links,
-                            categories: categories,
-                            roam: true,
-                            focusNodeAdjacency: true,
-                            itemStyle: {
-                                borderColor: '#fff',
-                                borderWidth: 1,
-                                shadowBlur: 10,
-                                shadowColor: 'rgba(0, 0, 0, 0.3)'
-                            },
-                            label: {
-                                show:true,
-                                position: 'right',
-                                formatter: '{b} \n交易频次：{c}'
-                            },
-                            lineStyle: {
-                                color: 'source',
-                                curveness: 0.3
-                            },
-                            emphasis: {
-                                lineStyle: {
-                                    width: 10
-                                }
-                            }
-                        }
-                    ]
-                };
-                this.echart2.clear();
-                this.echart2.setOption(option);
-            },
             drawecharts3(data){
                 this.echart3 = echart.init(document.querySelector("#echart3"));
                 let categories=[]

@@ -1,88 +1,46 @@
 <template>
 <div class="detailBar">
     <el-row>
-        <el-col :span="18">
-            <h2>{{auction.name}}</h2>
-        </el-col>
-
-<!--        <el-col :span="6">-->
-<!--            <div style="margin-top: 30px">-->
-<!--            <span>评分</span>-->
-<!--            <el-rate-->
-<!--                    v-model="file.fileScore"-->
-<!--                    disabled-->
-<!--                    show-score-->
-<!--                    text-color="#ff9900"-->
-<!--                    score-template="{value}"-->
-<!--                    style="display: inline"-->
-<!--            >-->
-<!--            </el-rate>-->
-<!--            </div>-->
-<!--        </el-col>-->
-    </el-row>
-    <el-row>
-    <el-col :span="24">
+    <el-col :span="12">
+        <h2>{{auction.name}}</h2>
         <p>{{auction.description}}</p>
-    </el-col>
-<!--        <el-col>-->
-<!--                <el-tag size="mini" type="info" effect="plain" v-for="tag in file.fileTags.split(',')" :key="tag" style="margin-right: 10px">{{tag}}</el-tag>-->
-<!--        </el-col>-->
-
-        <el-col>
-            <ul>
+        <ul>
                 <li>
                     起拍价:<span class="score">{{auction.startPrice}}</span>
                 </li>
                 <li>
                     最新价:<span class="score">{{auction.updatedPrice}}</span>
                 </li>
+        </ul>
+        <ul style="margin-bottom: 20px">
                 <li>
                     开始时间:<span class="time">{{auction.startTime}}</span>
                 </li>
                 <li>
                     结束时间:<span class="size">{{auction.endTime}}</span>
                 </li>
-            </ul>
-        </el-col>
-
-        <el-col :span="18">
+        </ul>
             <el-form :model="form">
                 <el-form-item label="出价" label-width="50">
-                    <el-input v-model="form.price" autocomplete="off"></el-input>
+                    <el-input-number v-model="form.price" :min="1" :step="auction.minimumDecreasePrice" :max="auction.updatedPrice" label="">
+                    </el-input-number>
+                    (价格步长:{{auction.minimumDecreasePrice}})
                 </el-form-item>
                     <el-button type="primary" @click="doAuction(form)">竞拍</el-button>
                     <el-button @click="flush(auction.id)">刷新</el-button>
             </el-form>
+    </el-col>
+        <el-col :span="12" style="border: #07c160" >
+                <h2>拍卖规则</h2>
+                {{rule}}
         </el-col>
-<!--        <el-col :span="6" style="text-align: right">-->
-<!--            <span v-if="resource.collected" @click="collect"><i class=el-icon-star-on></i>已收藏</span>-->
-<!--            <span v-else @click="collect"><i class=el-icon-star-off></i>收藏</span>-->
-<!--        </el-col>-->
     </el-row>
-<!--    <router-view></router-view>-->
-<!--    <el-dialog-->
-<!--            title="提示"-->
-<!--            :visible.sync="dialogVisible"-->
-<!--            width="30%"-->
-<!--            :before-close="handleClose">-->
-<!--        <span>-->
-<!--            <div>-->
-<!--                <h2>下载所需积分:{{file.fileScore}}</h2>-->
-<!--                <h2>用户拥有积分:{{score}}</h2>-->
-<!--            </div>-->
-<!--        </span>-->
-<!--        <span slot="footer" class="dialog-footer">-->
-<!--    <el-button @click="dialogVisible = false">取消下载</el-button>-->
-<!--                <el-button @click="download">确认下载</el-button>-->
-<!--            <el-link :href='downloadUrl' id="el-link" style="display:none"></el-link>-->
-<!--        </span>-->
-<!--    </el-dialog>-->
 </div>
 </template>
 
 <script>
     import {buyData, getuserinfo} from "@/api/part3";
-    import {doAuction, getAuction} from "@/api/part3/auction";
+    import {doAuction, getAuction, getAuctionRule} from "@/api/part3/auction";
 
     export default {
         name: "resourceDetail",
@@ -120,13 +78,22 @@
                 auction:{},
                 form:{
                     price:""
-                }
+                },
+                rule:""
             }
         },
         methods:{
+            getRule(){
+                getAuctionRule().then(res=>{
+                    this.rule = res.data
+                }).catch(err=>{
+                    console.log(err)
+                })
+            },
             getAuction(id){
                 getAuction(id).then(res=>{
                     this.auction = res.data
+                    this.form.price = this.auction.updatedPrice
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -208,10 +175,11 @@
     li
         display inline-block
         margin-right 10px
-
+    ul
+        margin-top  20px
     span.score
         font-weight: 400;
-        font-size: 20px;
+        font-size: 30px;
         color: #ff9358;
         text-align: center;
         margin-left 5px
@@ -221,12 +189,12 @@
     span.time
         margin-left: 8px
         font-size: 14px
-        color: #ccc
+        color: #000000
         font-weight 400
 
     span.size
         margin-left: 8px
         font-size: 14px
-        color: #ccc
+        color: #000000
         font-weight 400
 </style>

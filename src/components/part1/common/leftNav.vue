@@ -1,5 +1,5 @@
 <template>
-  <div id="diceng" style="background-color:#4e6ef2 ">
+  <div id="diceng" style="background-color:#00659B ">
 <el-row>
   <el-col>
 
@@ -10,7 +10,8 @@
             @open="handleOpen"
             @close="handleClose"
             router
-            background-color="#4e6ef2"
+            :unique-opened= "true"
+            background-color="#00659B"
             text-color="#FFFFFF"
             active-text-color="#ffd04b" style="height: 100%">
       <el-menu-item index="/trade/Dashboard" style="text-align: left;font-size: 20px">
@@ -96,6 +97,12 @@
   }
 </script>
 <style>
+  .el-menu-item:hover{
+    background: #0677B3 !important;
+  }
+  .el-submenu__title:hover {
+    background: #0677B3 !important;
+  }
 .el-menu-vertical-demo{
   padding:0px;
   margin:0px;
@@ -114,4 +121,5 @@
   content: "\e754";
   color: #FFFFFF;
 }
+
 </style>
