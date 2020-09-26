@@ -26,47 +26,94 @@
       </el-tree>
     <div>
       <h2> </h2>
-      <el-button type="primary" @click="dialogFormVisible = true">添加新品类</el-button>
-      <el-dialog title="添加新品类" :visible.sync="dialogFormVisible">
-        <el-form ref="form" :model="form">
-          <el-form-item label="品名名称">
-            <el-input v-model="form.name"></el-input>
+      <el-button type="primary" @click="dialogFormVisible = true" style="margin-left:10px;margin-right:10px">添加品类</el-button>
+
+      <el-dialog title="添加新品类" :visible.sync="dialogFormVisible" width="25%" >
+        <el-form ref="form" :model="form" size="mini" label-width="80px">
+          <el-form-item label="分类代码">
+            <el-input v-model="form.cateid"></el-input>
+          </el-form-item>
+          <el-form-item label="分类名称">
+            <el-input v-model="form.catename"></el-input>
           </el-form-item>
           <el-form-item label="品名代码">
             <el-input v-model="form.id"></el-input>
           </el-form-item>
+          <el-form-item label="品名名称">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
           <el-form-item label="品名单位">
             <el-input v-model="form.unit"></el-input>
           </el-form-item>
-          <el-form-item label="分类代码">
-            <el-input v-model="form.idcate"></el-input>
-          </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button type="primary" @click="onadd()">确认添加</el-button>
             <el-button @click="dialogFormVisible = false">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
-    </div>
-    </el-aside>
-    <el-container style="height: 800px; border: 10px solid #eee">
-      <el-header style="text-align: center">
-        <h2>(该商品的名字)</h2>
-      </el-header>
 
-      <el-main>
-        <el-table :data="tableData">
-          <el-table-column prop="name" label="分类代码">
+      <el-button type="primary" @click="dialogFormVisible2 = true"  style="margin-left:10px;margin-right:10px">删除品类</el-button>
+      <el-dialog title="删除品类" :visible.sync="dialogFormVisible2" width="25%" >
+        <el-form ref="form" :model="deleteform" size="mini" label-width="80px">
+          <el-form-item label="品名代码">
+            <el-input v-model="deleteform.id" placeholder="输入品名代码进行删除"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="ondelete()">确认删除</el-button>
+            <el-button @click="dialogFormVisible2 = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <h2> </h2>
+
+    </div>
+
+      <!--<div>
+        <el-table
+                :data="tableData"
+                style="width: 100%;margin-bottom: 20px;"
+                row-key="id"
+                border
+                default-expand-all
+                :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+          <el-table-column
+                  prop="catename"
+                  label="分类名称">
           </el-table-column>
-          <el-table-column prop="name" label="分类名称">
+          <el-table-column
+                  prop="name"
+                  label="品名名称">
           </el-table-column>
-          <el-table-column prop="date" label="品名名称">
-          </el-table-column>
-          <el-table-column prop="name" label="品名代码">
-          </el-table-column>
-          <el-table-column prop="name" label="品名单位">
+          <el-table-column
+                  prop="unit"
+                  label="品名单位">
           </el-table-column>
         </el-table>
+      </div>-->
+    </el-aside>
+    <el-container style="height: 800px; border: 10px solid #eee">
+
+
+      <el-main>
+        <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)">
+          <el-table-column prop="cateid" label="分类代码">
+          </el-table-column>
+          <el-table-column prop="catename" label="分类名称">
+          </el-table-column>
+          <el-table-column prop="id" label="品名代码">
+          </el-table-column>
+          <el-table-column prop="name" label="品名名称">
+          </el-table-column>
+          <el-table-column prop="unit" label="品名单位">
+          </el-table-column>
+        </el-table>
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :total="totalCount">
+        </el-pagination>
       </el-main>
     </el-container>
     </el-container>
@@ -74,6 +121,7 @@
 </template>
 
 <script>
+  import {getcommodityVariety,addcommodityVariety,deletecommodityVariety,updatecommodityVariety} from "@/api/part1/Multimodal-multigranularity";
 export default {
   name: 'Taskinput',
   watch: {
@@ -81,41 +129,142 @@ export default {
       this.$refs.tree.filter(val);
     }
   },
+  //在这里调用ajax请求方法
+  created(){
+    this.getData();
+    this.getCate();// 获取商品的品类列表
+  },
   props: {
 
   },
   methods: {
+    doerror(){
+      this.$message.error('执行出错！');
+    },
+
+    onadd(){//添加新品类
+        console.log("发送请求前")
+        var data = this.form;
+       console.log("发送请求中")
+           addcommodityVariety(data).then((res) => {
+             this.addok();
+           }).catch(function (error) {
+                  console.log(error);
+                });
+       this.getData()
+       this.dialogFormVisible= false
+    },
+    addok() {
+      this.$message({
+        message: '添加品类成功！',
+        type: 'success'
+      });
+    },
+
+    ondelete(){//根据品名ID删除该品类
+
+      var URL ='/deletecommodityVariety/'+this.deleteform.id;
+      console.log("URL:"+URL)
+      deletecommodityVariety(URL).then((res) => {
+        this.deleteok();
+      }).catch(()=>{
+        console.log("granularityExecution fail")
+      });
+      this.getData()
+      this.dialogFormVisible2= false
+      console.log("删除成功！");
+    },
+
+    deleteok() {
+      this.$message({
+        message: '删除品类成功！',
+        type: 'success'
+      });
+    },
+
+    getCate(){//获取商品的品类列表
+
+    },
+
+    // 分页
+    // 每页显示的条数
+    handleSizeChange(val) {
+      // 改变每页显示的条数
+      this.PageSize=val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage=1
+    },
+    // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage=val
+    },
+
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     },
 
+    getData(){
+      // 获取表格数据
+      console.log("获取品类表格数据 步骤一")
+      var dataConvert = [];
+      var dataConverttest = [];
+      getcommodityVariety().then((res) => {
+        /*console.log(res)
+        dataConvert = res.data;
+        for(var i = 0;i<dataConvert.length;i++){// 调试用！！！！
+          console.log("cateid的值为：")
+          console.log(dataConvert[i].cateid)
+          dataConverttest.id=dataConvert[i].cateid;
+          dataConverttest.name=dataConvert[i].catename;
+        }
+        this.datatest=dataConverttest;
+        console.log(this.datatest)
+        this.tableData=dataConvert;*/
+
+        this.tableData = res.data;
+
+
+      }).catch(()=>{
+        console.log("taskExecution fail")
+      });
+
+    } ,
   },
   data() {
     return {
+      // 默认显示第几页
+      currentPage:1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount:100,
+      // 个数选择器（可修改）
+      pageSizes:[5,10],
+      // 默认每页显示的条数（可修改）
+      PageSize:5,
       dialogTableVisible: false,
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       form: {
         name: '',
         id: '',
-        idcate:'',
+        cateid:'',
         unit:'',
+        catename:''
       },
+      deleteform: {
+        id: '',
+      },
+      tableData:'',
       formLabelWidth: '120px',
       filterText: '',
+      datatest:'',
       data: [{
         id: 1000,
         label: '农副产品',
         children: [{
           id: 10002,
           label: '小麦',
-          children: [{
-            id: '10002S2018',
-            label: '春小麦'
-          }, {
-            id: '10002W2019',
-            label: '冬小麦'
-          }]
         }]
       }, {
         id: 2000,

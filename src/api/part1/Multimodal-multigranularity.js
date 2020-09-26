@@ -92,3 +92,69 @@ export function granularityExecution_api(URL) {
       method: 'get'
         })
   }
+
+// 获得商品信息
+export function getcommodityInfomation() {
+  console.log("获取商品信息表格数据！！！")
+  return request({
+    url: '/getcommodityInfomation',
+    method: 'get'
+  })
+}
+
+// 添加商品信息
+export function addcommodityInfomation(data) {
+  console.log("添加商品信息数据！！！")
+  return request({
+    url: '/addcommodityInfomation',
+    method: 'post',
+    data
+  })
+}
+
+// 删除商品
+export function deletecommodityInfomation(URL) {
+  console.log("删除商品！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+// 获得品类信息
+export function getcommodityVariety() {
+  console.log("获取品类表格数据！！！")
+  return request({
+    url: '/getcommodityVariety',
+    method: 'get'
+  })
+}
+
+// 添加新品类
+export function addcommodityVariety(data) {
+  console.log("添加品类！！！")
+  return request({
+    url: '/addcommodityVariety',
+    method: 'post',
+    data
+  })
+}
+
+// 删除品类
+export function deletecommodityVariety(URL) {
+  console.log("删除品类！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+// 修改品类
+export function updatecommodityVariety(data) {
+  console.log("删除品类！！！")
+  return request({
+    url: '/updatecommodityVariety',
+    method: 'put',
+    data
+  })
+}

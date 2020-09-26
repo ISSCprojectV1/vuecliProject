@@ -100,7 +100,7 @@ import {ExecutionQuery} from "@/api/part1/Multimodal-multigranularity";
              var m = date.getMinutes() + ':'
              var s = date.getSeconds()
              return Y+M+D+h+m+s
-    },
+             },
 
     }
   }
