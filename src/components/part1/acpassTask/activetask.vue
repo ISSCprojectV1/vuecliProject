@@ -6,7 +6,7 @@
       </div>
 
         <el-tabs v-model="activeName">
-            <el-tab-pane label="表格模式" name="table">
+            <el-tab-pane label="主动模态" name="table">
                 <el-table
                         :data="tableData1"
                         style="width: 100%">
@@ -59,7 +59,7 @@
                 >
                 </el-pagination>
             </el-tab-pane>
-            <el-tab-pane label="流程图模式" name="flow">
+            <el-tab-pane label="交易事件图" name="flow">
 
                 <el-form ref="form" :model="form" label-width="80px">
                     <el-form-item label="筛选条件">
@@ -71,18 +71,18 @@
                 </el-form>
                 <div id="echart1" style="width: 1000px;height: 800px"></div>
             </el-tab-pane>
-          <el-tab-pane label="被动" name="passive" >
+          <el-tab-pane label="被动模态" name="passive" >
             <el-table
                 :data="Data"
-                :span-method="objectSpanMethod"
+
                 border
-                style="width: 100%; margin-top: 20px">
+                style="width: 100%; margin-top: 1px">
               <el-table-column
                   prop="group"
                   label="编号"
                   width="50">
               </el-table-column>
-              <el-table-column label="交易行为" align="center">
+<!--              <el-table-column label="交易行为" align="center">-->
 
                 <el-table-column
                     prop="buyername"
@@ -127,7 +127,7 @@
                 <!--                        <el-button @click="look(scope.row)" type="button" size="small">查看</el-button>-->
                 <!--                    </template>-->
                 <!--                </el-table-column>-->
-              </el-table-column>
+<!--              </el-table-column>-->
             </el-table>
             <el-pagination
                 ref="pagination"

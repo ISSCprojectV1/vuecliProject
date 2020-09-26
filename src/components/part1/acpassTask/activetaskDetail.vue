@@ -6,19 +6,19 @@
       </div>
 
         <el-tabs v-model="activeName">
-            <el-tab-pane label="表格模式" name="table">
+            <el-tab-pane label="交易详情" name="table">
                 <el-table
                         :data="tableData"
                         style="width: 100%">
                     <el-table-column
                             prop="id"
-                            label="编号"
-                            min-width="180">
+                            label="交易编号"
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="sellerid"
                             label="卖方id"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="sellername"
@@ -28,7 +28,7 @@
                     <el-table-column
                             prop="buyerid"
                             label="买方id"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="buyername"
@@ -38,50 +38,47 @@
                     <el-table-column
                             prop="category"
                             label="种类"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="price"
                             label="价格"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="amount"
                             label="数量"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="original"
                             label="原生任务"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="tasksize"
                             label="空间粒度"
-                            min-width="180">
+                            min-width="80">
                     </el-table-column>
                     <el-table-column
                             prop="belong"
                             label="交易平台"
                             min-width="180">
                     </el-table-column>
-                    <el-table-column
-                            prop="time"
-                            label="交易事件"
-                            min-width="180">
-                    </el-table-column>
+
                 </el-table>
                 <el-pagination
                         ref="pagination"
                         style="text-align: center"
                         background
                         layout="prev, pager, next"
+                        page-size="5"
                         @current-change = "pageChange"
                         :total="total"
                 >
                 </el-pagination>
             </el-tab-pane>
-            <el-tab-pane label="流程图模式" name="flow">
+            <el-tab-pane label="交易模式" name="flow">
                 <div id="echart1" style="width: 1000px;height: 600px;text-align: center"></div>
             </el-tab-pane>
 
@@ -97,7 +94,7 @@
         name: "activetaskDetail",
         created(){
             const id = this.$router.currentRoute.params.id;
-            this.Activetradedetailinfo(id,1,10);
+            this.Activetradedetailinfo(id,1,5);
         },
         mounted(){
 
@@ -224,7 +221,7 @@
             pageChange(page){
                 const id = this.$router.currentRoute.params.id;
                 this.currentPage=page;
-                this.Activetradedetailinfo(id,page,10);
+                this.Activetradedetailinfo(id,page,5);
             },
         }
     }

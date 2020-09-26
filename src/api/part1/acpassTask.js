@@ -15,6 +15,16 @@ export function passivetradeaction(id,currentPage,pageSize) {
         url:'/passivetradeaction',
     })
 }
+export function GetSpacetask(currentPage,pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            currentPage:currentPage,
+            pageSize:pageSize
+        },
+        url:'/spacetask',
+    })
+}
 
 export function activetradeaction(id) {
     return request({

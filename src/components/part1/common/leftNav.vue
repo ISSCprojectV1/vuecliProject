@@ -10,7 +10,6 @@
             @open="handleOpen"
             @close="handleClose"
             router
-            :unique-opened= "true"
             background-color="#00659B"
             text-color="#FFFFFF"
             active-text-color="#ffd04b" style="height: 100%">

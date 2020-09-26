@@ -12,7 +12,7 @@
             <el-table-column
                     prop="id"
                     label="编号"
-                    width="180">
+                    width="80">
             </el-table-column>
             <el-table-column
                     prop="taskname"
@@ -37,12 +37,12 @@
             <el-table-column
                     prop="category"
                     label="监管种类"
-                    width="180">
+                    width="120">
             </el-table-column>
             <el-table-column
                     prop="tasksize"
                     label="空间粒度"
-                    width="180">
+                    width="120">
             </el-table-column>
             <el-table-column
                     prop="introduction"
@@ -55,7 +55,6 @@
                     width="100">
                 <template slot-scope="scope">
                     <el-button @click="gotoActive(scope.row.id)" type="text" size="small">详情</el-button>
-                  <el-button @click="gotoPassive(scope.row.id)" type="text" size="small">被动</el-button>
 
 
                 </template>
@@ -157,6 +156,31 @@
                     console.log(res);
                     this.total = res.data.data.total
                     this.tableData = res.data.data.reslist
+                  let i=0;
+
+                  for(i=0;i<this.tableData.length;i++)
+                  {
+                    let j=0;
+                    while(    this.tableData[i].startingtime[j]!="T")
+                    {
+                      j=j+1;
+                    }
+                    this.tableData[i].startingtime=  this.tableData[i].startingtime.substr(0,j)
+                    while(    this.tableData[i].creatingtime[j]!="T")
+                    {
+                      j=j+1;
+                    }
+                    this.tableData[i].creatingtime=  this.tableData[i].creatingtime.substr(0,j)
+                    j=0
+                    while(    this.tableData[i].endingtime[j]!="T")
+                    {
+                      j=j+1;
+                    }
+                    this.tableData[i].endingtime=  this.tableData[i].endingtime.substr(0,j)
+                    console.log(j)
+
+                  }
+                  console.log(this.tableData)
                 }).catch(err=>{
                     console.log(err);
                     console.log("请求列表api失败")

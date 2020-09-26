@@ -1,33 +1,91 @@
+
 <template>
-    <div style="width: 100%;height: 800px">
-        <h2> 空间粒度 </h2>
-        <div class="three">
-            <span class="imp">监控区域选择   </span>
-            <el-cascader
-                    size="large"
-                    class="long"
-                    :options="regionDataPlus"
-                    v-model="selectedOptions4"
-                    @change="handleChange">
-            </el-cascader>
-            <i class="el-icon-right"></i>
-            <el-button class="btn1" type="primary" round>提交</el-button>
-        </div>
-        <div class="bind">
-            <div>绑定值：{{selectedOptions4}}</div>
-            <div>区域码转汉字：{{CodeToText[selectedOptions4[0]]}},{{CodeToText[selectedOptions4[1]]}},{{CodeToText[selectedOptions4[2]]}}</div>
-            <div>汉字转区域码：{{convertTextToCode(CodeToText[selectedOptions4[0]], CodeToText[selectedOptions4[1]], CodeToText[selectedOptions4[2]])}}</div>
-        </div>
+
+  <div>
+    <div class="title">
+      <div style="display: inline-block; margin-bottom:20px;font-size: 30px;" >  多模态多粒度监管与服务模式——主被动模态与空间粒度</div>
     </div>
+  <el-tabs v-model="activeName">
+    <el-tab-pane label="空间粒度下任务详情" name="table">
+      <el-table
+          :data="tableData1"
+
+          style="width: 100%">
+        <el-table-column
+            prop="id"
+            label="编号"
+            min-width="80">
+        </el-table-column>
+
+        <el-table-column
+            prop="taskname"
+            label="任务名称"
+            min-width="80">
+        </el-table-column>
+        <el-table-column
+            prop="orgintasknum"
+            label="原任务数量"
+            min-width="80">
+        </el-table-column>
+        <el-table-column
+            prop="advicetasknum"
+            label="推荐任务数量"
+            min-width="100">
+        </el-table-column>
+
+        <el-table-column
+            prop="orgintasksize"
+            label="原空间粒度"
+            min-width="180">
+        </el-table-column>
+
+
+        <el-table-column
+            prop="advicetasksize"
+            label="推荐空间粒度"
+            min-width="200">
+        </el-table-column>
+
+        <el-table-column
+            prop="introduction"
+            label="介绍"
+            min-width="180">
+        </el-table-column>
+
+        <el-table-column
+            label="详细信息"
+            fixed="right"
+            min-width="180">
+          <template slot-scope="scope">
+            <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+          ref="pagination"
+          style="text-align: center"
+          background
+          layout="prev, pager, next"
+          @current-change = "pageChange"
+          :total="total"
+      >
+      </el-pagination>
+    </el-tab-pane>
+  </el-tabs>
+  </div>
 </template>
 
 <script type="text/javascript">
     import { provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data';
+    import {GetSpacetask} from "@/api/part1/acpassTask";
 
     export default {
         name: "space_granularity",
         data() {
             return {
+              activeName:"table",
+              tableData1:[],
+              Data:[],
                 CodeToText,
                 TextToCode,
                 BeiJing: CodeToText["110000"],
@@ -38,11 +96,41 @@
                 selectedOptions4: ["110000", "110100", ""]
             };
         },
+created() {
+  this.Spacetradegroup(1,10);
+},
 
-        methods: {
-            handleChange(value) {
-                console.log(value);
-            },
+
+      methods: {
+        Spacetradegroup(currentPage,pageSize){
+          GetSpacetask  (currentPage,pageSize).then(res=>{
+            console.log(res)
+            this.tableData1 = res.data.data.reslist
+        //    this.handleData(  this.tableData1);
+          }).catch(err=>{
+            console.log(err);
+            console.log("出现错误")
+
+          })
+
+    },         gotoDetail(id){
+          this.$router.push(`/trade/acpassTask/activetask/${id}`);
+          console.log(id)
+        },
+        handleData(){
+          let cnt=0;
+          this.Data=[];
+
+          console.log(this.tableData1.length)
+          for(let i=0;i<this.tableData1.length;i++){
+
+            for(let j=0;j<this.tableData1[i].length;j++){
+              cnt++;
+              this.tableData1[i][j]['group']=i+1;
+              this.Data.push(this.tableData1[i][j])
+            }
+          }
+        },
             convertTextToCode(provinceText, cityText, regionText) {
                 let code = "";
                 if (provinceText && this.TextToCode[provinceText]) {
