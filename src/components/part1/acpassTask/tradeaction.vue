@@ -92,9 +92,9 @@
 
     export default {
         name: "tradeaction",
-        mounted(){
-            this.drawPic();
-        },
+     //   mounted(){
+          //  this.drawPic();
+     //   },
         created(){
             const id = this.$router.currentRoute.params.id;
             if (this.activeOrpassive()){
@@ -118,7 +118,7 @@
         },
         data() {
             return {
-                total:0,
+                total1:0,
                 loading:false,
                 show:false,
                 Data:[],
@@ -131,7 +131,7 @@
             passivetradeactionList(id,currentPage,pageSize){
                 passivetradeaction(id,currentPage,pageSize).then(res=>{
                     this.tableData = res.data.data.reslist
-                    this.total = res.data.data.total
+                    this.total1 = res.data.data.total
                     this.handleData();
                 }).catch(err=>{
                     console.log(err);
@@ -145,6 +145,43 @@
                 this.currentPage=page;
                 this.passivetradeactionList(id,page,10)
             },
+          handleData(){
+            let cnt=0;
+            this.Data=[];
+            this.spanarray=[];
+            for(let i=0;i<this.tableData.length;i++){
+              this.spanarray.push({
+                row:cnt,
+                num:this.tableData[i].length
+              });
+              for(let j=0;j<this.tableData[i].length;j++){
+                cnt++;
+                this.tableData[i][j]['group']=i+1;
+                this.Data.push(this.tableData[i][j])
+              }
+            }
+          },
+          activeOrpassive(){
+            return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
+          },
+          objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+            if (column.label === '编号' || column.label=== '交易模式') {
+              const condition = (element) => element['row'] === rowIndex;
+              let index = this.spanarray.findIndex(condition)
+              if (index !==-1){
+                return {
+                  rowspan: this.spanarray[index]['num'],
+                  colspan: 1
+                }
+              }
+              else {
+                return {
+                  rowspan: 0,
+                  colspan: 0
+                };
+              }
+            }
+          }/*
             drawPic(){
                 let echarts = echart.init(document.querySelector("#test"));
                 let option = {
@@ -191,14 +228,14 @@
                             edgeLength: [150, 200],
                             layoutAnimation: true
                         },
-                        /*force : { //力引导图基本配置
+                        force : { //力引导图基本配置
                             //initLayout: ,//力引导的初始化布局，默认使用xy轴的标点
                             repulsion : 200,//节点之间的斥力因子。支持数组表达斥力范围，值越大斥力越大。
                             gravity : 0.03,//节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。
                             edgeLength :80,//边的两个节点之间的距离，这个距离也会受 repulsion。[10, 50] 。值越小则长度越长
                             layoutAnimation : true
                             //因为力引导布局会在多次迭代后才会稳定，这个参数决定是 否显示布局的迭代动画，在浏览器端节点数据较多（>100）的时候不建议关闭，布局过程会造成浏览器假死。
-                        },*/
+                        },
                         roam : true,//是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移，可以设置成 'scale' 或者 'move'。设置成 true 为都开启
                         nodeScaleRatio : 0.6,//鼠标漫游缩放时节点的相应缩放比例，当设为0时节点不随着鼠标的缩放而缩放
                         draggable : true,//节点是否可拖拽，只在使用力引导布局的时候有用。
@@ -307,7 +344,7 @@
                 // 使用刚指定的配置项和数据显示图表
                 echarts.setOption(option);
 
-            },
+            },*//*
             look(row){
                 this.show=true;
                 this.loading=true;
@@ -368,7 +405,7 @@
                             }
                         ]
                     };
-                    this.echarts.setOption(option);
+                 //   this.echarts.setOption(option);
                     this.loading=false;
 
                 }).catch(err=>{
@@ -377,44 +414,8 @@
 
 
 
-            },
-            handleData(){
-                let cnt=0;
-                this.Data=[];
-                this.spanarray=[];
-                for(let i=0;i<this.tableData.length;i++){
-                    this.spanarray.push({
-                        row:cnt,
-                        num:this.tableData[i].length
-                    });
-                    for(let j=0;j<this.tableData[i].length;j++){
-                        cnt++;
-                        this.tableData[i][j]['group']=i+1;
-                        this.Data.push(this.tableData[i][j])
-                    }
-                }
-            },
-            activeOrpassive(){
-                return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
-            },
-            objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-                if (column.label === '编号' || column.label=== '交易模式') {
-                    const condition = (element) => element['row'] === rowIndex;
-                    let index = this.spanarray.findIndex(condition)
-                    if (index !==-1){
-                        return {
-                            rowspan: this.spanarray[index]['num'],
-                            colspan: 1
-                        }
-                    }
-                    else {
-                        return {
-                            rowspan: 0,
-                            colspan: 0
-                        };
-                    }
-                }
-            }
+            },*/
+
         }
     };
 </script>

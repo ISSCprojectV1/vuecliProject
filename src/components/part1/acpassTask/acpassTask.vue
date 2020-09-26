@@ -54,8 +54,10 @@
                     fixed="right"
                     width="100">
                 <template slot-scope="scope">
-                    <el-button @click="gotoActive(scope.row.id)" type="text" size="small">主动</el-button>
-                    <el-button @click="gotoPassive(scope.row.id)" type="text" size="small">被动</el-button>
+                    <el-button @click="gotoActive(scope.row.id)" type="text" size="small">详情</el-button>
+                  <el-button @click="gotoPassive(scope.row.id)" type="text" size="small">被动</el-button>
+
+
                 </template>
             </el-table-column>
         </el-table>
@@ -113,7 +115,7 @@
 
 <script>
     import {activetask, addactivetask} from "@/api/part1/acpassTask";
-
+//    <el-button @click="gotoPassive(scope.row.id)" type="text" size="small">被动</el-button>
     export default {
         name: "acpassTask",
         created(){
@@ -198,9 +200,12 @@
             },
             gotoActive(id){
                 this.$router.push(`/trade/acpassTask/activetask/${id}`);
+
                 //this.$router.push(`/trade/acpassTask/activetradeaction/${id}`);
             },
             gotoPassive(id){
+              console.log("aaa")
+              console.log(id)
                 this.$router.push(`/trade/acpassTask/passivetradeaction/${id}`);
             }
         }

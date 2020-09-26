@@ -84,6 +84,7 @@
             <el-tab-pane label="流程图模式" name="flow">
                 <div id="echart1" style="width: 1000px;height: 600px;text-align: center"></div>
             </el-tab-pane>
+
         </el-tabs>
     </div>
 </template>

@@ -8,7 +8,7 @@
         <el-tabs v-model="activeName">
             <el-tab-pane label="表格模式" name="table">
                 <el-table
-                        :data="tableData"
+                        :data="tableData1"
                         style="width: 100%">
                     <el-table-column
                             prop="id"
@@ -17,12 +17,12 @@
                     </el-table-column>
                     <el-table-column
                             prop="user1"
-                            label="交易用户1"
+                            label="交易用户卖方"
                             min-width="180">
                     </el-table-column>
                     <el-table-column
                             prop="user2"
-                            label="交易用户2"
+                            label="交易用户买方"
                             min-width="180">
                     </el-table-column>
                     <el-table-column
@@ -71,27 +71,122 @@
                 </el-form>
                 <div id="echart1" style="width: 1000px;height: 800px"></div>
             </el-tab-pane>
+          <el-tab-pane label="被动" name="passive" >
+            <el-table
+                :data="Data"
+                :span-method="objectSpanMethod"
+                border
+                style="width: 100%; margin-top: 20px">
+              <el-table-column
+                  prop="group"
+                  label="编号"
+                  width="50">
+              </el-table-column>
+              <el-table-column label="交易行为" align="center">
 
+                <el-table-column
+                    prop="buyername"
+                    label="买方姓名">
+                </el-table-column>
+                <el-table-column
+                    prop="category"
+                    label="商品">
+                </el-table-column>
+                <el-table-column
+                    prop="amount"
+                    label="数量">
+                </el-table-column>
+                <el-table-column
+                    prop="price"
+                    label="价格">
+                </el-table-column>
+
+                <el-table-column
+                    prop="sellername"
+                    label="卖方姓名">
+                </el-table-column>
+
+                <el-table-column
+                    prop="belong"
+                    label="归属">
+                </el-table-column>
+                <el-table-column
+                    prop="tasksize"
+                    label="空间粒度">
+                </el-table-column>
+                <el-table-column
+                    prop="original"
+                    label="原生任务"
+                    v-if="activeOrpassive()"
+                >
+                </el-table-column>
+                <!--                <el-table-column-->
+                <!--                        prop=""-->
+                <!--                        label="交易模式">-->
+                <!--                    <template slot-scope="scope">-->
+                <!--                        <el-button @click="look(scope.row)" type="button" size="small">查看</el-button>-->
+                <!--                    </template>-->
+                <!--                </el-table-column>-->
+              </el-table-column>
+            </el-table>
+            <el-pagination
+                ref="pagination"
+                style="text-align: center"
+                background
+                layout="prev, pager, next"
+                page-size="5"
+                @current-change = "pageChange1"
+                :total="total1"
+            >
+            </el-pagination>
+
+
+          </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
-    import {activetaskgraph, activetradegroup} from "@/api/part1/acpassTask";
+import tradeaction from "@/components/part1/acpassTask/tradeaction";
+import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction} from "@/api/part1/acpassTask";
     import echart from "echarts";
-
     export default {
         name: "activetask",
+
         created(){
+
             const id = this.$router.currentRoute.params.id;
+
             this.Activetradegroup(id,1,10);
+
+          if (this.activeOrpassive()){
+            activetradeaction(id).then(res=>{
+              this.tableData1 = res.data.data
+              this.handleData();
+            }).catch(err=>{
+              console.log(err);
+              console.log("出现错误")
+
+            })
+          }
+          else{
+            this.passivetradeactionList(id,1,5)
+          }
         },
         data(){
             return{
                 activeName:"table",
                 total:0,
-                tableData:[],
-                form:{}
+                tableData1:[],
+                form:{},
+              total1:0,
+              loading:false,
+              show:false,
+              Data:[],
+              spanarray:[],
+              tableData: [
+              ],
+
             }
         },
         mounted(){
@@ -99,6 +194,39 @@
             this.Activetaskgraph(id,15);
         },
         methods:{
+          passivetradeactionList(id,currentPage,pageSize){
+            passivetradeaction(id,currentPage,pageSize).then(res=>{
+console.log(res)
+              this.tableData = res.data.data.reslist
+              let data = res.data.data.reslist;
+              this.total1 = res.data.data.total
+              console.log(this.total1)
+              for (let i = 0; i < data.length; i++) {
+                data[i].id=i+1
+              }
+              this.tableData = data
+              this.handleData();
+            }).catch(err=>{
+              console.log(err);
+              console.log("出现错误")
+            })
+          }, handleData(){
+            let cnt=0;
+            this.Data=[];
+            this.spanarray=[];
+            console.log(this.tableData.length)
+            for(let i=0;i<this.tableData.length;i++){
+              this.spanarray.push({
+                row:cnt,
+                num:this.tableData[i].length
+              });
+              for(let j=0;j<this.tableData[i].length;j++){
+                cnt++;
+                this.tableData[i][j]['group']=i+1;
+                this.Data.push(this.tableData[i][j])
+              }
+            }
+          },
             Activetaskgraph(id,limit){
                 activetaskgraph(id,limit).then(res=>{
                     this.drawechart(res.data.data)
@@ -111,6 +239,11 @@
                 this.currentPage=page;
                 this.Activetradegroup(id,page,10);
             },
+          pageChange1(page){
+            const id = this.$router.currentRoute.params.id;
+            this.currentPage=page;
+            this.passivetradeactionList(id,page,5)
+          },
             Activetradegroup(id,currentPage,pageSize){
                 activetradegroup(id,currentPage,pageSize).then(res=>{
                     let data = res.data.data.reslist;
@@ -118,7 +251,7 @@
                     for (let i = 0; i < data.length; i++) {
                         data[i].id=i+1
                     }
-                    this.tableData = data
+                    this.tableData1 = data
                 }).catch(err=>{
                     console.log("请求失败")
                     console.log(err)
@@ -128,6 +261,28 @@
                 const id = this.$router.currentRoute.params.id;
                 this.Activetaskgraph(id,limit);
             },
+          activeOrpassive(){
+            console.log(this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction'))
+            return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
+          },
+          objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+            if (column.label === '编号' || column.label=== '交易模式') {
+              const condition = (element) => element['row'] === rowIndex;
+              let index = this.spanarray.findIndex(condition)
+              if (index !==-1){
+                return {
+                  rowspan: this.spanarray[index]['num'],
+                  colspan: 1
+                }
+              }
+              else {
+                return {
+                  rowspan: 0,
+                  colspan: 0
+                };
+              }
+            }
+          },
             gotoDetail(id){
                 this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
                 console.log(id)
