@@ -2,7 +2,7 @@
     <div>
 
       <div class="title">
-        <div style="display: inline-block; margin-bottom:20px;font-size: 30px;" >  多模态多粒度监管与服务模式——主被动模态与空间粒度</div>
+        <div style="display: inline-block; margin-bottom:20px;font-size: 40px;" >  主被动模态与空间粒度</div>
       </div>
 
         <el-tabs v-model="activeName">
@@ -17,12 +17,12 @@
                     </el-table-column>
                     <el-table-column
                             prop="user1"
-                            label="交易用户卖方"
+                            label="主要交易卖方"
                             min-width="180">
                     </el-table-column>
                     <el-table-column
                             prop="user2"
-                            label="交易用户买方"
+                            label="主要交易买方"
                             min-width="180">
                     </el-table-column>
                     <el-table-column
