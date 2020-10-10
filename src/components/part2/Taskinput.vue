@@ -1,6 +1,7 @@
 <template>
   <div style="width: 100%;height: 800px">
-    <h2 class="red"> 商品品类维护 </h2>
+
+    <h2 align="left"> <el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>商品品类维护 </h2>
   <el-container style="height: 800px; border: 10px solid #eee">
 
     <el-aside width="300px" style="background-color: rgb(238, 241, 246);border: 10px solid #eee">
@@ -140,6 +141,10 @@ export default {
   methods: {
     doerror(){
       this.$message.error('执行出错！');
+    },
+    backTo() {
+      //直接跳转
+      this.$router.push('/trade/Multimodal-multigranularity/goodsgranularity');
     },
 
     onadd(){//添加新品类

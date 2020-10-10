@@ -1,8 +1,9 @@
 <template>
    <div style="width: 100%;height: 800px">
+       <h2 class="red"> 可用资源展示 </h2>
        <div id="app">
            <!--创建一个echarts的容器-->
-           <div id="echartContainer" style="width:900px; height:600px"></div>
+           <div id="echartContainer" style="width: 100%;height: 800px"></div>
        </div>
    </div>
 </template>
@@ -20,8 +21,7 @@
                 // 绘制图表
                 myChart.setOption({
                     title: {
-                        text: '系统可用资源情况',
-                        subtext: '动态刷新',
+
                         left: 'center'
                     },
                     tooltip: {

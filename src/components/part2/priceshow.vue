@@ -1,22 +1,22 @@
 <template>
     <div id="main">
         <!--    选择商品，展示历史价格数据，给出推荐的时间粒度-->
+        <h2 align="left"> <el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>商品历史价格展示 </h2>
         <div id="app">
             <div>
                 <el-form ref="form" :model="form" label-width="80px">
-                    <h2> 选择需要查询的商品 </h2>
-                    <el-form-item label="商品名称">
+                    <h2></h2>
+                    <el-form-item>
                         <el-cascader class="kind"
                                      placeholder="试试搜索：农副产品小麦"
                                      :options="options"
                                      :props="{ multiple: true }"
                                      filterable></el-cascader>
-                        <el-button type="primary" @click="ok">确定</el-button>
+                        <el-button type="primary" @click="ok" style="margin-left:10px;margin-right:10px">确定</el-button>
                     </el-form-item>
                 </el-form>
             </div>
             <div id="show">
-                <h2> 该商品历史价格展示 </h2>
                 <div id='myChart'
                      ref="myChart"
                 >
@@ -231,6 +231,10 @@
             this.myChart.setOption(this.echartsOption)
         },
         methods: {
+            backTo() {
+                //直接跳转
+                this.$router.push('/trade/Multimodal-multigranularity/goodsgranularity');
+            },
             ok() {
                 this.$message({
                     message: '提交成功！',
