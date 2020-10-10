@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%;height: 800px">
-        <h2 class="red"> 商品信息展示与添加 </h2>
+        <div style="display: inline-block; margin-bottom:30px; font-size:40px">商品信息展示与添加</div>
         <div>
             <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
             <!--<el-button type="primary" @click="getData()" style="margin-left:10px;margin-right:10px">展示</el-button>-->

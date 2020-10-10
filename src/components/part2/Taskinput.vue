@@ -1,7 +1,6 @@
 <template>
   <div style="width: 100%;height: 800px">
-
-    <h2 align="left"> <el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>商品品类维护 </h2>
+    <div  style="display: inline-block; margin-bottom:30px; margin-right:500px; font-size:40px"><el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>商品品类维护</div>
   <el-container style="height: 800px; border: 10px solid #eee">
 
     <el-aside width="300px" style="background-color: rgb(238, 241, 246);border: 10px solid #eee">

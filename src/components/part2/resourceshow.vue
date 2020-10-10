@@ -1,6 +1,6 @@
 <template>
    <div style="width: 100%;height: 800px">
-       <h2 class="red"> 可用资源展示 </h2>
+       <div style="display: inline-block; margin-bottom:30px; font-size:40px">可用资源展示</div>
        <div id="app">
            <!--创建一个echarts的容器-->
            <div id="echartContainer" style="width: 100%;height: 800px"></div>
@@ -91,5 +91,13 @@
 </script>
 
 <style scoped>
+    .title {
+        height: 80px;
+        background: #fff;
+        font-size: 32px;
+        color: #333;
+        line-height: 80px;
+        border-bottom: 1px solid #333;
+    }
 
 </style>

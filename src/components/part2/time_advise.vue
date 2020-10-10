@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-        <h2> 监控时间粒度推荐 </h2>
+        <div style="display: inline-block; margin-bottom:30px; font-size:40px">监控时间粒度推荐</div>
+
         <div class="block" style="height:80px;text-align:left;margin-left:30px;">
             <span class="demonstration">请选择商品类别：   </span>
             <el-select v-model="value" filterable placeholder="请选择">
