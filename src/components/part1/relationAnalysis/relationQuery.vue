@@ -51,7 +51,7 @@
                             label="用户关联度"
                             min-width="180">
                         <template slot-scope="scope">
-                            <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
+                            <el-progress :stroke-width="10" :percentage="scope.row.similarity"></el-progress>
                         </template>
                     </el-table-column>
                     <el-table-column label="关联交易">
@@ -87,7 +87,7 @@
                                                     label="交易关联度"
                                                     min-width="180">
                                                 <template slot-scope="scope">
-                                                    <el-progress :stroke-width="10" :percentage="100*scope.row.similarity"></el-progress>
+                                                    <el-progress :stroke-width="10" :percentage="scope.row.similarity"></el-progress>
                                                 </template>
 
                                             </el-table-column>
@@ -310,13 +310,13 @@
                         {
                             source:"用户"+data[i].uid1,
                             target:"用户"+data[i].uid2,
-                            value:data[i].similarity.toFixed(2),
+                            value:data[i].similarity/100.0,
                             label: {
                                 show:true,
                                 formatter:"关联度:{c}"
                             },
                             lineStyle:{
-                                width: 10*data[i].similarity+1
+                                width: 10*data[i].similarity/100.0+1
                             }
                         }
                     )
@@ -395,13 +395,13 @@
                         {
                             source:"交易"+data[i].tid1,
                             target:"交易"+data[i].tid2,
-                            value:data[i].similarity.toFixed(2),
+                            value:data[i].similarity/100.0,
                             label: {
                                 show:true,
                                 formatter:"关联度:{c}"
                             },
                             lineStyle:{
-                                width: 5*data[i].similarity+1
+                                width: 5*data[i].similarity/100.0+1
                             }
                         }
                     )

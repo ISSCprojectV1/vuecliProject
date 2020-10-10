@@ -30,10 +30,10 @@
                     <el-button @click="flush(auction.id)">刷新</el-button>
             </el-form>
     </el-col>
-        <el-col :span="12" style="border: #07c160" >
-                <h2>拍卖规则</h2>
-                {{rule}}
-        </el-col>
+<!--        <el-col :span="12" style="border: #07c160" >-->
+<!--                <h2>拍卖规则</h2>-->
+<!--                {{rule}}-->
+<!--        </el-col>-->
     </el-row>
 </div>
 </template>

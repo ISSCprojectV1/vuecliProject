@@ -1,5 +1,6 @@
 <template>
     <div id="diceng">
+        <h2>数据查询</h2>
         <el-row>
             <el-col :span="8">
                 <el-form>

@@ -1,8 +1,9 @@
 <template>
   <div class="dormitory" id="diceng">
-        <div class="title">
-      <div style="display: inline-block; margin-bottom:20px; font-size:40px" >监管任务查询列表</div>
-    </div>
+<!--        <div class="title">-->
+<!--      <div style="display: inline-block; margin-bottom:20px; font-size:40px" >监管任务查询列表</div>-->
+<!--        </div>-->
+    <h2>监管任务查询列表</h2>
 
     <div class="searchWord" style="margin-bottom:20px">
 
@@ -153,12 +154,12 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
                     var taskName = {};
                     taskName = {"value":dataConvert[i].name};
                     taskNames.push(taskName);
-                } 
+                }
                 }).catch(()=>{
                     console.log("taskQuery fail")
-                });        
-                return taskNames;     
-                
+                });
+                return taskNames;
+
       },
       // 搜索 从服务器获得数据
       querySearch(queryString, cb) {
@@ -179,7 +180,7 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
       searchTask_btn(){
         this.searchData = this.state1;
         console.log("state1:" + this.state1 + "searchData:" + this.searchData)
-        this.searchTableVisible = true; 
+        this.searchTableVisible = true;
         this.$refs.taskSearch.getSearchData(this.state1);
       },
       // 用户手册 弹窗
@@ -213,7 +214,7 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
                 this.dormitory = dataConvert;
                 }).catch(()=>{
                     console.log("getTransactionData fail")
-                });                       
+                });
             } ,
             // 转换时间戳
             timestampToTime (cjsj) {

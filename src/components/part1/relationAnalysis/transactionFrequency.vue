@@ -216,7 +216,7 @@
                         {
                             source:"交易"+data[i].tid1,
                             target:"交易"+data[i].tid2,
-                            value:data[i].similarity.toFixed(2),
+                            value:data[i].similarity,
                             label: {
                                 show:true,
                                 formatter:"关联度:{c}"

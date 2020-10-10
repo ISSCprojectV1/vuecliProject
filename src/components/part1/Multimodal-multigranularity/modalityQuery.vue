@@ -1,30 +1,28 @@
 <template>
   <div id="diceng" class="dormitory">
-        <div class="title">
-      <div style="display: inline-block; margin-bottom:30px; font-size:40px">人机模态查询列表</div>
-    </div>
+    <h2>人机模态查询列表</h2>
     <div class="searchWord" style="margin-bottom:30px">
       <el-input v-model="search" style="display: inline-block; width: 500px;" placeholder="请输入搜索关键词"></el-input>
       <el-button type="primary" @click="addNewTask" style="margin-left:50px; margin-right:30px">添加新模态</el-button>
-      <el-dialog title="添加新模态" 
-      :visible.sync="dialogTableVisible" center :append-to-body='true' 
-      :lock-scroll="false" width="30%" 
+      <el-dialog title="添加新模态"
+      :visible.sync="dialogTableVisible" center :append-to-body='true'
+      :lock-scroll="false" width="30%"
       :close-on-click-modal="false"
       >
       <modalityInput></modalityInput>
       </el-dialog>
 
        <el-button type="warning" @click="modalityAllocation">分配模态任务</el-button>
-       <el-dialog title="分配模态任务" 
-      :visible.sync="dialogAllocationVisible" center :append-to-body='true' 
-      :lock-scroll="false" width="30%" 
+       <el-dialog title="分配模态任务"
+      :visible.sync="dialogAllocationVisible" center :append-to-body='true'
+      :lock-scroll="false" width="30%"
       :close-on-click-modal="false"
       >
       <modalityAllocation></modalityAllocation>
       </el-dialog>
 
     </div>
-    
+
     <div class="dormitoryData">
       <el-table
         ref="dormitoryTable"
@@ -102,7 +100,7 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
   computed: {
       // 模糊搜索
       tables () {
-        
+
         const search = this.search
         if (search) {
           // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
@@ -172,12 +170,12 @@ import modalityAllocation from "@/components/part1/Multimodal-multigranularity/m
                 }).catch(()=>{
                     console.log("modalityAllocation  fail")
                 });
-                
+
          },
 // 分页
     // 每页显示的条数
     handleSizeChange(val) {
-      // 改变每页显示的条数 
+      // 改变每页显示的条数
       this.PageSize=val
       // 注意：在改变每页显示的条数时，要将页码显示到第一页
       this.currentPage=1
