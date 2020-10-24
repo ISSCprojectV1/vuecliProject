@@ -20,7 +20,14 @@ export function searchTask(data) {
       data
         })
   }
-
+// 搜索任务
+export function changetimeadvise() {
+  console.log("发送修改时间粒度请求")
+  return request({
+    url: '/getTimeadvise',
+    method: 'get',
+  })
+}
   // 分配任务
 export function taskAllocation() {
   console.log("发送taskAllocation 请求")

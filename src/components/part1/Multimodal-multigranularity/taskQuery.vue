@@ -31,7 +31,7 @@
       :lock-scroll="false" width="30%"
       :close-on-click-modal="false"
       >
-      <taskInput></taskInput>
+      <taskInput :taskin="taskin"></taskInput>
       </el-dialog>
       <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">执行分配任务</el-button>
       <el-link type="primary" icon="el-icon-question" @click="userHelp">首次使用，查看用户使用说明</el-link>
@@ -64,21 +64,29 @@
         <el-table-column label="序号"  prop="id" width = "60"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
-        <el-table-column label="创建时间" prop="gmtCreate" >
-        </el-table-column>
-        <el-table-column label="修改时间" prop="gmtModified" >
-        </el-table-column>
+
         <el-table-column label="任务优先级" prop="priority" width = "60">
         </el-table-column>
         <el-table-column label="任务执行时间" prop="workingTime" width = "60">
         </el-table-column>
-        <el-table-column label="开始时间" prop="startTime">
-        </el-table-column>
-        <el-table-column label="结束时间" prop="endTime">
-        </el-table-column>
+
         <el-table-column label="人模态分布" prop="humanUse" width = "80">
         </el-table-column>
         <el-table-column label="机器模态分布数" prop="agentNum" width = "80" >
+        </el-table-column>
+        <el-table-column label="时间粒度" prop="timeadvise" width = "80" >
+        </el-table-column>
+        <el-table-column
+                label="按钮"
+                fixed="right"
+                min-width="180">
+          <template slot-scope="scope">
+            <el-button @click="changetask(scope)" type="text" size="small">修改</el-button>
+            <el-button @click="changetime(scope)" type="text" size="small">时间粒度</el-button>
+            <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
+          </template>
+
+
         </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
@@ -103,12 +111,21 @@
 
 <script>
   //import {getTansactionData} from "@/api/part1/transactionProject";
-import {taskQuery,taskAllocation,searchTask} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,taskAllocation,searchTask,changetimeadvise} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
 import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearch";
-
+/*
+  <el-table-column label="创建时间" prop="gmtCreate" >
+        </el-table-column>
+        <el-table-column label="修改时间" prop="gmtModified" >
+        </el-table-column>
+                <el-table-column label="开始时间" prop="startTime">
+        </el-table-column>
+        <el-table-column label="结束时间" prop="endTime">
+        </el-table-column>
+ */
 
  // import $ from 'jQuery'
   export default {
@@ -135,14 +152,62 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
       pageSizes:[5,10],
       // 默认每页显示的条数（可修改）
       PageSize:10,
+        taskin:'',
         }
   },
   //在这里调用ajax请求方法
     created(){
       this.getData();
     },
+watch(){
 
+},
     methods: {
+      gotoDetail(id){
+        this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
+        console.log(id)
+      },
+      changetime(data){
+        changetimeadvise().then((res) => {
+          console.log(res.data)
+          var dataConvert = [];
+          dataConvert = res.data.data;
+          for(var i = 0;i<dataConvert.length;i++){
+            var data = this.timestampToTime(dataConvert[i].gmtCreate)
+            dataConvert[i].gmtCreate = data
+
+            data = this.timestampToTime(dataConvert[i].gmtModified)
+            dataConvert[i].gmtModified = data
+
+            data = this.timestampToTime(dataConvert[i].startTime)
+            dataConvert[i].startTime = data
+
+            data = this.timestampToTime(dataConvert[i].endTime)
+            dataConvert[i].endTime = data
+
+            if(dataConvert[i].humanUse) // true
+              dataConvert[i].humanUse = "是"
+            else // false
+              dataConvert[i].humanUse = "否"
+            if(!dataConvert[i].timeadvise) // true
+              dataConvert[i].timeadvise="否"
+
+
+
+          }
+          this.dormitory = dataConvert;
+      //this.getdata()
+          // console.log()
+        }).catch(()=>{
+          console.log("taskQuery fail")
+        });
+
+      },
+      changetask(scope) {
+        this.taskin=scope.row
+        this.addNewTask1()
+        console.log(this.taskin)
+      },
       loadAll() {
         // 获取表格数据
                console.log("获取表格数据")
@@ -192,6 +257,7 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
                console.log("获取表格数据")
                var dataConvert = [];
                taskQuery().then((res) => {
+                 console.log( res.data.data)
                 dataConvert = res.data.data;
                 for(var i = 0;i<dataConvert.length;i++){
                   var data = this.timestampToTime(dataConvert[i].gmtCreate)
@@ -210,7 +276,12 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
                     dataConvert[i].humanUse = "是"
                   else // false
                     dataConvert[i].humanUse = "否"
-             }
+                  if(!dataConvert[i].timeadvise) // true
+                    dataConvert[i].timeadvise="否"
+
+
+
+                }
                 this.dormitory = dataConvert;
                 }).catch(()=>{
                     console.log("getTransactionData fail")
@@ -232,6 +303,13 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
           addNewTask(){
             this.dialogTableVisible=true;
           },
+      addNewTask1(){
+        this.dialogTableVisible=true;
+      //  console.log(this.taskInput)
+   //     console.log(taskInput)
+        //this.taskInput.input=this.taskin.name;
+     //   this.taskInput.priority=this.taskin.priority;
+      },
           // 获得任务流程图展示
           getTaskMap(){
             this.taskMapVisible = true;
@@ -313,9 +391,9 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
       let tiankong= document.getElementById("diceng");
       tiankong.style.height=window.innerHeight+"px"
 
-      console.log(tiankong.style.height)
+ //     console.log(tiankong.style.height)
       let announcement=document.getElementById("announcement");
-      console.log(tiankong)
+    //  console.log(tiankong)
     },
   }
 </script>

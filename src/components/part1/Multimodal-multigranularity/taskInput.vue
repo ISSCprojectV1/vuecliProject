@@ -21,7 +21,11 @@
     active-text="人工分配"
     ></el-switch>
   </el-form-item>
-
+    <el-form-item label="是否主动监管">
+        <el-switch v-model="content"
+                   active-text="主动监管"
+        ></el-switch>
+    </el-form-item>
 <el-form-item label="任务开始时间">
     <el-col :span="11">
       <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;" ></el-date-picker>
@@ -45,7 +49,9 @@
      <el-form-item label="workingTime">
 <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
    </el-form-item>
-
+    <el-form-item label="时间粒度建议">
+        <el-input v-model="timeadvise" placeholder="请输入时间粒度"></el-input>
+    </el-form-item>
 <el-button type="success" @click="postAddress">立即创建</el-button>
 <el-button type="info" @click="abortForm">取消创建</el-button>
 
@@ -60,6 +66,8 @@ import {taskInput} from "@/api/part1/Multimodal-multigranularity";
 export default {
 data() {
     return {
+
+        taskinputt:this.taskin,
       input: '',
       priority: '',
       humanUse: false,
@@ -68,12 +76,39 @@ data() {
       dateEnd: '',
       dateEnd2: '',
       workingTime:'',
+        timeadvise:'',
+        content:''
+
     }
+
   },
+    props:['taskin'],
       created(){
       this.cleanForm();
     },
+    computed: {
+        address(){
+       console.log(this.taskin)
+            return ""
+        }
+    },
+    watch:{
+        'taskin.id'(){
+      this.input=this.taskin.name
+          this.priority=this.taskin.priority
+          this.humanUse=this.taskin.humanUse
+
+    }
+    },
 methods:{
+    having(){
+        console.log(this.taskin)
+      if(this.taskin.id=="")
+          return false
+        return true
+
+    },
+
 postAddress(){
   this.$confirm('是否确认创建该监管任务', '提示', {
           confirmButtonText: '确定',
@@ -105,13 +140,17 @@ console.log("发送请求前")
   var data = { 
   "name":this.input,  
   "priority":this.priority, 
-  "humanUse":this.humanUse,  
-  "startTime":startData,  
-  "endTime":endData,
-  "workingTime":this.workingTime };
+  "humanUse":this.humanUse,  //
+  "startTime":startData,//  
+  "endTime":endData,//
+  "workingTime":this.workingTime,//
+ "timeadvise":this.timeadvise,
+  "content":this.content
 
+  };
+console.log(data);
   taskInput(data).then(function (response) {
-
+console.log(response)
   })
   .catch(function (error) {
     console.log(error);
