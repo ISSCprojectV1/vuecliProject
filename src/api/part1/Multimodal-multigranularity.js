@@ -22,7 +22,7 @@ export function searchTask(data) {
   }
 // 搜索任务
 export function changetimeadvise() {
-  console.log("发送修改时间粒度请求")
+  console.log("发送时间粒度请求")
   return request({
     url: '/getTimeadvise',
     method: 'get',
