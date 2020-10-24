@@ -22,7 +22,7 @@
     ></el-switch>
   </el-form-item>
     <el-form-item label="是否主动监管">
-        <el-switch v-model="content"
+        <el-switch v-model="tradeuser"
                    active-text="主动监管"
         ></el-switch>
     </el-form-item>
@@ -46,11 +46,14 @@
     </el-col>
   </el-form-item>
 
-     <el-form-item label="workingTime">
+     <el-form-item label="工作时间">
 <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
    </el-form-item>
     <el-form-item label="时间粒度建议">
         <el-input v-model="timeadvise" placeholder="请输入时间粒度"></el-input>
+    </el-form-item>
+    <el-form-item label="内容">
+        <el-input v-model="content" placeholder="监管内容"></el-input>
     </el-form-item>
 <el-button type="success" @click="postAddress">立即创建</el-button>
 <el-button type="info" @click="abortForm">取消创建</el-button>
@@ -77,7 +80,8 @@ data() {
       dateEnd2: '',
       workingTime:'',
         timeadvise:'',
-        content:''
+        content:'',
+        tradeuser:''
 
     }
 
