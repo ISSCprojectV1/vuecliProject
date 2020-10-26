@@ -77,6 +77,11 @@
         </el-table-column>
         <el-table-column label="时间粒度" prop="timeadvise" width = "80" >
         </el-table-column>
+        <el-table-column label="内容" prop="content">
+        </el-table-column>
+        <el-table-column label="商品名称" prop="commodityName">
+        </el-table-column>
+
         <el-table-column
                 label="按钮"
                 fixed="right"
@@ -89,6 +94,7 @@
 
 
         </el-table-column>
+
       </el-table>
       <el-pagination @size-change="handleSizeChange"
              @current-change="handleCurrentChange"
@@ -198,8 +204,6 @@ watch(){
             if(!dataConvert[i].timeadvise) // true
               dataConvert[i].timeadvise="否"
 
-
-
           }
           this.dormitory = dataConvert;
       //this.getdata()
@@ -285,6 +289,10 @@ watch(){
                     dataConvert[i].humanUse = "否"
                   if(!dataConvert[i].timeadvise) // true
                     dataConvert[i].timeadvise="否"
+                  if(!dataConvert[i].commodityName) // true
+                    dataConvert[i].commodityName="暂无"
+                  if(!dataConvert[i].content) // true
+                    dataConvert[i].content="暂时未分配"
 
 
 
