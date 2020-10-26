@@ -12,50 +12,41 @@
             <el-table-column
                     prop="id"
                     label="编号"
-                    width="180">
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="taskname"
                     label="任务名称"
-                    width="180">
+                    width="200">
             </el-table-column>
-            <el-table-column
-                    prop="startingtime"
-                    label="开始时间"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="endingtime"
-                    label="结束时间"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="creatingtime"
-                    label="创建时间"
-                    width="180">
-            </el-table-column>
+
             <el-table-column
                     prop="category"
                     label="监管种类"
-                    width="180">
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="tasksize"
                     label="空间粒度"
-                    width="180">
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="introduction"
                     label="描述"
-                    width="180">
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="regulrange"
+                    label="监管范围"
+                    width="400">
             </el-table-column>
             <el-table-column
                     label="监管方式"
-                    fixed="right"
-                    width="100">
+
+                    width="200">
                 <template slot-scope="scope">
                     <el-button @click="gotoActive(scope.row.id)" type="text" size="small">主动</el-button>
-                    <el-button @click="gotoPassive(scope.row.id)" type="text" size="small">被动</el-button>
+
                 </template>
             </el-table-column>
         </el-table>
@@ -113,7 +104,21 @@
 
 <script>
     import {activetask, addactivetask} from "@/api/part1/acpassTask";
-
+/* <el-table-column          <el-button @click="gotoPassive(scope.row.id)" type="text" size="small">被动</el-button>
+                    prop="startingtime"
+                    label="开始时间"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="endingtime"
+                    label="结束时间"
+                    width="180">            fixed="right"
+            </el-table-column>
+            <el-table-column
+                    prop="creatingtime"
+                    label="创建时间"
+                    width="180">
+            </el-table-column>*/
     export default {
         name: "acpassTask",
         created(){

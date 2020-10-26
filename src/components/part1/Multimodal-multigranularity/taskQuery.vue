@@ -176,7 +176,8 @@ watch(){
 },
     methods: {
       gotoDetail(id){
-        this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
+        this.$router.push(`/trade/acpassTask/activetask/${id}`);
+        //  this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
         console.log(id)
       },
       changetime(data){
