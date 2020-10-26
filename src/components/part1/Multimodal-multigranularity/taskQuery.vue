@@ -30,6 +30,7 @@
       :visible.sync="dialogTableVisible" center :append-to-body='true'
       :lock-scroll="false" width="30%"
       :close-on-click-modal="false"
+
       >
       <taskInput :taskin="taskin"></taskInput>
       </el-dialog>
@@ -152,12 +153,17 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
       pageSizes:[5,10],
       // 默认每页显示的条数（可修改）
       PageSize:10,
-        taskin:'',
+        taskin:{
+          changeflag:
+          Number.NEGATIVE_INFINITY
+        },
         }
   },
   //在这里调用ajax请求方法
     created(){
       this.getData();
+    //  this.taskin.changeflag=Number.POSITIVE_INFINITY
+    //  console.log( this.taskin.changeflag)
     },
 watch(){
 
@@ -205,8 +211,9 @@ watch(){
       },
       changetask(scope) {
         this.taskin=scope.row
+        this.taskin.changeflag=this.taskin.id;
         this.addNewTask1()
-        console.log(this.taskin)
+   //     console.log(this.taskin)
       },
       loadAll() {
         // 获取表格数据
@@ -301,6 +308,13 @@ watch(){
 
          // 新增监控任务
           addNewTask(){
+        this.taskin={};
+            //this.taskin.id=-1
+       //     this.taskin.changeflag=Number.POSITIVE_INFINITY
+         this.taskin.changeflag=Number.POSITIVE_INFINITY
+          //  this.taskin.changeflag=-1
+          //  console.log(this.taskin.changeflag)
+          //  this.taskin.changeflag=false;
             this.dialogTableVisible=true;
           },
       addNewTask1(){

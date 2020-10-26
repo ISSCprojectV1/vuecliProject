@@ -53,6 +53,18 @@
     <el-form-item label="内容">
         <el-input v-model="content" placeholder="监管内容"></el-input>
     </el-form-item>
+    <el-form-item label="商品名称">
+        <el-select v-model="commodityName" placeholder="请选择商品名称">
+
+            <el-option label="小麦" value="小麦"></el-option>
+            <el-option label="大豆" value="大豆"></el-option>
+            <el-option label="焦炭" value="焦炭"></el-option>
+            <el-option label="动力煤" value="动力煤"></el-option>
+            <el-option label="甲醇" value="甲醇"></el-option>
+            <el-option label="肥料" value="肥料"></el-option>
+            <el-option label="螺纹钢" value="螺纹钢"></el-option>
+        </el-select>
+    </el-form-item>
 <el-button type="success" @click="postAddress">立即创建</el-button>
 <el-button type="info" @click="abortForm">取消创建</el-button>
 
@@ -78,13 +90,20 @@ data() {
       workingTime:'',
         timeadvise:'',
         content:'',
-        tradeuser:''
+        tradeuser:'',
+        commodityName:''
     }
 
   },
     props:['taskin'],
       created(){
-      this.cleanForm();
+    console.log(this.taskin.changeflag)
+          console.log(this.taskin.name)
+          this.input=this.taskin.name
+          this.priority=this.taskin.priority
+          this.humanUse=this.taskin.humanUse
+        /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
+      this.cleanForm();*/
     },
     computed: {
         address(){
@@ -93,10 +112,13 @@ data() {
         }
     },
     watch:{
-        'taskin.id'(){
+        'taskin.changeflag'(){
+            console.log("flag变了")
       this.input=this.taskin.name
           this.priority=this.taskin.priority
           this.humanUse=this.taskin.humanUse
+if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
+    this.cleanForm()
 
     }
     },
@@ -162,6 +184,7 @@ abortForm(){
   this.$parent.$parent.dialogTableVisible = false
 },
 cleanForm(){
+
   console.log("到这里了吗")
       this.input = '',
       this.priority = '',
