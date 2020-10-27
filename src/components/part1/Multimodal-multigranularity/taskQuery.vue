@@ -90,6 +90,7 @@
             <el-button @click="changetask(scope)" type="text" size="small">修改</el-button>
             <el-button @click="changetime(scope)" type="text" size="small">时间粒度</el-button>
             <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
+            <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
           </template>
 
 
@@ -175,6 +176,10 @@ watch(){
 
 },
     methods: {
+      goToprice() {
+        //直接跳转
+        this.$router.push('/trade/Multimodal-multigranularity/priceshow');
+      },
       gotoDetail(id){
         this.$router.push(`/trade/acpassTask/activetask/${id}`);
         //  this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
