@@ -52,6 +52,13 @@ export function getsettlement(currentPage,pageSize) {
     return request.get('/admin/getsettlement/'+currentPage+'/'+pageSize);
 }
 
+export function getuploadfile(currentPage,pageSize) {
+    return request.get('/admin/getuploadfile/'+currentPage+'/'+pageSize)
+}
+
+export function changeUploadFileStatus(UploadFileId,Status) {
+    return request.get('/admin/changeUploadFileStatus/'+UploadFileId+'/'+Status)
+}
 
 
 
