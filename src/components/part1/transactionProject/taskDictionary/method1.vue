@@ -220,6 +220,7 @@ const tooltip = new G6.Tooltip({
         <h3>* 工作时间: ${e.item.getModel().workingTime}</h3>
       </ul>
 `
+
     return outDiv
   },
   itemTypes: ['node']

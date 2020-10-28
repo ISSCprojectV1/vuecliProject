@@ -142,7 +142,9 @@
 
 
           </el-tab-pane>
+
         </el-tabs>
+        <el-button type="success" @click="goback">返回</el-button>
     </div>
 </template>
 
@@ -194,6 +196,9 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             this.Activetaskgraph(id,15);
         },
         methods:{
+            goback(){
+                this.$router.back(-1)
+            },
           passivetradeactionList(id,currentPage,pageSize){
             passivetradeaction(id,currentPage,pageSize).then(res=>{
 console.log(res)

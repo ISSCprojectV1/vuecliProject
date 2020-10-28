@@ -6,6 +6,7 @@
     </h2>
 
         <el-button type="primary" @click="dialogFormAddInit">添加新任务</el-button>
+
         <el-table
                 :data="tableData"
                 style="width: 100%">
@@ -166,7 +167,9 @@
                 })
             },
 
-
+            goback(){
+                this.$router.back(-1)
+            },
             //换页请求
             pageChange(page){
                 this.currentPage=page;

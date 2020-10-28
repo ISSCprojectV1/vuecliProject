@@ -81,7 +81,7 @@
             <el-tab-pane label="交易模式" name="flow">
                 <div id="echart1" style="width: 1000px;height: 600px;text-align: center"></div>
             </el-tab-pane>
-            <el-button type="success" @click="goback">返回</el-button>
+
         </el-tabs>
     </div>
 </template>
@@ -206,9 +206,7 @@
             }
         },
         methods:{
-            goback(){
-                this.$router.back(-1)
-            },
+
 
             Activetradedetailinfo(id,currentPage,pageSize){
                 activetradedetailinfo(id,currentPage,pageSize).then(res=>{

@@ -297,8 +297,8 @@ watch(){
                     dataConvert[i].timeadvise="否"
                   if(!dataConvert[i].commodityName) // true
                     dataConvert[i].commodityName="暂无"
-                  if(!dataConvert[i].content) // true
-                    dataConvert[i].content="暂时未分配"
+              //    if(!dataConvert[i].content) // true
+                //    dataConvert[i].content="暂时未分配"
 
 
 

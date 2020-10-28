@@ -10,6 +10,15 @@ export function taskInput(data) {
       data
         })
   }
+// 修改状态
+export function changeTaskStatus(data) {
+  console.log("发送changeTaskStatus请求")
+  return request({
+    url: '/taskOperateStatus',
+    method: 'post',
+    data
+  })
+}
 
 // 搜索任务
 export function searchTask(data) {
