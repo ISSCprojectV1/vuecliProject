@@ -1,7 +1,7 @@
 <template>
     <div id="main">
         <!--    选择商品，展示历史价格数据，给出推荐的时间粒度-->
-        <div  style="display: inline-block; margin-bottom:30px; margin-right:400px; font-size:40px"><el-button type="primary" @click="backTo()" style="margin-right:30px">返回上一级</el-button><el-button type="primary" @click="backTotask()" style="margin-right:250px">返回任务列表</el-button>商品历史价格展示</div>
+        <div  style="display: inline-block; margin-bottom:30px; margin-right:400px; font-size:40px"><el-button type="primary" @click="backTo()" style="margin-right:30px">返回商品信息表</el-button><el-button type="primary" @click="backTotask()" style="margin-right:250px">返回任务列表</el-button>商品历史价格展示</div>
         <div id="app">
             <div>
                 <el-form ref="form" :model="form" label-width="80px">
@@ -106,7 +106,6 @@
                         {
                             name: '日K',
                             type: 'k',
-                            dimensions: ['date', 'open', 'close', 'highest', 'lowest'],
                             data: [],
                             itemStyle: {
                                 normal: {
