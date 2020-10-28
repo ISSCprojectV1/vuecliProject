@@ -81,7 +81,8 @@
         </el-table-column>
         <el-table-column label="商品名称" prop="commodityName">
         </el-table-column>
-
+        <el-table-column label="任务状态" prop="workStatus">
+        </el-table-column>
         <el-table-column
                 label="按钮"
                 fixed="right"
@@ -300,8 +301,14 @@ watch(){
               //    if(!dataConvert[i].content) // true
                 //    dataConvert[i].content="暂时未分配"
 
-
-
+                  if(dataConvert[i].workStatus==null) // true
+                    dataConvert[i].workStatus="未分配"
+                  if(dataConvert[i].workStatus==0) // true
+                    dataConvert[i].workStatus="已分配"
+                  if(dataConvert[i].workStatus==1) // true
+                    dataConvert[i].workStatus="任务已经执行"
+                  if(!dataConvert[i].workStatus==2) // true
+                    dataConvert[i].workStatus="任务出现异常"
                 }
                 this.dormitory = dataConvert;
                 }).catch(()=>{

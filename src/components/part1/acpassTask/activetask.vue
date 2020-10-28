@@ -58,6 +58,7 @@
                         :total="total"
                 >
                 </el-pagination>
+                <el-button type="success" @click="goback">返回</el-button>
             </el-tab-pane>
             <el-tab-pane label="交易事件图" name="flow">
 
@@ -139,12 +140,12 @@
                 :total="total1"
             >
             </el-pagination>
-
+              <el-button type="success" @click="goback">返回</el-button>
 
           </el-tab-pane>
 
         </el-tabs>
-        <el-button type="success" @click="goback">返回</el-button>
+
     </div>
 </template>
 
