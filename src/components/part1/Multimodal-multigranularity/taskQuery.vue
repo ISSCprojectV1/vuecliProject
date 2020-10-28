@@ -188,31 +188,8 @@ watch(){
       },
       changetime(data){
         changetimeadvise().then((res) => {
-          console.log(res.data)
-          var dataConvert = [];
-          dataConvert = res.data.data;
-          for(var i = 0;i<dataConvert.length;i++){
-            var data = this.timestampToTime(dataConvert[i].gmtCreate)
-            dataConvert[i].gmtCreate = data
 
-            data = this.timestampToTime(dataConvert[i].gmtModified)
-            dataConvert[i].gmtModified = data
-
-            data = this.timestampToTime(dataConvert[i].startTime)
-            dataConvert[i].startTime = data
-
-            data = this.timestampToTime(dataConvert[i].endTime)
-            dataConvert[i].endTime = data
-
-            if(dataConvert[i].humanUse) // true
-              dataConvert[i].humanUse = "是"
-            else // false
-              dataConvert[i].humanUse = "否"
-            if(!dataConvert[i].timeadvise) // true
-              dataConvert[i].timeadvise="否"
-
-          }
-          this.dormitory = dataConvert;
+this.dealwithData(res)
       //this.getdata()
           // console.log()
         }).catch(()=>{
@@ -269,6 +246,46 @@ watch(){
       // 用户手册 弹窗
       userHelp(){
         this.userHelpVisible = true;
+      },
+
+      dealwithData(res)
+      {  var dataConvert = [];
+        console.log( res.data.data)
+        dataConvert = res.data.data;
+        for(var i = 0;i<dataConvert.length;i++){
+          var data = this.timestampToTime(dataConvert[i].gmtCreate)
+          dataConvert[i].gmtCreate = data
+
+          data = this.timestampToTime(dataConvert[i].gmtModified)
+          dataConvert[i].gmtModified = data
+
+          data = this.timestampToTime(dataConvert[i].startTime)
+          dataConvert[i].startTime = data
+
+          data = this.timestampToTime(dataConvert[i].endTime)
+          dataConvert[i].endTime = data
+
+          if(dataConvert[i].humanUse) // true
+            dataConvert[i].humanUse = "是"
+          else // false
+            dataConvert[i].humanUse = "否"
+          if(!dataConvert[i].timeadvise) // true
+            dataConvert[i].timeadvise="否"
+          if(!dataConvert[i].commodityName) // true
+            dataConvert[i].commodityName="暂无"
+          //    if(!dataConvert[i].content) // true
+          //    dataConvert[i].content="暂时未分配"
+
+          if(dataConvert[i].workStatus==null) // true
+            dataConvert[i].workStatus="未分配"
+          if(dataConvert[i].workStatus==0) // true
+            dataConvert[i].workStatus="已分配"
+          if(dataConvert[i].workStatus==1) // true
+            dataConvert[i].workStatus="任务已经执行"
+          if(!dataConvert[i].workStatus==2) // true
+            dataConvert[i].workStatus="任务出现异常"
+        }
+        this.dormitory = dataConvert;
       },
             getData(){
                 // 获取表格数据
