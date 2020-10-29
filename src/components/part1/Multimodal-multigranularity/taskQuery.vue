@@ -77,20 +77,30 @@
         </el-table-column>
         <el-table-column label="时间粒度" prop="timeadvise" width = "80" >
         </el-table-column>
-        <el-table-column label="内容" prop="content">
+        <el-table-column label="空间粒度" prop="content"  >
+          <template slot-scope="scope">
+            <el-link :disabled="setdis(scope)"  type="primary" >
+              <div @click="gotoDetail(scope.row.id)">
+                {{scope.row.content}}
+              </div>>
+
+            </el-link>
+
+          </template>
+
         </el-table-column>
         <el-table-column label="商品名称" prop="commodityName">
         </el-table-column>
         <el-table-column label="任务状态" prop="workStatus">
         </el-table-column>
         <el-table-column
-                label="按钮"
+                label="模态粒度补充"
                 fixed="right"
                 min-width="180">
           <template slot-scope="scope">
             <el-button @click="changetask(scope)" type="text" size="small">修改</el-button>
             <el-button @click="changetime(scope)" type="text" size="small">时间粒度</el-button>
-            <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
+
             <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
           </template>
 
@@ -119,6 +129,8 @@
 </template>
 
 <script>
+
+  //  <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
   //import {getTansactionData} from "@/api/part1/transactionProject";
 import {taskQuery,taskAllocation,searchTask,changetimeadvise} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
@@ -145,6 +157,9 @@ import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearc
 
     data () {
       return {
+    //    setdis:true,
+            //  setund:false,
+        content: '',
         dormitory: [],
         taskLists:[],
         state1:'',
@@ -177,6 +192,25 @@ watch(){
 
 },
     methods: {
+
+      sethref(scope){
+        let content="http://localhost:8000/trade/acpassTask/activetask"
+        return content
+/*
+        if(this.setdis(scope))
+        {
+          content=content+scope.row.id
+          return  content
+        }
+*/
+
+      },
+      setdis(scope){
+        console.log(scope)
+        if(scope.row.content=="暂时未分配")
+          return  true
+        return false
+      },
       goToprice() {
         //直接跳转
         this.$router.push('/trade/Multimodal-multigranularity/priceshow');
@@ -184,7 +218,7 @@ watch(){
       gotoDetail(id){
         this.$router.push(`/trade/acpassTask/activetask/${id}`);
         //  this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
-        console.log(id)
+        console.log(`/trade/acpassTask/activetask/${id}`)
       },
       changetime(data){
         changetimeadvise().then((res) => {
@@ -250,7 +284,7 @@ this.dealwithData(res)
 
       dealwithData(res)
       {  var dataConvert = [];
-        console.log( res.data.data)
+
         dataConvert = res.data.data;
         for(var i = 0;i<dataConvert.length;i++){
           var data = this.timestampToTime(dataConvert[i].gmtCreate)
@@ -273,8 +307,15 @@ this.dealwithData(res)
             dataConvert[i].timeadvise="否"
           if(!dataConvert[i].commodityName) // true
             dataConvert[i].commodityName="暂无"
-          //    if(!dataConvert[i].content) // true
-          //    dataConvert[i].content="暂时未分配"
+          console.log(   dataConvert[i].content)
+          if(!dataConvert[i].content) // true
+          {
+            dataConvert[i].content="暂时未分配"
+            console.log(   dataConvert[i].content)
+          //  this.setdis= true
+         //   this.setund=false
+          }
+
 
           if(dataConvert[i].workStatus==null) // true
             dataConvert[i].workStatus="未分配"
@@ -285,49 +326,16 @@ this.dealwithData(res)
           if(!dataConvert[i].workStatus==2) // true
             dataConvert[i].workStatus="任务出现异常"
         }
+
         this.dormitory = dataConvert;
+        console.log(this.dormitory)
       },
             getData(){
                 // 获取表格数据
                console.log("获取表格数据")
-               var dataConvert = [];
+              // var dataConvert = [];
                taskQuery().then((res) => {
-                 console.log( res.data.data)
-                dataConvert = res.data.data;
-                for(var i = 0;i<dataConvert.length;i++){
-                  var data = this.timestampToTime(dataConvert[i].gmtCreate)
-                  dataConvert[i].gmtCreate = data
-
-                  data = this.timestampToTime(dataConvert[i].gmtModified)
-                  dataConvert[i].gmtModified = data
-
-                  data = this.timestampToTime(dataConvert[i].startTime)
-                  dataConvert[i].startTime = data
-
-                  data = this.timestampToTime(dataConvert[i].endTime)
-                  dataConvert[i].endTime = data
-
-                  if(dataConvert[i].humanUse) // true
-                    dataConvert[i].humanUse = "是"
-                  else // false
-                    dataConvert[i].humanUse = "否"
-                  if(!dataConvert[i].timeadvise) // true
-                    dataConvert[i].timeadvise="否"
-                  if(!dataConvert[i].commodityName) // true
-                    dataConvert[i].commodityName="暂无"
-              //    if(!dataConvert[i].content) // true
-                //    dataConvert[i].content="暂时未分配"
-
-                  if(dataConvert[i].workStatus==null) // true
-                    dataConvert[i].workStatus="未分配"
-                  if(dataConvert[i].workStatus==0) // true
-                    dataConvert[i].workStatus="已分配"
-                  if(dataConvert[i].workStatus==1) // true
-                    dataConvert[i].workStatus="任务已经执行"
-                  if(!dataConvert[i].workStatus==2) // true
-                    dataConvert[i].workStatus="任务出现异常"
-                }
-                this.dormitory = dataConvert;
+                this. dealwithData(res)
                 }).catch(()=>{
                     console.log("getTransactionData fail")
                 });
