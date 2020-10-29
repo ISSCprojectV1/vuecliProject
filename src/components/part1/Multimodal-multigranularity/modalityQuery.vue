@@ -43,6 +43,8 @@
         </el-table-column>
         <el-table-column label="释放时间" prop="releaseTime">
         </el-table-column>
+        <el-table-column label="联盟" prop="team">
+        </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
              @current-change="handleCurrentChange"

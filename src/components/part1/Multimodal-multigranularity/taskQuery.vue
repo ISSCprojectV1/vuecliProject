@@ -70,6 +70,8 @@
         </el-table-column>
         <el-table-column label="任务执行时间" prop="workingTime" width = "60">
         </el-table-column>
+        <el-table-column label="属于联盟" prop="team" width = "60">
+        </el-table-column>
 
         <el-table-column label="人模态分布" prop="humanUse" width = "80">
         </el-table-column>
@@ -219,7 +221,7 @@ watch(){
 
       },
       setdis(scope){
-        console.log(scope)
+     //   console.log(scope)
         if(scope.row.content=="暂时未分配")
           return  true
         return false
@@ -329,6 +331,13 @@ this.dealwithData(res)
          //   this.setund=false
           }
 
+          if(!dataConvert[i].team) // true
+          {
+            dataConvert[i].team="暂时未分配"
+            //  console.log(   dataConvert[i].content)
+            //  this.setdis= true
+            //   this.setund=false
+          }
 
           if(dataConvert[i].workStatus==null) // true
             dataConvert[i].workStatus="未分配"
