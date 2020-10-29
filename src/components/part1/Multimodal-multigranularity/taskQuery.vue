@@ -82,7 +82,7 @@
             <el-link :disabled="setdis(scope)"  type="primary" >
               <div @click="gotoDetail(scope.row.id)">
                 {{scope.row.content}}
-              </div>>
+              </div>
 
             </el-link>
 
