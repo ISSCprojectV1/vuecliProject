@@ -76,6 +76,15 @@
         <el-table-column label="机器模态分布数" prop="agentNum" width = "80" >
         </el-table-column>
         <el-table-column label="时间粒度" prop="timeadvise" width = "80" >
+          <template slot-scope="scope">
+            <el-link  :disabled="setgoto(scope)" >
+              <div @click="goToprice()">
+                {{scope.row.timeadvise}}
+              </div>
+            </el-link>
+
+          </template>
+
         </el-table-column>
         <el-table-column label="空间粒度" prop="content"  >
           <template slot-scope="scope">
@@ -192,7 +201,11 @@ watch(){
 
 },
     methods: {
-
+      setgoto(scope){
+        if(scope.row.commodityName=="小麦")
+          return false
+        return true
+      },
       sethref(scope){
         let content="http://localhost:8000/trade/acpassTask/activetask"
         return content
@@ -268,7 +281,7 @@ this.dealwithData(res)
         };
       },
       handleSelect(item) {
-        console.log(item);
+       // console.log(item);
       },
       // 搜索按钮
       searchTask_btn(){
@@ -307,11 +320,11 @@ this.dealwithData(res)
             dataConvert[i].timeadvise="否"
           if(!dataConvert[i].commodityName) // true
             dataConvert[i].commodityName="暂无"
-          console.log(   dataConvert[i].content)
+     //     console.log(   dataConvert[i].content)
           if(!dataConvert[i].content) // true
           {
             dataConvert[i].content="暂时未分配"
-            console.log(   dataConvert[i].content)
+          //  console.log(   dataConvert[i].content)
           //  this.setdis= true
          //   this.setund=false
           }
@@ -328,7 +341,7 @@ this.dealwithData(res)
         }
 
         this.dormitory = dataConvert;
-        console.log(this.dormitory)
+  //      console.log(this.dormitory)
       },
             getData(){
                 // 获取表格数据

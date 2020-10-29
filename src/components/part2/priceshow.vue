@@ -343,8 +343,8 @@
                 ])
                 this.echartsOption.xAxis.data = this.resData.categoryData
                 this.echartsOption.series[0].data = this.resData.values
-                console.log(this.echartsOption.xAxis.data)
-                console.log(this.echartsOption.series[0].data)
+           //     console.log(this.echartsOption.xAxis.data)
+             //   console.log(this.echartsOption.series[0].data)
 
                 function splitData (rawData) {
                     var categoryData = []
@@ -352,8 +352,8 @@
                     for (var i = 0; i < rawData.length; i++) {
                         categoryData.push(rawData[i].splice(0, 1)[0])
                         values.push(rawData[i])
-                        console.log(categoryData)
-                        console.log(values)
+                    //    console.log(categoryData)
+                    //    console.log(values)
                     }
                     return {
                         categoryData: categoryData,
