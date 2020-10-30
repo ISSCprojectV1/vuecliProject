@@ -19,6 +19,14 @@ export function changeTaskStatus(data) {
     data
   })
 }
+export function teamform() {
+    console.log("发送teamform请求")
+    return request({
+        url: '/yu/coalitonByHungary',
+        method: 'get',
+    })
+}
+
 
 // 搜索任务
 export function searchTask(data) {
