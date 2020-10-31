@@ -31,6 +31,7 @@ export default {
           var result_target = [];
 
           for(let i = 0; i<input.data.length;i++){
+            console.log(input.data[i])
               var node = {};
               // 找到点的属性
               node.userId = input.data[i].id;
@@ -40,11 +41,16 @@ export default {
               node.startTime = input.data[i].startTime;
               node.endTime = input.data[i].endTime;
               node.workingTime = input.data[i].workingTime;
+
               // humanuse
               if(input.data[i].humanUse === true)
                node.humanUse = '人工监管参与';
               else
                node.humanUse  = '人工监管未参与';
+            if(input.data[i].operatorName === null){
+              node.operatorName = '任务未分配';
+            }else
+              node.operatorName= input.data[i].operatorName
 
                // 节点状态--用颜色表示
                if(input.data[i].workStatus === 0){
@@ -199,6 +205,7 @@ const tooltip = new G6.Tooltip({
     const outDiv = document.createElement('div');
     outDiv.style.width = '180px';
     outDiv.style.textAlign = 'left';
+    console.log(e.item.getModel())
     outDiv.innerHTML = `
       <h2>${e.item.getModel().label}任务详情</h2>
       <ul>
@@ -218,6 +225,9 @@ const tooltip = new G6.Tooltip({
       </ul>
       <ul>
         <h3>* 工作时间: ${e.item.getModel().workingTime}</h3>
+      </ul>
+  <ul>
+        <h3>* 操作员: ${e.item.getModel().operatorName}</h3>
       </ul>
 `
 

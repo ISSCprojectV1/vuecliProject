@@ -17,7 +17,7 @@
             ></el-autocomplete>
 
             <el-button type="primary" @click="searchTask_btn" style="margin-left:29px;margin-right:14px;">搜索</el-button>
-            <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+
             <el-dialog title="搜索结果"
                        :visible.sync="searchTableVisible" center :append-to-body='true'
                        :lock-scroll="false" width="60%"
@@ -75,7 +75,7 @@
                             </el-table-column>
                             <el-table-column label="机器模态分布数" prop="agentNum" width = "80" >
                             </el-table-column>
-                            <el-table-column label="时间粒度" prop="timeadvise" width = "80" >
+                            <el-table-column label="时间粒度（天）" prop="timeadvise" width = "80" >
                                 <template slot-scope="scope">
                                     <el-link  :disabled="setgoto(scope)" >
                                         <div @click="goToprice()">
@@ -84,7 +84,7 @@
                                     </el-link>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="空间粒度" prop="content"  >
+                            <el-table-column label="主被动模态空间粒度" prop="content"  >
                                 <template slot-scope="scope">
                                     <el-link :disabled="setdis(scope)"  type="primary" >
                                         <div @click="gotoDetail(scope.row.id)">
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-
+//       <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
     //  <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
     //import {getTansactionData} from "@/api/part1/transactionProject";
     import {taskQuery,taskAllocation,searchTask,changetimeadvise,teamform} from "@/api/part1/Multimodal-multigranularity";
@@ -290,6 +290,7 @@
             {  var dataConvert = [];
 
                 dataConvert = res.data.data;
+                this.totalCount=dataConvert.length
                 for(var i = 0;i<dataConvert.length;i++){
                     var data = this.timestampToTime(dataConvert[i].gmtCreate)
                     dataConvert[i].gmtCreate = data
@@ -337,7 +338,7 @@
                     if(!dataConvert[i].workStatus==2) // true
                         dataConvert[i].workStatus="任务出现异常"
                 }
-
+dataConvert.reverse()
                 this.dormitory = dataConvert;
                 //      console.log(this.dormitory)
             },

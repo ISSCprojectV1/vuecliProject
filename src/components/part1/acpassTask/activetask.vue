@@ -7,6 +7,7 @@
 
         <el-tabs v-model="activeName">
             <el-tab-pane label="主动模态" name="table">
+                <el-tag>空白表示使用主动模态未发现其他异常</el-tag>
                 <el-table
                         :data="tableData1"
                         style="width: 100%">
@@ -60,18 +61,7 @@
                 </el-pagination>
                 <el-button type="success" @click="goback">返回</el-button>
             </el-tab-pane>
-            <el-tab-pane label="交易事件图" name="flow">
 
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="筛选条件">
-                        <el-input v-model="form.limit"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
-                    </el-form-item>
-                </el-form>
-                <div id="echart1" style="width: 1000px;height: 800px"></div>
-            </el-tab-pane>
           <el-tab-pane label="被动模态" name="passive" >
             <el-table
                 :data="Data"
@@ -143,7 +133,18 @@
               <el-button type="success" @click="goback">返回</el-button>
 
           </el-tab-pane>
+            <el-tab-pane label="交易事件图" name="flow">
 
+                <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="筛选条件">
+                        <el-input v-model="form.limit"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                    </el-form-item>
+                </el-form>
+                <div id="echart1" style="width: 1000px;height: 800px"></div>
+            </el-tab-pane>
         </el-tabs>
 
     </div>
