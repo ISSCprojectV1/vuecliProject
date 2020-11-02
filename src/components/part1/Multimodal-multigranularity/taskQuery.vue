@@ -30,9 +30,7 @@
             <el-dialog title="添加新任务"
                        :visible.sync="dialogTableVisible" center :append-to-body='true'
                        :lock-scroll="false" width="30%"
-                       :close-on-click-modal="false"
-
-            >
+                       :close-on-click-modal="false">
                 <taskInput :taskin="taskin"></taskInput>
             </el-dialog>
             <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">执行分配任务</el-button>
@@ -123,6 +121,10 @@
                     * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
                     <method1 ref="method1_child"></method1>
                 </el-tab-pane>
+                <el-tab-pane label="交易联盟图" name="flow">
+
+                    <div id="echart1" style="width: 1000px;height: 800px"></div>
+                </el-tab-pane>
             </el-tabs>
         </div>
 
@@ -138,6 +140,7 @@
     import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
     import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
     import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearch";
+    import echart from "echarts";
     /*
       <el-table-column label="创建时间" prop="gmtCreate" >
             </el-table-column>
@@ -188,11 +191,310 @@
             this.getData();
             //  this.taskin.changeflag=Number.POSITIVE_INFINITY
             //  console.log( this.taskin.changeflag)
+
         },
         watch(){
 
         },
         methods: {
+            drawechart(){
+                let echart1 = echart.init(document.querySelector("#echart1"));
+                let laber = ["增长", '减少'];
+                let team={
+                        zlevel: 20,
+                        type: 'scatter',
+                        symbol: 'circle',
+                        symbolSize: 100,
+                        label: {
+                            normal: {
+                                show: true,
+                                formatter: function(param) {
+                                    return param.data[2];
+                                },
+                                color: '#00E4FF',
+                                fontSize: 25
+                            },
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#123E65',
+                                // fontSize:20
+                            },
+                        },
+                        data: [
+                            [-1, 0, 'Team1', '#278DFB', 19]
+                        ],
+                    }
+                    let agent={
+                        zlevel: 20,
+                        name: '下降',
+                        type: 'effectScatter',
+                        symbol: 'circle',
+                        symbolSize: function(param, a) {
+                            return param[4];
+                        },
+                        itemStyle: {
+                            normal: {
+                                // color: function(param) {
+                                //     return param.data[3];
+                                // },
+                                color: '#FF7D7B'
+                            },
+                        },
+                        hoverAnimation: true,
+                        label: {
+                            color: '#000',
+                            normal: {
+                                textStyle: {
+                                    fontSize: 18,
+                                },
+                                position: 'bottom',
+                                show: true,
+                                formatter: function(param) {
+                                    return param.data[2];
+                                },
+                            },
+                        },
+
+                        "data": [
+                            [-31, 3, "任务1", "#BF54Fb", 10],
+                            [1, 34, "任务2", "#FF7D7B", 10],
+                            [11, -7, "任务3", "#FF7D7B", 10],
+                            [-2, -34, "任务4", "#FF7D7B", 10],
+                            [32, 34, "任务5", "#FF7D7B", 10],
+                            [8, 9, "任务6", "#BF54Fb", 10],
+                        ],
+                        "markLine": {}
+                    }
+                    let task={
+                        "name": "上升",
+                        "zlevel": 20,
+                        "type": "effectScatter",
+                        "symbol": "triangle",
+                        itemStyle: {
+                            normal: {
+                                // color: function(param) {
+                                //     return param.data[3];
+                                // },
+                                color: '#000000'
+                            },
+                        },
+                        hoverAnimation: true,
+                        label: {
+                            color: "#000",
+                            normal: {
+                                textStyle: {
+                                    fontSize: 18
+                                },
+                                position: 'bottom',
+                                show: true,
+                                formatter: function(param) {
+                                    return param.data[2];
+                                },
+                            }
+                        },
+                        data: [
+                            [19, -23, "操作员1", "#FF7D7B", 10],
+                            [23, 33, "操作员2", "#FF7D7B", 15],
+                            [-3, 44, "操作员3", "#FF7D7B", 10],
+                            [-12, 12, "操作员4", "#FF7D7B", 15],
+                            [0, -23, "操作员5", "#FF7D7B", 10],
+                        ],
+
+                    }
+                    let rich = {
+                    top: {
+                        color: '#00E4FF',
+                        fontSize: 20,
+                        padding:[20,0,0,80]
+                    },
+                    bottom: {
+                        color: '#00E4FF',
+                        fontSize: 20,
+                        padding:[30,0,0,80]
+                    }
+                }
+                let pie1={
+                        "type": "pie",
+                        "radius": ["0%", "5%"],
+                        "center": ["50%", "50%"],
+                        "avoidLabelOverlap": false,
+                        "label": {
+                            "normal": {
+                                "show": false,
+                                "position": "center"
+                            },
+                            "emphasis": {
+                                "show": false,
+                                "textStyle": {
+                                    "fontWeight": "bold"
+                                }
+                            }
+                        },
+                        "itemStyle": {
+                            "normal": {
+                                "color": {
+                                    "type": "linear",
+                                    "x": 0,
+                                    "y": 0,
+                                    "x2": 0,
+                                    "y2": 1,
+                                    "colorStops": [{
+                                        "offset": 0.05,
+                                        "color": "rgba(18,62,101, 0.1)"
+                                    }, {
+                                        "offset": 0.5,
+                                        "color": "rgba(18,62,101, 0.2)"
+                                    }, {
+                                        "offset": 0.95,
+                                        "color": "rgba(18,62,101, 0.1)"
+                                    }]
+                                }
+                            }
+                        },
+                        "labelLine": {
+                            "normal": {
+                                "show": false
+                            }
+                        },
+                        "data": [{
+                            "value": 300
+                        }]
+                    }
+                    let pie2={
+                        "type": "pie",
+                        "radius": ["0%", "90%"],
+                        "center": ["50%", "50%"],
+                        "avoidLabelOverlap": false,
+                        "label": {
+                            "normal": {
+                                "show": false,
+                                "position": "center"
+                            },
+                            "emphasis": {
+                                "show": false,
+                                "textStyle": {
+                                    "fontWeight": "bold"
+                                }
+                            }
+                        },
+                        "itemStyle": {
+                            "normal": {
+                                "color": {
+                                    "type": "linear",
+                                    "x": 0,
+                                    "y": 0,
+                                    "x2": 0,
+                                    "y2": 1,
+                                    "colorStops": [{
+                                        "offset": 0.05,
+                                        "color": "rgba(18,62,101, 0.1)"
+                                    }, {
+                                        "offset": 0.5,
+                                        "color": "rgba(18,62,101, 0.2)"
+                                    }, {
+                                        "offset": 0.95,
+                                        "color": "rgba(18,62,101, 0.1)"
+                                    }]
+                                }
+                            }
+                        },
+                        "labelLine": {
+                            "normal": {
+                                "show": false
+                            }
+                        },
+                        "data": [{
+                            "value": 300
+                        }]
+                    }
+
+                let    option = {
+                    backgroundColor: 'rgba(0,0,0,.5)',
+                    "xAxis": [{
+                        zlevel: 20,
+                        type: 'value',
+                        min: -50,
+                        max: 50,
+                        interval: 16.7,
+                        axisLabel: {
+                            //margin: -450,
+                            formatter: function(value, index) {
+                                //  if(laber[index]=="增长"){
+                                //    return "{top|增长}"  + "\n{bottom|减少}"
+                                //   }
+                            },
+                            lineStyle: {
+                                color: '#278dfb'
+                            },
+                            rich: rich
+                            // textStyle: {
+                            //     color: '#00E4FF',
+                            //     fontSize: 20
+                            // }
+                        },
+                        splitLine: {
+                            show: false,
+                        },
+                        splitArea: {
+                            show: false,
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: 'rgba(16,50,78,.5)',
+                                width: 0
+                            }
+                        },
+                    }],
+                    "yAxis": [{
+                        "min": -50,
+                        "max": 50,
+                        "show": false,
+                        "splitLine": {
+                            "show": false
+                        },
+                        "splitArea": {
+                            "show": false
+                        }
+                    }],
+                    "legend": {
+                        "show": false,
+                        "data": []
+                    },
+                    "tooltip": {
+                        "showContent": false,
+                        show: true
+                    },
+                    "sendDataSetting": {
+                        "selectParams": false,
+                        "selectCell": false
+                    },
+                    "visualMap": [{
+                        "show": false,
+                        "dimension": 2,
+                        "min": 1,
+                        "max": 3,
+                        "precision": 0.01,
+                        // "inRange": {
+                        //     "symbolSize": [10, 50]
+                        // }
+                    }],
+                    "series": [   ],
+
+
+                };
+                option.series.push(team)
+                option.series.push(task)
+                option.series.push(agent)
+
+                option.series.push(pie1)
+                option.series.push(pie2)
+                echart1.setOption(option);
+            },
+
             teamformation(){
                 teamform().then((res) => {
                     this.dealwithData(res)
@@ -256,6 +558,8 @@
                 }).catch(()=>{
                     console.log("taskQuery fail")
                 });
+                this.drawechart();
+
                 return taskNames;
 
             },
@@ -338,7 +642,7 @@
                     if(!dataConvert[i].workStatus==2) // true
                         dataConvert[i].workStatus="任务出现异常"
                 }
-dataConvert.reverse()
+                dataConvert.reverse()
                 this.dormitory = dataConvert;
                 //      console.log(this.dormitory)
             },
