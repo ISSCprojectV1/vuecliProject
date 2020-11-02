@@ -123,7 +123,7 @@ data() {
       workingTime:'',
         timeadvise:'',
         content:'',
-        tradeuser:'',
+        tradeuser:false,
         commodityName:''
     }
 
@@ -259,6 +259,7 @@ console.log("发送请求前")
   "workingTime":this.workingTime,//
  "timeadvise":this.timeadvise,
   "content":this.content,
+      "tradeuser":this.tradeuser,
       "commodityName":this.commodityName
 
   };
@@ -281,6 +282,7 @@ cleanForm(){
       this.input = '',
       this.priority = '',
       this.humanUse= false,
+          this.tradeuser= false,
       this.dateStart= '',
       this.dateStart2= '',
       this.dateEnd= '',

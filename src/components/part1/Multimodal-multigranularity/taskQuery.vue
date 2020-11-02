@@ -45,7 +45,7 @@
             <el-tabs v-model="activeName" @tab-click="handleClick">
 
                 <el-tab-pane label="用户使用帮助手册" name="third" lazy>
-                    <userQuery></userQuery>
+                    <userQuery></userQuery >
                 </el-tab-pane>
                 <el-tab-pane label="表格视图" name="first" lazy>
                     <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
@@ -100,9 +100,9 @@
                                     fixed="right"
                                     min-width="180">
                                 <template slot-scope="scope">
-                                    <el-button @click="changetask(scope)" type="text" size="small">修改</el-button>
-                                    <el-button @click="changetime(scope)" type="text" size="small">时间粒度</el-button>
-                                    <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
+                                    <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
+                                    <el-button @click="changetime(scope)" type="text" size="small">时间粒度补全</el-button>
+
                                 </template>
                             </el-table-column>
 
@@ -134,7 +134,7 @@
 <script>
 //       <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
     //  <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
-    //import {getTansactionData} from "@/api/part1/transactionProject";
+    //import {getTansactionData} from "@/api/part1/transactionProject";        <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
     import {taskQuery,taskAllocation,searchTask,changetimeadvise,teamform} from "@/api/part1/Multimodal-multigranularity";
     import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
     import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
