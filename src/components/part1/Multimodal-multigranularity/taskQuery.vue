@@ -25,7 +25,7 @@
             >
                 <taskSearch ref="taskSearch" :searchData = this.state1></taskSearch>
             </el-dialog>
-
+            <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
             <el-button type="primary" @click="addNewTask" style="margin-left:15px;margin-right:14px">添加新任务</el-button>
             <el-dialog title="添加新任务"
                        :visible.sync="dialogTableVisible" center :append-to-body='true'
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-//       <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+//
     //  <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
     //import {getTansactionData} from "@/api/part1/transactionProject";        <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
     import {taskQuery,taskAllocation,searchTask,changetimeadvise,teamform} from "@/api/part1/Multimodal-multigranularity";
@@ -141,6 +141,7 @@
     import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
     import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearch";
     import echart from "echarts";
+import  logoimg from "@/assets/part3/seu.png"
     /*
       <el-table-column label="创建时间" prop="gmtCreate" >
             </el-table-column>
@@ -163,6 +164,7 @@
             return {
                 //    setdis:true,
                 //  setund:false,
+                echartsdata:[],
                 content: '',
                 dormitory: [],
                 taskLists:[],
@@ -197,9 +199,657 @@
 
         },
         methods: {
-            drawechart(){
+
+            drawechart1(){
+                var symbols = [
+                    'path://M18.2629891,11.7131596 L6.8091608,11.7131596 C1.6685112,11.7131596 0,13.032145 0,18.6237673 L0,34.9928467 C0,38.1719847 4.28388932,38.1719847 4.28388932,34.9928467 L4.65591984,20.0216948 L5.74941883,20.0216948 L5.74941883,61.000787 C5.74941883,65.2508314 11.5891201,65.1268798 11.5891201,61.000787 L11.9611506,37.2137775 L13.1110872,37.2137775 L13.4831177,61.000787 C13.4831177,65.1268798 19.3114787,65.2508314 19.3114787,61.000787 L19.3114787,20.0216948 L20.4162301,20.0216948 L20.7882606,34.9928467 C20.7882606,38.1719847 25.0721499,38.1719847 25.0721499,34.9928467 L25.0721499,18.6237673 C25.0721499,13.032145 23.4038145,11.7131596 18.2629891,11.7131596 M12.5361629,1.11022302e-13 C15.4784742,1.11022302e-13 17.8684539,2.38997966 17.8684539,5.33237894 C17.8684539,8.27469031 15.4784742,10.66467 12.5361629,10.66467 C9.59376358,10.66467 7.20378392,8.27469031 7.20378392,5.33237894 C7.20378392,2.38997966 9.59376358,1.11022302e-13 12.5361629,1.11022302e-13',
+                    'path://M512 292.205897c80.855572 0 146.358821-65.503248 146.358821-146.358821C658.358821 65.503248 592.855572 0 512 0 431.144428 0 365.641179 65.503248 365.641179 146.358821 365.641179 227.214393 431.144428 292.205897 512 292.205897zM512 731.282359c-80.855572 0-146.358821 65.503248-146.358821 146.358821 0 80.855572 65.503248 146.358821 146.358821 146.358821 80.855572 0 146.358821-65.503248 146.358821-146.358821C658.358821 796.273863 592.855572 731.282359 512 731.282359z',
+                    'path://M28.9624207,31.5315864 L24.4142575,16.4793596 C23.5227152,13.8063773 20.8817445,11.7111088 17.0107398,11.7111088 L12.112691,11.7111088 C8.24168636,11.7111088 5.60080331,13.8064652 4.70917331,16.4793596 L0.149791395,31.5315864 C-0.786976655,34.7595013 2.9373074,35.9147532 3.9192135,32.890727 L8.72689855,19.1296485 L9.2799493,19.1296485 C9.2799493,19.1296485 2.95992025,43.7750224 2.70031069,44.6924335 C2.56498417,45.1567684 2.74553639,45.4852068 3.24205501,45.4852068 L8.704461,45.4852068 L8.704461,61.6700801 C8.704461,64.9659872 13.625035,64.9659872 13.625035,61.6700801 L13.625035,45.360657 L15.5097899,45.360657 L15.4984835,61.6700801 C15.4984835,64.9659872 20.4191451,64.9659872 20.4191451,61.6700801 L20.4191451,45.4852068 L25.8814635,45.4852068 C26.3667633,45.4852068 26.5586219,45.1567684 26.4345142,44.6924335 C26.1636859,43.7750224 19.8436568,19.1296485 19.8436568,19.1296485 L20.3966199,19.1296485 L25.2043926,32.890727 C26.1862111,35.9147532 29.9105828,34.7595013 28.9625083,31.5315864 L28.9624207,31.5315864 Z M14.5617154,0 C17.4960397,0 19.8773132,2.3898427 19.8773132,5.33453001 C19.8773132,8.27930527 17.4960397,10.66906 14.5617154,10.66906 C11.6274788,10.66906 9.24611767,8.27930527 9.24611767,5.33453001 C9.24611767,2.3898427 11.6274788,0 14.5617154,0 L14.5617154,0 Z'
+
+                ];
                 let echart1 = echart.init(document.querySelector("#echart1"));
-                let laber = ["增长", '减少'];
+                var colors = [
+                    "#95F300",
+                    "#FFA12F",
+                    "#B62AFF",
+                    "#604BFF",
+                    "#6E35FF",
+                    "#002AFF",
+                    "#20C0F4",
+                    "#95F300",
+                    "#04FDB8",
+                    "#AF5AFF"
+                ]
+                console.log("jinlaile")
+
+               let renwu=[]
+                let renwhhetask=[]
+                for(let i=0;i<this.dormitory.length;i++)
+               {console.log(this.dormitory[i].operatorName)
+                if(renwu.indexOf(this.dormitory[i].operatorName)==-1)
+                {
+                    renwu.push(this.dormitory[i].operatorName)
+                    renwhhetask[this.dormitory[i].operatorName]=[]
+
+                }
+
+                   renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
+                 //  renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
+               }
+                for(let i=0;i<this.dormitory.length;i++){
+                    console.log(renwhhetask[i])
+                }
+              /*  for(let i=0;i<this.dormitory.length;i++)
+                {
+                    if(renwhhetask.indexOf(this.dormitory[i].operatorName)!=-1)
+                        console.log(this.dormitory[i].name)
+                }*/
+                console.log(renwhhetask.keys())
+
+                var getdata = function getData() {
+                    let data = {
+                        name: "TEAM1",
+                        value: 0,
+                        children: []
+                    };
+
+                    for (let i = 0; i < renwu.length; i++) {
+                        let obj = {
+                            name: renwu[i] + i,
+                            value: i,
+                            children: [],
+                        };
+                        for (let j = 0; j < renwhhetask[renwu[i]].length; j++) {
+                            let obj2 = {
+                                name:  renwhhetask[renwu[i]][j],
+                                value: 100
+                            };
+
+                            obj.children.push(obj2);
+                        }
+
+                        data.children.push(obj);
+                    }
+                    let arr = []
+                    arr.push(data)
+                    //
+                    arr = handle(arr, 0)
+                    console.log(arr);
+                    return arr;
+                }
+                var handle = function handleData(data, index, color = '#00f6ff') {
+                    //index标识第几层
+                    return data.map((item, index2) => {
+                        //计算出颜色
+                        if (index == 1) {
+                            color = colors.find((item, eq) => eq == index2 % 10);
+                        }
+                        // 设置节点大小
+                        if (index === 0 || index === 1) {
+                            item.label = {
+                                position: "inside",
+                                //   rotate: 0,
+                                //   borderRadius: "50%",
+                            }
+                        }
+                        // 设置label大小
+                        switch (index) {
+                            case 0:
+                                item.symbolSize = 70
+                                break;
+                            case 1:
+                                item.symbolSize = 50
+                                item.symbol=symbols[0]
+                                break;
+                            default:
+                                item.symbolSize = 30
+                                break;
+                        }
+                        // 设置线条颜色
+                        item.lineStyle = {
+                            color: color
+                        }
+             //           item.itemStyle.symbol=logoimg
+
+                        if (item.children) { //存在子节点
+                            item.itemStyle = {
+                                borderColor: color,
+                                color: color
+                            };
+                            item.children = handle(item.children, index + 1, color)
+                        } else { //不存在
+                            item.itemStyle = {
+                                color: 'transparent',
+                                borderColor: color
+                            };
+                        }
+                        return item
+                    })
+                }
+
+                var option = {
+                    type: "tree",
+                    backgroundColor: "rgba(0,0,0,0)",
+                    toolbox: { //工具栏
+                        show: true,
+                        iconStyle: {
+                            borderColor: "#03ceda"
+                        },
+                        feature: {
+                            restore: {}
+                        }
+                    },
+                    tooltip: { //提示框
+                        trigger: "item",
+                        triggerOn: "mousemove",
+                        backgroundColor: "rgba(1,70,86,1)",
+                        borderColor: "rgba(0,246,255,1)",
+                        borderWidth: 0.5,
+                        textStyle: {
+                            fontSize: 10
+                        }
+                    },
+                    series: [{
+                        type: "tree",
+                        hoverAnimation: true, //hover样式
+                        data: getdata(),
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        layout: "radial",
+                        symbol: "circle",
+                        symbolSize: 10,
+                        nodePadding: 20,
+                        animationDurationUpdate: 750,
+                        expandAndCollapse: true, //子树折叠和展开的交互，默认打开
+                        initialTreeDepth: 2,
+                        roam: true, //是否开启鼠标缩放和平移漫游。scale/move/true
+                        focusNodeAdjacency: true,
+                        itemStyle: {
+                            borderWidth: 1,
+                        },
+                        label: { //标签样式
+                            color: "#000",
+                            fontSize: 10,
+                            fontFamily: "SourceHanSansCN",
+                            position: "inside",
+                            rotate: 0,
+                        },
+                        lineStyle: {
+                            width: 1,
+                            curveness: 0.5,
+                        }
+                    }]
+                };
+                echart1.setOption(option);
+            },
+            drawechart(){
+                console.log("aaa")
+
+
+                let echart1 = echart.init(document.querySelector("#echart1"));
+               // let laber = ["增长", '减少'];
+
+                let colors=[
+                    "#00ADD0",
+                    "#FFA12F",
+                    "#B62AFF",
+                    "#604BFF",
+                    "#6E35FF",
+                    "#002AFF",
+                    "#20C0F4",
+                    "#95F300",
+                    "#04FDB8",
+                    "#AF5AFF"
+                ]
+                let getdataa=function getDataa() {
+                    let data = {
+                        name: "TEAM1",
+                        value: 0,
+                        children: []
+                    };
+                    for (let i = 1; i <= this.dormitory.size(); i++) {
+                        let obj = {
+                            name: this.dormitory[i].name,
+                            value: i,
+                            children: [],
+                        };
+                        for (let j = 1; j <= 5; j++) {
+                            let obj2 = {
+                                name: "操作员",
+                                value: 10,
+                            };
+                           /*
+                            if(j%2==1){
+                                obj2.children=[]
+                                for (let k = 1; k <= 3; k++) {
+                                    let obj3 = {
+                                        name: `节点1-${i}-${j}-${k}`,
+                                        value: 1 + "-" + i + "-" + j+'-'+k,
+                                    };
+                                    obj2.children.push(obj3);
+                                }
+                            }
+                            */
+
+                            obj.children.push(obj2);
+                        }
+
+                        data.children.push(obj);
+                    }
+                    let arr=[]
+                    arr.push(data)
+                    //
+                    arr=handle(arr,0)
+                    console.log(arr);
+                    return arr;
+                }
+                let handle=function handleDataa(data,index,color='#00f6ff'){
+                    //index标识第几层
+                    return data.map((item,index2)=>{
+                        //计算出颜色
+                        if(index==1){
+                            color = colors.find((item, eq) => eq == index2 % 10);
+                        }
+                        // 设置节点大小
+                        if(index===0 || index===1){
+                            item.label= {
+                                position: "inside",
+                                //   rotate: 0,
+                                //   borderRadius: "50%",
+                            }
+                        }
+                        // 设置label大小
+                        switch(index){
+                            case 0:
+                                item.symbolSize=70
+                                break;
+                            case 1:
+                                item.symbolSize=50
+                                break;
+                            default:
+                                item.symbolSize=10
+                                break;
+                        }
+                        // 设置线条颜色
+                        item.lineStyle= { color: color }
+
+                        if (item.children) {//存在子节点
+                            item.itemStyle = {
+                                borderColor: color,
+                                color:color
+                            };
+                            item.children=handle(item.children,index+1,color)
+                        } else {//不存在
+                            item.itemStyle = {
+                                color:'transparent',
+                                borderColor: color
+                            };
+                        }
+                        return item
+                    })
+                }
+
+                let option = {
+                    type: "tree",
+                    backgroundColor: "#000",
+                    toolbox: { //工具栏
+                        show: true,
+                        iconStyle: {
+                            borderColor: "#03ceda"
+                        },
+                        feature: {
+                            restore: {}
+                        }
+                    },
+                    tooltip: {//提示框
+                        trigger: "item",
+                        triggerOn: "mousemove",
+                        backgroundColor: "rgba(1,70,86,1)",
+                        borderColor: "rgba(0,246,255,1)",
+                        borderWidth: 0.5,
+                        textStyle: {
+                            fontSize: 10
+                        }
+                    },
+                    series: [
+                        {
+                            type: "tree",
+                            hoverAnimation: true, //hover样式
+                            data:getdataa(),
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            layout: "radial",
+                            symbol: "circle",
+                            symbolSize: 10,
+                            nodePadding: 20,
+                            animationDurationUpdate: 750,
+                            expandAndCollapse: true, //子树折叠和展开的交互，默认打开
+                            initialTreeDepth: 2,
+                            roam: true, //是否开启鼠标缩放和平移漫游。scale/move/true
+                            focusNodeAdjacency: true,
+                            itemStyle: {
+                                borderWidth: 1,
+                            },
+                            label: { //标签样式
+                                color: "#fff",
+                                fontSize: 10,
+                                fontFamily: "SourceHanSansCN",
+                                position: "inside",
+                                rotate: 0,
+                            },
+                            lineStyle: {
+                                width: 1,
+                                curveness:0.5,
+                            }
+                        }
+                    ]
+                };
+                echart1.setOption(option);
+            },
+
+            teamformation(){
+                teamform().then((res) => {
+                    this.dealwithData(res)
+                    //  console.log(res)
+
+                }).catch(()=>{
+                    console.log("taskQuery fail")
+                });
+
+            },
+            setgoto(scope){
+                if(scope.row.commodityName=="小麦")
+                    return false
+                return true
+            },
+            sethref(scope){
+                let content="http://localhost:8000/trade/acpassTask/activetask"
+                return content
+            },
+            setdis(scope){
+                //   console.log(scope)
+                if(scope.row.content=="暂时未分配")
+                    return  true
+                return false
+            },
+            goToprice() {
+                //直接跳转
+                this.$router.push('/trade/Multimodal-multigranularity/priceshow');
+            },
+            gotoDetail(id){
+                this.$router.push(`/trade/acpassTask/activetask/${id}`);
+                //  this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
+                console.log(`/trade/acpassTask/activetask/${id}`)
+            },
+            changetime(data){
+                changetimeadvise().then((res) => {
+
+                    this.dealwithData(res)
+                }).catch(()=>{
+                    console.log("taskQuery fail")
+                });
+
+            },
+            changetask(scope) {
+                this.taskin=scope.row
+                this.taskin.changeflag=this.taskin.id;
+                this.addNewTask1()
+            },
+            loadAll() {
+                // 获取表格数据
+                console.log("获取表格数据")
+                var dataConvert = [];
+                var taskNames = [];
+                taskQuery().then((res) => {
+                    dataConvert = res.data.data;
+                    let caozuoyua=[]
+                    /* for(let i=0;i<dataConvert.length;i++)
+                     {
+                         if(!caozuoyua.indexOf(dataConvert[i].operatorName))
+                             caozuoyua.push(dataConvert[i].operatorName)
+
+                     }
+                     console.log(caozuoyua)
+                /*     for(let i=0;i<caozuoyua.length;i++)
+                     {
+                        caozuoyua[i].children=[]
+
+                     }
+                     for(let i=0;i<dataConvert.length;i++)
+                     {
+                    if(caozuoyua.indexof(dataConvert[i].operatorName))
+                        caozuoyua[caozuoyua.indexof(dataConvert[i].operatorName)].push(dataConvert[i])
+
+                     }
+                 console.log(caozuoyua))*/
+                    console.log(dataConvert)
+                    for(var i = 0;i<dataConvert.length;i++){
+                        var taskName = {};
+                        taskName = {"value":dataConvert[i].name};
+                        taskNames.push(taskName);
+                    }
+                }).catch(()=>{
+                    console.log("taskQuery fail")
+                });
+
+                return taskNames;
+
+            },
+            // 搜索 从服务器获得数据
+            querySearch(queryString, cb) {
+                var taskLists = this.taskLists;
+                var results = queryString ? taskLists.filter(this.createFilter(queryString)) : taskLists;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (taskName) => {
+                    return (taskName.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                // console.log(item);
+            },
+            // 搜索按钮
+            searchTask_btn(){
+                this.searchData = this.state1;
+                console.log("state1:" + this.state1 + "searchData:" + this.searchData)
+                this.searchTableVisible = true;
+                this.$refs.taskSearch.getSearchData(this.state1);
+            },
+            // 用户手册 弹窗
+            userHelp(){
+                this.userHelpVisible = true;
+            },
+
+            dealwithData(res)
+            {  var dataConvert = [];
+
+                dataConvert = res.data.data;
+                this.totalCount=dataConvert.length
+                for(var i = 0;i<dataConvert.length;i++){
+                    var data = this.timestampToTime(dataConvert[i].gmtCreate)
+                    dataConvert[i].gmtCreate = data
+
+                    data = this.timestampToTime(dataConvert[i].gmtModified)
+                    dataConvert[i].gmtModified = data
+
+                    data = this.timestampToTime(dataConvert[i].startTime)
+                    dataConvert[i].startTime = data
+
+                    data = this.timestampToTime(dataConvert[i].endTime)
+                    dataConvert[i].endTime = data
+
+                    if(dataConvert[i].humanUse) // true
+                        dataConvert[i].humanUse = "是"
+                    else // false
+                        dataConvert[i].humanUse = "否"
+                    if(!dataConvert[i].timeadvise) // true
+                        dataConvert[i].timeadvise="否"
+                    if(!dataConvert[i].commodityName) // true
+                        dataConvert[i].commodityName="暂无"
+                    //     console.log(   dataConvert[i].content)
+                    if(!dataConvert[i].content) // true
+                    {
+                        dataConvert[i].content="暂时未分配"
+                        //  console.log(   dataConvert[i].content)
+                        //  this.setdis= true
+                        //   this.setund=false
+                    }
+
+                    if(!dataConvert[i].team) // true
+                    {
+                        dataConvert[i].team="暂时未分配"
+                        //  console.log(   dataConvert[i].content)
+                        //  this.setdis= true
+                        //   this.setund=false
+                    }
+
+                    if(dataConvert[i].workStatus==null) // true
+                        dataConvert[i].workStatus="未分配"
+                    if(dataConvert[i].workStatus==0) // true
+                        dataConvert[i].workStatus="已分配"
+                    if(dataConvert[i].workStatus==1) // true
+                        dataConvert[i].workStatus="任务已经执行"
+                    if(!dataConvert[i].workStatus==2) // true
+                        dataConvert[i].workStatus="任务出现异常"
+                }
+                dataConvert.reverse()
+                this.dormitory = dataConvert;
+                this.drawechart1()
+                //      console.log(this.dormitory)
+            },
+            getData(){
+                // 获取表格数据
+                console.log("获取表格数据")
+                // var dataConvert = [];
+                taskQuery().then((res) => {
+                    this. dealwithData(res)
+                }).catch(()=>{
+                    console.log("getTransactionData fail")
+                });
+            } ,
+            // 转换时间戳
+            timestampToTime (cjsj) {
+                var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                var Y = date.getFullYear() + '-'
+                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
+                var D = date.getDate() + ' '
+                var h = date.getHours() + ':'
+                var m = date.getMinutes() + ':'
+                var s = date.getSeconds()
+                return Y+M+D+h+m+s
+            },
+
+            // 新增监控任务
+            addNewTask(){
+                this.taskin={};
+                //this.taskin.id=-1
+                //     this.taskin.changeflag=Number.POSITIVE_INFINITY
+                this.taskin.changeflag=Number.POSITIVE_INFINITY
+                //  this.taskin.changeflag=-1
+                //  console.log(this.taskin.changeflag)
+                //  this.taskin.changeflag=false;
+                this.dialogTableVisible=true;
+            },
+            addNewTask1(){
+                this.dialogTableVisible=true;
+                //  console.log(this.taskInput)
+                //     console.log(taskInput)
+                //this.taskInput.input=this.taskin.name;
+                //   this.taskInput.priority=this.taskin.priority;
+            },
+            // 获得任务流程图展示
+            getTaskMap(){
+                this.taskMapVisible = true;
+            },
+
+            // 分配任务
+            allocateTask(){
+                this.$confirm('是否确认进行任务分配', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.getAllocateDate();
+
+                    this.$message({
+                        type: 'success',
+                        message: '已执行分配!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+                });
+            },
+            // 发送get请求--getAllocateTask
+            getAllocateDate(){
+
+                taskAllocation().then((res) => {
+                    console.log("传入数据allocateTask")
+                    if(res.data.data.length === 0){
+                        this.$message({
+                            type: 'warning',
+                            message: '当前无需要分配的任务!'
+                        });
+                    }
+                    else{
+                        this.$message({
+                            type: 'success',
+                            message: '任务分配已完成!'
+                        });
+                    }
+                }).catch(()=>{
+                    console.log("taskAllocation fail")
+                });
+            },
+// 分页
+            // 每页显示的条数
+            handleSizeChange(val) {
+                // 改变每页显示的条数
+                this.PageSize=val
+                // 注意：在改变每页显示的条数时，要将页码显示到第一页
+                this.currentPage=1
+            },
+            // 显示第几页
+            handleCurrentChange(val) {
+                // 改变默认的页数
+                this.currentPage=val
+            },
+            // 关闭弹窗
+            closeDialog(){
+                console.log*("成功调用")
+                this.dialogTableVisible = false;
+            },
+            // 分页激活调用
+            handleClick(tab, event) {
+                console.log(tab, event);
+                if(this.activeName == 'second'){
+                    //this.$refs.method1_child.getData();
+                }
+            },
+            // 刷新当前页面
+            reloadPage(){
+                this.reload();
+            }
+
+        },
+        mounted() {
+            this.taskLists = this.loadAll();
+            let tiankong= document.getElementById("diceng");
+            tiankong.style.height=window.innerHeight+"px"
+
+            //     console.log(tiankong.style.height)
+            let announcement=document.getElementById("announcement");
+            //  console.log(tiankong)
+        },
+    }/*
                 let team={
                         zlevel: 20,
                         type: 'scatter',
@@ -333,7 +983,7 @@
                         },
                         "itemStyle": {
                             "normal": {
-                                "color": {
+                                "color":"red" /*{
                                     "type": "linear",
                                     "x": 0,
                                     "y": 0,
@@ -362,6 +1012,7 @@
                         }]
                     }
                     let pie2={
+                        "color":"red",
                         "type": "pie",
                         "radius": ["0%", "90%"],
                         "center": ["50%", "50%"],
@@ -378,10 +1029,11 @@
                                 }
                             }
                         },
-                        "itemStyle": {
-                            "normal": {
-                                "color": {
-                                    "type": "linear",
+                     //   "itemStyle": {
+
+                          //  "normal": {
+                         //       "color": "red"//{
+                                  /* "type": "linear",
                                     "x": 0,
                                     "y": 0,
                                     "x2": 0,
@@ -396,382 +1048,103 @@
                                         "offset": 0.95,
                                         "color": "rgba(18,62,101, 0.1)"
                                     }]
-                                }
-                            }
-                        },
+                               // }
+                       //     }
+                   //     },
                         "labelLine": {
                             "normal": {
                                 "show": false
                             }
                         },
                         "data": [{
+
                             "value": 300
                         }]
-                    }
+                    }*/
 
-                let    option = {
-                    backgroundColor: 'rgba(0,0,0,.5)',
-                    "xAxis": [{
-                        zlevel: 20,
-                        type: 'value',
-                        min: -50,
-                        max: 50,
-                        interval: 16.7,
-                        axisLabel: {
-                            //margin: -450,
-                            formatter: function(value, index) {
-                                //  if(laber[index]=="增长"){
-                                //    return "{top|增长}"  + "\n{bottom|减少}"
-                                //   }
-                            },
-                            lineStyle: {
-                                color: '#278dfb'
-                            },
-                            rich: rich
-                            // textStyle: {
-                            //     color: '#00E4FF',
-                            //     fontSize: 20
-                            // }
-                        },
-                        splitLine: {
-                            show: false,
-                        },
-                        splitArea: {
-                            show: false,
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: 'rgba(16,50,78,.5)',
-                                width: 0
-                            }
-                        },
-                    }],
-                    "yAxis": [{
-                        "min": -50,
-                        "max": 50,
-                        "show": false,
-                        "splitLine": {
-                            "show": false
-                        },
-                        "splitArea": {
-                            "show": false
-                        }
-                    }],
-                    "legend": {
-                        "show": false,
-                        "data": []
-                    },
-                    "tooltip": {
-                        "showContent": false,
-                        show: true
-                    },
-                    "sendDataSetting": {
-                        "selectParams": false,
-                        "selectCell": false
-                    },
-                    "visualMap": [{
-                        "show": false,
-                        "dimension": 2,
-                        "min": 1,
-                        "max": 3,
-                        "precision": 0.01,
-                        // "inRange": {
-                        //     "symbolSize": [10, 50]
-                        // }
-                    }],
-                    "series": [   ],
+/* let    option = {
+     backgroundColor: 'rgba(0,0,0,0)',
+     "xAxis": [{
+         zlevel: 20,
+         type: 'value',
+         min: -50,
+         max: 50,
+         interval: 16.7,
+         axisLabel: {
+             //margin: -450,
+             formatter: function(value, index) {
+                 //  if(laber[index]=="增长"){
+                 //    return "{top|增长}"  + "\n{bottom|减少}"
+                 //   }
+             },
+             lineStyle: {
+                 color: '#278dfb'
+             },
+             rich: rich
+             // textStyle: {
+             //     color: '#00E4FF',
+             //     fontSize: 20
+             // }
+         },
+         splitLine: {
+             show: false,
+         },
+         splitArea: {
+             show: false,
+         },
+         axisTick: {
+             show: false
+         },
+         axisLine: {
+             lineStyle: {
+                 color: 'rgba(16,50,78,.5)',
+                 width: 0
+             }
+         },
+     }],
+     "yAxis": [{
+         "min": -50,
+         "max": 50,
+         "show": false,
+         "splitLine": {
+             "show": false
+         },
+         "splitArea": {
+             "show": false
+         }
+     }],
+     "legend": {
+         "show": false,
+         "data": []
+     },
+     "tooltip": {
+         "showContent": false,
+         show: true
+     },
+     "sendDataSetting": {
+         "selectParams": false,
+         "selectCell": false
+     },
+     "visualMap": [{
+         "show": false,
+         "dimension": 2,
+         "min": 1,
+         "max": 3,
+         "precision": 0.01,
+         // "inRange": {
+         //     "symbolSize": [10, 50]
+         // }
+     }],
+     "series": [   ],
 
 
-                };
-                option.series.push(team)
-                option.series.push(task)
-                option.series.push(agent)
+ };
+ option.series.push(team)
+ option.series.push(task)
+ option.series.push(agent)
 
-                option.series.push(pie1)
-                option.series.push(pie2)
-                echart1.setOption(option);
-            },
-
-            teamformation(){
-                teamform().then((res) => {
-                    this.dealwithData(res)
-                    //  console.log(res)
-
-                }).catch(()=>{
-                    console.log("taskQuery fail")
-                });
-
-            },
-            setgoto(scope){
-                if(scope.row.commodityName=="小麦")
-                    return false
-                return true
-            },
-            sethref(scope){
-                let content="http://localhost:8000/trade/acpassTask/activetask"
-                return content
-            },
-            setdis(scope){
-                //   console.log(scope)
-                if(scope.row.content=="暂时未分配")
-                    return  true
-                return false
-            },
-            goToprice() {
-                //直接跳转
-                this.$router.push('/trade/Multimodal-multigranularity/priceshow');
-            },
-            gotoDetail(id){
-                this.$router.push(`/trade/acpassTask/activetask/${id}`);
-                //  this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
-                console.log(`/trade/acpassTask/activetask/${id}`)
-            },
-            changetime(data){
-                changetimeadvise().then((res) => {
-
-                    this.dealwithData(res)
-                }).catch(()=>{
-                    console.log("taskQuery fail")
-                });
-
-            },
-            changetask(scope) {
-                this.taskin=scope.row
-                this.taskin.changeflag=this.taskin.id;
-                this.addNewTask1()
-            },
-            loadAll() {
-                // 获取表格数据
-                console.log("获取表格数据")
-                var dataConvert = [];
-                var taskNames = [];
-                taskQuery().then((res) => {
-                    dataConvert = res.data.data;
-                    for(var i = 0;i<dataConvert.length;i++){
-                        var taskName = {};
-                        taskName = {"value":dataConvert[i].name};
-                        taskNames.push(taskName);
-                    }
-                }).catch(()=>{
-                    console.log("taskQuery fail")
-                });
-                this.drawechart();
-
-                return taskNames;
-
-            },
-            // 搜索 从服务器获得数据
-            querySearch(queryString, cb) {
-                var taskLists = this.taskLists;
-                var results = queryString ? taskLists.filter(this.createFilter(queryString)) : taskLists;
-                // 调用 callback 返回建议列表的数据
-                cb(results);
-            },
-            createFilter(queryString) {
-                return (taskName) => {
-                    return (taskName.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-                };
-            },
-            handleSelect(item) {
-                // console.log(item);
-            },
-            // 搜索按钮
-            searchTask_btn(){
-                this.searchData = this.state1;
-                console.log("state1:" + this.state1 + "searchData:" + this.searchData)
-                this.searchTableVisible = true;
-                this.$refs.taskSearch.getSearchData(this.state1);
-            },
-            // 用户手册 弹窗
-            userHelp(){
-                this.userHelpVisible = true;
-            },
-
-            dealwithData(res)
-            {  var dataConvert = [];
-
-                dataConvert = res.data.data;
-                this.totalCount=dataConvert.length
-                for(var i = 0;i<dataConvert.length;i++){
-                    var data = this.timestampToTime(dataConvert[i].gmtCreate)
-                    dataConvert[i].gmtCreate = data
-
-                    data = this.timestampToTime(dataConvert[i].gmtModified)
-                    dataConvert[i].gmtModified = data
-
-                    data = this.timestampToTime(dataConvert[i].startTime)
-                    dataConvert[i].startTime = data
-
-                    data = this.timestampToTime(dataConvert[i].endTime)
-                    dataConvert[i].endTime = data
-
-                    if(dataConvert[i].humanUse) // true
-                        dataConvert[i].humanUse = "是"
-                    else // false
-                        dataConvert[i].humanUse = "否"
-                    if(!dataConvert[i].timeadvise) // true
-                        dataConvert[i].timeadvise="否"
-                    if(!dataConvert[i].commodityName) // true
-                        dataConvert[i].commodityName="暂无"
-                    //     console.log(   dataConvert[i].content)
-                    if(!dataConvert[i].content) // true
-                    {
-                        dataConvert[i].content="暂时未分配"
-                        //  console.log(   dataConvert[i].content)
-                        //  this.setdis= true
-                        //   this.setund=false
-                    }
-
-                    if(!dataConvert[i].team) // true
-                    {
-                        dataConvert[i].team="暂时未分配"
-                        //  console.log(   dataConvert[i].content)
-                        //  this.setdis= true
-                        //   this.setund=false
-                    }
-
-                    if(dataConvert[i].workStatus==null) // true
-                        dataConvert[i].workStatus="未分配"
-                    if(dataConvert[i].workStatus==0) // true
-                        dataConvert[i].workStatus="已分配"
-                    if(dataConvert[i].workStatus==1) // true
-                        dataConvert[i].workStatus="任务已经执行"
-                    if(!dataConvert[i].workStatus==2) // true
-                        dataConvert[i].workStatus="任务出现异常"
-                }
-                dataConvert.reverse()
-                this.dormitory = dataConvert;
-                //      console.log(this.dormitory)
-            },
-            getData(){
-                // 获取表格数据
-                console.log("获取表格数据")
-                // var dataConvert = [];
-                taskQuery().then((res) => {
-                    this. dealwithData(res)
-                }).catch(()=>{
-                    console.log("getTransactionData fail")
-                });
-            } ,
-            // 转换时间戳
-            timestampToTime (cjsj) {
-                var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                var Y = date.getFullYear() + '-'
-                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
-                var D = date.getDate() + ' '
-                var h = date.getHours() + ':'
-                var m = date.getMinutes() + ':'
-                var s = date.getSeconds()
-                return Y+M+D+h+m+s
-            },
-
-            // 新增监控任务
-            addNewTask(){
-                this.taskin={};
-                //this.taskin.id=-1
-                //     this.taskin.changeflag=Number.POSITIVE_INFINITY
-                this.taskin.changeflag=Number.POSITIVE_INFINITY
-                //  this.taskin.changeflag=-1
-                //  console.log(this.taskin.changeflag)
-                //  this.taskin.changeflag=false;
-                this.dialogTableVisible=true;
-            },
-            addNewTask1(){
-                this.dialogTableVisible=true;
-                //  console.log(this.taskInput)
-                //     console.log(taskInput)
-                //this.taskInput.input=this.taskin.name;
-                //   this.taskInput.priority=this.taskin.priority;
-            },
-            // 获得任务流程图展示
-            getTaskMap(){
-                this.taskMapVisible = true;
-            },
-
-            // 分配任务
-            allocateTask(){
-                this.$confirm('是否确认进行任务分配', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.getAllocateDate();
-                    this.$message({
-                        type: 'success',
-                        message: '已执行分配!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消'
-                    });
-                });
-            },
-            // 发送get请求--getAllocateTask
-            getAllocateDate(){
-
-                taskAllocation().then((res) => {
-                    console.log("传入数据allocateTask")
-                    if(res.data.data.length === 0){
-                        this.$message({
-                            type: 'warning',
-                            message: '当前无需要分配的任务!'
-                        });
-                    }
-                    else{
-                        this.$message({
-                            type: 'success',
-                            message: '任务分配已完成!'
-                        });
-                    }
-                }).catch(()=>{
-                    console.log("taskAllocation fail")
-                });
-            },
-// 分页
-            // 每页显示的条数
-            handleSizeChange(val) {
-                // 改变每页显示的条数
-                this.PageSize=val
-                // 注意：在改变每页显示的条数时，要将页码显示到第一页
-                this.currentPage=1
-            },
-            // 显示第几页
-            handleCurrentChange(val) {
-                // 改变默认的页数
-                this.currentPage=val
-            },
-            // 关闭弹窗
-            closeDialog(){
-                console.log*("成功调用")
-                this.dialogTableVisible = false;
-            },
-            // 分页激活调用
-            handleClick(tab, event) {
-                console.log(tab, event);
-                if(this.activeName == 'second'){
-                    //this.$refs.method1_child.getData();
-                }
-            },
-            // 刷新当前页面
-            reloadPage(){
-                this.reload();
-            }
-
-        },
-        mounted() {
-            this.taskLists = this.loadAll();
-            let tiankong= document.getElementById("diceng");
-            tiankong.style.height=window.innerHeight+"px"
-
-            //     console.log(tiankong.style.height)
-            let announcement=document.getElementById("announcement");
-            //  console.log(tiankong)
-        },
-    }
+// option.series.push(pie1)
+ option.series.push(pie2)*/
 </script>
 <style>
     .dormitory{

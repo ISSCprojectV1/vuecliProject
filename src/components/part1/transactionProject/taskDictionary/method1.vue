@@ -31,7 +31,7 @@ export default {
           var result_target = [];
 
           for(let i = 0; i<input.data.length;i++){
-            console.log(input.data[i])
+     //       console.log(input.data[i])
               var node = {};
               // 找到点的属性
               node.userId = input.data[i].id;
@@ -205,7 +205,7 @@ const tooltip = new G6.Tooltip({
     const outDiv = document.createElement('div');
     outDiv.style.width = '180px';
     outDiv.style.textAlign = 'left';
-    console.log(e.item.getModel())
+    //console.log(e.item.getModel())
     outDiv.innerHTML = `
       <h2>${e.item.getModel().label}任务详情</h2>
       <ul>
@@ -407,7 +407,7 @@ legendGraph.render();
 graph.node(function (node) {
                         // depth 类似节点标识
                         if(node.workStatusColor === null){
-                            console.log(node)
+                          //  console.log(node)
                             return {
                                 preRect:{
                                     fill:'#6495ED',
@@ -417,7 +417,7 @@ graph.node(function (node) {
                         }
               
                         if(node.workStatusColor === 0){
-                            console.log(node)
+                          //  console.log(node)
                             return {
                                 preRect:{
                                     fill:'#778899',
@@ -426,7 +426,7 @@ graph.node(function (node) {
                             }
                         }
                         if(node.workStatusColor === 1){
-                            console.log(node)
+                          //  console.log(node)
                             return {
                                 preRect:{
                                     fill:'#30BF78',
@@ -435,7 +435,7 @@ graph.node(function (node) {
                             }
                         }
                         if(node.workStatusColor === 2){
-                            console.log(node)
+                          //  console.log(node)
                             return {
                                 preRect:{
                                     fill:'#DC143C',

@@ -70,7 +70,7 @@
 
     <el-form-item label="商品名称">
         <el-select v-model="commodityName" placeholder="请选择商品名称">
-
+            <el-option label="铝矿石" value="铝矿石"></el-option>
             <el-option label="小麦" value="小麦"></el-option>
             <el-option label="大豆" value="大豆"></el-option>
             <el-option label="焦炭" value="焦炭"></el-option>
