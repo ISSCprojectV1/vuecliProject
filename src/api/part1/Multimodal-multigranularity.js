@@ -11,6 +11,15 @@ export function taskInput(data) {
       data
         })
   }
+
+// 获得所有
+export function bourseget(data) {
+  console.log("发送bourseget请求")
+  return request({
+    url: '/getAllbourse',
+    method: 'get',
+  })
+}
 // 修改状态
 export function changeTaskStatus(data) {
   console.log("发送changeTaskStatus请求")

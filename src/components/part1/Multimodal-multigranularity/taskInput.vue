@@ -57,6 +57,7 @@
             <el-popover
                     placement="right"
                     width="200"
+
                     v-model="visible">
                 <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 <div style="margin: 15px 0;"></div>
@@ -64,7 +65,7 @@
                     <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
                 </el-checkbox-group>
 
-                <el-button id="neirong" slot="reference" >{{content}}</el-button>
+                <el-button  class="popbut" id="neirong" slot="reference"  >{{content}}</el-button>
             </el-popover>
         </el-form-item>
 
@@ -104,7 +105,7 @@
             <el-option label="海西商品交易所" value="海西商品交易所"></el-option>
         </el-select>
     </el-form-item>*/
-import {taskInput} from "@/api/part1/Multimodal-multigranularity";
+import {taskInput,bourseget} from "@/api/part1/Multimodal-multigranularity";
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
 export default {
 data() {
@@ -130,13 +131,28 @@ data() {
   },
     props:['taskin'],
       created(){
+    bourseget().then((res) => {
+            let dataConvert = res.data.data;
+    console.log(dataConvert)
+        let temp=[]
+        for(let i=0;i<dataConvert.length;i++)
+    temp.push(dataConvert[i].bourse)
+        this.cities=temp
+        console.log(temp)
+    }
+
+            ).catch(()=>{
+        console.log("taskQuery fail")
+    });
     console.log(this.taskin.changeflag)
           console.log(this.taskin.name)
           this.input=this.taskin.name
           this.priority=this.taskin.priority
           this.humanUse=this.taskin.humanUse
-
-          this.content=this.taskin.content
+        //  if(this.taskin.content)
+         // this.content=this.taskin.content+"\r\n"+"aaa"
+     this.content=this.taskin.content
+       //   console.log(this.content)
         /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
       this.cleanForm();*/
     },
@@ -172,7 +188,7 @@ if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
 methods:{
 
         handleCheckAllChange(val) {
-            this.checkedCities = val ? cityOptions : [];
+            this.checkedCities = val ? this.cities : [];
             this.isIndeterminate = false;
         },
         handleCheckedCitiesChange(value) {
@@ -300,5 +316,11 @@ cleanForm(){
    width: 100%;
   height: 100%;
 }
+.popbut{
+    mulitline:true;
+white-space: normal;
 
+
+
+}
 </style>
