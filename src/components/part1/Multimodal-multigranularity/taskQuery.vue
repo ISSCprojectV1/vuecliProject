@@ -257,7 +257,7 @@ var logo="/assets/part3/seu.png"
 
                     for (let i = 0; i < renwu.length; i++) {
                         let obj = {
-                            name: renwu[i] + i,
+                            name: renwu[i] ,
                             value: i,
                             children: [],
                         };
