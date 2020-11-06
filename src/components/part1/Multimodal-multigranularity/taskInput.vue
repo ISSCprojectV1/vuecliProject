@@ -55,8 +55,10 @@
    </el-form-item>
         <el-form-item label="内容">
             <el-popover
-                    placement="right"
-                    width="200"
+                    trigger="hover"
+                    placement="top"
+                    width="
+                    300"
 
                     v-model="visible">
                 <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -152,7 +154,7 @@ data() {
         //  if(this.taskin.content)
          // this.content=this.taskin.content+"\r\n"+"aaa"
      this.content=this.taskin.content
-       //   console.log(this.content)
+       //npm   console.log(this.content)
         /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
       this.cleanForm();*/
     },
@@ -174,7 +176,7 @@ this.workingTime=this.taskin.workingTime
 
             this.content=this.taskin.content
             if(!this.content)
-                this.content='wu'
+                this.content='暂时未分配'
 if(this.taskin.humanUse=='是')
     this.humanUse=1
             if(this.taskin.humanUse=='否')
