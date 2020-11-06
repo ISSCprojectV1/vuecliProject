@@ -174,7 +174,7 @@ data() {
 this.workingTime=this.taskin.workingTime
             this.humanUse=this.taskin.humanUse
 
-            this.content=this.taskin.content
+            this.content=this.taskin.contentf
             if(!this.content)
                 this.content='暂时未分配'
 if(this.taskin.humanUse=='是')
