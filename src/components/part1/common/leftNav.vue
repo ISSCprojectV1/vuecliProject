@@ -45,11 +45,11 @@
             routes:[],
             path:"/trade/transactionProject"
           },
-          {
-            title:"风险评估",
-            routes:[],
-            path: "/trade/riskPrediction"
-          },
+          // {
+          //   title:"指标评估",
+          //   routes:[],
+          //   path: "/trade/riskPrediction"
+          // },
           {
             title:"模态与粒度",
             routes: [],
