@@ -283,7 +283,7 @@ const graph = new G6.Graph({
     },
     // label configurations
     labelCfg: {
-      style: {
+      style: {//18-32 46-86 100 128
         fill: '#595959',
         fontSize: 27,
       },
