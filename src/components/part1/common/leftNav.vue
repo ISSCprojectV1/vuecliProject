@@ -45,7 +45,7 @@
             routes:[],
             path:"/trade/transactionProject"
           },
-         /* {
+          {
             title:"模态与粒度",
             routes: [],
             path: "/trade/Multimodal-multigranularity"

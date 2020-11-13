@@ -26,6 +26,17 @@ export function GetSpacetask(currentPage,pageSize) {
     })
 }
 
+export function Louvainresult(id,limit) {
+    return request({
+        method: 'GET',
+        params: {
+            id:id,
+            limit:limit
+        },
+        url:'/louvainresult',
+    })
+}
+
 export function activetradeaction(id) {
     return request({
         method: 'GET',

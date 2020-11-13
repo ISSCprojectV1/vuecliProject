@@ -145,6 +145,10 @@
                 </el-form>
                 <div id="echart1" style="width: 1000px;height: 800px"></div>
             </el-tab-pane>
+            <el-tab-pane label="交易事件图2" name="flow2">
+
+                <div id="echart12" style="width: 1000px;height: 800px"></div>
+            </el-tab-pane>
         </el-tabs>
 
     </div>
@@ -152,7 +156,7 @@
 
 <script>
 import tradeaction from "@/components/part1/acpassTask/tradeaction";
-import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction} from "@/api/part1/acpassTask";
+import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction,Louvainresult} from "@/api/part1/acpassTask";
     import echart from "echarts";
     export default {
         name: "activetask",
@@ -203,11 +207,11 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             },
           passivetradeactionList(id,currentPage,pageSize){
             passivetradeaction(id,currentPage,pageSize).then(res=>{
-console.log(res)
+//console.log(res)
               this.tableData = res.data.data.reslist
               let data = res.data.data.reslist;
               this.total1 = res.data.data.total
-              console.log(this.total1)
+            //  console.log(this.total1)
               for (let i = 0; i < data.length; i++) {
                 data[i].id=i+1
               }
@@ -221,7 +225,7 @@ console.log(res)
             let cnt=0;
             this.Data=[];
             this.spanarray=[];
-            console.log(this.tableData.length)
+          //  console.log(this.tableData.length)
             for(let i=0;i<this.tableData.length;i++){
               this.spanarray.push({
                 row:cnt,
@@ -235,8 +239,15 @@ console.log(res)
             }
           },
             Activetaskgraph(id,limit){
-                activetaskgraph(id,limit).then(res=>{
+                Louvainresult(id,10).then(res=>{
+               //     console.log(res.data.data)
                     this.drawechart(res.data.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
+                activetaskgraph(id,limit).then(res=>{
+                    this.drawechart2(res.data.data)
+
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -269,7 +280,7 @@ console.log(res)
                 this.Activetaskgraph(id,limit);
             },
           activeOrpassive(){
-            console.log(this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction'))
+          //  console.log(this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction'))
             return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
           },
           objectSpanMethod({ row, column, rowIndex, columnIndex }) {
@@ -294,8 +305,9 @@ console.log(res)
                 this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
                 console.log(id)
             },
-            drawechart(data){
-                let echart1 = echart.init(document.querySelector("#echart1"));
+            drawechart2(data){
+              //  console.log(data)
+                let echart1 = echart.init(document.querySelector("#echart12"));
                 let option = {
                     //backgroundColor: '#000F1F',
                     tooltip: {//
@@ -417,9 +429,99 @@ console.log(res)
                     } ]
                 };
                 echart1.setOption(option);
+            },
+            drawechart(data){
+                let linkss=data[2]
+                let nodees=data[1]
+              //  console.log(linkss)
+                let echart1 = echart.init(document.querySelector("#echart1"));
+               let  option = {
+                    backgroundColor: echart.graphic.RadialGradient(0.3, 0.3, 0.8, [{
+                        offset: 0,
+                        color: '#f7f8fa'
+                    }, {
+                        offset: 1,
+                        color: '#cdd0d5'
+                    }]),
+                    title:{
+                        text: "空间粒度",
+                        // subtext: "各学院专业关系-Acring",
+                        top: "top",
+                        left: "center"
+                    },
+                    tooltip: {},
+                    legend: [{
+                        formatter: function (name) {
+                            return echart.format.truncateText(name, 40, '14px Microsoft Yahei', '…');
+                        },
+                        tooltip: {
+                            show: true
+                        },
+                        selectedMode: 'false',
+                        top: 40,
+                        data: [
+                            '3',
+                            '2',
+                            '0',
+                            '1',
+                            '4']
+                    }],
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            dataView : {show: true, readOnly: true},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    animationDuration: 3000,
+                    animationEasingUpdate: 'quinticInOut',
+                    series: [{
+                        //   name: '广州大学',
+                        type: 'graph',
+                        layout: 'force',
+
+                        force: {
+                            repulsion: 50
+                        },
+                        data: nodees,
+                       links:linkss,
+                        categories: [{
+                            'name': '1'
+                        }, {
+                            'name': '2'
+                        }, {
+                            'name': '3'
+                        }, {
+                            'name': '4'
+                        }, {
+                            'name': '0'
+                        }],
+                        focusNodeAdjacency: true,
+                        roam: true,
+                        label: {
+                            normal: {
+
+                                show: true,
+                                position: 'top',
+
+                            }
+                        },
+                        lineStyle: {
+                            normal: {
+                                color: 'source',
+                                curveness: 0,
+                                type: "solid"
+                            }
+                        }
+                    }]
+                };
+
+//console.log(option)
+                echart1.setOption(option);
             }
         }
-
+        /* */
     }
 </script>
 
