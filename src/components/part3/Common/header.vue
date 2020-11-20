@@ -108,7 +108,10 @@
                 this.state = '';
                 return;
               }
-              alert("没有找到相关的模块。请尝试重新搜索！");
+              this.$message({
+                message: '没有找到相关的模块，请尝试重新搜索！',
+                type: 'warning'
+              });
               this.state = '';
             },
             handleInputSelect(component) {
