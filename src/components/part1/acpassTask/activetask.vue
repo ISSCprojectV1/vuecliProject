@@ -246,7 +246,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             }
           },
             Activetaskgraph(id,limit){
-                Louvainresult(id,10).then(res=>{
+                Louvainresult(id,limit).then(res=>{
                //     console.log(res.data.data)
                     this.drawechart(res.data.data)
                 }).catch(err=>{
@@ -284,6 +284,9 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             },
             onSubmit(limit){
                 const id = this.$router.currentRoute.params.id;
+                console.log("aaa")
+
+                console.log(limit)
                 this.Activetaskgraph(id,limit);
             },
           activeOrpassive(){
