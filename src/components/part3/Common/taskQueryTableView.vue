@@ -59,7 +59,7 @@
         <el-table-column
             label="推荐主被动模态"
             fixed="right"
-            min-width="180" porp="subtask">
+            min-width="180" prop="subtask">
 
         </el-table-column>
 
@@ -104,6 +104,31 @@ export default {
     }
   },
   methods: {
+    changespaceResult( ){
+      spaceResult().then((res) => {
+        let datt=res.data.data
+for( var i=0;i<datt.length;i++)
+{
+  for(var j=0;j<this.dormitory.length;j++)
+  {
+    //console.log(datt[i].id)
+   // console.log(this.dormitory[j].id)
+   // console.log(datt[i].id==this.dormitory[j].id)
+    if(datt[i].id==this.dormitory[j].id)
+    {
+      this.dormitory[j].subtask=datt[i].subtask
+      console.log(this.dormitory[j])
+      console.log(this.dormitory)
+      break;
+    }
+  }
+}console.log(this.dormitory)
+
+  console.log(res.data.data)
+      }).catch(() => {
+        console.log("getTransactionData fail")
+      });
+    },
     setgoto(scope) {
       return scope.row.commodityName !== "小麦";
     },
