@@ -3,6 +3,15 @@
         <!--        <div class="title">-->
         <!--      <div style="display: inline-block; margin-bottom:20px; font-size:40px" >监管任务查询列表</div>-->
         <!--        </div>-->
+        <div> <el-header>
+            <Header2>
+            </Header2>
+        </el-header>
+            <el-container>
+                <router-view></router-view>
+            </el-container>
+        </div>
+
         <h2>监管任务查询列表</h2>
 
         <div class="searchWord" style="margin-bottom:20px">
@@ -135,6 +144,7 @@
 //
     //  <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
     //import {getTansactionData} from "@/api/part1/transactionProject";        <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
+import Header2 from "@/components/part3/Common/header2";
     import {taskQuery,taskAllocation,searchTask,changetimeadvise,teamform} from "@/api/part1/Multimodal-multigranularity";
     import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
     import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
@@ -157,7 +167,7 @@ import  logoimg from "@/assets/part3/seu.png"
     export default {
         inject:['reload'],
         components: {
-            taskInput,method1,userQuery,taskSearch
+            taskInput,method1,userQuery,taskSearch,Header2
         },
 
         data () {

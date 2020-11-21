@@ -6,7 +6,55 @@
   <div>
     <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
     <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
+    <el-button @click="changeform12()" type="text" size="small">表格试图</el-button>
     <div id="echart1" style="width: 1000px; height: 800px"></div>
+
+    <div id="form" style="display: none">
+      <el-table
+              ref="dormitoryTable"
+              :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+              tooltip-effect="dark"
+              stripe
+              style="width: 100%"
+              border>
+
+        <el-table-column type="selection" width="45"></el-table-column>
+        <el-table-column label="序号" prop="id" width="60"></el-table-column>
+        <el-table-column label="监管任务名称" prop="name">
+        </el-table-column>
+
+        <el-table-column label="任务优先级" prop="priority" width="60">
+        </el-table-column>
+        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        </el-table-column>
+        <el-table-column label="属于联盟" prop="team" width="60">
+        </el-table-column>
+
+        <el-table-column label="人模态分布" prop="humanUse" width="80">
+        </el-table-column>
+        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+        </el-table-column>
+
+
+        <el-table-column label="商品名称" prop="commodityName">
+        </el-table-column>
+        <el-table-column label="任务状态" prop="workStatus">
+        </el-table-column>
+        <el-table-column
+                label="推荐主被动模态"
+                fixed="right"
+                min-width="180" porp="model">
+
+        </el-table-column>
+        </el-table>
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="pageSizes"
+                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                     :total="totalCount">
+      </el-pagination>
+    </div>
   </div>
 </div>
 </template>
@@ -19,10 +67,44 @@ export default {
   name: "taskQueryTransactionCoalition",
   data() {
     return {
-      dormitory: []
+      dormitory: [],
+      currentPage:1,
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
+      totalCount:100,
+      // 个数选择器（可修改）
+      pageSizes:[5,10],
+      // 默认每页显示的条数（可修改）
+      PageSize:10,
     }
   },
+  mounted() {
+
+    },
   methods: {
+    // 每页显示的条数
+    handleSizeChange(val) {
+      // 改变每页显示的条数
+      this.PageSize=val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage=1
+    },
+    // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage=val
+    },
+
+    getData1(){
+      // 获取表格数据
+      console.log("获取表格数据")
+      // var dataConvert = [];
+      taskQuery().then((res) => {
+        console.log(res)
+        this. dealwithData(res)
+      }).catch(()=>{
+        console.log("getTransactionData fail")
+      });
+    } ,
     teamformation(){
       teamform().then((res) => {
         this.dealwithData(res)
@@ -33,7 +115,16 @@ export default {
       });
 
     },
+    changeform12()
+    {
+      document.getElementById("echart1").style.display="none";
+      document.getElementById("form").style.display="block";
+      this.getData1()
+
+    },
     drawechart1() {
+      document.getElementById("form").style.display="none";
+      document.getElementById("echart1").style.display="block";
       const handle = function handleData(data, index, color = '#00f6ff') {
         //index标识第几层
         return data.map((item, index2) => {
@@ -105,7 +196,7 @@ export default {
       let renwu = []
       let renwhhetask = []
       for (let i = 0; i < this.dormitory.length; i++) {
-        console.log(this.dormitory[i].operatorName)
+    //    console.log(this.dormitory[i].operatorName)
         if (renwu.indexOf(this.dormitory[i].operatorName) === -1) {
           renwu.push(this.dormitory[i].operatorName)
           renwhhetask[this.dormitory[i].operatorName] = []
@@ -113,10 +204,10 @@ export default {
         renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
       }
       for (let i = 0; i < this.dormitory.length; i++) {
-        console.log(renwhhetask[i])
+   //     console.log(renwhhetask[i])
       }
 
-      console.log(renwhhetask.keys())
+  //    console.log(renwhhetask.keys())
 
       const getdata = function getData() {
         let data = {
@@ -145,7 +236,7 @@ export default {
         let arr = []
         arr.push(data)
         arr = handle(arr, 0)
-        console.log(arr);
+    //    console.log(arr);
         return arr;
       };
 
@@ -207,6 +298,8 @@ export default {
       echart1.setOption(option);
     },
     drawechart12() {
+      document.getElementById("form").style.display="none";
+      document.getElementById("echart1").style.display="block";
       const handle = function handleData(data, index, color = '#00f6ff') {
         //index标识第几层
         return data.map((item, index2) => {
@@ -283,7 +376,7 @@ export default {
 
       }
       for (let i = 0; i < this.dormitory.length; i++) {
-        console.log(renwhhetask[i])
+     //   console.log(renwhhetask[i])
       }
       const getdata = function getData() {
         let data = {
@@ -313,7 +406,7 @@ export default {
         arr.push(data)
         //
         arr = handle(arr, 0)
-        console.log(arr);
+    //    console.log(arr);
         return arr;
       };
 
@@ -374,15 +467,7 @@ export default {
       };
       echart1.setOption(option);
     },
-    getData() {
-      // 获取表格数据
-      console.log("获取表格数据")
-      taskQuery().then((res) => {
-        this.dealwithData(res)
-      }).catch(() => {
-        console.log("getTransactionData fail")
-      });
-    },
+
     dealwithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
@@ -428,8 +513,9 @@ export default {
           dataConvert[i].workStatus = "任务出现异常"
       }
       dataConvert.reverse()
+
       this.dormitory = dataConvert;
-      this.drawechart12();
+      console.log(    this.dormitory)
     },
     // 转换时间戳
     timestampToTime(cjsj) {
@@ -444,7 +530,7 @@ export default {
     },
   },
   created() {
-    this.getData();
+    this.getData1();
   }
 }
 </script>

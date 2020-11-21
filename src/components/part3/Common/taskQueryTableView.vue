@@ -7,6 +7,9 @@
       <taskInput :taskin="taskin"></taskInput>
     </el-dialog>
     <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
+      <el-button type="primary" @click="changetask(scope)" style="margin-left:29px;margin-right:14px;">商品粒度补全</el-button>
+      <el-button type="primary" @click="changetime(scope)" style="margin-left:29px;margin-right:14px;">时间粒度补全</el-button>
+      <el-button type="primary" @click="changespaceResult( )"  style="margin-left:29px;margin-right:14px;">模态粒度补全</el-button>
       <el-table
           ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -54,13 +57,10 @@
         <el-table-column label="任务状态" prop="workStatus">
         </el-table-column>
         <el-table-column
-            label="模态粒度补充"
+            label="推荐主被动模态"
             fixed="right"
-            min-width="180">
-          <template slot-scope="scope">
-            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
-            <el-button @click="changetime(scope)" type="text" size="small">时间粒度补全</el-button>
-          </template>
+            min-width="180" porp="subtask">
+
         </el-table-column>
 
       </el-table>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import {changetimeadvise, taskQuery} from "@/api/part1/Multimodal-multigranularity";
+import {changetimeadvise, taskQuery,spaceResult} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
 
 export default {
@@ -229,4 +229,7 @@ export default {
   width: 100%;
   height: 600px;
 }
+  .el-table thead{
+    color: black;
+  }
 </style>

@@ -7,11 +7,11 @@
                  background-color="#00659B"
                  text-color="#FFFFFF"
                  active-text-color="#ffd04b">
-                    <el-menu-item index="/trade/Dashboard" style="font-size: 18px;padding: 0">
-                        <img :src="logoimg" class="userprofile" style="width: 45px;height: 45px">
-                        大宗商品交易市场监管服务模式与资源调配系统
-                    </el-menu-item>
+                    <el-menu-item index="/trade/Multimodal-multigranularity/taskInput2">新建任务</el-menu-item>
 
+                    <el-menu-item index="/trade/Multimodal-multigranularity/taskQueryTableView">时间空间粒度补全</el-menu-item>
+                    <el-menu-item index="/trade/Multimodal-multigranularity/taskQueryTransactionCoalition">联盟形成</el-menu-item>
+                    <el-menu-item index="/trade/Multimodal-multigranularity/taskQueryFlowChart">流程图</el-menu-item>
 <!--                    <el-submenu index="2">-->
 <!--                        <template slot="title">拍卖中心</template>-->
 <!--                        <el-menu-item index="/auction">下载数据</el-menu-item>-->
@@ -52,10 +52,7 @@
 <!--                        选项3<el-badge class="mark" :value="1" />-->
 <!--                    </el-menu-item>-->
 <!--                </el-submenu>-->
-                <el-menu-item index="/trade/Multimodal-multigranularity/taskInput2">模态力度</el-menu-item>
-                <el-menu-item index="/trade/Multimodal-multigranularity/taskQueryFlowChart">流程图</el-menu-item>
-                <el-menu-item index="/trade/Multimodal-multigranularity/taskQueryTableView">表格</el-menu-item>
-                <el-menu-item index="/trade/Multimodal-multigranularity/taskQueryTransactionCoalition">联盟</el-menu-item>
+
             </el-menu>
             </el-col>
         </el-row>
