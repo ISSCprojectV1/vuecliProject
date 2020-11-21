@@ -1,14 +1,19 @@
 <template>
+<div>
+  <div>
+    <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+  </div>
   <div>
     <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
     <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
     <div id="echart1" style="width: 1000px; height: 800px"></div>
   </div>
+</div>
 </template>
 
 <script>
 import echart from "echarts";
-import {taskQuery} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,teamform} from "@/api/part1/Multimodal-multigranularity";
 
 export default {
   name: "taskQueryTransactionCoalition",
@@ -18,6 +23,16 @@ export default {
     }
   },
   methods: {
+    teamformation(){
+      teamform().then((res) => {
+        this.dealwithData(res)
+        //  console.log(res)
+
+      }).catch(()=>{
+        console.log("taskQuery fail")
+      });
+
+    },
     drawechart1() {
       const handle = function handleData(data, index, color = '#00f6ff') {
         //index标识第几层

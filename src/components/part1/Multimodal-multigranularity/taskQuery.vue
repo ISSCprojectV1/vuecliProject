@@ -58,7 +58,7 @@
                                 border :cell-style="columnStyle">
 
                             <el-table-column type="selection" width="45"></el-table-column>
-                            <el-table-column label="序号"  prop="id" width = "60"></el-table-column>
+                            <el-table-column label="序号"  prop="id" width = "60" class="labelcol"></el-table-column>
                             <el-table-column label="监管任务名称" prop="name">
                             </el-table-column>
 
@@ -1344,6 +1344,9 @@ if( renwhhetask[i].operatorName)
     .searchWord span{
         float: left;
         text-align:center;
+    }
+    .el-table thead{
+        color: black;
     }
 
 </style>
