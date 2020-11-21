@@ -134,7 +134,6 @@
 
           </el-tab-pane>
             <el-tab-pane label="交易事件图" name="flow">
-
                 <el-form ref="form" :model="form" label-width="80px">
                     <el-form-item label="筛选条件">
                         <el-input v-model="form.limit"></el-input>
@@ -143,10 +142,18 @@
                         <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
                     </el-form-item>
                 </el-form>
+
                 <div id="echart1" style="width: 1000px;height: 800px"></div>
             </el-tab-pane>
             <el-tab-pane label="交易事件图2" name="flow2">
-
+                <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="筛选条件">
+                        <el-input v-model="form.limit"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                    </el-form-item>
+                </el-form>
                 <div id="echart12" style="width: 1000px;height: 800px"></div>
             </el-tab-pane>
         </el-tabs>
@@ -444,7 +451,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         color: '#cdd0d5'
                     }]),
                     title:{
-                        text: "空间粒度",
+                     //   text: "空间粒度",
                         // subtext: "各学院专业关系-Acring",
                         top: "top",
                         left: "center"
@@ -459,15 +466,15 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         },
                         selectedMode: 'false',
                         top: 40,
-                        data: [
+                     /*   data: [
                             '3',
                             '2',
                             '0',
                             '1',
-                            '4']
+                            '4']*/
                     }],
                     toolbox: {
-                        show : true,
+                        show : false,
                         feature : {
                             dataView : {show: true, readOnly: true},
                             restore : {show: true},
