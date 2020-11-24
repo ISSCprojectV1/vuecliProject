@@ -226,10 +226,7 @@ export default {
         this.datatest=dataConverttest;
         console.log(this.datatest)
         this.tableData=dataConvert;*/
-
         this.tableData = res.data;
-
-
       }).catch(()=>{
         console.log("taskExecution fail")
       });
