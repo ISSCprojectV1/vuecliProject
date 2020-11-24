@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 import Axios from 'axios';
 
+// 模态力度
+export function spaceResult() {
+  console.log("spaceResult")
+  return request({
+    url: '/spaceresult',
+    method: 'get',
+
+  })
+}
 // 新建任务
 export function taskInput(data) {
   console.log("发送taskInput请求")
@@ -10,6 +19,32 @@ export function taskInput(data) {
       data
         })
   }
+
+// 获得所有
+export function bourseget(data) {
+  console.log("发送bourseget请求")
+  return request({
+    url: '/getAllbourse',
+    method: 'get',
+  })
+}
+// 修改状态
+export function changeTaskStatus(data) {
+  console.log("发送changeTaskStatus请求")
+  return request({
+    url: '/taskOperateStatus',
+    method: 'post',
+    data
+  })
+}
+export function teamform() {
+    console.log("发送teamform请求")
+    return request({
+        url: '/yu/coalitonByHungary',
+        method: 'get',
+    })
+}
+
 
 // 搜索任务
 export function searchTask(data) {

@@ -405,23 +405,22 @@
                     ['2013/6/13', 2190.1, 2148.35, 2126.22, 2190.1]
                 ])
                 this.echartsOption.xAxis.data = this.resData.categoryData
-                this.echartsOption.series[0].data = this.resData.values //splice(0, 1) 从0开始，删除一个数据并在这里是日期
-                console.log(this.echartsOption.xAxis.data)
-                console.log(this.echartsOption.series[0].data) // 价格数据
+                this.echartsOption.series[0].data = this.resData.values
+
 
                 function splitData (rawData) {
                     var categoryData = []
                     var values = []
                     for (var i = 0; i < rawData.length; i++) {
-                        categoryData.push(rawData[i].splice(0, 1)[0]) //splice(0, 1) 从0开始，删除一个数据并在这里是日期
-                        values.push(rawData[i])// 价格数据
-                        console.log(categoryData)
-                        console.log(values)
+
+                        categoryData.push(rawData[i].splice(0, 1)[0])
+                        values.push(rawData[i])
+
                     }
                     return {
                         categoryData: categoryData,
                         values: values
-                    }
+                    } 
                 }
             }
         }

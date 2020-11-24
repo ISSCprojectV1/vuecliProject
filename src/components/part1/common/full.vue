@@ -4,6 +4,7 @@
             <Header>
             </Header>
         </el-header>
+
         <el-container>
             <el-aside style="width: 250px;height: 100%" ref="changdu" >
                 <leftNav >
@@ -17,10 +18,12 @@
 </template>
 
 <script>
+
     import Header from "@/components/part3/Common/header";
     import leftNav from "@/components/part1/common/leftNav";
     export default {
         components: {
+
             Header,
             leftNav        },
         data(){

@@ -14,6 +14,9 @@
    <el-form-item label="属性值">
 <el-input v-model="num" placeholder="请输入属性值"></el-input>
    </el-form-item>
+    <el-form-item label="联盟">
+        <el-input v-model="team" placeholder="请输入隶属联盟"></el-input>
+    </el-form-item>
 
 <el-button type="success" @click="postAddress">立即创建</el-button>
 <el-button type="info" @click="abortForm">取消创建</el-button>
@@ -30,7 +33,8 @@ data() {
     return {
       name:'',
       type:'',
-      num:''
+      num:'',
+        team:''
     }
   },
 
@@ -61,7 +65,8 @@ console.log("发送请求前")
   var data = { 
   "name":this.name,
   "type":this.type,  
-  "num":this.num, 
+  "num":this.num,
+      "team":this.team
   };
   modalityInput_api(data)
   .then(function (response) {

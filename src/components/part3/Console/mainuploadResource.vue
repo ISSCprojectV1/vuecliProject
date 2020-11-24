@@ -13,7 +13,7 @@
                     >
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                        <div class="el-upload__tip" slot="tip">可上传任意格式文件</div>
+                        <div class="el-upload__tip" slot="tip">仅支持上传sql文件</div>
                     </el-upload>
             <el-form ref="form" :model="form" label-width="80px">
                         <el-form-item
@@ -22,7 +22,7 @@
                         >
                             <el-input v-model="form.fileName"></el-input>
                         </el-form-item>
-                        <el-form-item label="所属类型">
+                        <el-form-item label="所属拍卖">
                             <el-select v-model="form.auctionId" placeholder="请选择">
                                 <el-option v-for="auction in auctions" :key="auction.auctionId" :label="auction.auctionName" :value="auction.auctionId"></el-option>
                             </el-select>

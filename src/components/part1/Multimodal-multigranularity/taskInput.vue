@@ -1,8 +1,12 @@
 <template>
 <div>
 <div class = "task-input-box">
-<el-form ref="form" :model="form" label-width="130px">
-   <el-form-item label="监管任务名称">
+
+
+
+    <el-form ref="form" :model="form" label-width="130px">
+
+        <el-form-item label="监管任务名称">
 <el-input v-model="input" placeholder="请输入内容"></el-input>
    </el-form-item>
 
@@ -49,13 +53,27 @@
      <el-form-item label="工作时间">
 <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
    </el-form-item>
+        <el-form-item label="内容">
+            <el-popover
+                    trigger="hover"
+                    placement="top"
+                    width="
+                    300"
 
-    <el-form-item label="内容">
-        <el-input v-model="content" placeholder="监管内容"></el-input>
-    </el-form-item>
+                    v-model="visible">
+                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                <div style="margin: 15px 0;"></div>
+                <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                    <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                </el-checkbox-group>
+
+                <el-button  class="popbut" id="neirong" slot="reference"  >{{content}}</el-button>
+            </el-popover>
+        </el-form-item>
+
     <el-form-item label="商品名称">
         <el-select v-model="commodityName" placeholder="请选择商品名称">
-
+            <el-option label="铝矿石" value="铝矿石"></el-option>
             <el-option label="小麦" value="小麦"></el-option>
             <el-option label="大豆" value="大豆"></el-option>
             <el-option label="焦炭" value="焦炭"></el-option>
@@ -74,11 +92,29 @@
 </div>
 </template>>
 <script>
-import {taskInput} from "@/api/part1/Multimodal-multigranularity";
+    /* <el-form-item label="内容">
 
+        <el-select v-model="content" placeholder="监管内容">
+            <el-option label="南方稀贵金属交易所" value="南方稀贵金属交易所"></el-option>
+            <el-option label="上海黄金交易所" value="上海黄金交易所"></el-option>
+
+            <el-option label="中国金融期货商品交易所" value="中国金融期货商品交易所"></el-option>
+            <el-option label="恒大金属交易中心" value="恒大金属交易中心"></el-option>
+            <el-option label="广东贵金属交易中心" value="广东贵金属交易中心"></el-option>
+            <el-option label="无锡贵金属交易所" value="无锡贵金属交易所"></el-option>
+            <el-option label="南京贵重金属交易所" value="南京贵重金属交易所"></el-option>
+            <el-option label="江苏省大圆银泰贵金属" value="江苏省大圆银泰贵金属"></el-option>
+            <el-option label="海西商品交易所" value="海西商品交易所"></el-option>
+        </el-select>
+    </el-form-item>*/
+import {taskInput,bourseget} from "@/api/part1/Multimodal-multigranularity";
+const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
 export default {
 data() {
-    return {
+    return {checkAll: false,
+        checkedCities: [],
+        cities: cityOptions,
+        isIndeterminate: false,
         taskinputt:this.taskin,
       input: '',
       priority: '',
@@ -90,18 +126,35 @@ data() {
       workingTime:'',
         timeadvise:'',
         content:'',
-        tradeuser:'',
+        tradeuser:false,
         commodityName:''
     }
 
   },
     props:['taskin'],
       created(){
+    bourseget().then((res) => {
+            let dataConvert = res.data.data;
+    console.log(dataConvert)
+        let temp=[]
+        for(let i=0;i<dataConvert.length;i++)
+    temp.push(dataConvert[i].bourse)
+        this.cities=temp
+        console.log(temp)
+    }
+
+            ).catch(()=>{
+        console.log("taskQuery fail")
+    });
     console.log(this.taskin.changeflag)
           console.log(this.taskin.name)
           this.input=this.taskin.name
           this.priority=this.taskin.priority
           this.humanUse=this.taskin.humanUse
+        //  if(this.taskin.content)
+         // this.content=this.taskin.content+"\r\n"+"aaa"
+     this.content=this.taskin.content
+       //npm   console.log(this.content)
         /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
       this.cleanForm();*/
     },
@@ -114,15 +167,38 @@ data() {
     watch:{
         'taskin.changeflag'(){
             console.log("flag变了")
+            console.log(this.taskin)
       this.input=this.taskin.name
-          this.priority=this.taskin.priority
-          this.humanUse=this.taskin.humanUse
+          this.priority=(this.taskin.priority)?this.taskin.priority:1;
+            this.commodityName=this.taskin.commodityName
+this.workingTime=this.taskin.workingTime
+            this.humanUse=this.taskin.humanUse
+
+            this.content=this.taskin.contentf
+            if(!this.content)
+                this.content='暂时未分配'
+if(this.taskin.humanUse=='是')
+    this.humanUse=1
+            if(this.taskin.humanUse=='否')
+                this.humanUse=0
 if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
     this.cleanForm()
-
+            let butt=document.getElementById("neirong")
+            console.log(butt.text)
     }
     },
 methods:{
+
+        handleCheckAllChange(val) {
+            this.checkedCities = val ? this.cities : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            console.log(this.checkedCities)
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
     having(){
         console.log(this.taskin)
       if(this.taskin.id=="")
@@ -137,18 +213,37 @@ postAddress(){
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.postData();
+            let contt=''
+      for(var i=0;i<this.checkedCities.length;i++)
+      {  if(i==0)
+          contt+=this.checkedCities[i];
+            if(i>0)
+                contt+=','+this.checkedCities[i];
+      }
+console.log(contt)
+      console.log("111")
+      this.content=contt
+      this.postData();
           //this.$parent.$parent.getData()
          this.$parent.$parent.reloadPage()
-          this.$message({
+         /* this.$message({
             type: 'success',
             message: '创建成功!'
-          });
+          });*/
         }).catch(() => {
-          this.$message({
+      console.log(this.checkedCities.length)
+      let contt=''
+      for(var i=0;i<this.checkedCities.length;i++)
+      {  if(i==0)
+          contt+=this.checkedCities[i];
+          if(i>0)
+              contt+=','+this.checkedCities[i];
+      }
+      console.log(contt)
+       /* this.$message({
             type: 'info',
             message: '已取消'
-          });          
+          });       */
         });
         this.$parent.$parent.dialogTableVisible = false
 
@@ -159,6 +254,21 @@ console.log("发送请求前")
   var endData = new Date(this.dateEnd2).getTime();
   console.log("elementui 时间形式"+ startData +"时间2：" + endData)
   console.log("humanuse:"+ this.humanUse )
+   //this. content=''
+    //let cit=this.checkedCities
+//let conttt=''
+       // console.log(cit.length())
+  //  for(var i=0;i<this.checkedCities.size();i++)
+  //  {
+    //    console.log(this.checkedCities[0])
+    //}
+      //  if(i==0)
+      //  this.    content+=this.checkedCities[i];
+      //  if(i>0)
+      //      this.    content+=','+this.checkedCities[i];
+
+
+
   var data = { 
   "name":this.input,  
   "priority":this.priority, 
@@ -167,7 +277,9 @@ console.log("发送请求前")
   "endTime":endData,//
   "workingTime":this.workingTime,//
  "timeadvise":this.timeadvise,
-  "content":this.content
+  "content":this.content,
+      "tradeuser":this.tradeuser,
+      "commodityName":this.commodityName
 
   };
 console.log(data);
@@ -189,6 +301,7 @@ cleanForm(){
       this.input = '',
       this.priority = '',
       this.humanUse= false,
+          this.tradeuser= false,
       this.dateStart= '',
       this.dateStart2= '',
       this.dateEnd= '',
@@ -206,5 +319,11 @@ cleanForm(){
    width: 100%;
   height: 100%;
 }
+.popbut{
+    mulitline:true;
+white-space: normal;
 
+
+
+}
 </style>
