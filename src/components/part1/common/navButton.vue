@@ -31,7 +31,7 @@ div.go {
   border: 3px solid #ffffff;
   width: 50px;
   height: 50px;
-  background-color: #1e90ff;
+  background-color: #6b9fd3;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.12) 0 10px 10px, rgba(0, 0, 0, 0.24) 0 1px 2px;
@@ -43,16 +43,16 @@ div.go {
 }
 
 div.go:hover {
-  border-color: #1e90ff;
+  border-color: #6b9fd3;
   background-color: #ffffff;
 }
 
 div.go:hover div.go-back {
-  border-color: #1e90ff;
+  border-color: #6b9fd3;
 }
 
 div.go:hover div.go-forward {
-  border-color: #1e90ff;
+  border-color: #6b9fd3;
 }
 
 div.go div.go-back {
