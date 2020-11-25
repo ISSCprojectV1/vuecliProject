@@ -221,14 +221,15 @@ postAddress(){
                 contt+=','+this.checkedCities[i];
       }
 console.log(contt)
+      console.log("111")
       this.content=contt
       this.postData();
           //this.$parent.$parent.getData()
          this.$parent.$parent.reloadPage()
-          this.$message({
+         /* this.$message({
             type: 'success',
             message: '创建成功!'
-          });
+          });*/
         }).catch(() => {
       console.log(this.checkedCities.length)
       let contt=''
@@ -239,10 +240,10 @@ console.log(contt)
               contt+=','+this.checkedCities[i];
       }
       console.log(contt)
-          this.$message({
+       /* this.$message({
             type: 'info',
             message: '已取消'
-          });          
+          });       */
         });
         this.$parent.$parent.dialogTableVisible = false
 

@@ -3,6 +3,11 @@
         <!--        <div class="title">-->
         <!--      <div style="display: inline-block; margin-bottom:20px; font-size:40px" >监管任务查询列表</div>-->
         <!--        </div>-->
+
+
+
+
+
         <h2>监管任务查询列表</h2>
 
         <div class="searchWord" style="margin-bottom:20px">
@@ -58,7 +63,7 @@
                                 border :cell-style="columnStyle">
 
                             <el-table-column type="selection" width="45"></el-table-column>
-                            <el-table-column label="序号"  prop="id" width = "60"></el-table-column>
+                            <el-table-column label="序号"  prop="id" width = "60" class="labelcol"></el-table-column>
                             <el-table-column label="监管任务名称" prop="name">
                             </el-table-column>
 
@@ -135,12 +140,14 @@
 //
     //  <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">空间粒度</el-button>
     //import {getTansactionData} from "@/api/part1/transactionProject";        <el-button @click="goToprice()" type="text" size="small">商品价格查看</el-button>
+import Header2 from "@/components/part3/Common/header2";
     import {taskQuery,taskAllocation,searchTask,changetimeadvise,teamform} from "@/api/part1/Multimodal-multigranularity";
     import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
     import userQuery from "@/components/part1/Multimodal-multigranularity/useFunction/taskQueryUse";
     import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
     import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearch";
     import echart from "echarts";
+import stepBar  from "@/components/part1/Multimodal-multigranularity/stepBar";
 import  logoimg from "@/assets/part3/seu.png"
     /*
       <el-table-column label="创建时间" prop="gmtCreate" >
@@ -222,12 +229,12 @@ import  logoimg from "@/assets/part3/seu.png"
                     "#04FDB8",
                     "#AF5AFF"
                 ]
-                console.log("jinlaile")
+              //  console.log("jinlaile")
 var logo="/assets/part3/seu.png"
                let renwu=[]
                 let renwhhetask=[]
                 for(let i=0;i<this.dormitory.length;i++)
-               {console.log(this.dormitory[i].operatorName)
+               {//console.log(this.dormitory[i].operatorName)
                 if(renwu.indexOf(this.dormitory[i].operatorName)==-1)
                 {
                     renwu.push(this.dormitory[i].operatorName)
@@ -238,15 +245,15 @@ var logo="/assets/part3/seu.png"
                    renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
                  //  renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
                }
-                for(let i=0;i<this.dormitory.length;i++){
+       /*         for(let i=0;i<this.dormitory.length;i++){
                     console.log(renwhhetask[i])
-                }
+                }*/
               /*  for(let i=0;i<this.dormitory.length;i++)
                 {
                     if(renwhhetask.indexOf(this.dormitory[i].operatorName)!=-1)
                         console.log(this.dormitory[i].name)
                 }*/
-                console.log(renwhhetask.keys())
+           //     console.log(renwhhetask.keys())
 
                 var getdata = function getData() {
                     let data = {
@@ -276,7 +283,7 @@ var logo="/assets/part3/seu.png"
                     arr.push(data)
                     //
                     arr = handle(arr, 0)
-                    console.log(arr);
+                //    console.log(arr);
                     return arr;
                 }
                 var handle = function handleData(data, index, color = '#00f6ff') {
@@ -407,7 +414,7 @@ var logo="/assets/part3/seu.png"
                     "#04FDB8",
                     "#AF5AFF"
                 ]
-                console.log("jinlaile")
+          //      console.log("jinlaile")
                 var logo="/assets/part3/seu.png"
                // let renwu=[]
                 let renwhhetask=[]
@@ -415,9 +422,9 @@ var logo="/assets/part3/seu.png"
             {renwhhetask.push(this.dormitory[i])
 
                 }
-                for(let i=0;i<this.dormitory.length;i++){
+             /*   for(let i=0;i<this.dormitory.length;i++){
                     console.log(renwhhetask[i])
-                }
+                }*/
                 /*  for(let i=0;i<this.dormitory.length;i++)
                   {
                       if(renwhhetask.indexOf(this.dormitory[i].operatorName)!=-1)
@@ -458,7 +465,7 @@ if( renwhhetask[i].operatorName)
                     arr.push(data)
                     //
                     arr = handle(arr, 0)
-                    console.log(arr);
+                //    console.log(arr);
                     return arr;
                 }
                 var handle = function handleData(data, index, color = '#00f6ff') {
@@ -811,7 +818,7 @@ if( renwhhetask[i].operatorName)
 
                      }
                  console.log(caozuoyua))*/
-                    console.log(dataConvert)
+                //    console.log(dataConvert)
                     for(var i = 0;i<dataConvert.length;i++){
                         var taskName = {};
                         taskName = {"value":dataConvert[i].name};
@@ -1344,6 +1351,9 @@ if( renwhhetask[i].operatorName)
     .searchWord span{
         float: left;
         text-align:center;
+    }
+    .el-table thead{
+        color: black;
     }
 
 </style>

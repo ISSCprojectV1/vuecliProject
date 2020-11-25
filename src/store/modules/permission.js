@@ -1,4 +1,4 @@
-import { constantRoutes }from '@/router'
+/*import { constantRoutes }from '@/router'
 import { getRouters } from '@/api/part3'
 
 const permission = {
@@ -157,4 +157,4 @@ export const loadView = (view) => { // 路由懒加载
 
 }
 
-export default permission
+export default permission*/

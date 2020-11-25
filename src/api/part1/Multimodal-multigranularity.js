@@ -1,7 +1,15 @@
 import request from '@/utils/request'
 import Axios from 'axios';
 
+// 模态力度
+export function spaceResult() {
+  console.log("spaceResult")
+  return request({
+    url: '/spaceresult',
+    method: 'get',
 
+  })
+}
 // 新建任务
 export function taskInput(data) {
   console.log("发送taskInput请求")
