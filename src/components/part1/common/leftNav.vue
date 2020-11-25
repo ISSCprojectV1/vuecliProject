@@ -35,6 +35,8 @@
 
 <script>
  import userTaskInput from "@/components/part1/transactionProject/taskDictionary/userTaskInput";
+ import taskQueryTableView from "@/components/part3/Common/taskQueryFlowChart";
+
   export default {
     data(){
       return{
@@ -42,22 +44,111 @@
         accessRoutes:[
           {
             title:"网络图",
-            routes:[],
+            routes:[
+              {
+                path:"/trade/transactionProject/echarts",
+                component: () => import("@/components/part1/transactionProject/echarts"),
+                meta:{
+                  title:"地图功能"
+                }
+              },
+              {
+                path:"/trade/transactionProject/userTaskInput",
+                component: () => import("@/components/part1/transactionProject/taskDictionary/userTaskInput"),
+                meta:{
+                  title:"联盟形成"
+                }
+              },
+            ],
             path:"/trade/transactionProject"
           },
           {
             title:"模态与粒度",
-            routes: [],
+            routes: [
+              {
+                path:"/trade/Multimodal-multigranularity/stepBar",
+                component: () => import("@/components/part1/Multimodal-multigranularity/stepBar"),
+                meta:{
+                  title:"模态与粒度步骤"
+                }
+              },
+              {
+                path:"/trade/Multimodal-multigranularity/goodsgranularity",
+                component: () => import("@/components/part2/goods_granularity"),
+                meta:{
+                  title:"商品类别粒度"
+                }
+              },
+              {
+                path:"/trade/Multimodal-multigranularity/time_advise",
+                component: () => import("@/components/part2/time_advise"),
+                meta:{
+                  title:"时间粒度"
+                }
+              },
+              {
+                path:"/trade/Multimodal-multigranularity/acpassTask",
+                component: () => import("@/components/part1/acpassTask/acpassTask"),
+                meta:{
+                  title:"主动与被动模态"
+                }
+              },
+
+              {
+                path:"/trade/Multimodal-multigranularity/taskQuery",
+                component: () => import("@/components/part1/Multimodal-multigranularity/taskQuery"),
+                meta:{
+                  title:"在线与离线模态"
+                }
+              },
+              {
+                path:"/trade/Multimodal-multigranularity/resourceShow",
+                component: () => import("@/components/part2/resourceshow"),
+                meta:{
+                  title:"可用资源展示"
+                }
+              },
+              {
+                path:"/trade/Multimodal-multigranularity/modalityQuery",
+                component: () => import("@/components/part1/Multimodal-multigranularity/modalityQuery"),
+                meta:{
+                  title:"人机资源管理"
+                }
+              },
+            ],
             path: "/trade/Multimodal-multigranularity"
           },
           {
             title:"关联分析",
-            routes: [],
+            routes: [
+              {
+                path:"/trade/relationAnalysis/transactionFrequency",
+                component: () => import("@/components/part1/relationAnalysis/transactionFrequency"),
+                meta:{
+                  title:"交易频次查询"
+                }
+              },
+              {
+                path:"/trade/relationAnalysis/relationQuery",
+                component: () => import("@/components/part1/relationAnalysis/relationQuery"),
+                meta:{
+                  title:"关联查询"
+                }
+              },
+            ],
             path: "/trade/relationAnalysis"
           },
           {
             title:"数据融合",
-            routes: [],
+            routes: [
+              {
+                path:"/trade/dataFusion/dataquery",
+                component: () => import("@/components/part1/dataFusion/dataquery"),
+                meta:{
+                  title:"数据查询"
+                }
+              },
+            ],
             path: "/trade/dataFusion"
           },
         ]
@@ -72,13 +163,63 @@
          console.log(tiankong.style.height)
         },
     created(){
-      let routes = this.$store.state.permission.routes.find(function(element) {
+    /*  let routes = this.$store.state.permission.routes.find(function(element) {
         return element.path === "/trade";
       }).children;
       for(let i=0;i<this.accessRoutes.length;i++){
         this.accessRoutes[i].routes = routes.filter(route => route.path.startsWith(this.accessRoutes[i].path)&&route.type==1);
       }
-      console.log(this.accessRoutes)
+      console.log(this.accessRoutes)*/
+   /*   let data2=[
+
+        //trade主页
+        {
+          path:'/trade/Multimodal-multigranularity/stepBar/taskQueryTableView',
+          component: () => import("@/components/part3/Common/taskQueryTableView")
+        },
+        //trade主页
+        {
+          path:'/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart',
+          component: () => import("@/components/part3/Common/taskQueryFlowChart")
+        },
+
+        //trade主页
+        {
+          path:'/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition',
+          component: () => import("@/components/part3/Common/taskQueryTransactionCoalition")
+        },
+
+      ]
+      if(this.accessRoutes[1].routes[7].children.length<=3){
+        this.accessRoutes[1].routes[7].children.push(data2)
+        console.log( this.accessRoutes[1].routes[7].children)
+      }
+*/
+/*
+     if(this.accessRoutes[1].routes[7].children.length<3)
+     { //trade主页
+       let data1=  {
+         path:'/trade/Multimodal-multigranularity/stepBar/taskQueryTableView',
+         component: taskQueryTableView
+       }
+      //trade主页
+       let data2=    {
+         path:'/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart',
+         component: () => import("@/components/part3/Common/taskQueryFlowChart")
+       }
+
+       //trade主页
+       let data3= {
+         path: '/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition',
+         component: () => import("@/components/part3/Common/taskQueryTransactionCoalition")
+       }
+  this.accessRoutes[1].routes[7].children.push(data1)
+  this.accessRoutes[1].routes[7].children.push(data2)
+  this.accessRoutes[1].routes[7].children.push(data3)
+  console.log( this.accessRoutes[1].routes[7])
+  console.log(" this.accessRoutes[1].routes[7]")
+}*/
+
     },
     methods: {
       handleOpen(key, keyPath) {

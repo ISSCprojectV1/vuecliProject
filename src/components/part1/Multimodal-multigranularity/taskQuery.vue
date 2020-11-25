@@ -3,14 +3,10 @@
         <!--        <div class="title">-->
         <!--      <div style="display: inline-block; margin-bottom:20px; font-size:40px" >监管任务查询列表</div>-->
         <!--        </div>-->
-        <div> <el-header>
-            <Header2>
-            </Header2>
-        </el-header>
-            <el-container>
-                <router-view></router-view>
-            </el-container>
-        </div>
+
+
+
+
 
         <h2>监管任务查询列表</h2>
 
@@ -151,6 +147,7 @@ import Header2 from "@/components/part3/Common/header2";
     import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
     import taskSearch from "@/components/part1/Multimodal-multigranularity/taskSearch";
     import echart from "echarts";
+import stepBar  from "@/components/part1/Multimodal-multigranularity/stepBar";
 import  logoimg from "@/assets/part3/seu.png"
     /*
       <el-table-column label="创建时间" prop="gmtCreate" >
@@ -167,7 +164,7 @@ import  logoimg from "@/assets/part3/seu.png"
     export default {
         inject:['reload'],
         components: {
-            taskInput,method1,userQuery,taskSearch,Header2
+            taskInput,method1,userQuery,taskSearch
         },
 
         data () {
@@ -232,12 +229,12 @@ import  logoimg from "@/assets/part3/seu.png"
                     "#04FDB8",
                     "#AF5AFF"
                 ]
-                console.log("jinlaile")
+              //  console.log("jinlaile")
 var logo="/assets/part3/seu.png"
                let renwu=[]
                 let renwhhetask=[]
                 for(let i=0;i<this.dormitory.length;i++)
-               {console.log(this.dormitory[i].operatorName)
+               {//console.log(this.dormitory[i].operatorName)
                 if(renwu.indexOf(this.dormitory[i].operatorName)==-1)
                 {
                     renwu.push(this.dormitory[i].operatorName)
@@ -248,15 +245,15 @@ var logo="/assets/part3/seu.png"
                    renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
                  //  renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
                }
-                for(let i=0;i<this.dormitory.length;i++){
+       /*         for(let i=0;i<this.dormitory.length;i++){
                     console.log(renwhhetask[i])
-                }
+                }*/
               /*  for(let i=0;i<this.dormitory.length;i++)
                 {
                     if(renwhhetask.indexOf(this.dormitory[i].operatorName)!=-1)
                         console.log(this.dormitory[i].name)
                 }*/
-                console.log(renwhhetask.keys())
+           //     console.log(renwhhetask.keys())
 
                 var getdata = function getData() {
                     let data = {
@@ -286,7 +283,7 @@ var logo="/assets/part3/seu.png"
                     arr.push(data)
                     //
                     arr = handle(arr, 0)
-                    console.log(arr);
+                //    console.log(arr);
                     return arr;
                 }
                 var handle = function handleData(data, index, color = '#00f6ff') {
@@ -417,7 +414,7 @@ var logo="/assets/part3/seu.png"
                     "#04FDB8",
                     "#AF5AFF"
                 ]
-                console.log("jinlaile")
+          //      console.log("jinlaile")
                 var logo="/assets/part3/seu.png"
                // let renwu=[]
                 let renwhhetask=[]
@@ -425,9 +422,9 @@ var logo="/assets/part3/seu.png"
             {renwhhetask.push(this.dormitory[i])
 
                 }
-                for(let i=0;i<this.dormitory.length;i++){
+             /*   for(let i=0;i<this.dormitory.length;i++){
                     console.log(renwhhetask[i])
-                }
+                }*/
                 /*  for(let i=0;i<this.dormitory.length;i++)
                   {
                       if(renwhhetask.indexOf(this.dormitory[i].operatorName)!=-1)
@@ -468,7 +465,7 @@ if( renwhhetask[i].operatorName)
                     arr.push(data)
                     //
                     arr = handle(arr, 0)
-                    console.log(arr);
+                //    console.log(arr);
                     return arr;
                 }
                 var handle = function handleData(data, index, color = '#00f6ff') {
@@ -821,7 +818,7 @@ if( renwhhetask[i].operatorName)
 
                      }
                  console.log(caozuoyua))*/
-                    console.log(dataConvert)
+                //    console.log(dataConvert)
                     for(var i = 0;i<dataConvert.length;i++){
                         var taskName = {};
                         taskName = {"value":dataConvert[i].name};

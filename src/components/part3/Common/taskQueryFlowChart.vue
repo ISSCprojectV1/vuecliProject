@@ -1,5 +1,6 @@
 <template>
 <div>
+
   <div>
     <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">执行分配任务</el-button>
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
@@ -64,10 +65,12 @@
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {taskQuery,teamform} from "@/api/part1/Multimodal-multigranularity";
+
 export default {
   name: "taskQueryFlowChart",
   components: {
-    method1
+    method1,
+
   },
   mounted () {
 
