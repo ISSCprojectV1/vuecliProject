@@ -21,12 +21,12 @@ router.beforeEach((to,from,next)=>{
     else{
         if (getToken()){
             if (store.state.permission.addRoutes.length==0){
-                store.dispatch('GenerateRoutes',getToken()).then(accessRoutes=>{
+                store.dispatch('GenerateRoutes',getToken()).then(/*accessRoutes=>{
                     // console.log(router.options.routes.length);
-                    router.addRoutes(accessRoutes);
+                 //   router.addRoutes(accessRoutes);
                     next({...to,replace:true});
                     // console.log(router.options.routes.length);
-                }).catch(err=>{
+                }*/).catch(err=>{
                     console.log(err);
                     next({path:'/login'});
                 })

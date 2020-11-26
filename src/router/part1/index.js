@@ -33,10 +33,10 @@ let routes = [
         component: () => import("@/components/part1/Multimodal-multigranularity/stepBar"),
           children:[
               //trade主页
-            //  {
-            //      path:'taskInput',
-            //      component: () => import("@/components/part1/Multimodal-multigranularity/taskInput")
-           //   },
+       {
+              path:'taskInput3',
+                 component: () => import("@/components/part1/Multimodal-multigranularity/taskInput")
+           },
 
               {
                    path:'taskQueryTableView',
