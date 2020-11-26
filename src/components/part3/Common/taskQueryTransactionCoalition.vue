@@ -77,6 +77,7 @@ export default {
       PageSize:10,
     }
   },
+
   mounted() {
 
     },
@@ -101,6 +102,8 @@ export default {
       taskQuery().then((res) => {
         console.log(res)
         this. dealwithData(res)
+        document.getElementById("form").style.display="block";
+        document.getElementById("echart1").style.display="none";
       }).catch(()=>{
         console.log("getTransactionData fail")
       });
@@ -531,6 +534,7 @@ export default {
   },
   created() {
     this.getData1();
+
   }
 }
 </script>
