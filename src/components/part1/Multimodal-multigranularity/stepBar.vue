@@ -6,7 +6,7 @@
             <el-steps :active="active" align-center>
                 <el-step title="任务输入"   @click.native="onclickFun1"></el-step>
 
-                <el-step title="时间粒度空间补全"  @click.native="onclickFun2"></el-step>
+                <el-step title="时间空间粒度补全"  @click.native="onclickFun2"></el-step>
                 <el-step title="联盟形成" @click.native="onclickFun3"></el-step>
                 <el-step title="流程图展示"  @click.native="onclickFun4"></el-step>
             </el-steps>
