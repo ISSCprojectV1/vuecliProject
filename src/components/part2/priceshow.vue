@@ -420,7 +420,7 @@
                     return {
                         categoryData: categoryData,
                         values: values
-                    } 
+                    }
                 }
             }
         }

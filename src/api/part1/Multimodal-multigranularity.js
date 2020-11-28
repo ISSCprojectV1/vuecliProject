@@ -218,3 +218,21 @@ export function getcommodityHistorydaypricebyname(URL) {
     method: 'get'
   })
 }
+
+// 获得 商品交易数据集。
+export function getcommodityTransaction() {
+  console.log("获得 商品交易数据集。！！！")
+  return request({
+    url: '/getcommodityTransaction',
+    method: 'get'
+  })
+}
+
+// 获得 关联商品数据集。
+export function getcommodityRelation() {
+  console.log("获得 关联商品数据集！！！")
+  return request({
+    url: '/getcommodityRelation',
+    method: 'get'
+  })
+}
