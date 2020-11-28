@@ -5,7 +5,7 @@
             <img :src="logoimg" class="img">
         </el-col>
         <el-col :span="18">
-            <div class="grid-content">
+            <div class="grid-content" style="margin-left: 1rem;">
                 <span>ID:{{user.id}}</span>
                 <p>昵称:{{user.name}}</p>
                 <p>邮箱:{{user.email}}</p>

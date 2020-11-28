@@ -5,7 +5,7 @@
             <el-col :span="24">
                 <div>
                     <ul>
-                        <span>分类:</span>
+                        <span>分类： </span>
                         <li v-for="item in category" :key="item.name">
                             <el-link @click="addFilter(item)">{{item.name}}</el-link>
                         </li>
@@ -15,12 +15,12 @@
             </el-col>
                 <el-divider></el-divider>
                 <el-col>
-                <el-form :inline="true" :model="searchWord" class="demo-form-inline" size="small">
-                    <el-form-item label="关键词:">
+                <el-form :inline="true" :model="searchWord" class="demo-form-inline" size="medium">
+                    <el-form-item label="关键词: ">
                         <el-input v-model="searchWord.keyword" class="input el-input"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit" size="small" style="background: #ca0c16;border:#ca0c16">搜索</el-button>
+                        <el-button type="primary" @click="onSubmit" size="medium" style="background: #ca0c16;border:#ca0c16">搜索</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
