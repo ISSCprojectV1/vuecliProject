@@ -67,15 +67,58 @@
                 accessRoutes:[
                     {
                         title:"个人中心",
-                        routes:[],
+                        routes:[
+
+
+                            {
+                                path:'/console/userinfo',
+                                component:()=>import("@/components/part3/User/index"),
+                                meta:{
+                                    title:"我的信息"
+                                }
+                            },
+                            {
+                                path:'/console/userinfo/changePassword',
+                                component: ()=>import("@/components/part3/User/changePassword"),
+                                meta:{
+                                    title:"修改密码"
+                                }
+                            },
+
+
+                        ],
                         path:"/console/userinfo"
                     },
                     {
                         title:"明细管理",
-                        routes:[],
+                        routes:[
+                            {
+                                path: "/console/manage/upload",
+                                component:()=>import("@/components/part3/Common/mainUpload"),
+                                meta:{
+                                    title:"上传明细"
+                                }
+                            },
+                            {
+                                path: "/console/manage/score",
+                                component:()=>import("@/components/part3/Common/mainScore"),
+                                meta:{
+                                    title:"积分明细"
+                                }
+                            },
+                            {
+                                path: "/console/manage/download",
+                                component:()=>import("@/components/part3/Common/mainDownload"),
+                                meta:{
+                                    title:"下载明细"
+                                }
+                            },
+
+
+                        ],
                         path: "/console/manage"
                     }
-                    ]
+                ]
 
             }
         },
@@ -90,7 +133,7 @@
         },
         created(){
 
-
+/*
           let routes = this.$store.state.permission.routes.find(function(element) {
                 return element.path === "/console";
             }).children;
@@ -98,7 +141,7 @@
             for(let i=0;i<this.accessRoutes.length;i++){
                 this.accessRoutes[i].routes = routes.filter(route => route.path.startsWith(this.accessRoutes[i].path));
             }
-            console.log(this.accessRoutes)
+            console.log(this.accessRoutes)*/
         }
     }
 </script>

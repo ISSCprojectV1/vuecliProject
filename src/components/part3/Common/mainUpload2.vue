@@ -21,7 +21,8 @@
             <span>状态:</span>
             <span class="score">{{item.status}}</span>
             <br/>
-            <el-button @click="AuctionDetail(item.id)">竞拍</el-button>
+<!--            <el-button @click="AuctionDetail(item.id)">竞拍</el-button>-->
+            <el-button @click="AuctionDetailDialog(item.id)">竞拍</el-button>
         </el-col>
     </el-row>
     <el-pagination
@@ -33,11 +34,36 @@
             :total="total"
     >
     </el-pagination>
+    <el-dialog :title="resource.name" :visible.sync="dialogFormVisible" width="30%" center>
+        {{resource.description}}
+        <ul style="margin-top: 20px">
+            <li style="display: inline-block">起拍价：<span class="score">{{resource.startPrice}}</span></li>
+            <li style="display: inline-block">最新价：<span class="score">{{resource.updatedPrice}}</span></li>
+        </ul>
+        <ul style="margin-top: 20px; margin-bottom: 20px">
+            <li style="display: inline-block">开始时间：<span>{{resource.startTime}}</span></li>
+            <li style="display: inline-block">结束时间：<span>{{resource.endTime}}</span></li>
+        </ul>
+        <el-form :model="form">
+            <el-form-item label="出价">
+                <el-input-number
+                    v-model="form.price"
+                    :min="1"
+                    :step="resource.minimumDecreasePrice"
+                    :max="resource.updatedPrice"></el-input-number>
+                （价格步长：{{resource.minimumDecreasePrice}}）
+            </el-form-item>
+            <div align="center">
+                <el-button type="primary" @click="bid(resource.id, form.price)">竞拍</el-button>
+                <el-button @click="updatePrice(resource.id)">刷新</el-button>
+            </div>
+        </el-form>
+    </el-dialog>
 </div>
 </template>
 
 <script>
-    import { getAuctions} from "@/api/part3/auction";
+    import { doAuction, getAuctions, getAuction } from "@/api/part3/auction";
 
     export default {
         name: "mainUpload2",
@@ -63,11 +89,72 @@
                 this.$router.push("auction/"+id)
                 console.log(id)
             },
+            AuctionDetailDialog(id) {
+                getAuction(id).then(res=>{
+                    this.resource=res.data
+                    this.form.price = this.resource.updatedPrice
+                    this.dialogFormVisible = true;
+                }).catch(err=>{
+                    this.$message({
+                        showClose: true,
+                        message: '获取后台数据失败',
+                        type: 'error'
+                    });
+                    console.log(err);
+                });
+            },
             //换页请求
             pageChange(page){
                 this.currentPage=page;
                 this.getAuctions(page);
             },
+            bid(id, price) {
+              doAuction(id, price).then(res=>{
+                  this.$message({
+                      showClose: true,
+                      message: '竞价成功',
+                      type: 'success'
+                  });
+                  getAuction(id).then(res=>{
+                      this.resources[id-1].updatedPrice = res.data.updatedPrice
+                      this.resource.updatedPrice = res.data.updatedPrice
+                      this.form.price=res.data.updatedPrice
+                  }).catch(err=>{
+                      this.$message({
+                          showClose: true,
+                          message: '刷新失败',
+                          type: 'error'
+                      });
+                      console.log(err);
+                  });
+              }).catch(err=>{
+                  this.$message({
+                      showClose: true,
+                      message: '竞价失败',
+                      type: 'error'
+                  });
+                  console.log(err);
+              })
+            },
+            updatePrice(id){
+                getAuction(id).then(res=>{
+                    this.resources[id-1].updatedPrice = res.data.updatedPrice
+                    this.resource.updatedPrice = res.data.updatedPrice
+                    this.form.price=res.data.updatedPrice
+                    this.$message({
+                        showClose: true,
+                        message: '刷新成功',
+                        type: 'success'
+                    })
+                }).catch(err=>{
+                    this.$message({
+                        showClose: true,
+                        message: '刷新失败',
+                        type: 'error'
+                    });
+                    console.log(err);
+                });
+            }
         },
         mounted(){
           document.getElementById("diceng").style.height=window.innerHeight;
@@ -89,8 +176,13 @@
                         state:"ready"
                     },
                 ],
+                resource: [],
                 total:0,
-                currentPage:1
+                currentPage:1,
+                dialogFormVisible: false,
+                form:{
+                    price:""
+                }
             }
         }
 
@@ -109,7 +201,7 @@
         text-align left
 
     span
-        margin 10px 10px 10px 0px
+        margin 10px 10px 10px 0
         font-size 14px
         font-weight 400
         color #999

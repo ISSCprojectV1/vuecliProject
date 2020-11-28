@@ -33,10 +33,10 @@ let routes = [
         component: () => import("@/components/part1/Multimodal-multigranularity/stepBar"),
           children:[
               //trade主页
-            //  {
-            //      path:'taskInput',
-            //      component: () => import("@/components/part1/Multimodal-multigranularity/taskInput")
-           //   },
+       {
+              path:'taskInput3',
+                 component: () => import("@/components/part1/Multimodal-multigranularity/taskInput")
+           },
 
               {
                    path:'taskQueryTableView',
@@ -69,6 +69,7 @@ let routes = [
                     title:"联盟形成"
                 }
             },
+
             //trade主页
             {
                 path:'/trade/Dashboard',
@@ -89,8 +90,20 @@ let routes = [
                     title:"关联查询"
                 }
             },
-
             {
+                path:"/trade/acpassTask/activetask/:id",
+                component: () => import("@/components/part1/acpassTask/activetask"),
+                meta:{
+                    title:"主动任务组"
+                }
+            },
+            {
+                path:"/trade/acpassTask/activetaskDetail/:id",
+                component: () => import("@/components/part1/acpassTask/activetaskDetail"),
+                meta:{
+                    title:"主动任务详情"
+                }
+            },            {
                 path:"/trade/Multimodal-multigranularity/goodsgranularity",
                 component: () => import("@/components/part2/goods_granularity"),
                 meta:{

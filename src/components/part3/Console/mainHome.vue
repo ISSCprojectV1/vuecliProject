@@ -3,7 +3,7 @@
     <div>
         <announcement></announcement>
         <div class="block">
-            <profile-bar style="border: 0px"></profile-bar>
+            <profile-bar style="border: 0"></profile-bar>
         </div>
             <el-tabs v-model="part">
                 <el-tab-pane name="first">
@@ -12,6 +12,11 @@
             </el-tabs>
         <div class="block">
             <ul>
+                <li>
+                    <span>
+                        <i class="el-icon-upload"></i><el-link @click="uploadDialog">上传资源弹框</el-link>
+                    </span>
+                </li>
                 <li>
                     <span>
                         <i class="el-icon-upload"></i><el-link @click="gotoupload">上传资源</el-link>
@@ -30,12 +35,50 @@
             </ul>
         </div>
     </div>
+        <el-dialog title="上传资源" :visible.sync="dialogFormVisible" width="40%" center>
+            <div style="margin: 0 auto;">
+                <el-upload
+                    drag
+                    action="/api/uploadfile"
+                    ref="upload"
+                    :auto-upload=false
+                    :data=form
+                    name="multipartFile"
+                    :on-error="uploadError"
+                    :on-success="uploadSuccess"
+                    style="display: table; margin: auto;"
+                >
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    <div class="el-upload__tip" slot="tip" style="text-align: center">仅支持上传sql文件</div>
+                </el-upload>
+            </div>
+            <div style="margin-top: 5%">
+                <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="资源名称" style="margin-left: 10%">
+                        <el-input v-model="form.fileName" placeholder="请填入名称" style="width: 80%"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属拍卖" style="margin-left: 10%">
+                        <el-select v-model="form.auctionId" placeholder="请选择" style="width: 80%">
+                            <el-option v-for="auction in auctions" :key="auction.auctionId" :label="auction.auctionName" :value="auction.auctionId"></el-option>
+                        </el-select>
+                    </el-form-item>
+<!--                    <el-form-item>-->
+<!--                        <el-button type="primary" @click="onSubmit(form)" style="display:block; margin:0 auto">提交</el-button>-->
+<!--                    </el-form-item>-->
+                </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="onSubmit(form)" style="display:block; margin:0 auto">提交</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import profileBar from "@/components/part3/Download/profileBar";
     import announcement from "@/components/part3/Common/announcement";
+    import {getAuctionNames} from "@/api/part3/auction";
     export default {
         name: "mainHome",
         components:{
@@ -43,7 +86,8 @@
             announcement
         },
         created(){
-            this.$emit("label","")
+            this.$emit("label","");
+            this.getAuctions();
         },
       mounted() {
        let tiankong= document.getElementById("diceng");
@@ -55,7 +99,13 @@
       },
       data(){
             return{
-                part:"first"
+                part:"first",
+                dialogFormVisible: false,
+                form:{
+                    fileName:"",
+                    auctionId:"",
+                },
+                auctions:[],
             }
         },
         methods:
@@ -68,7 +118,33 @@
                 },
                 gotoupload(){
                     this.$router.push('/console/uploadResources')
-                }
+                },
+                getAuctions(){
+                    getAuctionNames().then(res=>{
+                        this.auctions = res.data.auctionNames;
+                        console.log(res.data)
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                },
+                uploadDialog(){
+                    this.dialogFormVisible = true;
+                },
+                uploadSuccess(){
+                    this.$message({
+                        message: '上传成功',
+                        type: 'success',
+                    })
+                },
+                uploadError(){
+                    this.$message({
+                        message: '上传失败',
+                        type: 'error'
+                    });
+                },
+                onSubmit(form){
+                    this.$refs.upload.submit();
+                },
             }
     }
 </script>

@@ -1,21 +1,24 @@
 <template>
     <div class="all" id="diceng">
-        <div>
-                    <el-upload
-                            drag
-                            action="/api/uploadfile"
-                            ref="upload"
-                            :auto-upload=false
-                            :data=form
-                            name="multipartFile"
-                            :on-error="uploadError"
-                            :on-success="uploadSuccess"
-                    >
-                        <i class="el-icon-upload"></i>
-                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                        <div class="el-upload__tip" slot="tip">仅支持上传sql文件</div>
-                    </el-upload>
-            <el-form ref="form" :model="form" label-width="80px">
+        <div style="margin: 0 auto;">
+          <div>
+            <el-upload
+                drag
+                action="/api/uploadfile"
+                ref="upload"
+                :auto-upload=false
+                :data=form
+                name="multipartFile"
+                :on-error="uploadError"
+                :on-success="uploadSuccess"
+                style="display: table; margin: auto;"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip" style="text-align: center">仅支持上传sql文件</div>
+            </el-upload>
+          </div>
+            <el-form ref="form" :model="form" label-width="80px" label-position="top">
                         <el-form-item
                                 label="资源名称"
                                 placeholder="请填入名称"
@@ -23,7 +26,7 @@
                             <el-input v-model="form.fileName"></el-input>
                         </el-form-item>
                         <el-form-item label="所属拍卖">
-                            <el-select v-model="form.auctionId" placeholder="请选择">
+                            <el-select v-model="form.auctionId" placeholder="请选择" style="width: 100%">
                                 <el-option v-for="auction in auctions" :key="auction.auctionId" :label="auction.auctionName" :value="auction.auctionId"></el-option>
                             </el-select>
                         </el-form-item>
@@ -65,7 +68,7 @@
 <!--                            </el-radio-group>-->
 <!--                        </el-form-item>-->
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit(form)">提交</el-button>
+                            <el-button type="primary" @click="onSubmit(form)" style="display:block;margin:0 auto">提交</el-button>
                         </el-form-item>
                     </el-form>
         </div>
@@ -156,7 +159,10 @@
 
 <style lang="stylus" scoped>
     .all
+        width 50%
         text-align left
+        margin-left auto
+        margin-right auto
 
     .el-tag + .el-tag {
         margin-left: 10px;

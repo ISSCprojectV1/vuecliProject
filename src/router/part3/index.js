@@ -101,67 +101,67 @@ let routes = [
     },
 
 
-    // {
-    //     path: "/console",
-    //     component:()=>import("@/views/part3/incentiveMechanism/Console/home"),
-    //     children:[
-    //         {
-    //             path: "/concole/index",
-    //             component:()=>import("@/components/part3/Console/mainHome"),
-    //         },
-    //         {
-    //             path:'/console/userinfo',
-    //             component:()=>import("@/components/part3/User/index"),
-    //             meta:{
-    //                 title:"我的信息"
-    //             }
-    //         },
-    //         {
-    //             path:'/console/userinfo/changePassword',
-    //             component: ()=>import("@/components/part3/User/changePassword"),
-    //             meta:{
-    //                 title:"修改密码"
-    //             }
-    //         },
-    //         {
-    //             path:'/console/userinfo/group',
-    //             component: ()=>import("@/components/part3/User/group"),
-    //             meta:{
-    //                 title:"我的群组"
-    //             }
-    //         },
-    //         {
-    //             path: "/console/uploadResources",
-    //             component:()=>import("@/components/part3/Console/mainuploadResource"),
-    //         },
-    //         {
-    //             path: "/console/manage/upload",
-    //             component:()=>import("@/components/part3/Common/mainUpload"),
-    //             meta:{
-    //                 title:"上传明细"
-    //             }
-    //         },
-    //         {
-    //             path: "/console/manage/score",
-    //             component:()=>import("@/components/part3/Common/mainScore"),
-    //             meta:{
-    //                 title:"积分明细"
-    //             }
-    //         },
-    //         {
-    //             path: "/console/manage/download",
-    //             component:()=>import("@/components/part3/Common/mainDownload"),
-    //             meta:{
-    //                 title:"下载明细"
-    //             }
-    //         },
-    //         {
-    //             path: "editorial/:id",
-    //             component:()=>import("@/components/part3/Console/editorial"),
-    //         },
-    //
-    //     ]
-    // },
+    {
+        path: "/console",
+        component:()=>import("@/views/part3/incentiveMechanism/Console/home"),
+        children:[
+            {
+                path: "index",
+                component:()=>import("@/components/part3/Console/mainHome"),
+            },
+            {
+                path:'userinfo',
+                component:()=>import("@/components/part3/User/index"),
+                meta:{
+                    title:"我的信息"
+                }
+            },
+            {
+                path:'userinfo/changePassword',
+                component: ()=>import("@/components/part3/User/changePassword"),
+                meta:{
+                    title:"修改密码"
+                }
+            },
+            // {
+            //     path:'/console/userinfo/group',
+            //     component: ()=>import("@/components/part3/User/group"),
+            //     meta:{
+            //         title:"我的群组"
+            //     }
+            // },
+            {
+                path: "uploadResources",
+                component:()=>import("@/components/part3/Console/mainuploadResource"),
+            },
+            {
+                path: "manage/upload",
+                component:()=>import("@/components/part3/Common/mainUpload"),
+                meta:{
+                    title:"上传明细"
+                }
+            },
+            {
+                path: "manage/score",
+                component:()=>import("@/components/part3/Common/mainScore"),
+                meta:{
+                    title:"积分明细"
+                }
+            },
+            {
+                path: "manage/download",
+                component:()=>import("@/components/part3/Common/mainDownload"),
+                meta:{
+                    title:"下载明细"
+                }
+            },
+            // {
+            //     path: "editorial/:id",
+            //     component:()=>import("@/components/part3/Console/editorial"),
+            // },
+
+        ]
+    },
 ];
 
 export default routes

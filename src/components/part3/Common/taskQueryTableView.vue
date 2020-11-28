@@ -9,7 +9,7 @@
     <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
       <el-button type="primary" @click="changetask(scope)" style="margin-left:29px;margin-right:14px;">商品粒度补全</el-button>
       <el-button type="primary" @click="changetime(scope)" style="margin-left:29px;margin-right:14px;">时间粒度补全</el-button>
-      <el-button type="primary" @click="changespaceResult( )"  style="margin-left:29px;margin-right:14px;">模态粒度补全</el-button>
+      <el-button type="primary" @click="changespaceResult( )"  style="margin-left:29px;margin-right:14px;">空间粒度补全</el-button>
       <el-table
           ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
