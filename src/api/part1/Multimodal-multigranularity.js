@@ -236,3 +236,12 @@ export function getcommodityRelation() {
     method: 'get'
   })
 }
+
+// 获得 关联商品。
+export function getcommodityRelation2() {
+  console.log("获得 关联商品数据集！！！")
+  return request({
+    url: '/getcommodityTransaction2',
+    method: 'get'
+  })
+}

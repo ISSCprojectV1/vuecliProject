@@ -31,7 +31,7 @@
                     <h2 class="red"> 交易事务集展示 </h2>
                     <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
                     <el-button type="primary" @click="goToprice()" style="margin-left:10px;margin-right:10px">添加交易事务</el-button>
-                    <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
+                    <el-button type="primary" @click="getrelation()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
 
                 </div>
                 <div>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import {getcommodityTransaction,getcommodityRelation} from "@/api/part1/Multimodal-multigranularity";
+    import {getcommodityTransaction,getcommodityRelation,getcommodityRelation2} from "@/api/part1/Multimodal-multigranularity";
     export default {
         name: "goods_relation",
         created(){
@@ -74,6 +74,13 @@
             this.getData2();
         },
         methods: {
+            getrelation(){
+                getcommodityRelation2().then((res) => {
+
+                }).catch(()=>{
+                    console.log("taskExecution fail")
+                });
+            },
 
             getData(){
                 // 获取表格数据1
