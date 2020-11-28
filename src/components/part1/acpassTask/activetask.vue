@@ -216,7 +216,7 @@
                         <el-input v-model="form.limit"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                        <el-button type="primary" @click="onSubmit2(form.limit)">筛选</el-button>
                     </el-form-item>
                 </el-form>
 
@@ -334,12 +334,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             }
           },
             Activetaskgraph(id,limit){
-                Louvainresult(id,limit).then(res=>{
-               //     console.log(res.data.data)
-                    this.drawechart(res.data.data)
-                }).catch(err=>{
-                    console.log(err)
-                })
+
                 activetaskgraph(id,limit).then(res=>{
                     this.drawechart2(res.data.data)
 
@@ -389,6 +384,18 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
 
                 console.log(limit)
                 this.Activetaskgraph(id,limit);
+            },
+            onSubmit2(limit){
+                const id = this.$router.currentRoute.params.id;
+                console.log("aaa")
+
+                console.log(limit)
+                Louvainresult(id,limit).then(res=>{
+                    //     console.log(res.data.data)
+                    this.drawechart(res.data.data)
+                }).catch(err=>{
+                    console.log(err)
+                })
             },
           activeOrpassive(){
           //  console.log(this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction'))
