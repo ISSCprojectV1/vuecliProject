@@ -220,7 +220,7 @@
                     </el-form-item>
                 </el-form>
 
-                <div id="echart1" style="width: 1000px;height: 800px"></div>
+                <div id="echart1" style="width: 1000px; height: 800px; margin-left: auto; margin-right: auto;"></div>
             </el-tab-pane>
             <el-tab-pane label="交易事件图2" name="flow2">
                 <el-form ref="form" :model="form" label-width="80px">
@@ -665,6 +665,8 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         tooltip: {
                             show: true
                         },
+                        orient: 'vertical',
+                        right: '1px',
                         selectedMode: 'false',
                         top: 40,
                      /*   data: [
@@ -688,7 +690,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         //   name: '广州大学',
                         type: 'graph',
                         layout: 'force',
-
+                        zoom: 2.5,
                         force: {
                             repulsion: 50
                         },
