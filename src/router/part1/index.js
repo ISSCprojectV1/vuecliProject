@@ -107,14 +107,21 @@ let routes = [
                 path:"/trade/Multimodal-multigranularity/goodsgranularity",
                 component: () => import("@/components/part2/goods_granularity"),
                 meta:{
-                    title:"商品类别粒度"
+                    title:"商品粒度优化"
                 }
             },
             {
                 path:"/trade/Multimodal-multigranularity/time_advise",
                 component: () => import("@/components/part2/time_advise"),
                 meta:{
-                    title:"时间粒度"
+                    title:"时间粒度优化"
+                }
+            },
+            {
+                path:"/trade/Multimodal-multigranularity/priceshow",
+                component: () => import("@/components/part2/priceshow"),
+                meta:{
+                    title:"商品历史价格"
                 }
             },
             {
@@ -192,10 +199,10 @@ let routes = [
             //trade模态与粒度
 
             {
-                path:"/trade/Multimodal-multigranularity/taskInput",
-                component: () => import("@/components/part2/Taskinput"),
+                path:"/trade/Multimodal-multigranularity/goods_variety",
+                component: () => import("@/components/part2/goods_variety"),
                 meta:{
-                    title:"任务属性"
+                    title:"商品品类维护"
                 }
             },
             {
@@ -220,10 +227,10 @@ let routes = [
                 }
             },
             {
-                path:"/trade/Multimodal-multigranularity/otherGranularity",
-                component:  () =>import("@/components/part2/other_granularity"),
+                path:"/trade/Multimodal-multigranularity/goods_relation",
+                component:  () =>import("@/components/part2/goods_relation"),
                 meta:{
-                    title:"其他粒度"
+                    title:"关联商品发现"
                 }
             },
             {

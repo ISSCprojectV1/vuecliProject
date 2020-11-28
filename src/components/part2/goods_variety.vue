@@ -123,7 +123,7 @@
 <script>
   import {getcommodityVariety,addcommodityVariety,deletecommodityVariety,updatecommodityVariety} from "@/api/part1/Multimodal-multigranularity";
 export default {
-  name: 'Taskinput',
+  name: 'goods_variety',
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
@@ -226,10 +226,7 @@ export default {
         this.datatest=dataConverttest;
         console.log(this.datatest)
         this.tableData=dataConvert;*/
-
         this.tableData = res.data;
-
-
       }).catch(()=>{
         console.log("taskExecution fail")
       });

@@ -72,7 +72,7 @@ export function taskAllocation() {
         })
   }
 
-    // 获取任务列表  
+    // 获取任务列表
 export function taskQuery() {
   console.log("获取taskQuery表格数据 步骤二 发送taskQuery请求 ")
     return request({
@@ -90,7 +90,7 @@ export function modalityInput_api(data) {
         })
   }
 
-// 获得模态任务列表  
+// 获得模态任务列表
 export function modalityQuery() {
   console.log("获取modalityQuery表格数据 步骤二 发送modalityQuery请求 ")
     return request({
@@ -99,7 +99,7 @@ export function modalityQuery() {
         })
   }
 
-  // 获得模态任务分配列表  
+  // 获得模态任务分配列表
 export function moAllocation() {
   console.log("获取moAllocation表格数据 步骤二 发送modalityAllocation请求 ")
     return request({
@@ -108,7 +108,7 @@ export function moAllocation() {
         })
   }
 
-// 获得元任务列表   
+// 获得元任务列表
 export function ExecutionQuery() {
   console.log("获取taskExecutionQuery表格数据 步骤二 发送taskExecutionQuery请求 ")
     return request({
@@ -117,7 +117,7 @@ export function ExecutionQuery() {
         })
   }
 
-// 元任务查询（BY ID) 
+// 元任务查询（BY ID)
 export function taskExecutionQueryByid(URL) {
   console.log("获取taskExecutionQueryByid表格数据 步骤二 发送taskExecutionQueryByid请求 ")
     return request({
@@ -126,7 +126,7 @@ export function taskExecutionQueryByid(URL) {
         })
   }
 
-// 粒度调整执行  
+// 粒度调整执行
 export function granularityExecution_api(URL) {
   console.log("获取granularityExecution_api表格数据 步骤二 发送granularityExecution_api请求 ")
     return request({
@@ -198,5 +198,50 @@ export function updatecommodityVariety(data) {
     url: '/updatecommodityVariety',
     method: 'put',
     data
+  })
+}
+
+// 获得商品历史价格信息。
+export function getcommodityHistorydayprice() {
+  console.log("获取商品历史价格信息表格数据！！！")
+  return request({
+    url: '/getcommodityHistorydayprice',
+    method: 'get'
+  })
+}
+
+// 根据商品名称 获得商品历史价格信息。
+export function getcommodityHistorydaypricebyname(URL) {
+  console.log("根据商品名称 获得商品历史价格信息！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+// 获得 商品交易数据集。
+export function getcommodityTransaction() {
+  console.log("获得 商品交易数据集。！！！")
+  return request({
+    url: '/getcommodityTransaction',
+    method: 'get'
+  })
+}
+
+// 获得 关联商品数据集。
+export function getcommodityRelation() {
+  console.log("获得 关联商品数据集！！！")
+  return request({
+    url: '/getcommodityRelation',
+    method: 'get'
+  })
+}
+
+// 获得 关联商品。
+export function getcommodityRelation2() {
+  console.log("获得 关联商品数据集！！！")
+  return request({
+    url: '/getcommodityTransaction2',
+    method: 'get'
   })
 }

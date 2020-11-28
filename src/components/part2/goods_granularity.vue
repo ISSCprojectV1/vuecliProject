@@ -4,7 +4,8 @@
         <div>
             <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
             <!--<el-button type="primary" @click="getData()" style="margin-left:10px;margin-right:10px">展示</el-button>-->
-            <el-button type="primary" @click="goTo()" style="margin-left:10px;margin-right:10px">商品品类维护</el-button>
+            <el-button type="primary" @click="goTotime()" style="margin-left:10px;margin-right:10px">时间粒度优化</el-button>
+            <el-button type="primary" @click="goTogoods_variety()" style="margin-left:10px;margin-right:10px">商品品类维护</el-button>
             <el-button type="primary" @click="dialogFormVisible = true" style="margin-left:10px;margin-right:10px">添加新商品</el-button>
             <el-button type="primary" @click="dialogFormVisibledelete = true" style="margin-left:10px;margin-right:10px">删除商品</el-button>
             <el-dialog title="删除商品" :visible.sync="dialogFormVisibledelete" width="25%" >
@@ -20,6 +21,7 @@
             </el-dialog>
 
             <el-button type="primary" @click="goToprice()" style="margin-left:10px;margin-right:10px">商品历史价格</el-button>
+            <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
             <el-dialog title="添加新商品" :visible.sync="dialogFormVisible" width="30%" center>
                 <el-form ref="form" :model="form" label-width="80px" size="mini" >
                     <el-form-item label="大类代码">
@@ -253,13 +255,20 @@
                 var s = date.getSeconds()
                 return Y+M+D+h+m+s
             },
-                goTo() {
-                    //直接跳转
-                    this.$router.push('/trade/Multimodal-multigranularity/taskInput');
-                },
+            goTotime() {
+                //直接跳转
+                this.$router.push('/trade/Multimodal-multigranularity/time_advise');
+            },
+            goTogoods_variety() {
+                //直接跳转
+                this.$router.push('/trade/Multimodal-multigranularity/goods_variety');
+            },
             goToprice() {
                 //直接跳转
                 this.$router.push('/trade/Multimodal-multigranularity/priceshow');
+            },
+            goTogoods_relation(){
+                this.$router.push('/trade/Multimodal-multigranularity/goods_relation');
             },
             // 分页
             // 每页显示的条数

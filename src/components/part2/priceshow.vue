@@ -6,13 +6,15 @@
             <div>
                 <el-form ref="form" :model="form" label-width="80px">
                     <h2></h2>
-                    <el-form-item>
-                        <el-cascader class="kind"
+                    <el-form-item width="25%" >
+                        <!--<el-cascader class="kind"
                                      placeholder="试试搜索：农副产品小麦"
                                      :options="options"
                                      :props="{ multiple: true }"
-                                     filterable></el-cascader>
-                        <el-button type="primary" @click="ok" style="margin-left:10px;margin-right:10px">确定</el-button>
+                                     filterable></el-cascader>-->
+                            <el-input v-model="commodityName" style="width: 300px" placeholder="输入商品名称进行查询"></el-input>
+                            <el-button type="primary" @click="getbyname()" style="margin-left:10px;margin-right:10px">查询</el-button>
+
                     </el-form-item>
                 </el-form>
             </div>
@@ -27,11 +29,14 @@
 </template>
 <script>
     import echarts from 'echarts'
+    import {getcommodityHistorydayprice} from "@/api/part1/Multimodal-multigranularity";
+    import {getcommodityHistorydaypricebyname} from "../../api/part1/Multimodal-multigranularity";
 
     export default {
         name: 'priceshow',
         data () {
             return {
+                commodityName:'',
                 resData: '',
                 echartsOption: {
                     backgroundColor: '#21202D',
@@ -226,12 +231,15 @@
                 ]
             }
         },
+        //在这里调用ajax请求方法
         created () {
-            // this.setEchartOption()
+           //  this.setEchartOption();
+            // this.getData();
         },
         mounted () {
-            this.setEchartOption()
-            this.myChart = echarts.init(document.getElementById('myChart'))
+            //this.getData();
+            this.setEchartOption();
+            this.myChart = echarts.init(document.getElementById('myChart'));
             this.myChart.setOption(this.echartsOption)
         },
         methods: {
@@ -242,13 +250,68 @@
             backTotask(){
                 this.$router.push('/trade/Multimodal-multigranularity/taskQuery');
             },
-            ok() {
+
+            getbyname(){//根据商品名称查询价格信息
+                var URL ='/getcommodityHistorydayprice/'+this.commodityName;
+                console.log("URL:"+URL)
+                getcommodityHistorydaypricebyname(URL).then((res) => {
+                    if(res.data.length==0){
+                        console.log("无数据");
+                        this.getfail();
+                        return;
+                    }
+                    this.resData = res.data
+                    this.showData();//将查询到的价格信息展示出来！
+                    this.getok();
+                    console.log(this.resData);
+                }).catch(()=>{
+                    console.log("granularityExecution fail")
+                });
+            },
+            getok()//获取数据成功提示！
+            {
                 this.$message({
-                    message: '提交成功！',
+                    message: '获取商品历史信息成功！',
                     type: 'success'
                 });
-                console.log('submit!');
+                console.log('success!');
             },
+            getfail()//获取数据成功提示！
+            {
+                this.$message({
+                    message: '未查询到数据！',
+                    type: 'error'
+                });
+                console.log('fail!');
+            },
+            showData(){//将查询到的价格信息展示出来！
+                //处理后端的数据
+                this.resData = dealData(this.resData);
+                console.log(this.resData.categoryData)
+                console.log(this.resData.values)
+                this.echartsOption.xAxis.data = this.resData.categoryData
+                this.echartsOption.series[0].data = this.resData.values
+                this.myChart = echarts.init(document.getElementById('myChart')); //绘制价格图
+                this.myChart.setOption(this.echartsOption) //绘制价格图
+
+                function dealData (Data) {
+                    var categoryData = []//日期
+                    var values = [] //行情
+                    for (var i = 0; i < Data.length; i++){
+                        var temp=[]
+                        categoryData.push(Data[i].tradedate);
+                        //console.log(categoryData)
+                        temp.push(Data[i].openprice,Data[i].closeprice,Data[i].lowprice,Data[i].highprice)
+                        //console.log(temp)
+                        values.push(temp);// 价格数据
+                        //console.log(values)
+                    }
+                    return {
+                        categoryData: categoryData,
+                        values: values
+                    }
+                }
+            } ,
             setEchartOption () {
                 // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
                 this.resData = splitData([
@@ -343,17 +406,16 @@
                 ])
                 this.echartsOption.xAxis.data = this.resData.categoryData
                 this.echartsOption.series[0].data = this.resData.values
-           //     console.log(this.echartsOption.xAxis.data)
-             //   console.log(this.echartsOption.series[0].data)
+
 
                 function splitData (rawData) {
                     var categoryData = []
                     var values = []
                     for (var i = 0; i < rawData.length; i++) {
+
                         categoryData.push(rawData[i].splice(0, 1)[0])
                         values.push(rawData[i])
-                    //    console.log(categoryData)
-                    //    console.log(values)
+
                     }
                     return {
                         categoryData: categoryData,

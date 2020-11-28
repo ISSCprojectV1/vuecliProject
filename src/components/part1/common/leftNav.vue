@@ -76,16 +76,16 @@
                 path:"/trade/Multimodal-multigranularity/goodsgranularity",
                 component: () => import("@/components/part2/goods_granularity"),
                 meta:{
-                  title:"商品类别粒度"
+                  title:"时间与商品粒度"
                 }
               },
-              {
+              /*{
                 path:"/trade/Multimodal-multigranularity/time_advise",
                 component: () => import("@/components/part2/time_advise"),
                 meta:{
-                  title:"时间粒度"
+                  title:"时间粒度优化"
                 }
-              },
+              },*/
               {
                 path:"/trade/Multimodal-multigranularity/acpassTask",
                 component: () => import("@/components/part1/acpassTask/acpassTask"),
@@ -101,13 +101,13 @@
                   title:"在线与离线模态"
                 }
               },
-              {
+              /*{
                 path:"/trade/Multimodal-multigranularity/resourceShow",
                 component: () => import("@/components/part2/resourceshow"),
                 meta:{
                   title:"可用资源展示"
                 }
-              },
+              },*/
               {
                 path:"/trade/Multimodal-multigranularity/modalityQuery",
                 component: () => import("@/components/part1/Multimodal-multigranularity/modalityQuery"),
