@@ -231,7 +231,7 @@
                         <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
                     </el-form-item>
                 </el-form>
-                <div id="echart12" style="width: 1000px;height: 800px"></div>
+                <div id="echart12" style="width: 1000px;height: 800px; margin-left: auto; margin-right: auto;"></div>
             </el-tab-pane>
         </el-tabs>
 
@@ -526,6 +526,8 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         'blue'],
                     legend: { //=========小图标，圖表控件
                         show:true,
+                        orient: 'vertical',
+                        right: '1px',
                         data: [{
                             name: '原生用户',
                             icon: 'circle' //'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
