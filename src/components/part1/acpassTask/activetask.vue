@@ -129,7 +129,7 @@
                                style="text-align: center"
                                background
                                layout="prev, pager, next"
-                               page-size="5"
+                               :page-size="5"
                                @current-change = "pageChange"
                                :total="total3"
                        >
@@ -202,7 +202,7 @@
                 style="text-align: center"
                 background
                 layout="prev, pager, next"
-                page-size="5"
+                :page-size="5"
                 @current-change = "pageChange1"
                 :total="total1"
             >
@@ -210,26 +210,64 @@
 
 
           </el-tab-pane>
+
             <el-tab-pane label="交易事件图" name="flow">
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="筛选条件">
-                        <el-input v-model="form.limit"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
-                    </el-form-item>
+                    <el-row type="flex" justify="space-around">
+                        <el-col :span="6">
+                            <el-form-item label="空间粒度">
+                                <el-select v-model="value_space_granularity" placeholder="请选择" style="width: 100%">
+                                    <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item label="筛选条件">
+                                <el-input v-model="form.limit"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-form>
 
                 <div id="echart1" style="width: 1000px; height: 800px; margin-left: auto; margin-right: auto;"></div>
             </el-tab-pane>
+
             <el-tab-pane label="交易事件图2" name="flow2">
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="筛选条件">
-                        <el-input v-model="form.limit"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
-                    </el-form-item>
+                    <el-row type="flex" justify="space-around">
+                        <el-col :span="6">
+                            <el-form-item label="空间粒度">
+                                <el-select v-model="value_space_granularity" placeholder="请选择" style="width: 100%">
+                                    <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item label="筛选条件">
+                                <el-input v-model="form.limit"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-form>
                 <div id="echart12" style="width: 1000px;height: 800px; margin-left: auto; margin-right: auto;"></div>
             </el-tab-pane>
@@ -281,7 +319,19 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
               tableData: [
               ],
                 tableData3:[],
-            total3:0
+            total3:0,
+                // tab 3: 交易事件图
+                value_space_granularity: '',
+                options: [{
+                    value: '省：',
+                    label: '省'
+                }, {
+                    value: '市：',
+                    label: '市'
+                }, {
+                    value: '平台：',
+                    label: '平台'
+                }]
             }
         },
         mounted(){
@@ -385,10 +435,11 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             },
             onSubmit(limit){
                 const id = this.$router.currentRoute.params.id;
-                console.log("aaa")
 
                 console.log(limit)
-                this.Activetaskgraph(id,limit);
+                const query_str = this.value_space_granularity + this.form.limit
+                console.log(query_str)
+                this.Activetaskgraph(id,query_str);
             },
           activeOrpassive(){
           //  console.log(this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction'))
