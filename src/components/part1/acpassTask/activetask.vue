@@ -213,10 +213,15 @@
             <el-tab-pane label="交易事件图" name="flow">
                 <el-form ref="form" :model="form" label-width="80px">
                     <el-form-item label="筛选条件">
+                        <el-radio-group v-model="ratio">
+                        <el-radio   label="省">省</el-radio>
+                        <el-radio  label="市">市</el-radio>
+                        <el-radio   label="平台">平台</el-radio>
+                            </el-radio-group>
                         <el-input v-model="form.limit"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit2(form.limit)">筛选</el-button>
+                        <el-button type="primary" @click="onSubmit2(ratio,form.limit)">筛选</el-button>
                     </el-form-item>
                 </el-form>
 
@@ -281,6 +286,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
               tableData: [
               ],
                 tableData3:[],
+                ratio:3,
             total3:0
             }
         },
@@ -385,10 +391,13 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                 console.log(limit)
                 this.Activetaskgraph(id,limit);
             },
-            onSubmit2(limit){
+            onSubmit2(ratio,limit){
                 const id = this.$router.currentRoute.params.id;
                 console.log("aaa")
-
+console.log(ratio)
+                if(!limit)
+                limit=ratio+"："
+                else   limit=ratio+"："+limit
                 console.log(limit)
                 Louvainresult(id,limit).then(res=>{
                     //     console.log(res.data.data)
