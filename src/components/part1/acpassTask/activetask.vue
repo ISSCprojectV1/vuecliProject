@@ -212,9 +212,7 @@
           </el-tab-pane>
 
             <el-tab-pane label="交易事件图" name="flow">
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-row type="flex" justify="space-around">
-                        <el-col :span="6">
+                <el-form ref="form" :model="form" label-width="80px" :inline="true">
                             <el-form-item label="空间粒度">
                                 <el-select v-model="value_space_granularity" placeholder="请选择" style="width: 100%">
                                     <el-option
@@ -225,49 +223,35 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
                             <el-form-item label="筛选条件">
                                 <el-input v-model="form.limit"></el-input>
                             </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
                             </el-form-item>
-                        </el-col>
-                    </el-row>
                 </el-form>
 
                 <div id="echart1" style="width: 1000px; height: 800px; margin-left: auto; margin-right: auto;"></div>
             </el-tab-pane>
 
             <el-tab-pane label="交易事件图2" name="flow2">
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-row type="flex" justify="space-around">
-                        <el-col :span="6">
-                            <el-form-item label="空间粒度">
-                                <el-select v-model="value_space_granularity" placeholder="请选择" style="width: 100%">
-                                    <el-option
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-form-item label="筛选条件">
-                                <el-input v-model="form.limit"></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-form-item>
-                                <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
+                <el-form ref="form" :model="form" label-width="80px" :inline="true">
+                    <el-form-item label="空间粒度">
+                        <el-select v-model="value_space_granularity" placeholder="请选择" style="width: 100%">
+                            <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="筛选条件">
+                        <el-input v-model="form.limit"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit(form.limit)">筛选</el-button>
+                    </el-form-item>
                 </el-form>
                 <div id="echart12" style="width: 1000px;height: 800px; margin-left: auto; margin-right: auto;"></div>
             </el-tab-pane>
