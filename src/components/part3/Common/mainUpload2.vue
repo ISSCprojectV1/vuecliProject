@@ -4,25 +4,25 @@
     <el-row v-for="item in resources" :key="item.id" class="elrow">
         <el-col :span="20">
             <div class="mainResource">
-                <h3><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h3>
+                <h2><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h2>
             <div class="content">{{item.description}}</div>
-            <span>开始时间:{{item.startTime}}</span>
-            <span>结束时间:{{item.endTime}}</span>
+            <span>开始时间： {{item.startTime}}</span>
+            <span>结束时间： {{item.endTime}}</span>
 
             </div>
         </el-col>
         <el-col :span="4">
-            <span>起拍价:</span>
+            <span>起拍价： </span>
             <span class="score">{{item.startPrice}}</span>
             <br/>
-            <span>最新价:</span>
+            <span>最新价： </span>
             <span class="score">{{item.updatedPrice}}</span>
             <br/>
-            <span>状态:</span>
+            <span>状态： </span>
             <span class="score">{{item.status}}</span>
             <br/>
 <!--            <el-button @click="AuctionDetail(item.id)">竞拍</el-button>-->
-            <el-button @click="AuctionDetailDialog(item.id)">竞拍</el-button>
+            <el-button type="primary" @click="AuctionDetailDialog(item.id)" style="margin-top: 1rem">竞拍</el-button>
         </el-col>
     </el-row>
     <el-pagination
@@ -191,6 +191,8 @@
 
 <style scoped lang="stylus">
     .elrow
+        padding-top 1rem
+        padding-bottom 1rem
         border-bottom 1px dashed #DCDFE6
     span.score
         font-weight: 700;
@@ -202,7 +204,7 @@
 
     span
         margin 10px 10px 10px 0
-        font-size 14px
+        font-size 16px
         font-weight 400
         color #999
 
@@ -210,7 +212,8 @@
         word-wrap: break-word;
         word-break: break-all;
         overflow: hidden;
-        margin-bottom 20px
+        margin-bottom 20px;
+        font-size 18px
 
     .router-link
         color: black

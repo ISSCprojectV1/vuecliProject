@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <span>已选条件:</span>
+    <div style="margin-top: 1rem; margin-bottom: 1rem">
+        <span>已选条件： </span>
         <el-tag
                 v-for="tag in tags"
                 :key="tag.name"
