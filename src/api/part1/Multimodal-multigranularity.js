@@ -245,3 +245,31 @@ export function getcommodityRelation2() {
     method: 'get'
   })
 }
+
+// 获得 关联商品。
+export function getcommodityRelationdetails() {
+  console.log("获得 详细关联商品数据集！！！")
+  return request({
+    url: '/getcommodityRelationdetails',
+    method: 'get'
+  })
+}
+
+// 添加商品交易事务数据集。
+export function addcommodityTransaction(data) {
+  console.log("添加商品交易事务数据集。！！！")
+  return request({
+    url: '/addcommodityTransaction',
+    method: 'post',
+    data
+  })
+}
+
+// 添加商品交易事务数据集。
+export function addcommodityRelationdetails2() {
+  console.log("添加 详细关联商品数据集2！！！")
+  return request({
+    url: '/addcommodityRelationdetails2',
+    method: 'get',
+  })
+}

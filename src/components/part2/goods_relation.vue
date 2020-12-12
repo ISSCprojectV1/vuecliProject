@@ -8,9 +8,28 @@
                 <div style="margin-left:20px;margin-right:20px">
                     <h2> 关联商品展示 </h2>
                     <el-table  :data="tables2.slice((currentPage2-1)*PageSize2,currentPage2*PageSize2)">
-                        <el-table-column prop="commodityname" label="商品名称">
+                        <el-table-column type="expand">
+                            <template slot-scope="props"  >
+                                <el-form label-position="left" inline class="demo-table-expand" >
+                                    <el-form-item label="支持度">
+                                        <span>{{ props.row.support }}</span>
+                                    </el-form-item>
+                                    <el-form-item label="置信度">
+                                        <span>{{ props.row.confidence }}</span>
+                                    </el-form-item>
+                                    <el-form-item label="相似度">
+                                        <span>{{ props.row.similarity }}</span>
+                                    </el-form-item>
+                                </el-form>
+                            </template>
                         </el-table-column>
-                        <el-table-column prop="relationname" label="关联商品">
+                        <el-table-column
+                                label="商品名称"
+                                prop="name1">
+                        </el-table-column>
+                        <el-table-column
+                                label="关联商品"
+                                prop="name2">
                         </el-table-column>
                     </el-table>
                     <el-pagination @size-change="handleSizeChange2"
@@ -30,8 +49,32 @@
                 <div>
                     <h2 class="red"> 交易事务集展示 </h2>
                     <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
-                    <el-button type="primary" @click="goToprice()" style="margin-left:10px;margin-right:10px">添加交易事务</el-button>
-                    <el-button type="primary" @click="getrelation()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
+                    <el-button type="primary" @click="dialogFormVisible = true" style="margin-left:10px;margin-right:10px">添加交易事务</el-button>
+                    <el-dialog title="添加交易事务" :visible.sync="dialogFormVisible" width="25%" >
+                        <el-form ref="form" :model="form" size="mini" label-width="100px">
+                            <el-form-item label="交易事务ID">
+                                <el-input v-model="form.id"></el-input>
+                            </el-form-item>
+                            <el-form-item label="交易商ID">
+                                <el-input v-model="form.dealerid"></el-input>
+                            </el-form-item>
+                            <el-form-item label="交易商名称">
+                                <el-input v-model="form.dealername"></el-input>
+                            </el-form-item>
+                            <el-form-item label="交易商品ID">
+                                <el-input v-model="form.commodityid"></el-input>
+                            </el-form-item>
+                            <el-form-item label="商品名称">
+                                <el-input v-model="form.commodityname"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onadd()">确认添加</el-button>
+                                <el-button @click="dialogFormVisible = false">取消</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-dialog>
+                    <el-button type="primary" @click="getrelation()" style="margin-left:10px;margin-right:10px">交易事件关联</el-button>
+                    <el-button type="primary" @click="getrelation2()" style="margin-left:10px;margin-right:10px">价格波动关联</el-button>
 
                 </div>
                 <div>
@@ -66,17 +109,54 @@
 </template>
 
 <script>
-    import {getcommodityTransaction,getcommodityRelation,getcommodityRelation2} from "@/api/part1/Multimodal-multigranularity";
+    import {getcommodityTransaction,getcommodityRelationdetails,getcommodityRelation2,addcommodityTransaction,addcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
     export default {
         name: "goods_relation",
         created(){
             this.getData();
             this.getData2();
         },
+        props: {
+            msg: {
+                type: String,
+                default: ''
+            }
+        },
         methods: {
-            getrelation(){
+            onadd(){//添加新品类
+                console.log("发送请求前")
+                var data = this.form;
+                console.log("发送请求中")
+                addcommodityTransaction(data).then((res) => {
+                    this.addok();
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                this.getData()
+                this.dialogFormVisible= false
+            },
+            addok() {
+                this.$message({
+                    message: '添加商品交易事务成功！',
+                    type: 'success'
+                });
+            },
+            getok() {
+                this.$message({
+                    message: '发现关联商品成功！',
+                    type: 'success'
+                });
+            },
+            getrelation(){//交易事件关联
                 getcommodityRelation2().then((res) => {
-
+                    this.getok();
+                }).catch(()=>{
+                    console.log("taskExecution fail")
+                });
+            },
+            getrelation2(){//价格波动关联
+                addcommodityRelationdetails2().then((res) => {
+                    this.getok();
                 }).catch(()=>{
                     console.log("taskExecution fail")
                 });
@@ -93,8 +173,9 @@
             } ,
             getData2(){
                 // 获取表格数据2
-                getcommodityRelation().then((res) => {
+                getcommodityRelationdetails().then((res) => {
                     this.dormitory2 = res.data;
+                    console.log(this.dormitory2)
                 }).catch(()=>{
                     console.log("taskExecution fail")
                 });
@@ -186,7 +267,7 @@
 
                 currentPage2:1,
                 // 总条数，根据接口获取数据长度(注意：这里不能为空)
-                totalCount2:20,
+                totalCount2:30,
                 // 个数选择器（可修改）
                 pageSizes2:[5,10],
                 // 默认每页显示的条数（可修改）
@@ -196,11 +277,11 @@
                 dialogFormVisible: false,
                 dialogFormVisible2: false,
                 form: {
-                    name: '',
                     id: '',
-                    cateid:'',
-                    unit:'',
-                    catename:''
+                    dealerid: '',
+                    dealername:'',
+                    commodityid:'',
+                    commodityname:''
                 },
                 //tableData:[],
                 relationtable:[]
