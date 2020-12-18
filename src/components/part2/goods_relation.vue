@@ -7,6 +7,8 @@
             <el-aside width="500px" style="border: 10px solid #eee">
                 <div style="margin-left:20px;margin-right:20px">
                     <h2> 关联商品展示 </h2>
+                    <el-input v-model="search2" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
+                    <h2></h2>
                     <el-table  :data="tables2.slice((currentPage2-1)*PageSize2,currentPage2*PageSize2)">
                         <el-table-column type="expand">
                             <template slot-scope="props"  >
@@ -30,6 +32,10 @@
                         <el-table-column
                                 label="关联商品"
                                 prop="name2">
+                        </el-table-column>
+                        <el-table-column
+                                label="关联度"
+                                prop="correlation">
                         </el-table-column>
                     </el-table>
                     <el-pagination @size-change="handleSizeChange2"

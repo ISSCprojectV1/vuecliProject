@@ -273,3 +273,25 @@ export function addcommodityRelationdetails2() {
     method: 'get',
   })
 }
+
+// 根据商品名称 获得时间粒度。
+// var URL ='/getcommodityTimeadvise2/'+this.commodityName;
+// @GetMapping("/getcommodityTimeadvise2/{name}")
+export function getcommodityTimeadvise2(URL)  {
+  console.log("根据商品名称 获得时间粒度！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+// 根据商品名称 获得关联商品集。
+// var URL ='/getcommodityRelationdetails/'+this.commodityName;
+//  @GetMapping("/getcommodityRelationdetails/{name}")
+export function getcommodityRelationdetails2(URL)  {
+  console.log("根据商品名称 获得时间粒度！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
