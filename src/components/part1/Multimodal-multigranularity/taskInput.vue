@@ -2,77 +2,16 @@
 <div>
 <div class = "task-input-box">
 
-
-
     <el-form ref="form" :model="form" label-width="130px">
 
-        <el-form-item label="监管任务名称">
+  <el-form-item label="监管任务名称">
 <el-input v-model="input" placeholder="请输入内容"></el-input>
    </el-form-item>
 
-   <el-form-item label="监管任务优先级">
-    <el-select v-model="priority" placeholder="请选择任务优先级">
-      <el-option label="级别一" value="1"></el-option>
-      <el-option label="级别二" value="2"></el-option>
-      <el-option label="级别三" value="3"></el-option>
-      <el-option label="级别四" value="4"></el-option>
-      <el-option label="级别五" value="5"></el-option>
-    </el-select>
-  </el-form-item>
-
-  <el-form-item label="是否人工分配">
-    <el-switch v-model="humanUse"
-    active-text="人工分配"
-    ></el-switch>
-  </el-form-item>
-    <el-form-item label="是否主动监管">
-        <el-switch v-model="tradeuser"
-                   active-text="主动监管"
-        ></el-switch>
-    </el-form-item>
-<el-form-item label="任务开始时间">
-    <el-col :span="11">
-      <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;" ></el-date-picker>
-    </el-col>
-    <el-col class="line" :span="2">-</el-col>
-    <el-col :span="11">
-      <el-time-picker placeholder="选择开始时间" v-model="dateStart2" style="width: 100%;"></el-time-picker>
-    </el-col>
-  </el-form-item>
-
-  <el-form-item label="任务结束时间">
-    <el-col :span="11">
-      <el-date-picker type="date" placeholder="选择结束日期" v-model="dateEnd" style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
-    </el-col>
-    <el-col class="line" :span="2">-</el-col>
-    <el-col :span="11">
-      <el-time-picker placeholder="选择结束时间" v-model="dateEnd2" style="width: 100%;"></el-time-picker>
-    </el-col>
-  </el-form-item>
-
-     <el-form-item label="工作时间">
-<el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
-   </el-form-item>
-        <el-form-item label="内容">
-            <el-popover
-                    trigger="hover"
-                    placement="top"
-                    width="
-                    300"
-
-                    v-model="visible">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <div style="margin: 15px 0;"></div>
-                <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                    <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                </el-checkbox-group>
-
-                <el-button  class="popbut" id="neirong" slot="reference"  >{{content}}</el-button>
-            </el-popover>
-        </el-form-item>
-
-    <el-form-item label="商品名称">
-        <el-select v-model="commodityName" placeholder="请选择商品名称">
+   <!--选择监管商品类别，获得推荐的商品粒度，选择是否加入监管-->
+  <el-form-item label="监管商品类别">
+    <el-col :span="13">
+  <el-select v-model="commodityName" placeholder="请选择商品名称" style="width: 100%" @change="getFlatList">
             <el-option label="铝矿石" value="铝矿石"></el-option>
             <el-option label="小麦" value="小麦"></el-option>
             <el-option label="大豆" value="大豆"></el-option>
@@ -82,8 +21,241 @@
             <el-option label="肥料" value="肥料"></el-option>
             <el-option label="螺纹钢" value="螺纹钢"></el-option>
         </el-select>
+    </el-col>
+  <el-col :span="5">
+        <el-button type="primary" @click="getCommodity">获取商品粒度推荐</el-button>
+        <el-dialog
+  title="推荐的商品粒度"
+  :visible.sync="commodityDialogVisible"
+  width="50%"
+  :before-close="handleClose">
+  <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
+   <el-table
+    ref="multipleTable"
+    :data="tableData"
+    tooltip-effect="dark"
+    style="width: 100%"
+    @selection-change="handleSelectionChange"
+    >
+
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
+    <el-table-column
+      prop="commodityDialog_name"
+      label="商品类别名称"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="commodityDialog_num"
+      label="关联度"
+      sortable
+      width="120">
+    </el-table-column>
+  </el-table>
+
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="commodityDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="commodityDialogTrue">确 定</el-button>
+  </span>
+</el-dialog>
+  </el-col>
+  </el-form-item>
+
+  <!--当前选定的商品类别-->
+
+  <el-form-item label="追加监管商品类别">
+      <el-col :span="4">
+ <el-tag
+  v-for="commodityTag in commodityTags"
+  :key="commodityTag"
+  closable
+   @close="handleCloseCommodityTag(commodityTag)"
+  >
+  {{commodityTag}}
+</el-tag>
+      </el-col>
+  </el-form-item>
+
+  <!--监管任务空间粒度-->
+  <!--选择监管空间粒度，获得推荐的空间粒度，选择是否加入监管-->
+  <el-form-item label="监管交易平台">
+    <el-col :span="13">
+   <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
+  <!--动态读取该品类对应的平台-->
+  <el-option
+  v-for="flat in flatList"
+  :key="flat.flatName"
+  :label="flat.flatName"
+  :value="flat.flatName">
+   </el-option>
+  </el-select>
+    </el-col>
+
+  <el-col :span="5">
+        <el-button type="primary" @click="getFlats">获取空间粒度推荐</el-button>
+        <el-dialog
+  title="推荐的空间粒度"
+  :visible.sync="flatDialogVisible"
+  width="50%"
+  :before-close="handleClose">
+  <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
+   <el-table
+    ref="multipleFlat"
+    :data="flatData"
+    tooltip-effect="dark"
+    style="width: 100%"
+    @selection-change="flatSelectionChange"
+    >
+
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
+    <el-table-column
+      prop="flat_name"
+      label="系统推荐监管平台"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="flat_num"
+      label="关联度"
+      sortable
+      width="120">
+    </el-table-column>
+  </el-table>
+
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="flatDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="flatDialogTrue">确 定</el-button>
+  </span>
+</el-dialog>
+  </el-col>
+  </el-form-item>
+
+  <!--当前选定的商品类别-->
+
+  <el-form-item label="追加监管交易平台">
+      <el-col :span="7">
+ <el-tag
+  v-for="flatTag in flatTags"
+  :key="flatTag"
+  closable
+   @close="handleCloseFlatTag(flatTag)"
+  >
+  {{flatTag}}
+</el-tag>
+      </el-col>
+  </el-form-item>
+  <!--选定的监管任务类型-->
+  <el-form-item label="监管任务类型">
+    <el-col :span="13">
+  <el-select v-model="taskType" placeholder="请选择监管类型" style="width: 100%">
+            <el-option label="主体查验" value="主体查验"></el-option>
+            <el-option label="仓单监管" value="仓单监管"></el-option>
+            <el-option label="融资监管" value="融资监管"></el-option>
+            <el-option label="质押权监管" value="质押权监管"></el-option>
+        </el-select>
+    </el-col>
+  </el-form-item>
+
+  <!--人机模块部分需要属性-->
+  <!--选定的监管任务优先级-->
+  <el-form-item label="监管任务优先级">
+    <el-col :span="13">
+  <el-select v-model="priority" placeholder="请选择任务优先级" style="width: 100%">
+            <el-option label="级别一" value="1"></el-option>
+            <el-option label="级别二" value="2"></el-option>
+            <el-option label="级别三" value="3"></el-option>
+            <el-option label="级别四" value="4"></el-option>
+        </el-select>
+    </el-col>
+  </el-form-item>
+  
+  <el-form-item label="是否人工分配">
+    <el-col :span="4">
+    <el-switch v-model="humanUse"
+    active-text="人工分配"
+    ></el-switch>
+    </el-col>
+  </el-form-item>
+
+    <el-form-item label="是否主动监管">
+      <el-col :span="4">
+        <el-switch v-model="tradeuser"
+                   active-text="主动监管"
+        ></el-switch>
+      </el-col>
     </el-form-item>
-<el-button type="success" @click="postAddress">立即创建</el-button>
+    <!--监管周期-->
+
+<el-form-item label="任务开始时间">
+    <el-col :span="7">
+      <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;" ></el-date-picker>
+    </el-col>
+    <el-col class="line" :span="1">-</el-col>
+    <el-col :span="7">
+      <el-date-picker type="date" placeholder="选择结束日期" v-model="dateEnd" style="width: 100%;" ></el-date-picker>
+    </el-col>
+    <el-col :span="5">
+       <el-button type="primary" @click="getTimeRecommend">获取时间粒度推荐</el-button>
+    </el-col>
+  </el-form-item>
+
+     <el-form-item label="工作时间">
+<el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
+   </el-form-item>
+        
+<el-button type="success" @click="creatTask">立即创建</el-button>
+ <el-dialog
+  title="创建表单"
+  :visible.sync="formDialogVisible"
+  width="50%"
+  :before-close="handleClose">
+  <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
+   <el-form :label-position="left" label-width="120px">
+  <el-form-item label="监管商品类别">
+        {{commodityName}}
+  </el-form-item>
+  <el-form-item label="追加监管商品">
+    <el-col  v-for="commodityTag in commodityTags" :key="commodityTag">
+        {{commodityTag}}
+    </el-col>
+  </el-form-item>
+  <el-form-item label="监管交易平台">
+    {{flatName}}
+  </el-form-item>
+  <el-form-item label="追加监管平台">
+    <el-col v-for="flatTag in flatTags" :key="flatTag">
+        {{flatTag}}
+    </el-col>
+  </el-form-item>
+  <el-form-item label="监管任务类型">
+    {{taskType}}
+  </el-form-item>
+  <el-form-item label="监管任务优先级">
+    级别{{priority}}
+  </el-form-item>
+  <el-form-item label="监管方式">
+    {{humanUse?"人工分配":"机器分配"}}，{{tradeuser?"主动监管":"被动监管"}}
+  </el-form-item>
+   <el-form-item label="监管周期开始">
+     {{showStart}}
+  </el-form-item>
+  <el-form-item label="监管周期结束">
+     {{showEnd}}
+  </el-form-item>
+  <el-form-item label="工作时间">
+    {{workingTime}}
+  </el-form-item>
+</el-form>
+
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="flatDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="flatDialogTrue">确 定</el-button>
+  </span>
+</el-dialog>
 <el-button type="info" @click="abortForm">取消创建</el-button>
 
 </el-form>
@@ -92,28 +264,38 @@
 </div>
 </template>>
 <script>
-    /* <el-form-item label="内容">
 
-        <el-select v-model="content" placeholder="监管内容">
-            <el-option label="南方稀贵金属交易所" value="南方稀贵金属交易所"></el-option>
-            <el-option label="上海黄金交易所" value="上海黄金交易所"></el-option>
-
-            <el-option label="中国金融期货商品交易所" value="中国金融期货商品交易所"></el-option>
-            <el-option label="恒大金属交易中心" value="恒大金属交易中心"></el-option>
-            <el-option label="广东贵金属交易中心" value="广东贵金属交易中心"></el-option>
-            <el-option label="无锡贵金属交易所" value="无锡贵金属交易所"></el-option>
-            <el-option label="南京贵重金属交易所" value="南京贵重金属交易所"></el-option>
-            <el-option label="江苏省大圆银泰贵金属" value="江苏省大圆银泰贵金属"></el-option>
-            <el-option label="海西商品交易所" value="海西商品交易所"></el-option>
-        </el-select>
-    </el-form-item>*/
-import {taskInput,bourseget} from "@/api/part1/Multimodal-multigranularity";
-const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
+import {taskInput,bourseget,getcommodityRelationdetails2,getcommodityTimeadvise2,getplatform,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
+const commidityOptions =['a','b','c']
 export default {
 data() {
-    return {checkAll: false,
-        checkedCities: [],
-        cities: cityOptions,
+    return {
+        checkAllCommidity:false,
+        checkedCommidity:['a'],
+        isIndeterminateCommidity:true,
+        commidities:commidityOptions,
+
+        isCommdity:false,
+
+        commodityName:'',
+        commodityTags:['当前无追加商品'],
+
+        commodityDialogVisible:false,
+        tableData:[],
+        multipleSelection:[],
+        
+
+        // 空间粒度相关数据
+        flatList:[],
+        flatName:'',
+        flatTags:['当前无追加商品'],
+
+        flatDialogVisible:false,
+        flatData:[],
+        flatSelection:[],
+
+        // 监管任务类型选择
+        taskType: '',
         isIndeterminate: false,
         taskinputt:this.taskin,
       input: '',
@@ -124,10 +306,16 @@ data() {
       dateEnd: '',
       dateEnd2: '',
       workingTime:'',
-        timeadvise:'',
-        content:'',
-        tradeuser:false,
-        commodityName:''
+      timeadvise:'',
+      content:'',
+      tradeuser:false,
+
+      // 提交新任务
+      formDialogVisible: false,
+
+      // 表单显示时间
+      showStart:"",
+      showEnd:""
     }
 
   },
@@ -189,6 +377,117 @@ if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
     },
 methods:{
 
+        // @handleCloseCommodityTag---关闭商品粒度TAG
+        handleCloseCommodityTag(commodityTag){
+          this.commodityTags.splice(this.commodityTags.indexOf(commodityTag), 1);
+        },
+
+         // @getCommodity---获取推荐的商品粒度,@getcommodityRelationdetails2
+        getCommodity(){
+          this.commodityDialogVisible = true;
+          let com_name = this.commodityName;
+          console.log("监管的主商品是：",com_name)
+          let URL = "/getcommodityRelationdetails/"+com_name;
+          let result = [];
+          getcommodityRelationdetails2(URL).then(function (response) {
+          let arr = [];
+          arr = response;
+          let len = arr.data.length;
+          for(let i = 0;i<len;i++){
+            let temp = {};
+            temp.commodityDialog_name = arr.data[i].name2;
+            temp.commodityDialog_num = arr.data[i].correlation;
+            result.push(temp);
+            }
+            console.log("temp:",result)
+            })
+            .catch(function (error) {
+              console.log(error);
+              });
+              this.tableData = result;
+              },
+        // @commodityDialogTrue---确定推荐该粒度
+        commodityDialogTrue(){
+
+          console.log(this.multipleSelection[0].commodityDialog_name,"333333")
+          console.log("---------",this.$parent.$parent.tableData)
+          let arr=[];
+          for(let i=0;i<this.multipleSelection.length;i++){
+            arr.push(this.multipleSelection[i].commodityDialog_name)
+          }
+          this.commodityTags = arr;
+          this.commodityDialogVisible = false;
+        },
+
+        // @handleSelectionChange---辅助推荐商品粒度表格多选
+         handleSelectionChange(val) {
+            this.multipleSelection = val;
+          },
+          /*
+          空间粒度部分
+          */
+         // @setFlatList---将获得的可选平台放入选项中；
+         setFlatList(result){
+           for(let i = 0;i<result.length;i++){
+             let temp = {};
+              temp.flatName = result[i];
+              this.flatList.push(temp);
+              }
+              },
+          // @getFlatList---将选定商品品类传至后端，后端给出可交易该商品的平台，供用户选择
+          getFlatList(){
+            let URL = "/getplatform?commodity="+this.commodityName;
+            let result;
+            getplatform(URL).then((response)=>{
+            result = response.data.data;
+            this.setFlatList(result);
+              })
+              .catch(function (error) {
+               console.log(error);
+                });
+                },
+          // @setFlats---将推荐的空间填入表格中
+          setFlats(result){
+            for(let i = 0;i<result.length;i++){
+              let temp = {};
+              temp.flat_name = result[i].platform;
+              temp.flat_num = result[i].association;
+              this.flatData.push(temp);
+              }
+              },
+          // @getFlats---根据商品品类和已选平台，获取推荐的空间
+          getFlats(){
+            this.flatDialogVisible = true;
+            let URL = "/getrecommendrlatform?commodity="+this.commodityName+"&platform="+this.flatName;
+            let result;
+            getrecommendrlatform(URL).then((response)=>{
+            result = response.data.data;
+            this.setFlats(result);
+            })
+            .catch(function (error) {
+              console.log(error);
+              });
+              },
+
+        // @flatDialogTrue---确定推荐该粒度
+        flatDialogTrue(){
+          let arr=[];
+          for(let i=0;i<this.flatSelection.length;i++){
+            arr.push(this.flatSelection[i].flat_name)
+          }
+          this.flatTags = arr;
+          this.flatDialogVisible = false;
+        },
+
+        // @flatSelectionChange---辅助推荐空间粒度表格多选
+         flatSelectionChange(val) {
+            this.flatSelection = val;
+          },
+
+          // @handleCloseFlatTag---关闭空间粒度TAG
+        handleCloseFlatTag(flatTag){
+          this.flatTags.splice(this.flatTags.indexOf(flatTag), 1);
+        },
         handleCheckAllChange(val) {
             this.checkedCities = val ? this.cities : [];
             this.isIndeterminate = false;
@@ -199,6 +498,40 @@ methods:{
             this.checkAll = checkedCount === this.cities.length;
             this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
         },
+        // 设置时间区间
+        setTimeRecommend(result){
+          let day = parseInt(result);
+          let myDate = new Date();
+          let newDate = new Date();
+          this.dateEnd = myDate;
+          newDate.setDate(newDate.getDate()-day);
+          this.dateStart = newDate
+          },
+        // 获取推荐的时间粒度
+        getTimeRecommend(){
+          let com_name = this.commodityName
+          console.log("时间粒度 获得商品：",com_name)
+          let URL = "/getcommodityTimeadvise2/"+com_name;
+          let result;
+          getcommodityTimeadvise2(URL).then((response)=>{
+            let arr = [];
+            arr = response.data;
+            result = arr[0].timeadvise;
+            console.log("result----111:",result);
+            // 弹窗提醒
+            let message = com_name+"推荐时间粒度为："+result+"天"
+            this.$message({
+              message: message,
+              type: 'success'
+              });
+              // 自动填充
+              this.setTimeRecommend(result);
+              })
+              .catch(function (error) {
+                 console.log(error);
+                 });
+                 },
+
     having(){
         console.log(this.taskin)
       if(this.taskin.id=="")
@@ -206,7 +539,14 @@ methods:{
         return true
 
     },
-
+    // 提交创建的新任务
+    creatTask(){
+      let month = parseInt(this.dateStart.getMonth())+1;
+      this.showStart = this.dateStart.getFullYear()+'-'+ month +'-'+this.dateStart.getDate();
+      month = parseInt(this.dateEnd.getMonth())+1;
+      this.showEnd = this.dateEnd.getFullYear()+'-'+ month +'-'+this.dateEnd.getDate();
+      this.formDialogVisible = true;
+    },
 postAddress(){
   this.$confirm('是否确认创建该监管任务', '提示', {
           confirmButtonText: '确定',
