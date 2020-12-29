@@ -97,3 +97,28 @@ export function activetradegraph(id) {
         url:'/activetradegraph',
     })
 }
+
+export function exceptionRelationAnalysis(start, end, threshold_f, threshold_fp) {
+    return request({
+        method: 'POST',
+        data: {
+            "start": start,
+            "end": end,
+            "threshold_f": threshold_f,
+            "threshold_fp": threshold_fp
+        },
+        url: '/ExceptionRelationAnalysis'
+    })
+}
+
+export function exceptionRelationPredict(sourceId, threshold) {
+    return request({
+        method: 'POST',
+        data: {
+            "source_id": sourceId,
+            "threshold_p": threshold
+        },
+        url: 'ExceptionRelationPredict'
+    })
+}
+
