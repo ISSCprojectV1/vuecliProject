@@ -289,7 +289,7 @@ export function getcommodityTimeadvise2(URL)  {
 // var URL ='/getcommodityRelationdetails/'+this.commodityName;
 //  @GetMapping("/getcommodityRelationdetails/{name}")
 export function getcommodityRelationdetails2(URL)  {
-  console.log("根据商品名称 获得时间粒度！！！")
+  console.log("根据商品名称 获得关联商品集合！！！")
   return request({
     url: URL,
     method: 'get'
