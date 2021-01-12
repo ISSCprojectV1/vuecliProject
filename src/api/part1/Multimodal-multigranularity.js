@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import Axios from 'axios';
 
-// 模态力度
+// 模态粒度
 export function spaceResult() {
   console.log("spaceResult")
   return request({
@@ -295,3 +295,24 @@ export function getcommodityRelationdetails2(URL)  {
     method: 'get'
   })
 }
+
+// 根据商品名称 获得可交易该商品的交易平台列表
+// @Getbourse(String commodity)
+// URL = /getplatform
+export function getplatform(URL) {
+  console.log("发送getplatform请求")
+    return request({
+      url: URL,
+      method: 'get'
+        })
+  }
+// 根据商品名称&平台名称 获得可推荐的空间粒度
+// @GetRecommendPlatform(String commodity,String platform)
+// URL = /getplatform
+export function getrecommendrlatform(URL) {
+  console.log("发送getrecommendrlatform请求")
+    return request({
+      url: URL,
+      method: 'get'
+        })
+  }

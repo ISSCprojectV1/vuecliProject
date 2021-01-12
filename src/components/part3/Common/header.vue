@@ -1,7 +1,8 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="18">
+          <!--lg: laptop at 150%-->
+          <el-col :xs="12" :sm="13" :md="14" :lg="16" :xl="16">
                 <el-menu :router="true" class="el-menu" mode="horizontal"
                  @select="handleSelect"
                  background-color="#00659B"
@@ -20,7 +21,7 @@
                 </el-menu>
 
             </el-col>
-            <el-col :span="6">
+          <el-col :xs="12" :sm="11" :md="10" :lg="8" :xl="8">
             <el-menu :router="true"
                      class="el-menu"
                      mode="horizontal"

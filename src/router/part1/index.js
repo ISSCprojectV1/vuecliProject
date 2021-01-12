@@ -91,6 +91,13 @@ let routes = [
                 }
             },
             {
+                path: "/trade/exceptionAnalysis/page",
+                component: () => import("@/components/part1/exceptionAnalysis/exceptionAnalysis"),
+                meta: {
+                    title: "展示页面"
+                }
+            },
+            {
                 path:"/trade/acpassTask/activetask/:id",
                 component: () => import("@/components/part1/acpassTask/activetask"),
                 meta:{
