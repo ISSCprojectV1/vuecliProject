@@ -64,7 +64,7 @@
 <script>
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {taskQuery,teamform} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,teamform,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
 
 export default {
   name: "taskQueryFlowChart",
@@ -184,7 +184,8 @@ export default {
     },
     // 分配任务
     allocateTask(){
-      this.$confirm('是否确认进行任务分配', '提示', {
+      taskAllocation();
+     /* this.$confirm('是否确认进行任务分配', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -200,7 +201,7 @@ export default {
           type: 'info',
           message: '已取消'
         });
-      });
+      });*/
     },
   }
 }
