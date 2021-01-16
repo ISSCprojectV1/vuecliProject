@@ -274,6 +274,15 @@ export function addcommodityRelationdetails2() {
   })
 }
 
+// 获得 时间粒度集合。
+export function getcommodityTimeadvise() {
+  console.log("获得 时间粒度集合！！！")
+  return request({
+    url: '/getcommodityTimeadvise',
+    method: 'get'
+  })
+}
+
 // 根据商品名称 获得时间粒度。
 // var URL ='/getcommodityTimeadvise2/'+this.commodityName;
 // @GetMapping("/getcommodityTimeadvise2/{name}")
@@ -281,6 +290,15 @@ export function getcommodityTimeadvise2(URL)  {
   console.log("根据商品名称 获得时间粒度！！！")
   return request({
     url: URL,
+    method: 'get'
+  })
+}
+
+// 计算时间粒度
+export function addcommodityTimeadvise() {
+  console.log("计算时间粒度！！！")
+  return request({
+    url: '/addcommodityTimeadvise',
     method: 'get'
   })
 }

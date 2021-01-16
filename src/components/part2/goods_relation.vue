@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%;height: 800px">
-        <div  style="display: inline-block; margin-bottom:30px; margin-right:500px; font-size:40px"><el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>关联商品发现</div>
+        <div  style="display: inline-block; margin-bottom:30px; margin-right:500px; font-size:40px"><el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>商品粒度推荐</div>
 
         <el-container style="height: 800px; border: 10px solid #eee">
 
@@ -27,15 +27,18 @@
                         </el-table-column>
                         <el-table-column
                                 label="商品名称"
-                                prop="name1">
+                                prop="name1"
+                                sortable>
                         </el-table-column>
                         <el-table-column
                                 label="关联商品"
-                                prop="name2">
+                                prop="name2"
+                                sortable>
                         </el-table-column>
                         <el-table-column
                                 label="关联度"
-                                prop="correlation">
+                                prop="correlation"
+                                sortable>
                         </el-table-column>
                     </el-table>
                     <el-pagination @size-change="handleSizeChange2"
@@ -61,7 +64,7 @@
                             <el-form-item label="交易事务ID">
                                 <el-input v-model="form.id"></el-input>
                             </el-form-item>
-                            <el-form-item label="交易商ID">
+                            <el-form-item label="交易商ID" >
                                 <el-input v-model="form.dealerid"></el-input>
                             </el-form-item>
                             <el-form-item label="交易商名称">
@@ -79,8 +82,8 @@
                             </el-form-item>
                         </el-form>
                     </el-dialog>
-                    <el-button type="primary" @click="getrelation()" style="margin-left:10px;margin-right:10px">交易事件关联</el-button>
-                    <el-button type="primary" @click="getrelation2()" style="margin-left:10px;margin-right:10px">价格波动关联</el-button>
+<!--                    <el-button type="primary" @click="getrelation()" style="margin-left:10px;margin-right:10px">交易事件关联</el-button>-->
+                    <el-button type="primary" @click="getrelation2()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
 
                 </div>
                 <div>
@@ -89,7 +92,7 @@
                               :default-sort="{prop: 'id', order: 'ascending'}">
                         <el-table-column prop="id" label="交易事务ID">
                         </el-table-column>
-                        <el-table-column prop="dealerid" label="交易商ID">
+                        <el-table-column prop="dealerid" label="交易商ID" sortable>
                         </el-table-column>
                         <el-table-column prop="dealername" label="交易商名称">
                         </el-table-column>
@@ -166,6 +169,15 @@
                 }).catch(()=>{
                     console.log("taskExecution fail")
                 });
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在计算关联商品',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                setTimeout(() => {
+                    loading.close();
+                }, 10000);
             },
 
             getData(){
@@ -273,7 +285,7 @@
 
                 currentPage2:1,
                 // 总条数，根据接口获取数据长度(注意：这里不能为空)
-                totalCount2:300,
+                totalCount2:1000,
                 // 个数选择器（可修改）
                 pageSizes2:[5,10],
                 // 默认每页显示的条数（可修改）

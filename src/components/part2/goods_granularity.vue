@@ -1,10 +1,11 @@
 <template>
     <div style="width: 100%;height: 800px">
-        <div style="display: inline-block; margin-bottom:30px; font-size:40px">商品信息展示与添加</div>
+        <div style="display: inline-block; margin-bottom:30px; font-size:40px">时间与商品粒度优化</div>
         <div>
             <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
             <!--<el-button type="primary" @click="getData()" style="margin-left:10px;margin-right:10px">展示</el-button>-->
             <el-button type="primary" @click="goTotime()" style="margin-left:10px;margin-right:10px">时间粒度优化</el-button>
+            <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">商品粒度优化</el-button>
             <el-button type="primary" @click="goTogoods_variety()" style="margin-left:10px;margin-right:10px">商品品类维护</el-button>
             <el-button type="primary" @click="dialogFormVisible = true" style="margin-left:10px;margin-right:10px">添加新商品</el-button>
             <el-button type="primary" @click="dialogFormVisibledelete = true" style="margin-left:10px;margin-right:10px">删除商品</el-button>
@@ -21,7 +22,7 @@
             </el-dialog>
 
             <el-button type="primary" @click="goToprice()" style="margin-left:10px;margin-right:10px">商品历史价格</el-button>
-            <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
+
             <el-dialog title="添加新商品" :visible.sync="dialogFormVisible" width="30%" center>
                 <el-form ref="form" :model="form" label-width="80px" size="mini" >
                     <el-form-item label="大类代码">
@@ -165,11 +166,13 @@
                 </el-table-column>
                 <el-table-column
                         label="商品ID"
-                        prop="id">
+                        prop="id"
+                        sortable>
                 </el-table-column>
                 <el-table-column
                         label="商品名称"
-                        prop="name">
+                        prop="name"
+                        sortable>
                 </el-table-column>
                 <el-table-column
                         label="商品地域"
