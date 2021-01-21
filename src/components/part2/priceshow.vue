@@ -7,14 +7,8 @@
                 <el-form ref="form" :model="form" label-width="80px">
                     <h2></h2>
                     <el-form-item width="25%" >
-                        <!--<el-cascader class="kind"
-                                     placeholder="试试搜索：农副产品小麦"
-                                     :options="options"
-                                     :props="{ multiple: true }"
-                                     filterable></el-cascader>-->
                             <el-input v-model="commodityName" style="width: 300px" placeholder="输入商品名称进行查询"></el-input>
                             <el-button type="primary" @click="getbyname()" style="margin-left:10px;margin-right:10px">查询</el-button>
-
                     </el-form-item>
                 </el-form>
             </div>
@@ -38,6 +32,7 @@
             return {
                 commodityName:'',
                 resData: '',
+                close_price:[],
                 echartsOption: {
                     backgroundColor: '#21202D',
                     title: {
@@ -51,7 +46,7 @@
                         }
                     },
                     legend: {
-                        data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30'],
+                        data: ['日K', '收盘价', 'MA10', 'MA20', 'MA30'],
                         inactiveColor: '#777',
                         textStyle: {
                             color: '#fff'
@@ -80,9 +75,9 @@
                     },
                     dataZoom: [{ //滑动窗口的设置
                         // 开始位置的数值
-                        startValue: 90,
+                        //startValue: 0,
                         // 结束位置的数值
-                        endValue: 100,
+                        //endValue: 100,
                         textStyle: {
                             color: '#8392A5'
                         },
@@ -120,7 +115,8 @@
                                     borderColor0: '#0CF49B'
                                 }
                             },
-                            markPoint: {
+
+                           /* markPoint: {
                                 label: {
                                     normal: {
                                         formatter: function (param) {
@@ -178,57 +174,22 @@
                                         }
                                     ]
                                 ]
-                            },
+                            },*/
 
+                        },
+                        {
+                            name: '收盘价',
+                            type: 'line',
+                            data: [],
+                            //smooth: true,
+                           // showSymbol: false,
+                            lineStyle: {
+                                width: 1
+                            }
                         },
 
                     ]
                 },
-                options: [{
-                    value: '1000',
-                    label: '农副产品',
-                    children:[{
-                        value: '10002',
-                        label: '小麦',
-                    },{
-                        value: '10004',
-                        label: '大豆'
-                    }]
-                },{
-                    value: '2000',
-                    label: '能源煤炭',
-                    children:[{
-                        value: '20001',
-                        label: '焦炭',
-                    },{
-                        value: '20002',
-                        label: '动力煤'
-                    }]
-                },{
-                    value: '3000',
-                    label: '石油化工',
-                    children:[{
-                        value: '30002',
-                        label: '甲醇',
-                    },{
-                        value: '30004',
-                        label: '肥料'
-                    }]
-                },{
-                    value: '4000',
-                    label: '钢铁金属',
-                    children:[{
-                        value: '40001',
-                        label: '螺纹钢',
-                    },{
-                        value: '40004',
-                        label: '贵金属'
-                    },{
-                        value: '40006',
-                        label: '有色金属'
-                    }]
-                }
-                ]
             }
         },
         //在这里调用ajax请求方法
@@ -243,6 +204,9 @@
             this.myChart.setOption(this.echartsOption)
         },
         methods: {
+            getclose(data){
+
+            },
             backTo() {
                 //直接跳转
                 this.$router.push('/trade/Multimodal-multigranularity/goodsgranularity');
@@ -291,24 +255,29 @@
                 console.log(this.resData.values)
                 this.echartsOption.xAxis.data = this.resData.categoryData
                 this.echartsOption.series[0].data = this.resData.values
+                this.echartsOption.series[1].data = this.resData.temp2
                 this.myChart = echarts.init(document.getElementById('myChart')); //绘制价格图
                 this.myChart.setOption(this.echartsOption) //绘制价格图
 
                 function dealData (Data) {
                     var categoryData = []//日期
                     var values = [] //行情
+                    var temp2=[]
                     for (var i = 0; i < Data.length; i++){
                         var temp=[]
+
                         categoryData.push(Data[i].tradedate);
                         //console.log(categoryData)
                         temp.push(Data[i].openprice,Data[i].closeprice,Data[i].lowprice,Data[i].highprice)
+                        temp2.push(Data[i].closeprice)
                         //console.log(temp)
                         values.push(temp);// 价格数据
                         //console.log(values)
                     }
                     return {
                         categoryData: categoryData,
-                        values: values
+                        values: values,
+                        temp2:temp2
                     }
                 }
             } ,
@@ -406,20 +375,23 @@
                 ])
                 this.echartsOption.xAxis.data = this.resData.categoryData
                 this.echartsOption.series[0].data = this.resData.values
+                this.echartsOption.series[1].data = this.resData.temp
+                console.log(this.resData.values[1])
 
 
                 function splitData (rawData) {
                     var categoryData = []
                     var values = []
+                    var temp=[]
                     for (var i = 0; i < rawData.length; i++) {
-
                         categoryData.push(rawData[i].splice(0, 1)[0])
                         values.push(rawData[i])
-
+                        temp.push(rawData[i][1])
                     }
                     return {
                         categoryData: categoryData,
-                        values: values
+                        values: values,
+                        temp:temp
                     }
                 }
             }

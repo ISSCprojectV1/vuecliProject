@@ -184,19 +184,15 @@ export default {
     },
     // 分配任务
     allocateTask(){
+      taskAllocation();
      /* this.$confirm('是否确认进行任务分配', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {*/
-        taskAllocation().then((res) => {
-          console.log(res)
+      }).then(() => {
+        this.getAllocateDate();
 
-        }).catch(()=>{
-          console.log("taskallocation fail")
-        });
-
-      /*  this.$message({
+        this.$message({
           type: 'success',
           message: '已执行分配!'
         });

@@ -4,7 +4,7 @@
   <el-col>
 
     <el-menu
-        unique-opened="true"
+        :unique-opened="true"
             :default-active="defaultActive"
             class="el-menu-vertical-demo"
             @open="handleOpen"
@@ -151,6 +151,19 @@
             ],
             path: "/trade/dataFusion"
           },
+            {
+                title: "异常事件分析",
+                routes: [
+                    {
+                        path: "/trade/exceptionAnalysis/page",
+                        component: () => import("@/components/part1/exceptionAnalysis/exceptionAnalysis"),
+                        meta: {
+                            title: "展示页面"
+                        }
+                    }
+                ],
+                path: "/trade/exceptionAnalysis"
+            }
         ]
       }
       },

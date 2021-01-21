@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import Axios from 'axios';
 
-// 模态力度
+// 模态粒度
 export function spaceResult() {
   console.log("spaceResult")
   return request({
@@ -245,3 +245,92 @@ export function getcommodityRelation2() {
     method: 'get'
   })
 }
+
+// 获得 关联商品。
+export function getcommodityRelationdetails() {
+  console.log("获得 详细关联商品数据集！！！")
+  return request({
+    url: '/getcommodityRelationdetails',
+    method: 'get'
+  })
+}
+
+// 添加商品交易事务数据集。
+export function addcommodityTransaction(data) {
+  console.log("添加商品交易事务数据集。！！！")
+  return request({
+    url: '/addcommodityTransaction',
+    method: 'post',
+    data
+  })
+}
+
+// 添加商品交易事务数据集。
+export function addcommodityRelationdetails2() {
+  console.log("添加 详细关联商品数据集2！！！")
+  return request({
+    url: '/addcommodityRelationdetails2',
+    method: 'get',
+  })
+}
+
+// 获得 时间粒度集合。
+export function getcommodityTimeadvise() {
+  console.log("获得 时间粒度集合！！！")
+  return request({
+    url: '/getcommodityTimeadvise',
+    method: 'get'
+  })
+}
+
+// 根据商品名称 获得时间粒度。
+// var URL ='/getcommodityTimeadvise2/'+this.commodityName;
+// @GetMapping("/getcommodityTimeadvise2/{name}")
+export function getcommodityTimeadvise2(URL)  {
+  console.log("根据商品名称 获得时间粒度！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+// 计算时间粒度
+export function addcommodityTimeadvise() {
+  console.log("计算时间粒度！！！")
+  return request({
+    url: '/addcommodityTimeadvise',
+    method: 'get'
+  })
+}
+
+// 根据商品名称 获得关联商品集。
+// var URL ='/getcommodityRelationdetails/'+this.commodityName;
+//  @GetMapping("/getcommodityRelationdetails/{name}")
+export function getcommodityRelationdetails2(URL)  {
+  console.log("根据商品名称 获得关联商品集合！！！")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+// 根据商品名称 获得可交易该商品的交易平台列表
+// @Getbourse(String commodity)
+// URL = /getplatform
+export function getplatform(URL) {
+  console.log("发送getplatform请求")
+    return request({
+      url: URL,
+      method: 'get'
+        })
+  }
+// 根据商品名称&平台名称 获得可推荐的空间粒度
+// @GetRecommendPlatform(String commodity,String platform)
+// URL = /getplatform
+export function getrecommendrlatform(URL) {
+  console.log("发送getrecommendrlatform请求")
+    return request({
+      url: URL,
+      method: 'get'
+        })
+  }
