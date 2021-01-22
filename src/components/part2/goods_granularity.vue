@@ -228,15 +228,12 @@
                 // 获取表格数据
                 console.log("获取modalityQuery表格数据 步骤一")
                 var dataConvert = [];
-
                 getcommodityInfomation().then((res) => {
                     console.log(res)
                     dataConvert = res.data;
                     console.log(" dataConvert的格式长度："+dataConvert.length)
                     for(var i = 0;i<dataConvert.length;i++){
                         var data = this.timestampToTime(dataConvert[i].delistingdate)
-                        // console.log("launchdate的值为：")
-                       // console.log(dataConvert[i].launchdate)
                         dataConvert[i].launchdate = data
                         data = this.timestampToTime(dataConvert[i].launchdate)
                         dataConvert[i].delistingdate = data
@@ -245,8 +242,7 @@
                 }).catch(()=>{
                     console.log("taskExecution fail")
                 });
-
-                } ,
+            } ,
             // 转换时间戳
             timestampToTime (cjsj) {
                 var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -300,7 +296,6 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
-
                 this.dialogFormVisible= false
                 this.getData()
             },
@@ -313,7 +308,6 @@
             },
 
             ondelete(){//根据品名ID删除该品类
-
                 var URL ='/deletecommodityInfomation/'+this.deleteform.id;
                 console.log("URL:"+URL)
                 deletecommodityInfomation(URL).then((res) => {
