@@ -62,7 +62,15 @@
             min-width="180" prop="subtask">
 
         </el-table-column>
-
+        <el-table-column
+                label="修改模态粒度"
+                fixed="right"
+                min-width="180" >
+          <template slot-scope="scope">
+            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
+        
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -76,8 +84,10 @@
 </template>
 
 <script>
-import {changetimeadvise, taskQuery,spaceResult} from "@/api/part1/Multimodal-multigranularity";
+import {changetimeadvise, taskQuery,spaceResult,taskQueryById} from "@/api/part1/Multimodal-multigranularity";
 import taskInput from "@/components/part1/Multimodal-multigranularity/taskInput";
+
+import {setToken,getToken} from "@/utils/auth"
 
 export default {
   name: "taskQueryTableView",
@@ -169,8 +179,16 @@ for( var i=0;i<datt.length;i++)
       this.currentPage = val
     },
     getData() {
+        var idd=getToken()
+        console.log(idd)
+        var url='/getTaskById/'+idd
+        console.log(url)
+       console.log(taskQueryById(url))
       // 获取表格数据
       console.log("获取表格数据")
+        console.log(this.user)
+console.log(getToken())
+
       taskQuery().then((res) => {
         this.dealwithData(res)
       }).catch(() => {

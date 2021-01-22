@@ -472,6 +472,7 @@ export default {
     },
 
     dealwithData(res) {
+console.log(res)
       let dataConvert = [];
       dataConvert = res.data.data;
       this.totalCount = dataConvert.length

@@ -80,6 +80,14 @@ export function taskQuery() {
       method: 'get'
         })
   }
+
+export function taskQueryById(url) {
+  return request({
+    method: 'GET',
+
+    url:url,
+  })
+}
 // 添加新模态  api
 export function modalityInput_api(data) {
   console.log("发送modalityInput_api请求")
