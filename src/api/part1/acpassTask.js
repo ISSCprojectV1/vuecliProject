@@ -122,3 +122,23 @@ export function exceptionRelationPredict(sourceId, threshold) {
     })
 }
 
+export function riskAlarmService() {
+    return request({
+        method: 'GET',
+        url: '/risk/alarm'
+    })
+}
+
+export function getRiskVM() {
+    return request({
+        method: 'GET',
+        url: '/getRiskVM'
+    })
+}
+
+export function getAct() {
+    return request({
+        method: 'GET',
+        url: '/getAct'
+    })
+}
