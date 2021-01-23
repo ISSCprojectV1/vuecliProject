@@ -41,11 +41,12 @@
         <el-table-column label="任务状态" prop="workStatus">
         </el-table-column>
         <el-table-column
-                label="推荐主被动模态"
-                fixed="right"
-                min-width="180" porp="model">
-
+                label="推荐主被动模态">
         </el-table-column>
+
+        <el-table-column label="监管联盟" prop="workTeam">
+        </el-table-column>
+
         </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -61,7 +62,7 @@
 
 <script>
 import echart from "echarts";
-import {taskQuery,teamform} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,teamform,getTeamResult} from "@/api/part1/Multimodal-multigranularity";
 
 export default {
   name: "taskQueryTransactionCoalition",
@@ -101,22 +102,51 @@ export default {
       // var dataConvert = [];
       taskQuery().then((res) => {
         console.log(res)
-        this. dealwithData(res)
+        let URL = '/yu/getAllResult';
+        getTeamResult(URL).then((resultTeam)=>{
+        let result = res.data.data;
+        for(let i=0;i<result.length;i++){
+          let workTeamStr = '';
+          for(let j = 0;j<resultTeam.data.data[i].length;j++){
+            if(resultTeam.data.data[i][j] == 0){
+              resultTeam.data.data[i][j] = "工商局"
+              workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
+            }
+            else if(resultTeam.data.data[i][j] == 3){
+              resultTeam.data.data[i][j] = "金融监管局"
+              workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
+            }
+            else{
+                workTeamStr = workTeamStr+"监管机构"+resultTeam.data.data[i][j]+",";
+            }
+          }
+          result[i].workTeam = workTeamStr;
+        }
+        this. dealwithData(result)
+        }).catch(()=>{
+        console.log("getTransactionData fail")
+      });
+
         document.getElementById("form").style.display="block";
         document.getElementById("echart1").style.display="none";
       }).catch(()=>{
         console.log("getTransactionData fail")
       });
     } ,
+    // 获取联盟形成结果
     teamformation(){
-      teamform().then((res) => {
-        this.dealwithData(res)
-        //  console.log(res)
+     console.log("点击")
+     let URL = '/yu/getAllResult';
+     let teamResult = [];
+      getTeamResult(URL).then((res) => {
+        console.log("获取联盟形成结果",res.data.data[1]);
+        this.dealwithData(res);
 
+        //this.dormitory
       }).catch(()=>{
-        console.log("taskQuery fail")
+        console.log("getTeamResult fail")
       });
-
+      return teamResult;
     },
     changeform12()
     {
@@ -474,7 +504,9 @@ export default {
     dealwithData(res) {
 console.log(res)
       let dataConvert = [];
-      dataConvert = res.data.data;
+      dataConvert = res;
+      let result = [];
+
       this.totalCount = dataConvert.length
       for (let i = 0; i < dataConvert.length; i++) {
         let data = this.timestampToTime(dataConvert[i].gmtCreate);
@@ -502,9 +534,9 @@ console.log(res)
           dataConvert[i].content = "暂时未分配"
         }
 
-        if (!dataConvert[i].team) // true
+        if (!dataConvert[i]) // true
         {
-          dataConvert[i].team = "暂时未分配"
+          dataConvert[i].workTeam = "暂时未分配"
         }
 
         if (dataConvert[i].workStatus == null) // true
@@ -515,9 +547,9 @@ console.log(res)
           dataConvert[i].workStatus = "任务已经执行"
         if (dataConvert[i].workStatus === 2) // true
           dataConvert[i].workStatus = "任务出现异常"
-      }
-      dataConvert.reverse()
 
+          // 获取联盟分配结果
+      }
       this.dormitory = dataConvert;
       console.log(    this.dormitory)
     },
