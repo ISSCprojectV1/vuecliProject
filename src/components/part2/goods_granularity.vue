@@ -1,10 +1,11 @@
 <template>
     <div style="width: 100%;height: 800px">
-        <div style="display: inline-block; margin-bottom:30px; font-size:40px">商品信息展示与添加</div>
+        <div style="display: inline-block; margin-bottom:30px; font-size:40px">时间与商品粒度优化</div>
         <div>
             <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
             <!--<el-button type="primary" @click="getData()" style="margin-left:10px;margin-right:10px">展示</el-button>-->
             <el-button type="primary" @click="goTotime()" style="margin-left:10px;margin-right:10px">时间粒度优化</el-button>
+            <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">商品粒度优化</el-button>
             <el-button type="primary" @click="goTogoods_variety()" style="margin-left:10px;margin-right:10px">商品品类维护</el-button>
             <el-button type="primary" @click="dialogFormVisible = true" style="margin-left:10px;margin-right:10px">添加新商品</el-button>
             <el-button type="primary" @click="dialogFormVisibledelete = true" style="margin-left:10px;margin-right:10px">删除商品</el-button>
@@ -21,7 +22,7 @@
             </el-dialog>
 
             <el-button type="primary" @click="goToprice()" style="margin-left:10px;margin-right:10px">商品历史价格</el-button>
-            <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">关联商品发现</el-button>
+
             <el-dialog title="添加新商品" :visible.sync="dialogFormVisible" width="30%" center>
                 <el-form ref="form" :model="form" label-width="80px" size="mini" >
                     <el-form-item label="大类代码">
@@ -165,11 +166,13 @@
                 </el-table-column>
                 <el-table-column
                         label="商品ID"
-                        prop="id">
+                        prop="id"
+                        sortable>
                 </el-table-column>
                 <el-table-column
                         label="商品名称"
-                        prop="name">
+                        prop="name"
+                        sortable>
                 </el-table-column>
                 <el-table-column
                         label="商品地域"
@@ -225,15 +228,12 @@
                 // 获取表格数据
                 console.log("获取modalityQuery表格数据 步骤一")
                 var dataConvert = [];
-
                 getcommodityInfomation().then((res) => {
                     console.log(res)
                     dataConvert = res.data;
                     console.log(" dataConvert的格式长度："+dataConvert.length)
                     for(var i = 0;i<dataConvert.length;i++){
                         var data = this.timestampToTime(dataConvert[i].delistingdate)
-                        // console.log("launchdate的值为：")
-                       // console.log(dataConvert[i].launchdate)
                         dataConvert[i].launchdate = data
                         data = this.timestampToTime(dataConvert[i].launchdate)
                         dataConvert[i].delistingdate = data
@@ -242,8 +242,7 @@
                 }).catch(()=>{
                     console.log("taskExecution fail")
                 });
-
-                } ,
+            } ,
             // 转换时间戳
             timestampToTime (cjsj) {
                 var date = new Date(cjsj) //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -297,7 +296,6 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
-
                 this.dialogFormVisible= false
                 this.getData()
             },
@@ -310,7 +308,6 @@
             },
 
             ondelete(){//根据品名ID删除该品类
-
                 var URL ='/deletecommodityInfomation/'+this.deleteform.id;
                 console.log("URL:"+URL)
                 deletecommodityInfomation(URL).then((res) => {

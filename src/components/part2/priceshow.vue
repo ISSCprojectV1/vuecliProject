@@ -75,9 +75,9 @@
                     },
                     dataZoom: [{ //滑动窗口的设置
                         // 开始位置的数值
-                        startValue: 0,
+                        //startValue: 0,
                         // 结束位置的数值
-                        endValue: 100,
+                        //endValue: 100,
                         textStyle: {
                             color: '#8392A5'
                         },

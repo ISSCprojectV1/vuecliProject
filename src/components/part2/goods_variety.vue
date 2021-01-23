@@ -166,7 +166,6 @@ export default {
     },
 
     ondelete(){//根据品名ID删除该品类
-
       var URL ='/deletecommodityVariety/'+this.deleteform.id;
       console.log("URL:"+URL)
       deletecommodityVariety(URL).then((res) => {
@@ -212,25 +211,11 @@ export default {
     getData(){
       // 获取表格数据
       console.log("获取品类表格数据 步骤一")
-      var dataConvert = [];
-      var dataConverttest = [];
       getcommodityVariety().then((res) => {
-        /*console.log(res)
-        dataConvert = res.data;
-        for(var i = 0;i<dataConvert.length;i++){// 调试用！！！！
-          console.log("cateid的值为：")
-          console.log(dataConvert[i].cateid)
-          dataConverttest.id=dataConvert[i].cateid;
-          dataConverttest.name=dataConvert[i].catename;
-        }
-        this.datatest=dataConverttest;
-        console.log(this.datatest)
-        this.tableData=dataConvert;*/
         this.tableData = res.data;
       }).catch(()=>{
         console.log("taskExecution fail")
       });
-
     } ,
   },
   data() {

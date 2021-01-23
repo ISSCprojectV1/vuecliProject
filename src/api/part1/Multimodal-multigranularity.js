@@ -74,12 +74,20 @@ export function taskAllocation() {
 
     // 获取任务列表
 export function taskQuery() {
-  console.log("获取taskQuery表格数据 步骤二 发送taskQuery请求 ")
+  console.log("获取taskQuery表格数据")
     return request({
       url: '/task',
       method: 'get'
         })
   }
+
+export function taskQueryById(url) {
+  return request({
+    method: 'GET',
+
+    url:url,
+  })
+}
 // 添加新模态  api
 export function modalityInput_api(data) {
   console.log("发送modalityInput_api请求")
@@ -265,12 +273,21 @@ export function addcommodityTransaction(data) {
   })
 }
 
-// 添加商品交易事务数据集。
+// 计算出关联商品集
 export function addcommodityRelationdetails2() {
-  console.log("添加 详细关联商品数据集2！！！")
+  console.log("计算出关联商品集！！！")
   return request({
     url: '/addcommodityRelationdetails2',
     method: 'get',
+  })
+}
+
+// 获得 时间粒度集合。
+export function getcommodityTimeadvise() {
+  console.log("获得 时间粒度集合！！！")
+  return request({
+    url: '/getcommodityTimeadvise',
+    method: 'get'
   })
 }
 
@@ -281,6 +298,15 @@ export function getcommodityTimeadvise2(URL)  {
   console.log("根据商品名称 获得时间粒度！！！")
   return request({
     url: URL,
+    method: 'get'
+  })
+}
+
+// 计算时间粒度
+export function addcommodityTimeadvise() {
+  console.log("计算时间粒度！！！")
+  return request({
+    url: '/addcommodityTimeadvise',
     method: 'get'
   })
 }
@@ -316,3 +342,14 @@ export function getrecommendrlatform(URL) {
       method: 'get'
         })
   }
+
+  // 获取联盟分配结果
+  // @getAllResult()
+  // URL = /yu/getAllResult
+  export function getTeamResult(URL) {
+    console.log("发送getTeamResult请求")
+      return request({
+        url: URL,
+        method: 'get'
+          })
+    }

@@ -1,54 +1,43 @@
 <template>
-    <div id="app">
-        <div style="display: inline-block; margin-bottom:30px; font-size:40px">监控时间粒度推荐</div>
+    <div style="width: 100%;height: 800px">
+        <div  style="display: inline-block; margin-bottom:30px; margin-right:500px; font-size:40px"><el-button type="primary" @click="backTo()" style="margin-right:400px">返回上一级</el-button>时间粒度推荐</div>
+        <div style="margin-left:20px;margin-right:20px">
+            <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
+            <el-button class="btn1" type="primary"  @click="addTimeadvise" style="margin-left:20px;margin-right:20px">时间粒度计算</el-button>
+            <h2></h2>
+            <el-table  :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)">
+                <el-table-column
+                        label="商品ID"
+                        prop="id"
+                        sortable>
+                </el-table-column>
+                <el-table-column
+                        label="商品名称"
+                        prop="name"
+                        sortable>
+                </el-table-column>
+                <el-table-column
+                        label="推荐时间粒度"
+                        prop="timeadvise"
+                        sortable>
+                </el-table-column>
+            </el-table>
+            <el-pagination @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="currentPage"
+                           :page-sizes="pageSizes"
+                           :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                           :total="totalCount">
+            </el-pagination>
 
-        <div class="block" style="height:80px;text-align:left;margin-left:30px;">
-            <span class="demonstration">请选择商品类别：   </span>
-            <el-select v-model="value" filterable placeholder="请选择">
-                <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                </el-option>
-            </el-select>
-            <el-button class="btn1" type="primary"  @click="openFullScreen2" style="margin-left:20px;margin-right:20px">提交</el-button>
+            <h2> </h2>
         </div>
-
-        <div class="block" style="height:80px;text-align:left;margin-left:30px;">
-            <span class="demonstration">推荐的时间粒度：   </span>
-            <el-date-picker
-                    v-model="value1"
-                    type="datetimerange"
-                    :picker-options="pickerOptions"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    align="center">
-            </el-date-picker>
-
-            <el-button class="btn1" type="primary" style="margin-left:20px;margin-right:20px">提交</el-button>
-        </div>
-
-        <div class="block" style="height:80px;text-align:left;margin-left:30px;">
-            <span class="demonstration">自主选择与调整：   </span>
-            <el-date-picker
-                    v-model="value2"
-                    type="datetimerange"
-                    :picker-options="pickerOptions"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    align="center">
-            </el-date-picker>
-            <el-button class="btn2" type="primary" style="margin-left:20px;margin-right:20px">提交</el-button>
-        </div>
-        <el-button type="primary" @click="goTo()">限定时间内需响应任务数</el-button>
     </div>
+
 </template>
 
 <script>
-    import {getcommodityVariety,addcommodityVariety,deletecommodityVariety,updatecommodityVariety} from "@/api/part1/Multimodal-multigranularity";
+    import {getcommodityTimeadvise,addcommodityTimeadvise} from "@/api/part1/Multimodal-multigranularity";
     export default {
         name: "time_advise",
 
@@ -56,109 +45,91 @@
         created(){
             this.getData();
         },
-
+        computed: {
+            // 模糊搜索
+            tables() {
+                const search = this.search
+                if (search) {
+                    // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+                    // 注意： filter() 不会对空数组进行检测。
+                    // 注意： filter() 不会改变原始数组。
+                    return this.dormitory.filter(data => {
+                        return Object.keys(data).some(key => {
+                            // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
+                            // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
+                            return String(data[key]).toLowerCase().indexOf(search) > -1
+                        })
+                    })
+                }
+                return this.dormitory
+            },
+        },
 
         data() {
             return {
-                pickerOptions: {
-                    shortcuts: [{
-                        text: '最近一周',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
-                },
-                value1: [new Date(2020, 6, 10, 0, 0), new Date(2020, 7, 11, 0, 0)],
-                value2: '',
+                dormitory: [],
+                search: '',
+                // 默认显示第几页
+                currentPage:1,
+                // 总条数，根据接口获取数据长度(注意：这里不能为空)
+                totalCount:100,
+                // 个数选择器（可修改）
+                pageSizes:[5,10],
+                // 默认每页显示的条数（可修改）
+                PageSize:5,
 
-                varietyname:'',
+                dialogTableVisible: false,
+                dialogFormVisible: false,
 
-                options: [{
-                    value: '小麦',
-                    label: '小麦'
-                }, {
-                    value: '大豆',
-                    label: '大豆'
-                }, {
-                    value: '焦炭',
-                    label: '焦炭'
-                }, {
-                    value: '动力煤',
-                    label: '动力煤'
-                }, {
-                    value: '甲醇',
-                    label: '甲醇'
-                }, {
-                    value: '螺纹钢',
-                    label: '螺纹钢'
-                }],
-                value: ''
-            };
+            }
+
+
         },
         methods: {
+            backTo() {
+                //直接跳转
+                this.$router.push('/trade/Multimodal-multigranularity/goodsgranularity');
+            },
+            getData(){
+                // 获取表格数据1
+                getcommodityTimeadvise().then((res) => {
+                    //this.tableData = res.data;
+                    this.dormitory = res.data;
+                }).catch(()=>{
+                    console.log("taskExecution fail")
+                });
+            },
+            // 分页
+            // 每页显示的条数
+            handleSizeChange(val) {
+                // 改变每页显示的条数
+                this.PageSize=val
+                // 注意：在改变每页显示的条数时，要将页码显示到第一页
+                this.currentPage=1
+            },
+            // 显示第几页
+            handleCurrentChange(val) {
+                // 改变默认的页数
+                this.currentPage=val
+            },
 
-            openFullScreen2() {
+            addTimeadvise() {
+                addcommodityTimeadvise().then((res) => {
+                    this.getok();
+                }).catch(()=>{
+                    console.log("taskExecution fail")
+                });
                 const loading = this.$loading({
                     lock: true,
-                    text: '正在计算推荐的时间粒度',
+                    text: '正在计算时间粒度',
                     spinner: 'el-icon-loading',
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
                 setTimeout(() => {
                     loading.close();
-                }, 2000);
+                }, 3000);
             },
 
-            goTo() {
-                //直接跳转
-                this.$router.push('/trade/Multimodal-multigranularity/timeGranularity');
-            },
-
-            getData(){
-                // 获取表格数据
-                console.log("获取品类表格数据 步骤一")
-                var dataConvert = [];
-                var dataConverttest;
-                getcommodityVariety().then((res) => {
-
-                    dataConvert = res.data;
-                    console.log(dataConvert)
-
-                    for(var i = 0;i<dataConvert.length;i++){// 调试用！！！！
-                      console.log("varietyname的值为：")
-                      console.log(dataConvert[i].name)
-                     // dataConverttest[i].name=dataConvert[i].name;
-                    }
-                    //this.datatest=dataConverttest;
-                    console.log(this.datatest)
-
-                    //this.value = this.datatest;
-
-
-                }).catch(()=>{
-                    console.log("taskExecution fail")
-                });
-
-            } ,
         }
     }
 </script>
