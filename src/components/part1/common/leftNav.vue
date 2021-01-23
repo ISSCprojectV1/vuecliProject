@@ -34,8 +34,6 @@
 </template>
 
 <script>
- import userTaskInput from "@/components/part1/transactionProject/taskDictionary/userTaskInput";
- import taskQueryTableView from "@/components/part3/Common/taskQueryFlowChart";
 
   export default {
     data(){
@@ -61,6 +59,25 @@
               },
             ],
             path:"/trade/transactionProject"
+          },
+          {
+            title: "风险预警",
+            routes: [
+              {
+                path: "/trade/riskPrediction/",
+                component: () => import("@/components/part1/riskPrediction/riskPageNew"),
+                meta: {
+                  title: "价格波动风险演化"
+                }
+              },
+              // {
+              //   path: "/trade/riskPredictionOld",
+              //   component: () => import("@/components/part1/riskPrediction/riskPage"),
+              //   meta: {
+              //     title: "价格波动风险演化-旧"
+              //   }
+              // }
+            ]
           },
           {
             title:"模态与粒度",
@@ -252,9 +269,9 @@
     background: #0677B3 !important;
   }
 .el-menu-vertical-demo{
-  padding:0px;
-  margin:0px;
-  border:0px;
+  padding:0;
+  margin:0;
+  border:0;
 }
 .el-icon-arrow-down:before {
   content: "\e6df";
