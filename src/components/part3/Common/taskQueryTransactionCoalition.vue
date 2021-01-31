@@ -46,6 +46,15 @@
                 min-width="180" porp="model">
 
         </el-table-column>
+        <el-table-column
+                label="修改模态粒度"
+                fixed="right"
+                min-width="180" >
+          <template slot-scope="scope">
+            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
+
+          </template>
+        </el-table-column>
         </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
