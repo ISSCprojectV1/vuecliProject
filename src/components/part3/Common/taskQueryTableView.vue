@@ -175,7 +175,7 @@ for( var i=0;i<datt.length;i++)
         console.log(idd)
         var url='/getTaskById/'+idd
         console.log(url)
-       console.log(taskQueryById(url))
+     //  console.log(taskQueryById(url))
       var url2='/getroles/'+idd
       console.log(  getRolenameById(url2))
       // 获取表格数据
