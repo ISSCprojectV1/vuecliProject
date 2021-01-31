@@ -74,7 +74,7 @@ export function taskAllocation() {
 
     // 获取任务列表
 export function taskQuery() {
-  console.log("获取taskQuery表格数据 步骤二 发送taskQuery请求 ")
+  console.log("获取taskQuery表格数据")
     return request({
       url: '/task',
       method: 'get'
@@ -282,9 +282,9 @@ export function addcommodityTransaction(data) {
   })
 }
 
-// 添加商品交易事务数据集。
+// 计算出关联商品集
 export function addcommodityRelationdetails2() {
-  console.log("添加 详细关联商品数据集2！！！")
+  console.log("计算出关联商品集！！！")
   return request({
     url: '/addcommodityRelationdetails2',
     method: 'get',
@@ -351,3 +351,14 @@ export function getrecommendrlatform(URL) {
       method: 'get'
         })
   }
+
+  // 获取联盟分配结果
+  // @getAllResult()
+  // URL = /yu/getAllResult
+  export function getTeamResult(URL) {
+    console.log("发送getTeamResult请求")
+      return request({
+        url: URL,
+        method: 'get'
+          })
+    }

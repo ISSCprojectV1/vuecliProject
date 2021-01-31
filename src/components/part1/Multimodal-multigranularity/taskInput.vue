@@ -172,7 +172,7 @@
         </el-select>
     </el-col>
   </el-form-item>
-  
+
   <el-form-item label="是否人工分配">
     <el-col :span="4">
     <el-switch v-model="humanUse"
@@ -187,6 +187,9 @@
                    active-text="主动监管"
         ></el-switch>
       </el-col>
+        <el-col :span="4">
+            <el-button type="primary" @click="getActiveList">获取主动监管名单</el-button>
+        </el-col>
     </el-form-item>
     <!--监管周期-->
 
@@ -206,7 +209,7 @@
      <el-form-item label="工作时间">
 <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
    </el-form-item>
-        
+
 <el-button type="success" @click="creatTask">立即创建</el-button>
  <el-dialog
   title="创建表单"
@@ -258,6 +261,24 @@
 </el-dialog>
 <el-button type="info" @click="abortForm">取消创建</el-button>
 
+        <el-dialog :visible.sync="dialogActiveVisible" title="主动监管名单" width="40%" center>
+          <p style="font-size: 1rem">平台风险值： <span style="margin-right: 1rem; color: red;">{{valueRisk}}</span>
+            风险程度：<span style="color: red">{{valueMean}}</span></p>
+          <el-table :data="formActiveList" stripe>
+            <el-table-column
+              prop="name"
+              label="主体">
+            </el-table-column>
+            <el-table-column
+                prop="p"
+                label="异常值">
+              <template slot-scope="scope">
+                <span>{{parseFloat(scope.row.p).toFixed(3)}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-dialog>
+
 </el-form>
 </div>
 
@@ -265,7 +286,10 @@
 </template>>
 <script>
 
-import {taskInput,bourseget,getcommodityRelationdetails2,getcommodityTimeadvise2,getplatform,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
+import {taskInput,bourseget,getcommodityRelationdetails2,getcommodityTimeadvise2,getplatform,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";
+import {getAct, getRiskVM} from "@/api/part1/acpassTask";
+
+const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
 const commidityOptions =['a','b','c']
 export default {
 data() {
@@ -283,7 +307,7 @@ data() {
         commodityDialogVisible:false,
         tableData:[],
         multipleSelection:[],
-        
+
 
         // 空间粒度相关数据
         flatList:[],
@@ -315,7 +339,13 @@ data() {
 
       // 表单显示时间
       showStart:"",
-      showEnd:""
+      showEnd:"",
+
+        // 查询主动监管名单
+        dialogActiveVisible: false,
+        valueRisk: '',
+      valueMean: '',
+      formActiveList: [],
     }
 
   },
@@ -611,7 +641,7 @@ console.log("发送请求前")
 
   var data = { 
   "name":this.input,  
-  "priority":this.priority, 
+  "priority":this.priority,
   "humanUse":this.humanUse,  //
   "startTime":startData,//  
   "endTime":endData,//
@@ -647,8 +677,19 @@ cleanForm(){
       this.dateEnd= '',
       this.dateEnd2= '',
       this.workingTime = ''
-}
+},
 
+    // 主动监管名单部分
+    getActiveList() {
+      getRiskVM().then(res => {
+        this.valueRisk = res.data.riskvalue
+        this.valueMean = res.data.riskmean
+      })
+      getAct().then(res => {
+        this.formActiveList = res.data
+      })
+      this.dialogActiveVisible = true
+    }
 }
   }
 

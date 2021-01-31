@@ -60,7 +60,7 @@
                         :total="total"
                 >
                 </el-pagination>
-                <div id="echart123"   style="width: 800px;height: 400px"></div>
+                <div id="echart123" style="width: 1000px;height: 400px; margin-left: auto; margin-right: auto; margin-top: 2rem"></div>
                 <div    id="table23">
 
                        <el-table
@@ -261,7 +261,6 @@
 </template>
 
 <script>
-import tradeaction from "@/components/part1/acpassTask/tradeaction";
 import {activetradedetailinfo, activetradegraph} from "@/api/part1/acpassTask";
 import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction,Louvainresult} from "@/api/part1/acpassTask";
     import echart from "echarts";
@@ -454,7 +453,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                 activetradegraph(1).then(res=>{
 
                     let data=res.data.data;
-
+                    console.log(data)
                     let nodes=[];
                     let links=[];
                     for (let i = 0; i < data[0].length; i++) {
@@ -482,9 +481,6 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         //     text: 'Graph 简单示例'
                         // },
                         tooltip: {},
-                        color:['red',
-
-                            'blue'],
                         legend: { //=========小图标，圖表控件
                             show:true,
                             data: [{
@@ -492,13 +488,10 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                                 icon: 'circle' //'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
                                 //icon:'image://./images/icon1.png'  //如果用图片img，格式为'image://+icon文件地址'，其中image::后的//不能省略
                             },
-
-
                                 {
                                     name: '交易节点',
                                     icon: 'circle'
                                 }
-
                             ]
                         },
                         animationDurationUpdate: 1500,

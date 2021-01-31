@@ -132,7 +132,7 @@
             }
         },
         methods: {
-            onadd(){//添加新品类
+            onadd(){//添加新的交易事件
                 console.log("发送请求前")
                 var data = this.form;
                 console.log("发送请求中")
@@ -163,7 +163,7 @@
                     console.log("taskExecution fail")
                 });
             },
-            getrelation2(){//价格波动关联
+            getrelation2(){//计算关联商品
                 addcommodityRelationdetails2().then((res) => {
                     this.getok();
                 }).catch(()=>{
@@ -181,7 +181,7 @@
             },
 
             getData(){
-                // 获取表格数据1
+                // 获取交易事件表格数据
                 getcommodityTransaction().then((res) => {
                     //this.tableData = res.data;
                     this.dormitory = res.data;
@@ -190,7 +190,7 @@
                 });
             } ,
             getData2(){
-                // 获取表格数据2
+                // 获取关联商品表格数据
                 getcommodityRelationdetails().then((res) => {
                     this.dormitory2 = res.data;
                     console.log(this.dormitory2)
