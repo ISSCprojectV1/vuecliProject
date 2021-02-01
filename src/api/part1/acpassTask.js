@@ -98,6 +98,16 @@ export function activetradegraph(id) {
     })
 }
 
+export function activegraph(id) {
+    return request({
+        method: 'GET',
+        params: {
+            id: id
+        },
+        url: '/activegraph'
+    })
+}
+
 export function exceptionRelationAnalysis(start, end, threshold_f, threshold_fp) {
     return request({
         method: 'POST',
