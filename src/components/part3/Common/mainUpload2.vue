@@ -1,30 +1,31 @@
 <template>
 <div id="diceng">
 
-    <el-row v-for="item in resources" :key="item.id" class="elrow">
-        <el-col :span="20">
-            <div class="mainResource">
-                <h2><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h2>
-            <div class="content">{{item.description}}</div>
-            <span>开始时间： {{item.startTime}}</span>
-            <span>结束时间： {{item.endTime}}</span>
+    <div v-for="item in resources" :key="item.id">
+        <el-row v-if="item.status === 1" class="elrow">
+            <el-col :span="20">
+                <div class="mainResource">
+                    <h2><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h2>
+                <div class="content">{{item.description}}</div>
+                <span>开始时间： {{item.startTime}}</span>
+                <span>结束时间： {{item.endTime}}</span>
 
-            </div>
-        </el-col>
-        <el-col :span="4">
-            <span>起拍价： </span>
-            <span class="score">{{item.startPrice}}</span>
-            <br/>
-            <span>最新价： </span>
-            <span class="score">{{item.updatedPrice}}</span>
-            <br/>
-            <span>状态： </span>
-            <span class="score">{{item.status}}</span>
-            <br/>
-<!--            <el-button @click="AuctionDetail(item.id)">竞拍</el-button>-->
-            <el-button type="primary" @click="AuctionDetailDialog(item.id)" style="margin-top: 1rem">竞拍</el-button>
-        </el-col>
-    </el-row>
+                </div>
+            </el-col>
+            <el-col :span="4">
+    <!--            <span>起拍价： </span>-->
+    <!--            <span class="score">{{item.startPrice}}</span>-->
+                <br/>
+    <!--            <span>最新价： </span>-->
+    <!--            <span class="score">{{item.updatedPrice}}</span>-->
+                <br/>
+                <span>状态： </span>
+                <span class="score">{{item.status}}</span>
+                <br/>
+                <el-button type="primary" @click="AuctionDetailDialog(item.id)" style="margin-top: 1rem">竞拍</el-button>
+            </el-col>
+        </el-row>
+    </div>
     <el-pagination
             ref="pagination"
             style="text-align: center"
@@ -34,36 +35,66 @@
             :total="total"
     >
     </el-pagination>
-    <el-dialog :title="resource.name" :visible.sync="dialogFormVisible" width="30%" center>
+<!--    <el-dialog :title="resource.name" :visible.sync="dialogFormVisible" width="30%" center>-->
+<!--        {{resource.description}}-->
+<!--        <ul style="margin-top: 20px">-->
+<!--            <li style="display: inline-block">起拍价：<span class="score">{{resource.startPrice}}</span></li>-->
+<!--            <li style="display: inline-block">最新价：<span class="score">{{resource.updatedPrice}}</span></li>-->
+<!--        </ul>-->
+<!--        <ul style="margin-top: 20px; margin-bottom: 20px">-->
+<!--            <li style="display: inline-block">开始时间：<span>{{resource.startTime}}</span></li>-->
+<!--            <li style="display: inline-block">结束时间：<span>{{resource.endTime}}</span></li>-->
+<!--        </ul>-->
+<!--        <el-form :model="form">-->
+<!--            <el-form-item label="出价">-->
+<!--                <el-input-number-->
+<!--                    v-model="form.price"-->
+<!--                    :min="1"-->
+<!--                    :step="resource.minimumDecreasePrice"-->
+<!--                    :max="resource.updatedPrice"></el-input-number>-->
+<!--                （价格步长：{{resource.minimumDecreasePrice}}）-->
+<!--            </el-form-item>-->
+<!--            <div align="center">-->
+<!--                <el-button type="primary" @click="bid(resource.id, form.price)">竞拍</el-button>-->
+<!--                <el-button @click="updatePrice(resource.id)">刷新</el-button>-->
+<!--            </div>-->
+<!--        </el-form>-->
+<!--    </el-dialog>-->
+    <el-dialog :title="resource.name" :visible.sync="dialogFormVisible" width="32%" center>
         {{resource.description}}
-        <ul style="margin-top: 20px">
-            <li style="display: inline-block">起拍价：<span class="score">{{resource.startPrice}}</span></li>
-            <li style="display: inline-block">最新价：<span class="score">{{resource.updatedPrice}}</span></li>
-        </ul>
         <ul style="margin-top: 20px; margin-bottom: 20px">
             <li style="display: inline-block">开始时间：<span>{{resource.startTime}}</span></li>
             <li style="display: inline-block">结束时间：<span>{{resource.endTime}}</span></li>
         </ul>
-        <el-form :model="form">
+        <el-form :model="form" label-width="60px" label-position="right">
+
+            <el-form-item label="数据量">
+                <el-input-number
+                    v-model="form.quantity"
+                    :min="1"
+                    :step="1">
+                </el-input-number>
+                （单位：MB）
+            </el-form-item>
             <el-form-item label="出价">
                 <el-input-number
                     v-model="form.price"
                     :min="1"
-                    :step="resource.minimumDecreasePrice"
-                    :max="resource.updatedPrice"></el-input-number>
-                （价格步长：{{resource.minimumDecreasePrice}}）
+                    :step="1"></el-input-number>
             </el-form-item>
+
             <div align="center">
-                <el-button type="primary" @click="bid(resource.id, form.price)">竞拍</el-button>
-                <el-button @click="updatePrice(resource.id)">刷新</el-button>
+                <el-button type="primary" @click="bid(resource.id, form.price, form.quantity)">竞拍</el-button>
+<!--                <el-button @click="updatePrice(resource.id)">刷新</el-button>-->
             </div>
+
         </el-form>
     </el-dialog>
 </div>
 </template>
 
 <script>
-    import { doAuction, getAuctions, getAuction } from "@/api/part3/auction";
+import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuctionNew} from "@/api/part3/auction";
 
     export default {
         name: "mainUpload2",
@@ -78,9 +109,10 @@
         },
         methods:{
             getAuctions(currentPage,pageSize=10){
-                getAuctions(currentPage,pageSize).then(res=>{
+                getAuctionsNew(currentPage,pageSize).then(res=>{
                     this.resources = res.data.list
                     this.total = res.data.total
+                    console.log(res)
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -90,9 +122,9 @@
                 console.log(id)
             },
             AuctionDetailDialog(id) {
-                getAuction(id).then(res=>{
+                getAuctionNew(id).then(res=>{
                     this.resource=res.data
-                    this.form.price = this.resource.updatedPrice
+                    // this.form.price = this.resource.updatedPrice
                     this.dialogFormVisible = true;
                 }).catch(err=>{
                     this.$message({
@@ -108,25 +140,25 @@
                 this.currentPage=page;
                 this.getAuctions(page);
             },
-            bid(id, price) {
-              doAuction(id, price).then(res=>{
+            bid(id, price, quantity) {
+              doAuctionNew(id, price, quantity).then(res=>{
                   this.$message({
                       showClose: true,
                       message: '竞价成功',
                       type: 'success'
                   });
-                  getAuction(id).then(res=>{
-                      this.resources[id-1].updatedPrice = res.data.updatedPrice
-                      this.resource.updatedPrice = res.data.updatedPrice
-                      this.form.price=res.data.updatedPrice
-                  }).catch(err=>{
-                      this.$message({
-                          showClose: true,
-                          message: '刷新失败',
-                          type: 'error'
-                      });
-                      console.log(err);
-                  });
+                  // getAuctionNew(id).then(res=>{
+                  //     this.resources[id-1].updatedPrice = res.data.updatedPrice
+                  //     this.resource.updatedPrice = res.data.updatedPrice
+                  //     this.form.price=res.data.updatedPrice
+                  // }).catch(err=>{
+                  //     this.$message({
+                  //         showClose: true,
+                  //         message: '刷新失败',
+                  //         type: 'error'
+                  //     });
+                  //     console.log(err);
+                  // });
               }).catch(err=>{
                   this.$message({
                       showClose: true,
@@ -181,6 +213,7 @@
                 currentPage:1,
                 dialogFormVisible: false,
                 form:{
+                    quantity: "",
                     price:""
                 }
             }

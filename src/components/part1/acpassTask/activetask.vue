@@ -60,7 +60,7 @@
                         :total="total"
                 >
                 </el-pagination>
-                <div id="echart123" style="width: 1000px;height: 400px; margin-left: auto; margin-right: auto; margin-top: 2rem"></div>
+                <div id="echart123" style="width: 800px;height: 500px; margin-left: auto; margin-right: auto; margin-top: 2rem"></div>
                 <div    id="table23">
 
                        <el-table
@@ -261,7 +261,7 @@
 </template>
 
 <script>
-import {activetradedetailinfo, activetradegraph} from "@/api/part1/acpassTask";
+import {activegraph, activetradedetailinfo} from "@/api/part1/acpassTask";
 import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction,Louvainresult} from "@/api/part1/acpassTask";
     import echart from "echarts";
     export default {
@@ -449,97 +449,160 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             gotoDetail(id){
                 document.getElementById("echart123").style.display="block";
                 document.getElementById("table23").style.display="none";
-                console.log("aaa")
-                activetradegraph(1).then(res=>{
+                // activetradegraph(1).then(res=>{
+                //     let data=res.data.data;
+                //     console.log(data)
+                //     let nodes=[];
+                //     let links=[];
+                //     for (let i = 0; i < data[0].length; i++) {
+                //         nodes.push(
+                //             {
+                //                 name:data[0][i].name,
+                //                 x:data[0][i].xposition,
+                //                 y:data[0][i].yposition,
+                //                 symbolSize:data[0][i].symbolsize,
+                //                 itemStyle:{
+                //                     color:data[0][i].color
+                //                 }
+                //             }
+                //         )
+                //     }
+                //     for (let i = 0; i < data[1].length; i++){
+                //         links.push({
+                //             source:data[1][i].source,
+                //             target:data[1][i].target,
+                //         })
+                //     }
+                //     let echarts = echart.init(document.querySelector("#echart123"));
+                //     let option = {
+                //         tooltip: {},
+                //         legend: {
+                //             show:true,
+                //             data: [{
+                //                 name: '用户编号',
+                //                 icon: 'circle'
+                //             },
+                //                 {
+                //                     name: '交易节点',
+                //                     icon: 'circle'
+                //                 }
+                //             ]
+                //         },
+                //         animationDurationUpdate: 1500,
+                //         animationEasingUpdate: 'quinticInOut',
+                //         series: [
+                //             {
+                //                 type: 'graph',
+                //                 layout: 'none',
+                //                 symbolSize: 50,
+                //                 roam: true,
+                //                 label: {
+                //                     show: true
+                //                 },
+                //                 edgeSymbol: ['circle', 'arrow'],
+                //                 edgeSymbolSize: [4, 10],
+                //                 edgeLabel: {
+                //                     fontSize: 20
+                //                 },
+                //                 data: nodes,
+                //                 links: links,
+                //                 lineStyle: {
+                //                     opacity: 0.9,
+                //                     width: 2,
+                //                     curveness: 0
+                //                 },
+                //                 categories: [
+                //                     {
+                //                         name: '用户编号',
+                //                         icon: 'circle'
+                //                     },
+                //
+                //                     {
+                //                         name: '交易节点',
+                //                         symbol: 'circle'
+                //                     }
+                //                 ]
+                //             }
+                //         ]
+                //
+                //     };
+                //     echarts.setOption(option);
+                // }).catch(err=>{
+                //     console.log(err)
+                // })
+                activegraph(id).then(res => {
+                  console.log(id)
+                  console.log(res)
+                  let myChart = echart.init(document.querySelector("#echart123"));
 
-                    let data=res.data.data;
-                    console.log(data)
-                    let nodes=[];
-                    let links=[];
-                    for (let i = 0; i < data[0].length; i++) {
-                        nodes.push(
-                            {
-                                name:data[0][i].name,
-                                x:data[0][i].xposition,
-                                y:data[0][i].yposition,
-                                symbolSize:data[0][i].symbolsize,
-                                itemStyle:{
-                                    color:data[0][i].color
-                                }
-                            }
-                        )
+                  let nodes = res.data[0].map(item => {
+                    if (item.id !== 0)
+                      return {
+                        id: item.id.toString(),
+                        name: item.name,
+                        company: item.company,
+                        category: 1
+                      }
+                    else
+                      return {
+                        id: item.id.toString(),
+                        name: item.name,
+                        company: item.company,
+                        category: 0
+                      }
+                  })
+
+                  let links = res.data[1].map(item => {
+                    return {
+                      source: item.source.toString(),
+                      target: item.target.toString(),
+                      lineStyle: {
+                        width: parseFloat(item.weight / 500) * 1.5 + 0.5
+                      }
                     }
-                    for (let i = 0; i < data[1].length; i++){
-                        links.push({
-                            source:data[1][i].source,
-                            target:data[1][i].target,
-                        })
-                    }
-                    let echarts = echart.init(document.querySelector("#echart123"));
-                    let option = {
-                        // title: {
-                        //     text: 'Graph 简单示例'
-                        // },
-                        tooltip: {},
-                        legend: { //=========小图标，圖表控件
-                            show:true,
-                            data: [{
-                                name: '用户编号',
-                                icon: 'circle' //'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
-                                //icon:'image://./images/icon1.png'  //如果用图片img，格式为'image://+icon文件地址'，其中image::后的//不能省略
-                            },
-                                {
-                                    name: '交易节点',
-                                    icon: 'circle'
-                                }
-                            ]
+                  })
+
+                  let categories = [{name: '异常节点'}, {name: '相关节点'}]
+                  console.log(nodes)
+                  console.log(links)
+                  let option = {
+                    color: ['#ef4f4f', '#5470c6'],
+                    legend: {
+                      tooltip: {
+                        show: true
+                      }
+                    },
+                    tooltip: {
+                      show: true,
+                      formatter: function (x) {
+                        if (x.data.source)
+                          return ''
+                        else
+                          return x.data.company
+                      }
+                    },
+                    series: [
+                      {
+                        type: 'graph',
+                        layout: 'force',
+                        label: {
+                          show: true
                         },
-                        animationDurationUpdate: 1500,
-                        animationEasingUpdate: 'quinticInOut',
-                        series: [
-                            {
-                                type: 'graph',
-                                layout: 'none',
-                                symbolSize: 50,
-                                roam: true,
-                                label: {
-                                    show: true
-                                },
-                                edgeSymbol: ['circle', 'arrow'],
-                                edgeSymbolSize: [4, 10],
-                                edgeLabel: {
-                                    fontSize: 20
-                                },
-                                data: nodes,
-                                // links: [],
-                                links: links,
-                                lineStyle: {
-                                    opacity: 0.9,
-                                    width: 2,
-                                    curveness: 0
-                                },
-                                categories: [ //symbol name：用于和 legend 对应以及格式化 tooltip 的内容。 label有效
-                                    {
-                                        name: '用户编号',
-                                        icon: 'circle' //'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
-                                        //icon:'image://./images/icon1.png'  //如果用图片img，格式为'image://+icon文件地址'，其中image::后的//不能省略
-                                    },
+                        roam: true,
+                        data: nodes,
+                        links: links,
+                        zoom: 7,
+                        categories: categories,
+                        focusNodeAdjacency: true,
+                        lineStyle: {
+                          opacity: 0.9,
+                        }
+                      }
+                    ]
+                  }
 
-                                    {
-                                        name: '交易节点',
-                                        symbol: 'circle'
-                                    }
-                                ]
-                            }
-                        ]
-
-                    };
-                    echarts.setOption(option);
-                }).catch(err=>{
-                    console.log(err)
+                  myChart.setOption(option)
                 })
-             /*   this.$router.push(`/trade/acpassTask/activetaskDetail/${id}`);
-                console.log(id)*/
             },
             drawechart2(data){
               //  console.log(data)
