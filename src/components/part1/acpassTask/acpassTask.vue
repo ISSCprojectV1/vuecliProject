@@ -5,7 +5,7 @@
         多模态多粒度监管与服务模式——主被动模态与空间粒度
     </h2>
 
-        <el-button type="primary" @click="dialogFormAddInit">添加新任务</el-button>
+        <el-button type="primary" style="margin-bottom: 1rem" @click="dialogFormAddInit">添加新任务</el-button>
 
         <el-table
                 :data="tableData"
@@ -13,14 +13,13 @@
             <el-table-column
                     prop="id"
                     label="编号"
-                    width="200">
+                    width="50">
             </el-table-column>
             <el-table-column
                     prop="taskname"
                     label="任务名称"
                     width="200">
             </el-table-column>
-
             <el-table-column
                     prop="category"
                     label="监管种类"
@@ -29,22 +28,16 @@
             <el-table-column
                     prop="tasksize"
                     label="空间粒度"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="introduction"
-                    label="描述"
-                    width="200">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="regulrange"
                     label="监管范围"
-                    width="400">
+                    width="300">
             </el-table-column>
             <el-table-column
                     label="监管方式"
-
-                    width="200">
+                    width="100">
                 <template slot-scope="scope">
                     <el-button @click="gotoActive(scope.row.id)" type="text" size="small">主动</el-button>
 
