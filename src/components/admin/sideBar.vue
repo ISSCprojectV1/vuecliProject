@@ -21,7 +21,7 @@
             <el-menu-item index="/admin/menu">
                 菜单管理
             </el-menu-item >
-            <el-menu-item index="/admin/auction">
+            <el-menu-item index="/admin/auctionNew">
                 拍卖管理
             </el-menu-item >
             <el-menu-item index="/admin/score">
