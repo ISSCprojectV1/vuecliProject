@@ -2,7 +2,7 @@
 <div>
 <div class = "task-input-box">
 
-    <el-form ref="form" :model="form" label-width="130px">
+    <el-form ref="form" label-width="130px">
 
   <el-form-item label="监管任务名称">
 <el-input v-model="input" placeholder="请输入内容"></el-input>
@@ -27,8 +27,7 @@
         <el-dialog
   title="推荐的商品粒度"
   :visible.sync="commodityDialogVisible"
-  width="50%"
-  :before-close="handleClose">
+  width="50%">
   <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
    <el-table
     ref="multipleTable"
@@ -98,8 +97,7 @@
         <el-dialog
   title="推荐的空间粒度"
   :visible.sync="flatDialogVisible"
-  width="50%"
-  :before-close="handleClose">
+  width="50%">
   <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
    <el-table
     ref="multipleFlat"
@@ -173,6 +171,19 @@
     </el-col>
   </el-form-item>
 
+      <el-form-item label="任务开始时间">
+        <el-col :span="7">
+          <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;" ></el-date-picker>
+        </el-col>
+        <el-col class="line" :span="1">-</el-col>
+        <el-col :span="7">
+          <el-date-picker type="date" placeholder="选择结束日期" v-model="dateEnd" style="width: 100%;" ></el-date-picker>
+        </el-col>
+        <el-col :span="5">
+          <el-button type="primary" @click="getTimeRecommend">获取时间粒度推荐</el-button>
+        </el-col>
+      </el-form-item>
+
   <el-form-item label="是否人工分配">
     <el-col :span="4">
     <el-switch v-model="humanUse"
@@ -193,19 +204,6 @@
     </el-form-item>
     <!--监管周期-->
 
-<el-form-item label="任务开始时间">
-    <el-col :span="7">
-      <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;" ></el-date-picker>
-    </el-col>
-    <el-col class="line" :span="1">-</el-col>
-    <el-col :span="7">
-      <el-date-picker type="date" placeholder="选择结束日期" v-model="dateEnd" style="width: 100%;" ></el-date-picker>
-    </el-col>
-    <el-col :span="5">
-       <el-button type="primary" @click="getTimeRecommend">获取时间粒度推荐</el-button>
-    </el-col>
-  </el-form-item>
-
      <el-form-item label="工作时间">
 <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
    </el-form-item>
@@ -214,10 +212,9 @@
  <el-dialog
   title="创建表单"
   :visible.sync="formDialogVisible"
-  width="50%"
-  :before-close="handleClose">
+  width="50%">
   <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
-   <el-form :label-position="left" label-width="120px">
+   <el-form label-position="left" label-width="120px">
   <el-form-item label="监管商品类别">
         {{commodityName}}
   </el-form-item>
@@ -341,9 +338,9 @@ data() {
       showStart:"",
       showEnd:"",
 
-        // 查询主动监管名单
-        dialogActiveVisible: false,
-        valueRisk: '',
+      // 查询主动监管名单
+      dialogActiveVisible: false,
+      valueRisk: '',
       valueMean: '',
       formActiveList: [],
     }
@@ -681,12 +678,10 @@ cleanForm(){
 
     // 主动监管名单部分
     getActiveList() {
-      getRiskVM().then(res => {
-        this.valueRisk = res.data.riskvalue
-        this.valueMean = res.data.riskmean
-      })
-      getAct().then(res => {
-        this.formActiveList = res.data
+      getAct(this.commodityName, this.flatName).then(res => {
+        this.valueRisk = res.data[0][0].riskvalue
+        this.valueMean = res.data[0][0].riskmean
+        this.formActiveList = res.data[1]
       })
       this.dialogActiveVisible = true
     }

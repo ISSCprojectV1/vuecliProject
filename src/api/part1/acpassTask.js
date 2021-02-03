@@ -139,16 +139,13 @@ export function riskAlarmService() {
     })
 }
 
-export function getRiskVM() {
+export function getAct(category, platform) {
     return request({
         method: 'GET',
-        url: '/getRiskVM'
-    })
-}
-
-export function getAct() {
-    return request({
-        method: 'GET',
-        url: '/getAct'
+        params: {
+          category: category,
+          platform: platform
+        },
+        url: '/getAct/'
     })
 }
