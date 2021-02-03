@@ -1,11 +1,17 @@
 <template>
 <div>
-
+  <el-dialog title="添加新任务"
+             :visible.sync="dialogTableVisible" center :append-to-body='true'
+             :lock-scroll="false" width="30%"
+             :close-on-click-modal="false">
+    <taskInputFormChange :taskin="taskin"></taskInputFormChange>
+  </el-dialog>
   <div>
     <el-button type="primary" @click="allocateTask" style="margin-left:15px;margin-right:14px">执行分配任务</el-button>
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
     <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
   </div>
+
   <div id="echart1">
 
     * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
@@ -49,6 +55,15 @@
                 min-width="180" porp="model">
 
         </el-table-column>
+
+        <el-table-column
+                label="模态粒度补充"
+                fixed="right"
+                min-width="180">
+          <template slot-scope="scope">
+            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -62,15 +77,17 @@
 </template>
 
 <script>
+
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {taskQuery,teamform,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
+import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
 
 export default {
   name: "taskQueryFlowChart",
   components: {
     method1,
-
+    taskInputFormChange
   },
   mounted () {
 
@@ -82,6 +99,7 @@ export default {
   },
   data() {
     return {
+
       dormitory: [],
       currentPage:1,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
@@ -90,10 +108,25 @@ export default {
       pageSizes:[5,10],
       // 默认每页显示的条数（可修改）
       PageSize:10,
+      dialogTableVisible: false,
+      taskin: {
+        changeflag:
+        Number.NEGATIVE_INFINITY
+      },
     }
   },
   methods: {
 
+    changetask(scope) {
+      this.taskin = scope.row
+      this.taskin.changeflag = this.taskin.id;
+
+      this.addNewTask1()
+    },
+    addNewTask1() {
+      this.dialogTableVisible = true;
+      console.log("aaa")
+    },
     getData1(){
       // 获取表格数据
       console.log("获取表格数据")
