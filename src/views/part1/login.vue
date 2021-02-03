@@ -35,8 +35,8 @@
 
 <script>
 
-import {setToken,getToken} from "@/utils/auth"
-
+import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
+import {changetimeadvise, taskQuery,spaceResult,taskQueryById,getRolenameById} from "@/api/part1/Multimodal-multigranularity";
 
 
   export default {
@@ -76,8 +76,38 @@ import {setToken,getToken} from "@/utils/auth"
               password:this.form.password
             }
             this.$store.dispatch('login',params).then((res)=>{
-              setToken(res.data.userid)
-              // console.log("登陆成功")
+           setToken(res.data.userid)
+              console.log(res.data.userid)
+               var url2='/getroles/'+res.data.userid
+            getRolenameById(url2).then(
+                    function(message){
+                      console.log(message);
+                      console.log(message.data)
+
+                      console.log(message.data.roleList)
+                      if(!message.data.roleList)
+                        return
+                      for(var i=0;i<message.data.roleList.length;i++)
+                      {
+                        console.log(message.data.roleList[i])
+                        if(message.data.roleList[i].roleName=='user')
+                          setUserTrue("true")
+                        if(message.data.roleList[i].roleName=='admin')
+                          setAdminTrue("true")
+                      }
+                      console.log(getUserTrue())
+                      console.log(getAdminTrue())
+                    }
+
+            ).catch( function(message){
+                console.log(message);
+              })
+
+        //      console.log(rolelistdata.data)
+          //    console.log(rolelistdata.data.rolelist)
+            //   for(var i=0;i<rolelistdata.data.rolelist.length;i++)
+              //   console.log(rolelistdata.data)
+               // console.log("登陆成功")
               // console.log(res)
               if (this.form.role === "admin") {
                 this.$router.push('/admin')

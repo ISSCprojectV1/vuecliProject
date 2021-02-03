@@ -81,6 +81,15 @@ export function taskQuery() {
         })
   }
 
+// 获取角色名称
+export function getRolenameById(url) {
+  console.log("获取getRolenameById数据 ")
+  return request({
+    url: url,
+    method: 'get'
+  })
+}
+
 export function taskQueryById(url) {
   return request({
     method: 'GET',
