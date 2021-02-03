@@ -1,8 +1,8 @@
 <template>
     <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 10px">
-        <el-breadcrumb-item v-for="urlPath in currentUrl" :key="urlPath">{{urlPath}}</el-breadcrumb-item>
-        <el-button @click="logOut" >登出</el-button>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item v-for="urlPath in currentUrl" :key="urlPath" style="margin-top: 15px">{{urlPath}}</el-breadcrumb-item>
+        <el-button @click="logOut" style="margin-top: 2px">登出</el-button>
     </el-breadcrumb>
     </div>
 </template>
@@ -20,7 +20,7 @@
                     "user":"用户管理",
                     "role":"角色管理",
                     "menu":"菜单管理",
-                    "auction":"拍卖管理"
+                    "auctionNew":"拍卖管理"
                 }
             }
         },
