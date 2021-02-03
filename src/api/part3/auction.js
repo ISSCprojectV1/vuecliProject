@@ -52,6 +52,10 @@ export function getAuctions(currentPage,pageSize) {
     return request.get('/getAuctions/'+currentPage+'/'+pageSize);
 }
 
+export function getAuctionsNew(currentPage, pageSize) {
+    return request.get('/getAuctionsNew/' + currentPage + '/' + pageSize);
+}
+
 export function getAuction(auctionId) {
     return request.get('/getAuction/'+auctionId);
 }
@@ -62,6 +66,10 @@ export function getAuctionNew(auctionId) {
 
 export function doAuction(auctionId,price) {
     return request.get('/doAuction/'+auctionId+'/'+price);
+}
+
+export function doAuctionNew(auctionId, price, quantity) {
+    return request.get('/doAuctionNew/' + auctionId + '/' + price + '/' + quantity);
 }
 
 export function getAuctionNames() {
