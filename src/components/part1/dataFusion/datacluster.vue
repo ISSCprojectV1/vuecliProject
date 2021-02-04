@@ -5,8 +5,8 @@
             <el-col :span="8">
                 <el-form>
                     <el-form-item label="异常交易节点检索">
-                        <el-input v-model="company"></el-input>
-                        <el-button @click="lookupcompany(company)">查找</el-button>
+                        <el-input v-model="queryform.company"></el-input>
+                        <el-button @click="lookupcompany(queryform.company)">查找</el-button>
                     </el-form-item>
 
 
@@ -17,7 +17,7 @@
 
         </el-row>
         <el-table
-                :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                :data="tableData"
                 style="width: 100%">
             <el-table-column
                     prop="id"
@@ -25,12 +25,12 @@
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="buyername"
+                    prop="name"
                     label="交易主体名称"
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="sellername"
+                    prop="number"
                     label="与主体相似度"
                     min-width="180">
             </el-table-column>
@@ -69,67 +69,43 @@
                 this.currentPage = val;
             },
 
-            drawechart(data){
-                let echarts = echart.init(document.querySelector("#echart1"));
-                let option={
-                    title: {
-                        text: '交易数据',
-                        //subtext: '纯属虚构',
-                        left: 'center'
-                    },
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: '{a} <br/>{b} : {c} ({d}%)'
-                    },
-                    legend: {
-                        orient: 'vertical',
-                        left: 'left',
-                        data: data[0]
-                    },
-                    series: [
-                        {
-                            name: '访问来源',
-                            type: 'pie',
-                            radius: '55%',
-                            center: ['50%', '60%'],
-                            data: data[1],
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
-                        }
-                    ]
-                };
-                echarts.setOption(option);
-            },
+
             lookupcompany(name){
                 if(name=="内蒙古魔筷网络科技有限公司"
                 )
-                    console.log()
-                companydataname(name).then(res=>{
-                    this.companyData = res.data.data
-                    multibyname(this.companyData.name).then(res=>{
-                        this.tableData = res.data.data
-                        console.log( document.getElementsByName("pingfen")[0].innerText)
-                        document.getElementsByName("pingfen")[0].innerText="信用评分：80"
-                        console.log( document.getElementsByName("pingji")[0].innerText)
-                        document.getElementsByName("pingji")[0].innerText="信用评级：正常"
-                        this.total=this.tableData.length
-                        this.yeshu=this.total/this.pageSize
-                    }).catch(err=>{
-                        console.log(err)
-                    })
-                    multidatagraph(this.companyData.name).then(res=>{
-                        this.drawechart(res.data.data)
-                    }).catch(err=>{
-                        console.log(err)
-                    })
-                }).catch(err=>{
-                    console.log(err)
-                });
+                {
+                    console.log("内蒙古魔筷网络科技有限公司")
+
+                    var self = this;
+
+                    var b_temp = new Array;
+
+                    Object.assign(b_temp , self.tableData)
+                    var json= [
+                        {"id":21,
+                            "name":"乌兰浩特市尚能再生能源有限公司",
+                            "number":"0.91"
+                        },{"id":22,
+                            "name":"内蒙古通源起航商贸有限公司",
+                            "number":"0.83"
+                        },
+                        {"id":23,
+                            "name":"内蒙古鑫傲通锐运输有限公司",
+                            "number":"0.65"
+                        },{"id":24,
+                            "name":"内蒙古申益贸易有限责任公司",
+                            "number":"0.33"
+                        },{"id":25,
+                            "name":"内蒙古同泰信息科技有限公司",
+                            "number":"0.12"
+                        }]
+                    b_temp=json
+                    self.tableData=b_temp
+
+                    console.log(this.tableData)
+                }
+else this.tableData=[]
+
 
             },
             lookuptaxnum(name){
