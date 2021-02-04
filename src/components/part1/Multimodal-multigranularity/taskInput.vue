@@ -183,7 +183,6 @@
     <el-switch v-model="humanUse"
     active-text="人工分配"
     ></el-switch>
-    <el-button type="text">人工分配情况</el-button>
     </el-col>
   </el-form-item>
 
@@ -248,7 +247,7 @@
 
   <span slot="footer" class="dialog-footer">
     <el-button @click="formDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="flatDialogTrue">确 定</el-button>
+    <el-button type="primary" @click="formDialogTrue">确 定</el-button>
   </span>
 </el-dialog>
 <el-button type="info" @click="abortForm">取消创建</el-button>
@@ -279,6 +278,7 @@
 <script>
 import {taskInput,bourseget,getcommodityRelationdetails2,getcommodityTimeadvise2,getplatform,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";
 import {getAct, getRiskVM} from "@/api/part1/acpassTask";
+
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
 const commidityOptions =['a','b','c']
 export default {
@@ -492,6 +492,16 @@ methods:{
 
         // @flatDialogTrue---确定推荐该粒度
         flatDialogTrue(){
+          let arr=[];
+          for(let i=0;i<this.flatSelection.length;i++){
+            arr.push(this.flatSelection[i].flat_name)
+          }
+          this.flatTags = arr;
+          this.flatDialogVisible = false;
+        },
+
+        // @formDialogTrue---新建任务
+        formDialogTrue(){
           this.postData();
           this.formDialogVisible = false;
            this.$message({
