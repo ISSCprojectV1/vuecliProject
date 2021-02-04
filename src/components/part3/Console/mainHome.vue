@@ -14,12 +14,7 @@
             <ul>
                 <li>
                     <span>
-                        <i class="el-icon-upload"></i><el-link @click="uploadDialog">上传资源弹框</el-link>
-                    </span>
-                </li>
-                <li>
-                    <span>
-                        <i class="el-icon-upload"></i><el-link @click="gotoupload">上传资源</el-link>
+                        <i class="el-icon-upload"></i><el-link @click="uploadDialog">上传资源</el-link>
                     </span>
                 </li>
                 <li>
