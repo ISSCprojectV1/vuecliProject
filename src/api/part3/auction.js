@@ -76,6 +76,10 @@ export function getAuctionNames() {
     return request.get('/getAuctionNames');
 }
 
+export function getAuctionNamesNew() {
+    return request.get('/getAuctionNamesNew');
+}
+
 export function getAuctionRule() {
     return request.get('/getAuctionRule');
 }

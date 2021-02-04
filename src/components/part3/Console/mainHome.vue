@@ -73,7 +73,7 @@
 <script>
     import profileBar from "@/components/part3/Download/profileBar";
     import announcement from "@/components/part3/Common/announcement";
-    import {getAuctionNames} from "@/api/part3/auction";
+    import {getAuctionNames, getAuctionNamesNew} from "@/api/part3/auction";
     export default {
         name: "mainHome",
         components:{
@@ -115,7 +115,7 @@
                     this.$router.push('/console/uploadResources')
                 },
                 getAuctions(){
-                    getAuctionNames().then(res=>{
+                    getAuctionNamesNew().then(res=>{
                         this.auctions = res.data.auctionNames;
                         console.log(res.data)
                     }).catch(err=>{
