@@ -5,3 +5,4 @@
 [1219/000858.679:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统锟揭诧拷锟斤拷指锟斤拷锟斤拷路锟斤拷锟斤拷 (0x3)
 [1219/103659.921:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统锟揭诧拷锟斤拷指锟斤拷锟斤拷路锟斤拷锟斤拷 (0x3)
 [0116/113653.193:ERROR:directory_reader_win.cc(43)] FindFirstFile: 系统找不到指定的路径。 (0x3)
+[0204/153820.647:ERROR:registration_protocol_win.cc(103)] CreateFile: 系统找不到指定的文件。 (0x2)
