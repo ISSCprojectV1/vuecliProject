@@ -35,10 +35,11 @@
                 </el-form-item>
                 <el-form-item label="任务状态" >
                     <el-select v-model="workStatus" placeholder="请选择任务优先级" >
-                        <el-option label="0" value="0"></el-option>
-                        <el-option label="1" value="1"></el-option>
-                        <el-option label="2" value="2"></el-option>
-                        <el-option label="3" value="3"></el-option>
+                        <el-option label="任务未分配" value=""></el-option>
+                        <el-option label="任务未执行" value="0"></el-option>
+                        <el-option label="任务已执行" value="1"></el-option>
+                        <el-option label="任务异常" value="2"></el-option>
+
 
 
                     </el-select>
