@@ -59,6 +59,7 @@
                 <el-form-item label="时间" :label-width="formLabelWidth">
                     <el-date-picker
                         v-model="formAddAuction.time"
+
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
@@ -299,6 +300,7 @@ export default {
 
         },
         dialogFormUpdateConfirm(data) {
+            console.log(    data.time[0],)
             let params = {
                 id: data.id,
                 name: data.name,
@@ -333,7 +335,9 @@ export default {
 
         },
         dialogFormAddConfirm(data) {
+            console.log(data.time[0])
             this.dialogFormAddVisible = false;
+            console.log(timeForAuction(data.time[0]))
             let params = {
                 name: data.name,
                 description: data.description,

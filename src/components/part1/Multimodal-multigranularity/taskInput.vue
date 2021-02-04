@@ -2,26 +2,18 @@
 <div>
 <div class = "task-input-box">
 
-    <el-form ref="form" label-width="130px">
+   <!--输入任务表单-->
+    <el-form ref="form" :model="form" label-width="130px">
 
   <el-form-item label="监管任务名称">
 <el-input v-model="input" placeholder="请输入内容"></el-input>
    </el-form-item>
 
    <!--选择监管商品类别，获得推荐的商品粒度，选择是否加入监管-->
-  <el-form-item label="监管商品类别">
+  <el-form-item label="监管商品种类">
     <el-col :span="13">
-  <el-select v-model="commodityName" placeholder="请选择商品名称" style="width: 100%" @change="getFlatList">
-            <el-option label="铝矿石" value="铝矿石"></el-option>
-            <el-option label="小麦" value="小麦"></el-option>
-            <el-option label="大豆" value="大豆"></el-option>
-            <el-option label="焦炭" value="焦炭"></el-option>
-            <el-option label="动力煤" value="动力煤"></el-option>
-            <el-option label="甲醇" value="甲醇"></el-option>
-            <el-option label="肥料" value="肥料"></el-option>
-            <el-option label="螺纹钢" value="螺纹钢"></el-option>
-        </el-select>
-    </el-col>
+<el-input v-model="commodityName" placeholder="请输入内容"></el-input>
+ </el-col>
   <el-col :span="5">
         <el-button type="primary" @click="getCommodity">获取商品粒度推荐</el-button>
         <el-dialog
@@ -62,7 +54,7 @@
   </el-col>
   </el-form-item>
 
-  <!--当前选定的商品类别-->
+  <!--当前选定的追加商品类别-->
 
   <el-form-item label="追加监管商品类别">
       <el-col :span="4">
@@ -77,7 +69,7 @@
       </el-col>
   </el-form-item>
 
-  <!--监管任务空间粒度-->
+  <!--监管任务空间粒度，根据选定的商品种类获得平台列表-->
   <!--选择监管空间粒度，获得推荐的空间粒度，选择是否加入监管-->
   <el-form-item label="监管交易平台">
     <el-col :span="13">
@@ -87,7 +79,9 @@
   v-for="flat in flatList"
   :key="flat.flatName"
   :label="flat.flatName"
-  :value="flat.flatName">
+  :value="flat.flatName"
+   @change="getFlatList"
+  >
    </el-option>
   </el-select>
     </el-col>
@@ -189,6 +183,7 @@
     <el-switch v-model="humanUse"
     active-text="人工分配"
     ></el-switch>
+    <el-button type="text">人工分配情况</el-button>
     </el-col>
   </el-form-item>
 
@@ -210,7 +205,7 @@
 
 <el-button type="success" @click="creatTask">立即创建</el-button>
  <el-dialog
-  title="创建表单"
+  title="确认创建任务"
   :visible.sync="formDialogVisible"
   width="50%">
   <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
@@ -241,10 +236,10 @@
     {{humanUse?"人工分配":"机器分配"}}，{{tradeuser?"主动监管":"被动监管"}}
   </el-form-item>
    <el-form-item label="监管周期开始">
-     {{showStart}}
+     {{dateStart}}
   </el-form-item>
   <el-form-item label="监管周期结束">
-     {{showEnd}}
+     {{dateEnd}}
   </el-form-item>
   <el-form-item label="工作时间">
     {{workingTime}}
@@ -252,7 +247,7 @@
 </el-form>
 
   <span slot="footer" class="dialog-footer">
-    <el-button @click="flatDialogVisible = false">取 消</el-button>
+    <el-button @click="formDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="flatDialogTrue">确 定</el-button>
   </span>
 </el-dialog>
@@ -282,10 +277,8 @@
 </div>
 </template>>
 <script>
-
 import {taskInput,bourseget,getcommodityRelationdetails2,getcommodityTimeadvise2,getplatform,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";
 import {getAct, getRiskVM} from "@/api/part1/acpassTask";
-
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
 const commidityOptions =['a','b','c']
 export default {
@@ -328,7 +321,7 @@ data() {
       dateEnd2: '',
       workingTime:'',
       timeadvise:'',
-      content:'',
+      content:'set',
       tradeuser:false,
 
       // 提交新任务
@@ -432,6 +425,7 @@ methods:{
               console.log(error);
               });
               this.tableData = result;
+              this.getFlatList();
               },
         // @commodityDialogTrue---确定推荐该粒度
         commodityDialogTrue(){
@@ -498,12 +492,12 @@ methods:{
 
         // @flatDialogTrue---确定推荐该粒度
         flatDialogTrue(){
-          let arr=[];
-          for(let i=0;i<this.flatSelection.length;i++){
-            arr.push(this.flatSelection[i].flat_name)
-          }
-          this.flatTags = arr;
-          this.flatDialogVisible = false;
+          this.postData();
+          this.formDialogVisible = false;
+           this.$message({
+          message: '恭喜你，任务提交成功',
+          type: 'success'
+        });
         },
 
         // @flatSelectionChange---辅助推荐空间粒度表格多选
@@ -546,6 +540,7 @@ methods:{
             result = arr[0].timeadvise;
             console.log("result----111:",result);
             // 弹窗提醒
+            this.timeadvise = result;
             let message = com_name+"推荐时间粒度为："+result+"天"
             this.$message({
               message: message,
@@ -568,10 +563,6 @@ methods:{
     },
     // 提交创建的新任务
     creatTask(){
-      let month = parseInt(this.dateStart.getMonth())+1;
-      this.showStart = this.dateStart.getFullYear()+'-'+ month +'-'+this.dateStart.getDate();
-      month = parseInt(this.dateEnd.getMonth())+1;
-      this.showEnd = this.dateEnd.getFullYear()+'-'+ month +'-'+this.dateEnd.getDate();
       this.formDialogVisible = true;
     },
 postAddress(){
@@ -636,22 +627,21 @@ console.log("发送请求前")
 
 
 
-  var data = { 
-  "name":this.input,  
-  "priority":this.priority,
-  "humanUse":this.humanUse,  //
-  "startTime":startData,//  
-  "endTime":endData,//
-  "workingTime":this.workingTime,//
- "timeadvise":this.timeadvise,
-  "content":this.content,
-      "tradeuser":this.tradeuser,
-      "commodityName":this.commodityName
-
+  var inputData = { 
+  "name":this.input,
+"priority":this.priority,
+"startTime":1587807522386,
+"endTime":1588404415698,
+"humanUse":this.humanUse,
+"workingTime":this.workingTime,
+"timeadvise":this.timeadvise,
+"tradeuser":this.tradeuser,
+"content":1587807522386,
+"commodityName":this.commodityName
   };
-console.log(data);
-  taskInput(data).then(function (response) {
-console.log(response)
+console.log(inputData);
+  taskInput(inputData).then(function (response) {
+
   })
   .catch(function (error) {
     console.log(error);

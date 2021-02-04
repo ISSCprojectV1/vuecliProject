@@ -77,10 +77,24 @@ export function handleOption(rawData){
 export function timeForAuction(time){
     let y = time.getFullYear();
     let m = time.getMonth()+1;
+    if(m<10)
+        m='0'+m
+
     let d = time.getDate();
+    if(d<10)
+        d='0'+d
     let h = time.getHours();
+if(h<10)
+    h='0'+h
+    console.log(h)
     let min = time.getMinutes();
+    if(min<10)
+        min='0'+min
+    console.log(min)
     let s = time.getSeconds();
-    let result = y+'-'+m+'-'+d+' '+h+':'+min+':'+s;
+    if(s<10)
+        s='0'+s
+    console.log(s)
+    let result = y+'-'+m+'-'+d+'T'+h+':'+min+':'+s+'.000';
     return result;
 }
