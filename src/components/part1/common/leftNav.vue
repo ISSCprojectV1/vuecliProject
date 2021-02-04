@@ -165,6 +165,13 @@
                   title:"数据查询"
                 }
               },
+              {
+                path:"/trade/dataFusion/datacluster",
+                component: () => import("@/components/part1/dataFusion/datacluster"),
+                meta:{
+                  title:"关联交易主体发现"
+                }
+              },
             ],
             path: "/trade/dataFusion"
           },

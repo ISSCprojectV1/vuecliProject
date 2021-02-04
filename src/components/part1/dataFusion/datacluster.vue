@@ -1,45 +1,20 @@
 <template>
     <div id="diceng">
-        <h2>数据查询</h2>
+        <h2>关联交易主体发现</h2>
         <el-row>
             <el-col :span="8">
                 <el-form>
-                    <el-form-item label="交易商名称检索">
-                        <el-input v-model="queryform.company"></el-input>
-                        <el-button @click="lookupcompany(queryform.company)">查找</el-button>
+                    <el-form-item label="异常交易节点检索">
+                        <el-input v-model="company"></el-input>
+                        <el-button @click="lookupcompany(company)">查找</el-button>
                     </el-form-item>
-                    <el-form-item label="交易商社会统一信用代码检索">
-                        <el-input v-model="queryform.taxnum"></el-input>
-                        <el-button @click="lookuptaxnum(queryform.taxnum)">查找</el-button>
-                    </el-form-item>
-                    <el-form-item label="" name="pingji" style="text-align: left">
 
 
-                    </el-form-item>
-                    <el-form-item label="" name="pingfen" style="text-align: left">
-
-
-                    </el-form-item>
                 </el-form>
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>公司简介</span>
-                    </div>
-                    <div class="text item">
-                        {{'公司名称: ' + companyData.name }}
-                    </div>
-                    <div class="text item">
-                        {{'社会统一信用代码: ' + companyData.taxnumer }}
-                    </div>
-                    <div class="text item">
-                        {{'法人: ' + companyData.legaler}}
-                    </div>
-                </el-card>
+
 
             </el-col>
-            <el-col :span="16">
-                <div id="echart1" style="width: 1000px;height: 500px"></div>
-            </el-col>
+
         </el-row>
         <el-table
                 :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -51,59 +26,16 @@
             </el-table-column>
             <el-table-column
                     prop="buyername"
-                    label="买方"
+                    label="交易主体名称"
                     min-width="180">
             </el-table-column>
             <el-table-column
                     prop="sellername"
-                    label="卖方"
+                    label="与主体相似度"
                     min-width="180">
             </el-table-column>
-            <el-table-column
-                    prop="category"
-                    label="商品"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="price"
-                    label="价格"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="amount"
-                    label="数量"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="time"
-                    label="日期"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="belong"
-                    label="交易平台"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transport[0]"
-                    label="始发地"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transport[1]"
-                    label="中转站"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transport[2]"
-                    label="目的地"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transportplatform"
-                    label="物流平台"
-                    min-width="180">
-            </el-table-column>
+
+
         </el-table>
         <div class="block" style="margin-top:15px;">
             <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[1,5,10,20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="this.yeshu">
@@ -117,15 +49,15 @@
     import {companydataname, multibyname, multidatagraph} from "@/api/part1/dataFusion";
 
     export default {
-        name: "dataquery",
-      mounted() {
-        let tiankong= document.getElementById("diceng");
-        tiankong.style.height=window.innerHeight+"px"
+        name: "datacluster",
+        mounted() {
+            let tiankong= document.getElementById("diceng");
+            tiankong.style.height=window.innerHeight+"px"
 
-        console.log(tiankong.style.height)
-        let announcement=document.getElementById("announcement");
-        console.log(tiankong)
-      },
+            console.log(tiankong.style.height)
+            let announcement=document.getElementById("announcement");
+            console.log(tiankong)
+        },
         methods:{
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -174,6 +106,9 @@
                 echarts.setOption(option);
             },
             lookupcompany(name){
+                if(name=="内蒙古魔筷网络科技有限公司"
+                )
+                    console.log()
                 companydataname(name).then(res=>{
                     this.companyData = res.data.data
                     multibyname(this.companyData.name).then(res=>{

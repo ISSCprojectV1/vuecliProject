@@ -7,7 +7,6 @@ export function spaceResult() {
   return request({
     url: '/spaceresult',
     method: 'get',
-
   })
 }
 // 新建任务

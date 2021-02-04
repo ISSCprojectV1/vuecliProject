@@ -95,6 +95,6 @@ if(h<10)
     if(s<10)
         s='0'+s
     console.log(s)
-    let result = y+'-'+m+'-'+d+'T'+h+':'+min+':'+s+'.000';
+    let result = y+'-'+m+'-'+d+' '+h+':'+min+':'+s;
     return result;
 }

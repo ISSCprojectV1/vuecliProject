@@ -84,6 +84,13 @@ let routes = [
                 }
             },
             {
+                path:"/trade/dataFusion/datacluster",
+                component: () => import("@/components/part1/dataFusion/datacluster"),
+                meta:{
+                    title:"关联交易主体发现"
+                }
+            },
+            {
                 path:"/trade/relationAnalysis/relationQuery",
                 component: () => import("@/components/part1/relationAnalysis/relationQuery"),
                 meta:{
