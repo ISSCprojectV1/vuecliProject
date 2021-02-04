@@ -98,11 +98,11 @@ export function activetradegraph(id) {
     })
 }
 
-export function activegraph(id) {
+export function activegraph(company) {
     return request({
         method: 'GET',
         params: {
-            id: id
+            company: company
         },
         url: '/activegraph'
     })
@@ -147,5 +147,29 @@ export function getAct(category, platform) {
           platform: platform
         },
         url: '/getAct/'
+    })
+}
+
+export function getActiveGroup(taskId, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            taskid: taskId,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getActiveGroup/'
+    })
+}
+
+export function getActiveCompanyDetail(company, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            company: company,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getActiveCompanyDetail/'
     })
 }
