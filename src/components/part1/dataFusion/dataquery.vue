@@ -12,6 +12,14 @@
                         <el-input v-model="queryform.taxnum"></el-input>
                         <el-button @click="lookuptaxnum(queryform.taxnum)">查找</el-button>
                     </el-form-item>
+                    <el-form-item label="" name="pingji" style="text-align: left">
+
+
+                    </el-form-item>
+                    <el-form-item label="" name="pingfen" style="text-align: left">
+
+
+                    </el-form-item>
                 </el-form>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
@@ -27,6 +35,7 @@
                         {{'法人: ' + companyData.legaler}}
                     </div>
                 </el-card>
+
             </el-col>
             <el-col :span="16">
                 <div id="echart1" style="width: 1000px;height: 500px"></div>
@@ -169,7 +178,10 @@
                     this.companyData = res.data.data
                     multibyname(this.companyData.name).then(res=>{
                         this.tableData = res.data.data
-
+                        console.log( document.getElementsByName("pingfen")[0].innerText)
+                        document.getElementsByName("pingfen")[0].innerText="信用评分：80"
+                        console.log( document.getElementsByName("pingji")[0].innerText)
+                        document.getElementsByName("pingji")[0].innerText="信用评级：正常"
                         this.total=this.tableData.length
                         this.yeshu=this.total/this.pageSize
                     }).catch(err=>{
