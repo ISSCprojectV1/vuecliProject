@@ -147,6 +147,7 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
                       message: '竞价成功',
                       type: 'success'
                   });
+                  this.dialogFormVisible = false;
                   // getAuctionNew(id).then(res=>{
                   //     this.resources[id-1].updatedPrice = res.data.updatedPrice
                   //     this.resource.updatedPrice = res.data.updatedPrice
