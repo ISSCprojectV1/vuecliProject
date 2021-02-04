@@ -5,7 +5,7 @@ import menu from "@/components/admin/menu";
 import auction from "@/components/admin/auctionNew";
 import data from "@/components/admin/data";
 import score from "@/components/admin/score";
-
+import auctionAdd from "@/components/admin/auctionAdd";
 
 let routes = [{
     path:'/admin',
@@ -14,6 +14,10 @@ let routes = [{
         {
             path:'/admin/user',
             component:user
+        },
+        {
+            path:'/admin/auctionAdd',
+            component:auctionAdd
         },
         {
             path:'/admin/role',

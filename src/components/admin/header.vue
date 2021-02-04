@@ -20,7 +20,8 @@
                     "user":"用户管理",
                     "role":"角色管理",
                     "menu":"菜单管理",
-                    "auctionNew":"拍卖管理"
+                    "auctionNew":"拍卖管理",
+             "auctionAdd":"新增拍卖"
                 }
             }
         },

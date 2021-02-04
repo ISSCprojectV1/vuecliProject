@@ -21,6 +21,9 @@
             <el-menu-item index="/admin/menu">
                 菜单管理
             </el-menu-item >
+            <el-menu-item index="/admin/auctionAdd">
+             新建拍卖
+            </el-menu-item >
             <el-menu-item index="/admin/auctionNew">
                 拍卖管理
             </el-menu-item >
