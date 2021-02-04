@@ -277,7 +277,6 @@
 </div>
 </template>>
 <script>
-    import getAct from "@/api/part1/acpassTask";
 import {taskInput,bourseget,getcommodityRelationdetails2,getcommodityTimeadvise2,getplatform,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";
 import {getAct, getRiskVM} from "@/api/part1/acpassTask";
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
