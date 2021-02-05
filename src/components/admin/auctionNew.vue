@@ -305,8 +305,8 @@ export default {
                 id: data.id,
                 name: data.name,
                 description: data.description,
-                startTime:  timeForAuction(data.time[0]),
-                endTime:   timeForAuction(data.time[1]),
+                startTime:  data.time[0],
+                endTime:   data.time[1],
                 status: data.status,
             }
             this.dialogFormUpdateVisible = false
@@ -341,8 +341,8 @@ export default {
             let params = {
                 name: data.name,
                 description: data.description,
-                startTime: timeForAuction(data.time[0]),
-                endTime: timeForAuction(data.time[1]),
+                startTime: data.time[0],
+                endTime: data.time[1],
                 status: data.status,
             }
             addAuctionNew(params).then(res => {
