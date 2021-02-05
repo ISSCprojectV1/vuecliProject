@@ -10,7 +10,7 @@
                 <el-tag style="margin-bottom: 1rem">空白表示使用主动模态未发现其他异常</el-tag>
 
               <el-container style="width: 100%">
-                <el-aside style="width: 550px">
+                <el-aside style="width: 580px">
                   <el-table :data="tableData1">
                     <el-table-column
                         prop="company"
@@ -27,23 +27,24 @@
                         label="异常值"
                         width="70">
                       <template slot-scope="scope">
-                        <span>{{scope.row.abnomalvalue.toFixed(3)}}</span>
+                        <span>{{(scope.row.abnomalvalue)!='NaN'?scope.row.abnomalvalue.toFixed(3):"无"}}</span>
                       </template>
                     </el-table-column>
                       <el-table-column
-                              prop="category"
+
                               label="信用等级"
-                              width="80">
+                              width="80">正常
                       </el-table-column>
+
                       <el-table-column
-                              prop="category"
+
                               label="信用评分"
-                              width="80">
+                              width="80">80
                       </el-table-column>
                       <el-table-column
                         label="详细信息"
                         fixed="right"
-                        width="100">
+                        width="130">
                           <template slot-scope="scope">
                               <el-button @click="gotoDetail(scope.row.company)" type="text" size="small">详情</el-button>
                               <el-button @click="gotoTable(scope.row.company)" type="text" size="small">表格</el-button>
@@ -229,7 +230,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
     import echart from "echarts";
     export default {
         name: "activetask",
-
+/**/
         created(){
             const id = this.$router.currentRoute.params.id;
             this.Activetradegroup(id,1,10);
