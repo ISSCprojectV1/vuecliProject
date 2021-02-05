@@ -59,9 +59,10 @@
         <el-table-column
                 label="模态粒度补充"
                 fixed="right"
-                min-width="180">
+                min-width="180"
+            >
           <template slot-scope="scope">
-            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
+            <el-button @click="changetask(scope)" type="text" size="small"  >属性修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -124,6 +125,7 @@ export default {
       this.addNewTask1()
     },
     addNewTask1() {
+
       this.dialogTableVisible = true;
       console.log("aaa")
     },
