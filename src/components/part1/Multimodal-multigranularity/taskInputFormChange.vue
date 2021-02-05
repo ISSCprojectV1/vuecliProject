@@ -10,8 +10,8 @@
                     <el-input v-model="input" placeholder="请输入内容"></el-input>
                 </el-form-item>
 
-                <el-form-item label="监管任务优先级">
-                    <el-select v-model="priority" placeholder="请选择任务优先级" v-if="this.admintrue">
+                <el-form-item label="监管任务优先级" v-if="this.admintrue">
+                    <el-select v-model="priority" placeholder="请选择任务优先级" >
                         <el-option label="级别一" value="1"></el-option>
                         <el-option label="级别二" value="2"></el-option>
                         <el-option label="级别三" value="3"></el-option>
@@ -34,13 +34,11 @@
                     <el-input v-model="operatorName" placeholder="请输入workingTime"></el-input>
                 </el-form-item>
                 <el-form-item label="任务状态" >
-                    <el-select v-model="workStatus" placeholder="请选择任务优先级" >
-                        <el-option label="任务未分配" value=""></el-option>
+                    <el-select v-model="workStatus" placeholder="请选择任务状态" >
+   
                         <el-option label="任务未执行" value="0"></el-option>
                         <el-option label="任务已执行" value="1"></el-option>
                         <el-option label="任务异常" value="2"></el-option>
-
-
 
                     </el-select>
                 </el-form-item>
@@ -143,6 +141,7 @@
             // this.content=this.taskin.content+"\r\n"+"aaa"
             this.content=this.taskin.content
             this.operatorName=this.taskin.operatorName
+            console.log(this.taskin.workStatus)
             this.workStatus=this.taskin.workStatus
             //npm   console.log(this.content)
             /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
@@ -165,6 +164,8 @@
                 this.workingTime=this.taskin.workingTime
                 this.humanUse=this.taskin.humanUse
                 this.content=this.taskin.content
+                this.operatorName=this.taskin.operatorName
+                this.workStatus=this.taskin.workStatus
                 if(!this.content)
                     this.content='暂时未分配'
                 if(this.taskin.humanUse=='是')
@@ -241,6 +242,18 @@
                 var endData = new Date(this.dateEnd2).getTime();
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
                 console.log("humanuse:"+ this.humanUse )
+                let humannn=    this.humanUse=='是'?1:0;
+let wortstatue=null
+                if (this.workStatus == "未分配") // true
+                    wortstatue = null
+                if (this.workStatus === "已分配") // true
+                    wortstatue = 0
+                if (this.workStatus  === "任务已经执行") // true
+                    wortstatue = 1
+                if (this.workStatus  === "任务出现异常") // true
+                    wortstatue = 2
+            if (this.workStatus==null||this.workStatus==1||this.workStatus==0||this.workStatus==2)
+                wortstatue=this.workStatus
                 //this. content=''
                 //let cit=this.checkedCities
 //let conttt=''
@@ -257,7 +270,7 @@
                     "id":this.id,
                     "name":this.input,
                     "priority":this.priority,
-                    "humanUse":this.humanUse,  //
+                    "humanUse":humannn,  //
                     "startTime":startData,//
                     "endTime":endData,//
                     "workingTime":this.workingTime,//
@@ -266,7 +279,7 @@
                     "tradeuser":this.tradeuser,
                     "commodityName":this.commodityName,
                     "operatorName":this.operatorName,
-                    "workStatus":this.workStatus
+                    "workStatus":wortstatue
                 };
                 console.log(data);
                 taskInput(data).then(function (response) {
