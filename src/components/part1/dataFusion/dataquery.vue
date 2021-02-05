@@ -80,15 +80,18 @@
     export default {
         name: "dataquery",
         created() {
+            console.log( this.$route.query)
 
+console.log(this.$router.currentRoute)
             },
         mounted() {
         let tiankong= document.getElementById("diceng");
         tiankong.style.height=window.innerHeight+"px"
-
+            console.log( this.$route.query.data)
         console.log(tiankong.style.height)
         let announcement=document.getElementById("announcement");
         console.log(tiankong)
+            this.lookupcompany(this.$route.query.data.company)
       },
         methods:{
             goback(){

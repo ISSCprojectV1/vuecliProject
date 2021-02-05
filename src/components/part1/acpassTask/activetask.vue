@@ -11,7 +11,9 @@
 
               <el-container style="width: 100%">
                 <el-aside style="width: 580px">
-                  <el-table :data="tableData1">
+                  <el-table :data="tableData1"
+                  @row-click="handle"
+                  >
                     <el-table-column
                         prop="company"
                         label="交易主体"
@@ -46,9 +48,9 @@
                         fixed="right"
                         width="130">
                           <template slot-scope="scope">
-                              <el-button @click="gotoDetail(scope.row.company)" type="text" size="small">详情</el-button>
-                              <el-button @click="gotoTable(scope.row.company)" type="text" size="small">表格</el-button>
-                              <el-button @click="gotoData(scope.row.company)" type="text" size="small">数据</el-button>
+
+
+                              <el-button @click="gotoData(scope.row)" type="text" size="small">实体统一</el-button>
                           </template>
                       </el-table-column>
 
@@ -230,7 +232,9 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
     import echart from "echarts";
     export default {
         name: "activetask",
-/**/
+/*   <el-button @click="gotoDetail(scope.row.company)" type="text" size="small">详情</el-button>
+*                               <el-button @click="gotoTable(scope.row.company)" type="text" size="small">表格</el-button>
+* */
         created(){
             const id = this.$router.currentRoute.params.id;
             this.Activetradegroup(id,1,10);
@@ -286,8 +290,20 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             document.getElementById("echart123").style.display="none";
         },
         methods:{
+            handle(row,event,coloum)
+            {
+                this.gotoTable(row.company)
+            },
             gotoData(company){
-                this.$router.push('/trade/dataFusion/dataquery');
+                this.$router.push({
+                    path:  '/trade/dataFusion/dataquery',
+                        query: {
+                            data:company
+                        }
+                }
+
+
+                  );
             },
             gotoTable(company) {
               document.getElementById("table23").style.display="block";
@@ -364,8 +380,8 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                     this.tableData1 = data
 
                   // 顺便画初始图
-                  if(this.tableData1[0])
-                    this.gotoDetail(this.tableData1[0].company)
+               //   if(this.tableData1[0])
+                    //this.gotoDetail(this.tableData1[0].company)
                 }).catch(err=>{
                     console.log("请求失败")
                     console.log(err)
