@@ -1,5 +1,6 @@
 <template>
     <div id="diceng">
+        <div> <el-button @click="goback">返回</el-button></div>
         <h2>数据查询</h2>
         <el-row>
             <el-col :span="8">
@@ -90,6 +91,10 @@
         console.log(tiankong)
       },
         methods:{
+            goback(){
+                this.$router.go(-1)
+            }
+            ,
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
                 this.currentPage = 1;
