@@ -217,7 +217,13 @@ export default {
     },
     // 分配任务
     allocateTask(){
-      taskAllocation();
+      taskAllocation().then(res => {
+   console.log(res)
+      }).catch(err => {
+        console.log(err)
+
+      })
+    }
      /* this.$confirm('是否确认进行任务分配', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -235,7 +241,7 @@ export default {
           message: '已取消'
         });
       });*/
-    },
+
   }
 }
 
