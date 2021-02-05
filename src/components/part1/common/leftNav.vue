@@ -178,6 +178,13 @@
             {
                 title: "异常事件分析",
                 routes: [
+                  {
+                    path: "/trade/exceptionAnalysis/data",
+                    component: () => import("@/components/part1/exceptionAnalysis/exceptionData"),
+                    meta: {
+                      title: "仿真数据"
+                    }
+                  },
                     {
                         path: "/trade/exceptionAnalysis/page",
                         component: () => import("@/components/part1/exceptionAnalysis/exceptionAnalysis"),
