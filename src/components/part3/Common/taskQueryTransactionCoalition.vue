@@ -15,36 +15,30 @@
               :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
               tooltip-effect="dark"
               stripe
-              style="width: 100%"
+
+              style="width: 100%;font-size: 20px"
               border>
 
-        <el-table-column type="selection" width="45"></el-table-column>
+
         <el-table-column label="序号" prop="id" width="60"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="任务优先级" prop="priority" width="60">
-        </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
-        </el-table-column>
-        <el-table-column label="属于联盟" prop="team" width="60">
-        </el-table-column>
-
-        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-        </el-table-column>
 
 
-        <el-table-column label="商品名称" prop="commodityName">
-        </el-table-column>
-        <el-table-column label="任务状态" prop="workStatus">
-        </el-table-column>
-        <el-table-column
-                label="推荐主被动模态">
-        </el-table-column>
 
-        <el-table-column label="监管联盟" prop="workTeam">
+
+
+        <el-table-column label="监管联盟" prop="workTeam"  >
+        </el-table-column>
+        <el-table-column label="监管任务演化过程" >
+
+          <el-link>
+            <div @click="goToprice()">
+              任务生命周期
+            </div>
+          </el-link>
+
         </el-table-column>
 
         </el-table>
@@ -63,7 +57,29 @@
 <script>
 import echart from "echarts";
 import {taskQuery,teamform,getTeamResult} from "@/api/part1/Multimodal-multigranularity";
+/*   <el-table-column label="任务优先级" prop="priority" width="60">
+        <el-table-column type="selection" width="45"></el-table-column>
+        </el-table-column>
+        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        </el-table-column>
+        <el-table-column label="属于联盟" prop="team" width="60">
+        </el-table-column>
 
+        <el-table-column label="人模态分布" prop="humanUse" width="80">
+        </el-table-column>
+        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+        </el-table-column>
+
+        <el-table-column label="商品名称" prop="commodityName">
+        </el-table-column>
+        <el-table-column label="任务状态" prop="workStatus">
+        </el-table-column>
+        <el-table-column
+                label="推荐主被动模态">
+        </el-table-column>
+*
+*
+* */
 export default {
   name: "taskQueryTransactionCoalition",
   data() {
@@ -83,6 +99,10 @@ export default {
 
     },
   methods: {
+    goToprice(){
+      this.$router.push('/trade/exceptionAnalysis/page');
+
+    },
     // 每页显示的条数
     handleSizeChange(val) {
       // 改变每页显示的条数

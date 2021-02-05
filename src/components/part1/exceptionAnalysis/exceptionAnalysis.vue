@@ -23,6 +23,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onClickQuery">查询</el-button>
+                        <el-button type="primary" @click="goback">返回</el-button>
                     </el-form-item>
                 </el-form>
 
@@ -89,6 +90,9 @@ export default {
         }
     },
     methods: {
+        goback(){
+            this.$router.go(-1)
+        },
         onClickQuery() {
             exceptionRelationAnalysis(this.dateTimeRangeFormatted[0], this.dateTimeRangeFormatted[1], this.threshold_f, this.threshold_fp).then(res => {
                 this.resultQuery.links = res.data.links

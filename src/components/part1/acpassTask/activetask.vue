@@ -10,7 +10,7 @@
                 <el-tag style="margin-bottom: 1rem">空白表示使用主动模态未发现其他异常</el-tag>
 
               <el-container style="width: 100%">
-                <el-aside style="width: 370px">
+                <el-aside style="width: 550px">
                   <el-table :data="tableData1">
                     <el-table-column
                         prop="company"
@@ -31,14 +31,26 @@
                       </template>
                     </el-table-column>
                       <el-table-column
+                              prop="category"
+                              label="信用等级"
+                              width="80">
+                      </el-table-column>
+                      <el-table-column
+                              prop="category"
+                              label="信用评分"
+                              width="80">
+                      </el-table-column>
+                      <el-table-column
                         label="详细信息"
                         fixed="right"
                         width="100">
                           <template slot-scope="scope">
                               <el-button @click="gotoDetail(scope.row.company)" type="text" size="small">详情</el-button>
                               <el-button @click="gotoTable(scope.row.company)" type="text" size="small">表格</el-button>
+                              <el-button @click="gotoData(scope.row.company)" type="text" size="small">数据</el-button>
                           </template>
                       </el-table-column>
+
                   </el-table>
                   <el-pagination
                           ref="pagination"
@@ -273,6 +285,9 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             document.getElementById("echart123").style.display="none";
         },
         methods:{
+            gotoData(company){
+                this.$router.push('/trade/dataFusion/dataquery');
+            },
             gotoTable(company) {
               document.getElementById("table23").style.display="block";
               document.getElementById("echart123").style.display="none";

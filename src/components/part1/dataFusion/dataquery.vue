@@ -42,7 +42,7 @@
             </el-col>
         </el-row>
         <el-table
-                :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                :data="tableData"
                 style="width: 100%">
             <el-table-column
                     prop="id"
@@ -50,61 +50,19 @@
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="buyername"
-                    label="买方"
+                    prop="name"
+                    label="交易主体名称"
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="sellername"
-                    label="卖方"
+                    prop="number"
+                    label="与主体相似度"
                     min-width="180">
             </el-table-column>
-            <el-table-column
-                    prop="category"
-                    label="商品"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="price"
-                    label="价格"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="amount"
-                    label="数量"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="time"
-                    label="日期"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="belong"
-                    label="交易平台"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transport[0]"
-                    label="始发地"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transport[1]"
-                    label="中转站"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transport[2]"
-                    label="目的地"
-                    min-width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="transportplatform"
-                    label="物流平台"
-                    min-width="180">
-            </el-table-column>
+
+
         </el-table>
+
         <div class="block" style="margin-top:15px;">
             <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[1,5,10,20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="this.yeshu">
             </el-pagination>
@@ -116,9 +74,14 @@
     import echart from "echarts";
     import {companydataname, multibyname, multidatagraph} from "@/api/part1/dataFusion";
 
+
+
     export default {
         name: "dataquery",
-      mounted() {
+        created() {
+
+            },
+        mounted() {
         let tiankong= document.getElementById("diceng");
         tiankong.style.height=window.innerHeight+"px"
 
@@ -174,16 +137,45 @@
                 echarts.setOption(option);
             },
             lookupcompany(name){
-                companydataname(name).then(res=>{
+            companydataname(name).then(res=>{
                     this.companyData = res.data.data
                     multibyname(this.companyData.name).then(res=>{
-                        this.tableData = res.data.data
+                     //   this.tableData = res.data.data
                         console.log( document.getElementsByName("pingfen")[0].innerText)
                         document.getElementsByName("pingfen")[0].innerText="信用评分：80"
                         console.log( document.getElementsByName("pingji")[0].innerText)
+                        console.log("内蒙古魔筷网络科技有限公司")
+
+                        var self = this;
+
+                        var b_temp = new Array;
+
+                        Object.assign(b_temp , self.tableData)
+                        var json= [
+                            {"id":21,
+                                "name":"乌兰浩特市尚能再生能源有限公司",
+                                "number":"0.91"
+                            },{"id":22,
+                                "name":"内蒙古通源起航商贸有限公司",
+                                "number":"0.83"
+                            },
+                            {"id":23,
+                                "name":"内蒙古鑫傲通锐运输有限公司",
+                                "number":"0.65"
+                            },{"id":24,
+                                "name":"内蒙古申益贸易有限责任公司",
+                                "number":"0.33"
+                            },{"id":25,
+                                "name":"内蒙古同泰信息科技有限公司",
+                                "number":"0.12"
+                            }]
+                        b_temp=json
+                        self.tableData=b_temp
+
+                        console.log(this.tableData)
                         document.getElementsByName("pingji")[0].innerText="信用评级：正常"
-                        this.total=this.tableData.length
-                        this.yeshu=this.total/this.pageSize
+                    //    this.total=this.tableData.length
+                    //    this.yeshu=this.total/this.pageSize
                     }).catch(err=>{
                         console.log(err)
                     })
@@ -196,7 +188,17 @@
                     console.log(err)
                 });
 
-            },
+                  //  if(name=="内蒙古魔筷网络科技有限公司"
+                 //   )
+                  //  {
+
+                   // }
+                //    else this.tableData=[]
+
+
+                },
+
+
             lookuptaxnum(name){
 
             },
@@ -221,6 +223,72 @@
             }
         }
     }
+
+    /*
+* <el-table
+            :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            style="width: 100%">
+        <el-table-column
+                prop="id"
+                label="编号"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="buyername"
+                label="买方"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="sellername"
+                label="卖方"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="category"
+                label="商品"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="price"
+                label="价格"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="amount"
+                label="数量"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="time"
+                label="日期"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="belong"
+                label="交易平台"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="transport[0]"
+                label="始发地"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="transport[1]"
+                label="中转站"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="transport[2]"
+                label="目的地"
+                min-width="180">
+        </el-table-column>
+        <el-table-column
+                prop="transportplatform"
+                label="物流平台"
+                min-width="180">
+        </el-table-column>
+    </el-table>*/
 </script>
 
 <style scoped>
