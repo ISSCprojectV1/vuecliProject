@@ -31,11 +31,11 @@
                     ></el-switch>
                 </el-form-item>
                 <el-form-item label="操作员"   v-if="this.admintrue">
-                    <el-input v-model="operatorName" placeholder="请输入workingTime"></el-input>
+                    <el-input v-model="operatorName" placeholder="请输入操作员名称"></el-input>
                 </el-form-item>
-                <el-form-item label="任务状态" >
+                <el-form-item label="任务状态"  v-if="workStatus!='未分配'">
                     <el-select v-model="workStatus" placeholder="请选择任务状态" >
-   
+
                         <el-option label="任务未执行" value="0"></el-option>
                         <el-option label="任务已执行" value="1"></el-option>
                         <el-option label="任务异常" value="2"></el-option>
