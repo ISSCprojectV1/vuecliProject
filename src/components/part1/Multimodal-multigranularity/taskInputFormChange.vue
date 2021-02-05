@@ -10,8 +10,8 @@
                     <el-input v-model="input" placeholder="请输入内容"></el-input>
                 </el-form-item>
 
-                <el-form-item label="监管任务优先级">
-                    <el-select v-model="priority" placeholder="请选择任务优先级" v-if="this.admintrue">
+                <el-form-item label="监管任务优先级" v-if="this.admintrue">
+                    <el-select v-model="priority" placeholder="请选择任务优先级" >
                         <el-option label="级别一" value="1"></el-option>
                         <el-option label="级别二" value="2"></el-option>
                         <el-option label="级别三" value="3"></el-option>
@@ -241,6 +241,8 @@
                 var endData = new Date(this.dateEnd2).getTime();
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
                 console.log("humanuse:"+ this.humanUse )
+                let humannn=    this.humanUse=='是'?1:0;
+
                 //this. content=''
                 //let cit=this.checkedCities
 //let conttt=''
@@ -257,7 +259,7 @@
                     "id":this.id,
                     "name":this.input,
                     "priority":this.priority,
-                    "humanUse":this.humanUse,  //
+                    "humanUse":humannn,  //
                     "startTime":startData,//
                     "endTime":endData,//
                     "workingTime":this.workingTime,//

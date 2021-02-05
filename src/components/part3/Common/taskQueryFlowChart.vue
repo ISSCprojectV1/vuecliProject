@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-dialog title="添加新任务"
+  <el-dialog title="任务信息反馈"
              :visible.sync="dialogTableVisible" center :append-to-body='true'
              :lock-scroll="false" width="30%"
              :close-on-click-modal="false">
