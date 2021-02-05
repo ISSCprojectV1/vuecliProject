@@ -15,30 +15,67 @@
               :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
               tooltip-effect="dark"
               stripe
-
-              style="width: 100%;font-size: 20px"
+              style="width: 100%"
               border>
 
-
+      <el-table-column type="expand">
+      <template slot-scope="props">
+        <el-form label-position="left">
+          <el-form-item label="商品ID">
+            <span>{{ props.row.workTeam }}</span>
+          </el-form-item>
+          <el-form-item label="所属店铺">
+            <span>{{ props.row.name }}</span>
+          </el-form-item>
+          <el-form-item label="商品 ID">
+            <span>{{ props.row.id }}</span>
+          </el-form-item>
+          <el-form-item label="店铺 ID">
+            <span>{{ props.row.priority }}</span>
+          </el-form-item>
+          <el-form-item label="商品分类">
+            <span>{{ props.row.category }}</span>
+          </el-form-item>
+          <el-form-item label="店铺地址">
+            <span>{{ props.row.address }}</span>
+          </el-form-item>
+          <el-form-item label="商品描述">
+            <span>{{ props.row.desc }}</span>
+          </el-form-item>
+        </el-form>
+      </template>
+    </el-table-column>
+        <el-table-column type="expand" label = "详情" width="60" @row-click="getDetails()"></el-table-column>
         <el-table-column label="序号" prop="id" width="60"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
 
-
-
-
-
-
-        <el-table-column label="监管联盟" prop="workTeam"  >
+        <el-table-column label="任务优先级" prop="priority" width="60">
         </el-table-column>
-        <el-table-column label="监管任务演化过程" >
+        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        </el-table-column>
 
-          <el-link>
-            <div @click="goToprice()">
-              任务生命周期
-            </div>
-          </el-link>
+        <el-table-column label="人模态分布" prop="humanUse" width="80">
+        </el-table-column>
+        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+        </el-table-column>
 
+
+        <el-table-column label="商品名称" prop="commodityName">
+        </el-table-column>
+        <el-table-column label="任务状态" prop="workStatus">
+        </el-table-column>
+        <el-table-column
+                label="推荐主被动模态">
+        </el-table-column>
+
+        <el-table-column label="属于联盟" prop="team" width="60">
+        <!-- 根据team查询联盟信息 -->
+		<template slot-scope="scope">
+		<el-button  type="text" @click="queryWarehouseHandle(scope.row.id)">{{scope.row.team}}</el-button>
+		</template>
+        </el-table-column>
+        <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails">
         </el-table-column>
 
         </el-table>
@@ -57,29 +94,7 @@
 <script>
 import echart from "echarts";
 import {taskQuery,teamform,getTeamResult} from "@/api/part1/Multimodal-multigranularity";
-/*   <el-table-column label="任务优先级" prop="priority" width="60">
-        <el-table-column type="selection" width="45"></el-table-column>
-        </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
-        </el-table-column>
-        <el-table-column label="属于联盟" prop="team" width="60">
-        </el-table-column>
 
-        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-        </el-table-column>
-
-        <el-table-column label="商品名称" prop="commodityName">
-        </el-table-column>
-        <el-table-column label="任务状态" prop="workStatus">
-        </el-table-column>
-        <el-table-column
-                label="推荐主被动模态">
-        </el-table-column>
-*
-*
-* */
 export default {
   name: "taskQueryTransactionCoalition",
   data() {
@@ -99,10 +114,6 @@ export default {
 
     },
   methods: {
-    goToprice(){
-      this.$router.push('/trade/exceptionAnalysis/page');
-
-    },
     // 每页显示的条数
     handleSizeChange(val) {
       // 改变每页显示的条数
@@ -583,6 +594,10 @@ console.log(res)
       const m = date.getMinutes() + ':';
       const s = date.getSeconds();
       return Y + M + D + h + m + s
+    },
+    // @getDetails() 点击下拉，获得详细数据
+    getDetails(){
+      console.log("GET details______________")
     },
   },
   created() {
