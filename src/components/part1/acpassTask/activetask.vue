@@ -2,140 +2,91 @@
     <div>
 
       <div class="title">
-        <div style="display: inline-block; margin-bottom:20px;font-size: 40px;" >  主被动模态与空间粒度</div>
+        <div style="display: inline-block; margin-bottom:20px; font-size: 40px;" >主被动模态与空间粒度</div>
       </div>
 
         <el-tabs v-model="activeName">
             <el-tab-pane label="主动模态" name="table">
-                <el-tag>空白表示使用主动模态未发现其他异常</el-tag>
-                <el-table
-                        :data="tableData1"
-                        style="width: 100%">
+                <el-tag style="margin-bottom: 1rem">空白表示使用主动模态未发现其他异常</el-tag>
+
+              <el-container style="width: 100%">
+                <el-aside style="width: 370px">
+                  <el-table :data="tableData1">
                     <el-table-column
-                            prop="id"
-                            label="编号"
-                            min-width="180">
+                        prop="company"
+                        label="交易主体"
+                        width="120">
                     </el-table-column>
                     <el-table-column
-                            prop="user1"
+                        prop="category"
+                        label="商品类型"
+                        width="80">
+                    </el-table-column>
+                    <el-table-column
+                        prop="abnomalvalue"
+                        label="异常值"
+                        width="70">
+                      <template slot-scope="scope">
+                        <span>{{scope.row.abnomalvalue.toFixed(3)}}</span>
+                      </template>
+                    </el-table-column>
+                      <el-table-column
+                        label="详细信息"
+                        fixed="right"
+                        width="100">
+                          <template slot-scope="scope">
+                              <el-button @click="gotoDetail(scope.row.company)" type="text" size="small">详情</el-button>
+                              <el-button @click="gotoTable(scope.row.company)" type="text" size="small">表格</el-button>
+                          </template>
+                      </el-table-column>
+                  </el-table>
+                  <el-pagination
+                          ref="pagination"
+                          style="text-align: center; margin-top: 0.5rem"
+                          background
+                          layout="prev, pager, next"
+                          @current-change = "pageChange"
+                          :total="total">
+                  </el-pagination>
+                </el-aside>
+
+                <el-container style="width: 600px;">
+                  <el-main style="padding-top: 0">
+                    <div id="echart123" style="width: 600px;height: 550px;"></div>
+                    <div id="table23">
+                      <el-table
+                          :data="tableData3"
+                          style="width: 600px;">
+                        <el-table-column
+                            prop="seller"
                             label="主要交易卖方"
-                            min-width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="user2"
+                            min-width="150">
+                        </el-table-column>
+                        <el-table-column
+                            prop="buyer"
                             label="主要交易买方"
-                            min-width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="tradetotal"
-                            label="总交易数"
-                            min-width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="suspicioustrasaction"
-                            label="可疑交易数"
-                            min-width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="tasksize"
-                            label="空间粒度"
-                            min-width="180">
-                    </el-table-column>
-                    <el-table-column
-                            label="详细信息"
-                            fixed="right"
-                            min-width="180">
-                        <template slot-scope="scope">
-                            <el-button @click="gotoDetail(scope.row.id)" type="text" size="small">详情</el-button>
-                            <el-button @click="gotoTable(scope.row.id)" type="text" size="small">表格</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <el-pagination
-                        ref="pagination"
-                        style="text-align: center"
-                        background
-                        layout="prev, pager, next"
-                        @current-change = "pageChange"
-                        :total="total"
-                >
-                </el-pagination>
-                <div id="echart123" style="width: 800px;height: 500px; margin-left: auto; margin-right: auto; margin-top: 2rem"></div>
-                <div    id="table23">
-
-                       <el-table
-
-                               :data="tableData3"
-                               style="width: 100%">
-                           <el-table-column
-                                   prop="id"
-                                   label="交易编号"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="sellerid"
-                                   label="卖方id"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="sellername"
-                                   label="卖方"
-                                   min-width="180">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="buyerid"
-                                   label="买方id"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="buyername"
-                                   label="买方"
-                                   min-width="180">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="category"
-                                   label="种类"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="price"
-                                   label="价格"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="amount"
-                                   label="数量"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="original"
-                                   label="原生任务"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="tasksize"
-                                   label="空间粒度"
-                                   min-width="80">
-                           </el-table-column>
-                           <el-table-column
-                                   prop="belong"
-                                   label="交易平台"
-                                   min-width="180">
-                           </el-table-column>
-
-                       </el-table>
-                       <el-pagination
-                               ref="pagination"
-                               style="text-align: center"
-                               background
-                               layout="prev, pager, next"
-                               :page-size="5"
-                               @current-change = "pageChange"
-                               :total="total3"
-                       >
-                       </el-pagination>
-
-           </div>
+                            min-width="150">
+                        </el-table-column>
+                        <el-table-column
+                            prop="amount"
+                            label="交易数"
+                            min-width="40">
+                        </el-table-column>
+                      </el-table>
+                      <el-pagination
+                          ref="pagination"
+                          style="text-align: center; margin-top: 0.5rem"
+                          background
+                          layout="prev, pager, next"
+                          :page-size="10"
+                          @current-change = "pageChange"
+                          :total="total3"
+                      >
+                      </el-pagination>
+                    </div>
+                  </el-main>
+                </el-container>
+              </el-container>
 
             </el-tab-pane>
 
@@ -261,16 +212,14 @@
 </template>
 
 <script>
-import {activegraph, activetradedetailinfo} from "@/api/part1/acpassTask";
+import {activegraph, activetradedetailinfo, getActiveCompanyDetail, getActiveGroup} from "@/api/part1/acpassTask";
 import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction,Louvainresult} from "@/api/part1/acpassTask";
     import echart from "echarts";
     export default {
         name: "activetask",
 
         created(){
-
             const id = this.$router.currentRoute.params.id;
-
             this.Activetradegroup(id,1,10);
 
           if (this.activeOrpassive()){
@@ -280,7 +229,6 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             }).catch(err=>{
               console.log(err);
               console.log("出现错误")
-
             })
           }
           else{
@@ -325,10 +273,10 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             document.getElementById("echart123").style.display="none";
         },
         methods:{
-            gotoTable(id)
-            {      document.getElementById("table23").style.display="block";
-                document.getElementById("echart123").style.display="none";
-                this.Activetradedetailinfo(id,1,5);
+            gotoTable(company) {
+              document.getElementById("table23").style.display="block";
+              document.getElementById("echart123").style.display="none";
+              this.Activetradedetailinfo(company,1,10);
             },
             goback(){
                 this.$router.back(-1)
@@ -390,27 +338,28 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             this.currentPage=page;
             this.passivetradeactionList(id,page,5)
           },
-            Activetradegroup(id,currentPage,pageSize){
-                activetradegroup(id,currentPage,pageSize).then(res=>{
+            Activetradegroup(id, currentPage, pageSize){
+                getActiveGroup(id, currentPage, pageSize).then(res => {
                     let data = res.data.data.reslist;
                     this.total = res.data.data.total;
                     for (let i = 0; i < data.length; i++) {
-                        data[i].id=i+1
+                        data[i].id = i + 1
                     }
                     this.tableData1 = data
+
+                  // 顺便画初始图
+                  if(this.tableData1[0])
+                    this.gotoDetail(this.tableData1[0].company)
                 }).catch(err=>{
                     console.log("请求失败")
                     console.log(err)
                 })
             },
-            Activetradedetailinfo(id,currentPage,pageSize){
-
-                activetradedetailinfo(id,currentPage,pageSize).then(res=>{
-
+            Activetradedetailinfo(company, currentPage, pageSize){
+                getActiveCompanyDetail(company, currentPage, pageSize).then(res=>{
                     let data = res.data.data.reslist;
                     this.total3 = res.data.data.total;
                     this.tableData3 = data
-                    console.log(this.tableData3)
                 }).catch(err=>{
                     console.log("请求失败")
                     console.log(err)
@@ -446,93 +395,11 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
               }
             }
           },
-            gotoDetail(id){
+            gotoDetail(company){
                 document.getElementById("echart123").style.display="block";
                 document.getElementById("table23").style.display="none";
-                // activetradegraph(1).then(res=>{
-                //     let data=res.data.data;
-                //     console.log(data)
-                //     let nodes=[];
-                //     let links=[];
-                //     for (let i = 0; i < data[0].length; i++) {
-                //         nodes.push(
-                //             {
-                //                 name:data[0][i].name,
-                //                 x:data[0][i].xposition,
-                //                 y:data[0][i].yposition,
-                //                 symbolSize:data[0][i].symbolsize,
-                //                 itemStyle:{
-                //                     color:data[0][i].color
-                //                 }
-                //             }
-                //         )
-                //     }
-                //     for (let i = 0; i < data[1].length; i++){
-                //         links.push({
-                //             source:data[1][i].source,
-                //             target:data[1][i].target,
-                //         })
-                //     }
-                //     let echarts = echart.init(document.querySelector("#echart123"));
-                //     let option = {
-                //         tooltip: {},
-                //         legend: {
-                //             show:true,
-                //             data: [{
-                //                 name: '用户编号',
-                //                 icon: 'circle'
-                //             },
-                //                 {
-                //                     name: '交易节点',
-                //                     icon: 'circle'
-                //                 }
-                //             ]
-                //         },
-                //         animationDurationUpdate: 1500,
-                //         animationEasingUpdate: 'quinticInOut',
-                //         series: [
-                //             {
-                //                 type: 'graph',
-                //                 layout: 'none',
-                //                 symbolSize: 50,
-                //                 roam: true,
-                //                 label: {
-                //                     show: true
-                //                 },
-                //                 edgeSymbol: ['circle', 'arrow'],
-                //                 edgeSymbolSize: [4, 10],
-                //                 edgeLabel: {
-                //                     fontSize: 20
-                //                 },
-                //                 data: nodes,
-                //                 links: links,
-                //                 lineStyle: {
-                //                     opacity: 0.9,
-                //                     width: 2,
-                //                     curveness: 0
-                //                 },
-                //                 categories: [
-                //                     {
-                //                         name: '用户编号',
-                //                         icon: 'circle'
-                //                     },
-                //
-                //                     {
-                //                         name: '交易节点',
-                //                         symbol: 'circle'
-                //                     }
-                //                 ]
-                //             }
-                //         ]
-                //
-                //     };
-                //     echarts.setOption(option);
-                // }).catch(err=>{
-                //     console.log(err)
-                // })
-                activegraph(id).then(res => {
-                  console.log(id)
-                  console.log(res)
+
+                activegraph(company).then(res => {
                   let myChart = echart.init(document.querySelector("#echart123"));
 
                   let nodes = res.data[0].map(item => {
@@ -563,8 +430,6 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                   })
 
                   let categories = [{name: '异常节点'}, {name: '相关节点'}]
-                  console.log(nodes)
-                  console.log(links)
                   let option = {
                     color: ['#ef4f4f', '#5470c6'],
                     legend: {
@@ -591,7 +456,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
                         roam: true,
                         data: nodes,
                         links: links,
-                        zoom: 7,
+                        zoom: 6,
                         categories: categories,
                         focusNodeAdjacency: true,
                         lineStyle: {
