@@ -21,14 +21,15 @@
         <i class="el-icon-menu"></i>
         <span slot="title">模态与粒度+联盟形成</span>
       </el-menu-item>
-      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">附加功能：数据共享</span>
-      </el-menu-item>
       <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
         <i class="el-icon-menu"></i>
         <span slot="title">风险预警监控</span>
       </el-menu-item>
+      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">附加功能：数据共享</span>
+      </el-menu-item>
+
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">
