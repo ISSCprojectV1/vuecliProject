@@ -24,6 +24,7 @@
                     <el-form-item>
                         <el-button type="primary" @click="onClickQuery">查询</el-button>
                         <el-button type="primary" @click="goback">返回</el-button>
+                        <el-link type="primary"  @click="gobackTeam">返回联盟形成</el-link>
                     </el-form-item>
                 </el-form>
 
@@ -245,6 +246,10 @@ export default {
         },
         getRandomInt(max) { // return random Integer in [0, max)
             return Math.floor(Math.random() * Math.floor(max));
+        },
+        // 返回联盟形成页面
+        gobackTeam(){
+            this.$router.push(`/trade/Multimodal-multigranularity/stepBar`);
         }
     },
     computed: {

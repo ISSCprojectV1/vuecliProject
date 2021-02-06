@@ -17,42 +17,16 @@
               stripe
               style="width: 100%"
               border>
-
-      <el-table-column type="expand">
-      <template slot-scope="props">
-        <el-form label-position="left">
-          <el-form-item label="商品ID">
-            <span>{{ props.row.workTeam }}</span>
-          </el-form-item>
-          <el-form-item label="所属店铺">
-            <span>{{ props.row.name }}</span>
-          </el-form-item>
-          <el-form-item label="商品 ID">
-            <span>{{ props.row.id }}</span>
-          </el-form-item>
-          <el-form-item label="店铺 ID">
-            <span>{{ props.row.priority }}</span>
-          </el-form-item>
-          <el-form-item label="商品分类">
-            <span>{{ props.row.category }}</span>
-          </el-form-item>
-          <el-form-item label="店铺地址">
-            <span>{{ props.row.address }}</span>
-          </el-form-item>
-          <el-form-item label="商品描述">
-            <span>{{ props.row.desc }}</span>
-          </el-form-item>
-        </el-form>
-      </template>
-    </el-table-column>
-        <el-table-column type="expand" label = "详情" width="60" @row-click="getDetails()"></el-table-column>
         <el-table-column label="序号" prop="id" width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name">
+        <el-table-column label="监管任务名称" prop="name" width="200">
         </el-table-column>
-
+        <!--
         <el-table-column label="任务优先级" prop="priority" width="60">
         </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        !-->
+        <el-table-column label="监管商品" prop="commodityName" width="100">
+        </el-table-column>
+        <el-table-column label="监管平台" prop="content" width="200">
         </el-table-column>
 
         <el-table-column label="人模态分布" prop="humanUse" width="80">
@@ -60,16 +34,10 @@
         <el-table-column label="机器模态分布数" prop="agentNum" width="80">
         </el-table-column>
 
-
-        <el-table-column label="商品名称" prop="commodityName">
+        <el-table-column label="任务状态" prop="workStatus" width="100">
         </el-table-column>
-        <el-table-column label="任务状态" prop="workStatus">
-        </el-table-column>
-        <el-table-column
-                label="推荐主被动模态">
-        </el-table-column>
-
-        <el-table-column label="属于联盟" prop="team" width="60">
+<!-- 联盟部分 -->
+        <el-table-column label="属于联盟" prop="team" width="100">
         <!-- 根据team查询联盟信息 -->
 		<template slot-scope="scope">
 		<el-button  type="text" @click="queryWarehouseHandle(scope.row.id)">{{scope.row.team}}</el-button>
@@ -77,7 +45,10 @@
         </el-table-column>
         <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails">
         </el-table-column>
-
+        <el-table-column label="联盟演化">
+            <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
+        </el-table-column>
+        
         </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -178,6 +149,11 @@ export default {
         console.log("getTeamResult fail")
       });
       return teamResult;
+    },
+    // 跳转至异常事件分析页面
+    teamEvolution(){
+      console.log("/trade/exceptionAnalysis/page")
+        this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     changeform12()
     {
@@ -552,6 +528,12 @@ console.log(res)
         data = this.timestampToTime(dataConvert[i].endTime)
         dataConvert[i].endTime = data
 
+        if(dataConvert[i].subtask){
+        dataConvert[i].commodityName = dataConvert[i].commodityName + ","+dataConvert[i].subtask
+        }
+        if(dataConvert[i].resourceNeed){
+        dataConvert[i].content = dataConvert[i].content + ","+dataConvert[i].resourceNeed
+        }
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
         else // false
@@ -562,7 +544,7 @@ console.log(res)
           dataConvert[i].commodityName = "暂无"
         if (!dataConvert[i].content) // true
         {
-          dataConvert[i].content = "暂时未分配"
+          dataConvert[i].content = "无"
         }
 
         if (!dataConvert[i]) // true
