@@ -342,7 +342,7 @@ export function getplatform(URL) {
   }
 // 根据商品名称&平台名称 获得可推荐的空间粒度
 // @GetRecommendPlatform(String commodity,String platform)
-// URL = /getplatform
+// URL = /getrecommendrlatform?commodity=铝矿石&platform=青岛国际商品交易所
 export function getrecommendrlatform(URL) {
   console.log("发送getrecommendrlatform请求")
     return request({
@@ -361,3 +361,13 @@ export function getrecommendrlatform(URL) {
         method: 'get'
           })
     }
+
+    // 追加商品粒度
+export function updateCommodity(data) {
+  console.log("追加商品粒度")
+  return request({
+    url: '/taskDecomposition',
+    method: 'post',
+    data
+  })
+}
