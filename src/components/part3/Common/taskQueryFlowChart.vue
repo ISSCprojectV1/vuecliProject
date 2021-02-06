@@ -36,24 +36,12 @@
         </el-table-column>
         <el-table-column label="任务执行时间" prop="workingTime" width="60">
         </el-table-column>
-        <el-table-column label="属于联盟" prop="team" width="60">
-        </el-table-column>
 
-        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-        </el-table-column>
 
 
         <el-table-column label="商品名称" prop="commodityName">
         </el-table-column>
         <el-table-column label="任务状态" prop="workStatus">
-        </el-table-column>
-        <el-table-column
-                label="推荐主被动模态"
-                fixed="right"
-                min-width="180" porp="model">
-
         </el-table-column>
 
         <el-table-column
@@ -83,7 +71,21 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {taskQuery,teamform,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
+/*
+*         <el-table-column
+                label="推荐主被动模态"
+                fixed="right"
+                min-width="180" porp="model">
 
+        </el-table-column>
+        <el-table-column label="属于联盟" prop="team" width="60">
+        </el-table-column>        <el-table-column label="人模态分布" prop="humanUse" width="80">
+        </el-table-column>
+        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+        </el-table-column>
+
+*
+* */
 export default {
   name: "taskQueryFlowChart",
   components: {

@@ -17,6 +17,14 @@
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
       </el-menu-item>
+      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">模态与粒度+联盟形成</span>
+      </el-menu-item>
+      <el-menu-item index="/trade/dataFusion/dataquery" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">附加功能：数据共享</span>
+      </el-menu-item>
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">
@@ -40,7 +48,7 @@
       return{
         defaultActive:"",
         accessRoutes:[
-          {
+      /*    {
             title:"网络图",
             routes:[
               {
@@ -59,7 +67,12 @@
               },
             ],
             path:"/trade/transactionProject"
-          },
+          },*/
+        /*  {     title: "预警监控",
+            path: "/trade/riskPrediction/riskSurveillance/",
+            component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
+
+          },*/
           {
             title: "风险预警",
             routes: [
@@ -87,7 +100,7 @@
             ]
           },
           {
-            title:"模态与粒度",
+            title:"模态与粒度+联盟形成",
             routes: [
               {
                 path:"/trade/Multimodal-multigranularity/stepBar",
@@ -143,6 +156,40 @@
             path: "/trade/Multimodal-multigranularity"
           },
           {
+            title:"附加功能：数据共享",
+            routes: [
+              {
+                path:"/trade/relationAnalysis/transactionFrequency",
+                component: () => import("@/components/part1/relationAnalysis/transactionFrequency"),
+                meta:{
+                  title:"交易频次查询"
+                }
+              },
+              {
+                path:"/trade/relationAnalysis/relationQuery",
+                component: () => import("@/components/part1/relationAnalysis/relationQuery"),
+                meta:{
+                  title:"关联查询"
+                }
+              },
+              {
+                path:"/trade/dataFusion/dataquery",
+                component: () => import("@/components/part1/dataFusion/dataquery"),
+                meta:{
+                  title:"数据查询"
+                }
+              },
+              {
+                path:"/trade/dataFusion/datacluster",
+                component: () => import("@/components/part1/dataFusion/datacluster"),
+                meta:{
+                  title:"关联交易主体发现"
+                }
+              },
+            ],
+            path: "/trade/relationAnalysis"
+          },
+         /* {
             title:"关联分析",
             routes: [
               {
@@ -161,8 +208,8 @@
               },
             ],
             path: "/trade/relationAnalysis"
-          },
-          {
+          },*/
+        /*  {
             title:"数据融合",
             routes: [
               {
@@ -181,7 +228,7 @@
               },
             ],
             path: "/trade/dataFusion"
-          },
+          },*/
             {
                 title: "异常事件分析",
                 routes: [
