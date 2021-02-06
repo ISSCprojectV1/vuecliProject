@@ -17,17 +17,16 @@
               stripe
               style="width: 100%"
               border>
-
-        <el-table-column type="selection" width="45"></el-table-column>
         <el-table-column label="序号" prop="id" width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name">
+        <el-table-column label="监管任务名称" prop="name" width="200">
         </el-table-column>
-
+        <!--
         <el-table-column label="任务优先级" prop="priority" width="60">
         </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        !-->
+        <el-table-column label="监管商品" prop="commodityName" width="100">
         </el-table-column>
-        <el-table-column label="属于联盟" prop="team" width="60">
+        <el-table-column label="监管平台" prop="content" width="200">
         </el-table-column>
 
         <el-table-column label="人模态分布" prop="humanUse" width="80">
@@ -35,18 +34,21 @@
         <el-table-column label="机器模态分布数" prop="agentNum" width="80">
         </el-table-column>
 
-
-        <el-table-column label="商品名称" prop="commodityName">
+        <el-table-column label="任务状态" prop="workStatus" width="100">
         </el-table-column>
-        <el-table-column label="任务状态" prop="workStatus">
+<!-- 联盟部分 -->
+        <el-table-column label="属于联盟" prop="team" width="100">
+        <!-- 根据team查询联盟信息 -->
+		<template slot-scope="scope">
+		<el-button  type="text" @click="queryWarehouseHandle(scope.row.id)">{{scope.row.team}}</el-button>
+		</template>
         </el-table-column>
-        <el-table-column
-                label="推荐主被动模态">
+        <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails">
         </el-table-column>
-
-        <el-table-column label="监管联盟" prop="workTeam">
+        <el-table-column label="联盟演化">
+            <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
         </el-table-column>
-
+        
         </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -147,6 +149,11 @@ export default {
         console.log("getTeamResult fail")
       });
       return teamResult;
+    },
+    // 跳转至异常事件分析页面
+    teamEvolution(){
+      console.log("/trade/exceptionAnalysis/page")
+        this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     changeform12()
     {
@@ -521,6 +528,12 @@ console.log(res)
         data = this.timestampToTime(dataConvert[i].endTime)
         dataConvert[i].endTime = data
 
+        if(dataConvert[i].subtask){
+        dataConvert[i].commodityName = dataConvert[i].commodityName + ","+dataConvert[i].subtask
+        }
+        if(dataConvert[i].resourceNeed){
+        dataConvert[i].content = dataConvert[i].content + ","+dataConvert[i].resourceNeed
+        }
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
         else // false
@@ -531,7 +544,7 @@ console.log(res)
           dataConvert[i].commodityName = "暂无"
         if (!dataConvert[i].content) // true
         {
-          dataConvert[i].content = "暂时未分配"
+          dataConvert[i].content = "无"
         }
 
         if (!dataConvert[i]) // true
@@ -563,6 +576,10 @@ console.log(res)
       const m = date.getMinutes() + ':';
       const s = date.getSeconds();
       return Y + M + D + h + m + s
+    },
+    // @getDetails() 点击下拉，获得详细数据
+    getDetails(){
+      console.log("GET details______________")
     },
   },
   created() {

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-dialog title="添加新任务"
+  <el-dialog title="任务信息反馈"
              :visible.sync="dialogTableVisible" center :append-to-body='true'
              :lock-scroll="false" width="30%"
              :close-on-click-modal="false">
@@ -36,32 +36,21 @@
         </el-table-column>
         <el-table-column label="任务执行时间" prop="workingTime" width="60">
         </el-table-column>
-        <el-table-column label="属于联盟" prop="team" width="60">
-        </el-table-column>
 
-        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-        </el-table-column>
 
 
         <el-table-column label="商品名称" prop="commodityName">
         </el-table-column>
         <el-table-column label="任务状态" prop="workStatus">
         </el-table-column>
-        <el-table-column
-                label="推荐主被动模态"
-                fixed="right"
-                min-width="180" porp="model">
-
-        </el-table-column>
 
         <el-table-column
                 label="模态粒度补充"
                 fixed="right"
-                min-width="180">
+                min-width="180"
+            >
           <template slot-scope="scope">
-            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
+            <el-button @click="changetask(scope)" type="text" size="small"  >属性修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,7 +71,21 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {taskQuery,teamform,taskAllocation} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
+/*
+*         <el-table-column
+                label="推荐主被动模态"
+                fixed="right"
+                min-width="180" porp="model">
 
+        </el-table-column>
+        <el-table-column label="属于联盟" prop="team" width="60">
+        </el-table-column>        <el-table-column label="人模态分布" prop="humanUse" width="80">
+        </el-table-column>
+        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+        </el-table-column>
+
+*
+* */
 export default {
   name: "taskQueryFlowChart",
   components: {
@@ -124,6 +127,7 @@ export default {
       this.addNewTask1()
     },
     addNewTask1() {
+
       this.dialogTableVisible = true;
       console.log("aaa")
     },
@@ -217,7 +221,13 @@ export default {
     },
     // 分配任务
     allocateTask(){
-      taskAllocation();
+      taskAllocation().then(res => {
+   console.log(res)
+      }).catch(err => {
+        console.log(err)
+
+      })
+    }
      /* this.$confirm('是否确认进行任务分配', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -235,7 +245,7 @@ export default {
           message: '已取消'
         });
       });*/
-    },
+
   }
 }
 

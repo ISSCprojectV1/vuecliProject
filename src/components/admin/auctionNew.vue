@@ -95,7 +95,8 @@
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                        end-placeholder="结束日期"
+                    :default-value="defaultTime">
                     </el-date-picker>
                 </el-form-item>
             </el-form>
@@ -193,8 +194,10 @@ export default {
         },
         getAuctionDetail(id) {
             getAuctionNew(id).then(res => {
-                this.formModifyAuction = res.data
-                this.formModifyAuction.time = [res.data.startTime, res.data.endTime]
+              this.formModifyAuction.name = res.data.name
+              this.formModifyAuction.description = res.data.description
+              this.formModifyAuction.status = res.data.status
+              this.formModifyAuction.time = [res.data.startTime, res.data.endTime]
             }).catch(err => {
                 console.log(err)
             })
@@ -300,13 +303,12 @@ export default {
 
         },
         dialogFormUpdateConfirm(data) {
-            console.log(    data.time[0],)
             let params = {
                 id: data.id,
                 name: data.name,
                 description: data.description,
-                startTime:  timeForAuction(data.time[0]),
-                endTime:   timeForAuction(data.time[1]),
+                startTime: data.time[0],
+                endTime: data.time[1],
                 status: data.status,
             }
             this.dialogFormUpdateVisible = false
@@ -341,8 +343,8 @@ export default {
             let params = {
                 name: data.name,
                 description: data.description,
-                startTime: timeForAuction(data.time[0]),
-                endTime: timeForAuction(data.time[1]),
+                startTime: data.time[0],
+                endTime: data.time[1],
                 status: data.status,
             }
             addAuctionNew(params).then(res => {

@@ -112,10 +112,17 @@ let routes = [
                 }
             },
             {
-                path: "/trade/riskPrediction",
+                path: "/trade/riskPrediction/riskPage",
                 component: () => import("@/components/part1/riskPrediction/riskPageNew"),
                 meta: {
                     title: "价格波动风险演化"
+                }
+            },
+            {
+                path: "/trade/riskPrediction/riskSurveillance",
+                component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
+                meta: {
+                    title: "预警监控"
                 }
             },
             // {
@@ -214,7 +221,13 @@ let routes = [
                 }
             },
 
-
+            {
+                path:"/trade/auction",
+                component: () => import("@/views/part3/incentiveMechanism/Download/home"),
+                meta:{
+                    title:"拍卖"
+                }
+            },
             //trade风险评估
             {
                 path:"/trade/riskPrediction/riskPrediction",

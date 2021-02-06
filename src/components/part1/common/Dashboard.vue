@@ -4,7 +4,7 @@
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-graph />
+      <line-graph-new />
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
@@ -16,6 +16,7 @@
 <script>
   import PanelGroup from '@/components/part1/Dashboard/panelGroup'
   import lineGraph from '@/components/part1/Dashboard/lineGraph'
+  import lineGraphNew from "@/components/part1/Dashboard/lineGraphNew";
   import barChart from '@/components/part1/Dashboard/barChart'
   const lineChartData = {
     newVisitis: {
@@ -39,7 +40,8 @@
     name: 'Index',
     components: {
       PanelGroup,
-      lineGraph,
+      // lineGraph,
+      lineGraphNew,
       barChart
     },
     data() {
