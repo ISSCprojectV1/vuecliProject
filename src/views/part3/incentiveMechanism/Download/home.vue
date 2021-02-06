@@ -1,10 +1,7 @@
 <template>
     <div id="main">
         <el-container>
-            <el-header>
-                <Header>
-                </Header>
-            </el-header>
+
 <!--            <el-divider class="el-divider"></el-divider>-->
 <!--            <el-header>-->
 <!--                <sub-header>-->
@@ -28,7 +25,12 @@
 </template>
 
 <script>
-    import Header from "@/components/part3/Common/header";
+    /*            <el-header>
+                <Header>
+                </Header>
+            </el-header>
+    * */
+  //  import Header from "@/components/part3/Common/header";
     //import subHeader from "@/components/part3/Download/header";
     import searchBar from "@/components/part3/Download/searchBar";
     import mainUpload from "@/components/part3/Common/mainUpload2";
@@ -38,7 +40,7 @@
         name: "index",
         components: {
             mainUpload,
-            Header,
+       //     Header,
             //subHeader,
             searchBar,
             filterBar,

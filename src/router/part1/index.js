@@ -214,7 +214,13 @@ let routes = [
                 }
             },
 
-
+            {
+                path:"/trade/auction",
+                component: () => import("@/views/part3/incentiveMechanism/Download/home"),
+                meta:{
+                    title:"拍卖"
+                }
+            },
             //trade风险评估
             {
                 path:"/trade/riskPrediction/riskPrediction",

@@ -56,6 +56,8 @@
                 this.file.gmtModified = timestampToTime(data.gmtModified);
             },
             getFile(){
+                console.log(this.file)
+                console.log(this.resourceId)
                 getfileDetail(this.$route.params.id).then((res)=>{
                     this.init(res.data.data[0]);
                     //console.log(res.data.data[0])
