@@ -23,7 +23,7 @@
       </el-menu-item>
       <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
         <i class="el-icon-menu"></i>
-        <span slot="title">风险预警监控</span>
+        <span slot="title">价格波动风险预警</span>
       </el-menu-item>
       <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
         <i class="el-icon-menu"></i>
