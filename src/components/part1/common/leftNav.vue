@@ -21,10 +21,15 @@
         <i class="el-icon-menu"></i>
         <span slot="title">模态与粒度+联盟形成</span>
       </el-menu-item>
-      <el-menu-item index="/trade/dataFusion/dataquery" style="text-align: left;font-size: 20px">
+      <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">风险预警监控</span>
+      </el-menu-item>
+      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
         <i class="el-icon-menu"></i>
         <span slot="title">附加功能：数据共享</span>
       </el-menu-item>
+
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">
@@ -73,7 +78,7 @@
             component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
 
           },*/
-          {
+         /* {
             title: "风险预警",
             routes: [
               {
@@ -99,7 +104,7 @@
               // }
             ]
           },
-          {
+     /*     {
             title:"模态与粒度+联盟形成",
             routes: [
               {
@@ -122,7 +127,7 @@
                 meta:{
                   title:"时间粒度优化"
                 }
-              },*/
+              },
               {
                 path:"/trade/Multimodal-multigranularity/acpassTask",
                 component: () => import("@/components/part1/acpassTask/acpassTask"),
@@ -144,7 +149,7 @@
                 meta:{
                   title:"可用资源展示"
                 }
-              },*/
+              },
               {
                 path:"/trade/Multimodal-multigranularity/modalityQuery",
                 component: () => import("@/components/part1/Multimodal-multigranularity/modalityQuery"),
@@ -154,8 +159,8 @@
               },
             ],
             path: "/trade/Multimodal-multigranularity"
-          },
-          {
+          },*/
+       /*   {
             title:"附加功能：数据共享",
             routes: [
               {
@@ -188,7 +193,7 @@
               },
             ],
             path: "/trade/relationAnalysis"
-          },
+          },*/
          /* {
             title:"关联分析",
             routes: [
@@ -229,7 +234,7 @@
             ],
             path: "/trade/dataFusion"
           },*/
-            {
+        /*    {
                 title: "异常事件分析",
                 routes: [
                     {
@@ -241,7 +246,7 @@
                     }
                 ],
                 path: "/trade/exceptionAnalysis"
-            }
+            }*/
         ]
       }
       },
