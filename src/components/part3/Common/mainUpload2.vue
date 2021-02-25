@@ -3,24 +3,25 @@
 
     <div v-for="item in resources" :key="item.id">
         <el-row v-if="item.status === 1" class="elrow">
-            <el-col :span="20">
+            <el-col :span="18">
                 <div class="mainResource">
                     <h2><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h2>
                 <div class="content">{{item.description}}</div>
-                <span>开始时间： {{item.startTime}}</span>
+                <span>开始时间： {{item.startTime}}</span><br/>
                 <span>结束时间： {{item.endTime}}</span>
 
                 </div>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="6">
     <!--            <span>起拍价： </span>-->
     <!--            <span class="score">{{item.startPrice}}</span>-->
                 <br/>
     <!--            <span>最新价： </span>-->
     <!--            <span class="score">{{item.updatedPrice}}</span>-->
                 <br/>
+              <br/>
                 <span>状态： </span>
-                <span class="score">{{item.status}}</span>
+                <span class="status">正在进行</span>
                 <br/>
                 <el-button type="primary" @click="AuctionDetailDialog(item.id)" style="margin-top: 1rem">竞拍</el-button>
             </el-col>
@@ -81,6 +82,7 @@
                     v-model="form.price"
                     :min="1"
                     :step="1"></el-input-number>
+                （单位：积分）
             </el-form-item>
 
             <div align="center">
@@ -110,7 +112,16 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
         methods:{
             getAuctions(currentPage,pageSize=10){
                 getAuctionsNew(currentPage,pageSize).then(res=>{
-                    this.resources = res.data.list
+                    this.resources = res.data.list.map(item => {
+                      return {
+                        id: item.id,
+                        name: item.name,
+                        description: item.description,
+                        status: item.status,
+                        startTime: item.startTime.split('.')[0],
+                        endTime: item.endTime.split('.')[0],
+                      }
+                    })
                     this.total = res.data.total
                     console.log(res)
                 }).catch(err=>{
@@ -123,8 +134,11 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
             },
             AuctionDetailDialog(id) {
                 getAuctionNew(id).then(res=>{
-                    this.resource=res.data
-                    // this.form.price = this.resource.updatedPrice
+                    this.resource = res.data
+                  if(this.resource.startTime){
+                    this.resource.startTime = this.resource.startTime.split('.')[0]
+                    this.resource.endTime = this.resource.endTime.split('.')[0]
+                  }
                     this.dialogFormVisible = true;
                 }).catch(err=>{
                     this.$message({
@@ -232,6 +246,9 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
         font-weight: 700;
         font-size: 24px;
         color: #ff9358;
+    span.status
+      color green
+      font-weight bold
     .mainResource
         margin 20px
         text-align left

@@ -56,7 +56,17 @@
         methods:{
             getScoreRecord(page){
                 getsettlement(page,10).then(res=>{
-                    this.tableData = res.data.list
+                    this.tableData = res.data.list.map(item => {
+                      return {
+                        id: item.id,
+                        auctionId: item.auctionId,
+                        userId: item.userId,
+                        price: item.price,
+                        winner: item.winner,
+                        gmtCreate: item.gmtCreate.split('.')[0],
+                        uploadFile: item.uploadFile
+                      }
+                    })
                     this.total = res.data.total
                 }).catch(err=>{
                     console.log(err)
