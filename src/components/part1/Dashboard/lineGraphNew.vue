@@ -1,50 +1,43 @@
 <template>
   <div style="width: 100%; height: 550px">
-    <div id="chart-risk-prediction" style="width: 93%; height: 480px; margin-left: auto; margin-right: auto; float: left"></div>
+    <el-form :inline="true">
+      <el-form-item>
+        <el-input v-model="value" placeholder="请选择查询商品"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onClickQuery">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onClickQueryRelation">查询关联商品</el-button>
+      </el-form-item>
+    </el-form>
+    <div id="chart-risk-prediction"
+         style="width: 93%; height: 480px; margin-left: auto; margin-right: auto; float: left"></div>
+    <!--  图例 begin  -->
     <div style="margin-left: auto; margin-right: auto; padding-top: 10px">
       <p style="text-align: center; width: 50px; float: left; font-size: 14px">高风险</p>
       <canvas id="legend" width="50" height="380" style="float: left; margin-left: auto; margin-right: auto;"></canvas>
       <p style="text-align: center; width: 50px; float: left; font-size: 14px">低风险</p>
     </div>
-    <el-form :inline="true">
-      <el-form-item>
-        <!--                <el-cascader-->
-        <!--                    v-model="value"-->
-        <!--                    :options="options"-->
-        <!--                    placeholder="请选择查询商品"-->
-        <!--                    style="width: 200px"-->
-        <!--                    filterable></el-cascader>-->
-        <el-input v-model="value" placeholder="请选择查询商品"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onClickQuery">查询</el-button>
-        <el-button type="primary" @click="onClickQueryRelation" style="margin-top: 1rem">查询关联商品</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-dialog :visible.sync="dialogFormVisible" width="30%" :title="value + '关联商品'" center>
-          <el-table :data="formRelation" stripe>
-            <el-table-column
-                    prop="name"
-                    label="关联商品">
-              <template slot-scope="scope">
-                <a @click="onClickRelatedCommodity(scope.row.name)" style="color: blue; cursor: pointer">{{
-                  scope.row.name
-                  }}</a>
-              </template>
-            </el-table-column>
-            <el-table-column
-                    prop="similarity"
-                    label="相关度">
-            </el-table-column>
-          </el-table>
-        </el-dialog>
+    <!--  图例 end  -->
 
-      </el-form-item>
-    </el-form>
-
-
-
-
+    <el-dialog :visible.sync="dialogFormVisible" width="30%" :title="value + '关联商品'" center>
+      <el-table :data="formRelation" stripe>
+        <el-table-column
+            prop="name"
+            label="关联商品">
+          <template slot-scope="scope">
+            <a @click="onClickRelatedCommodity(scope.row.name)" style="color: blue; cursor: pointer">{{
+                scope.row.name
+              }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="similarity"
+            label="相关度">
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
   </div>
 </template>
@@ -54,6 +47,7 @@ import echarts from 'echarts'
 import {riskAlarmService} from "@/api/part1/acpassTask";
 
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
+
 export default {
   name: "lineGraphNew",
   data() {
@@ -201,7 +195,7 @@ export default {
       this.dialogFormVisible = false
       this.drawChartRiskPrediction()
     }
-  ,
+    ,
     drawLegend() {
       let legend = document.getElementById("legend");
       let context = legend.getContext("2d");
