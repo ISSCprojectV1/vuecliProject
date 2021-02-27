@@ -191,8 +191,8 @@ export default {
                     name: item.name,
                     description: item.description,
                     status: item.status,
-                    startTime: item.startTime.split('.')[0],
-                    endTime: item.endTime.split('.')[0],
+                    startTime: item.startTime.split('.')[0].replace('T', ' '),
+                    endTime: item.endTime.split('.')[0].replace('T', ' '),
                   }
                 })
                 this.total = res.data.total

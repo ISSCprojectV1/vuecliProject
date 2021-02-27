@@ -99,7 +99,7 @@
                         id: item.id,
                         auctionId: item.id,
                         userId: item.userId,
-                        gmtCreated: item.gmtCreated.split('.')[0],
+                        gmtCreated: item.gmtCreated.split('.')[0].replace('T', ' '),
                         fileName: item.fileName,
                         filePath: item.filePath,
                         status: item.status

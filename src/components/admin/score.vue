@@ -63,7 +63,7 @@
                         userId: item.userId,
                         price: item.price,
                         winner: item.winner,
-                        gmtCreate: item.gmtCreate.split('.')[0],
+                        gmtCreate: item.gmtCreate.split('.')[0].replace('T', ' '),
                         uploadFile: item.uploadFile
                       }
                     })

@@ -118,8 +118,8 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
                         name: item.name,
                         description: item.description,
                         status: item.status,
-                        startTime: item.startTime.split('.')[0],
-                        endTime: item.endTime.split('.')[0],
+                        startTime: item.startTime.split('.')[0].replace('T', ' '),
+                        endTime: item.endTime.split('.')[0].replace('T', ' '),
                       }
                     })
                     this.total = res.data.total
@@ -136,8 +136,8 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
                 getAuctionNew(id).then(res=>{
                     this.resource = res.data
                   if(this.resource.startTime){
-                    this.resource.startTime = this.resource.startTime.split('.')[0]
-                    this.resource.endTime = this.resource.endTime.split('.')[0]
+                    this.resource.startTime = this.resource.startTime.split('.')[0].replace('T', ' ')
+                    this.resource.endTime = this.resource.endTime.split('.')[0].replace('T', ' ')
                   }
                     this.dialogFormVisible = true;
                 }).catch(err=>{
