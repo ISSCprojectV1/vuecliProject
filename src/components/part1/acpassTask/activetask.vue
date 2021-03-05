@@ -7,7 +7,7 @@
 
         <el-tabs v-model="activeName">
             <el-tab-pane label="主动模态" name="table">
-                <el-tag style="margin-bottom: 1rem">空白表示使用主动模态未发现其他异常</el-tag>
+
 
               <el-container style="width: 100%">
                 <el-aside style="width: 580px">
@@ -234,10 +234,11 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
         name: "activetask",
 /*   <el-button @click="gotoDetail(scope.row.company)" type="text" size="small">详情</el-button>
 *                               <el-button @click="gotoTable(scope.row.company)" type="text" size="small">表格</el-button>
-* */
+*  <el-tag style="margin-bottom: 1rem">空白表示使用主动模态未发现其他异常</el-tag>
+*  */
         created(){
             const id = this.$router.currentRoute.params.id;
-            this.Activetradegroup(id,1,10);
+            this.Activetradegroup(id,1,8);
 
           if (this.activeOrpassive()){
             activetradeaction(id).then(res=>{
@@ -308,7 +309,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             gotoTable(company) {
               document.getElementById("table23").style.display="block";
               document.getElementById("echart123").style.display="none";
-              this.Activetradedetailinfo(company,1,10);
+              this.Activetradedetailinfo(company,1,8);
             },
             goback(){
                 this.$router.back(-1)
@@ -363,7 +364,7 @@ import {activetaskgraph, activetradeaction, activetradegroup, passivetradeaction
             pageChange(page){
                 const id = this.$router.currentRoute.params.id;
                 this.currentPage=page;
-                this.Activetradegroup(id,page,10);
+                this.Activetradegroup(id,page,8);
             },
           pageChange1(page){
             const id = this.$router.currentRoute.params.id;
