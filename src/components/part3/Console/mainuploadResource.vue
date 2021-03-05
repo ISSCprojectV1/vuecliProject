@@ -76,7 +76,7 @@
 </template>
 
 <script>
-    import {getAuctionNames} from "@/api/part3/auction";
+import {getAuctionNames, getAuctionNamesNew} from "@/api/part3/auction";
 
     export default {
         name: "mainuploadResource",
@@ -122,7 +122,7 @@
                 });
             },
             getAuctions(){
-                getAuctionNames().then(res=>{
+                getAuctionNamesNew().then(res=>{
                     this.auctions = res.data.auctionNames;
                     console.log(res.data)
                 }).catch(err=>{

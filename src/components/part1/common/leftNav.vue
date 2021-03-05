@@ -25,10 +25,22 @@
         <i class="el-icon-menu"></i>
         <span slot="title">价格波动风险预警</span>
       </el-menu-item>
-      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">附加功能：数据共享</span>
-      </el-menu-item>
+      <el-submenu index="/trade/auction" style="text-align: left;">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span style="font-size: 20px">数据共享</span>
+        </template>
+        <el-menu-item index="/trade/auction" style="text-align: left;padding-left: 80px;font-size: 18px">
+          <span slot="title">拍卖中心</span>
+        </el-menu-item>
+        <el-menu-item index="/trade/uploadResource" style="text-align: left;padding-left: 80px;font-size: 18px">
+          <span slot="title">上传数据</span>
+        </el-menu-item>
+      </el-submenu>
+<!--      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">-->
+<!--        <i class="el-icon-menu"></i>-->
+<!--        <span slot="title">数据共享</span>-->
+<!--      </el-menu-item>-->
 
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">

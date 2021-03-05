@@ -221,6 +221,13 @@ let routes = [
                     title:"拍卖"
                 }
             },
+            {
+                path: "/trade/uploadResource",
+                component: () => import("@/components/part3/Console/mainuploadResource"),
+                meta: {
+                    title: "上传数据"
+                }
+            },
             //trade风险评估
             {
                 path:"/trade/riskPrediction/riskPrediction",
