@@ -7,9 +7,10 @@
                 <div class="mainResource">
                     <h2><router-link :to="`auction/${item.id}`" class="router-link">{{item.name}}</router-link></h2>
                 <div class="content">{{item.description}}</div>
-                <span>开始时间： {{item.startTime}}</span><br/>
+                  <span>距结束：{{item.countdown}}</span>
+                  <br/>
+                <span>开始时间： {{item.startTime}}</span>
                 <span>结束时间： {{item.endTime}}</span>
-
                 </div>
             </el-col>
             <el-col :span="6">
@@ -36,31 +37,7 @@
             :total="total"
     >
     </el-pagination>
-<!--    <el-dialog :title="resource.name" :visible.sync="dialogFormVisible" width="30%" center>-->
-<!--        {{resource.description}}-->
-<!--        <ul style="margin-top: 20px">-->
-<!--            <li style="display: inline-block">起拍价：<span class="score">{{resource.startPrice}}</span></li>-->
-<!--            <li style="display: inline-block">最新价：<span class="score">{{resource.updatedPrice}}</span></li>-->
-<!--        </ul>-->
-<!--        <ul style="margin-top: 20px; margin-bottom: 20px">-->
-<!--            <li style="display: inline-block">开始时间：<span>{{resource.startTime}}</span></li>-->
-<!--            <li style="display: inline-block">结束时间：<span>{{resource.endTime}}</span></li>-->
-<!--        </ul>-->
-<!--        <el-form :model="form">-->
-<!--            <el-form-item label="出价">-->
-<!--                <el-input-number-->
-<!--                    v-model="form.price"-->
-<!--                    :min="1"-->
-<!--                    :step="resource.minimumDecreasePrice"-->
-<!--                    :max="resource.updatedPrice"></el-input-number>-->
-<!--                （价格步长：{{resource.minimumDecreasePrice}}）-->
-<!--            </el-form-item>-->
-<!--            <div align="center">-->
-<!--                <el-button type="primary" @click="bid(resource.id, form.price)">竞拍</el-button>-->
-<!--                <el-button @click="updatePrice(resource.id)">刷新</el-button>-->
-<!--            </div>-->
-<!--        </el-form>-->
-<!--    </el-dialog>-->
+
     <el-dialog :title="resource.name" :visible.sync="dialogFormVisible" width="32%" center>
         {{resource.description}}
         <ul style="margin-top: 20px; margin-bottom: 20px">
@@ -96,7 +73,23 @@
 </template>
 
 <script>
-import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuctionNew} from "@/api/part3/auction";
+import {doAuctionNew, getAuction, getAuctionNew, getAuctionsNew} from "@/api/part3/auction";
+
+// endTime格式为 yyyy-mm-dd hh:mm:ss
+function initTime(endTime) {
+  let dd, hh, mm, ss = null;
+  let endDate = new Date(endTime);
+  let time = endDate.getTime() - Date.now();
+  if(time<=0)
+    return '结束'
+  else {
+    dd = Math.floor(time / (1000 * 60 * 60 * 24));
+    hh = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    mm = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+    ss = Math.floor((time % (1000 * 60)) / 1000);
+    return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+  }
+}
 
     export default {
         name: "mainUpload2",
@@ -111,19 +104,24 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
         },
         methods:{
             getAuctions(currentPage,pageSize=10){
-                getAuctionsNew(currentPage,pageSize).then(res=>{
-                    this.resources = res.data.list.map(item => {
-                      return {
-                        id: item.id,
-                        name: item.name,
-                        description: item.description,
-                        status: item.status,
-                        startTime: item.startTime.split('.')[0].replace('T', ' '),
-                        endTime: item.endTime.split('.')[0].replace('T', ' '),
-                      }
-                    })
-                    this.total = res.data.total
-                    console.log(res)
+              getAuctionsNew(currentPage,pageSize).then(res=>{
+                let list = res.data.list.map(item => {
+                  return {
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    status: item.status,
+                    startTime: item.startTime.split('.')[0].replace('T', ' '),
+                    endTime: item.endTime.split('.')[0].replace('T', ' '),
+                  };
+                })
+                list.map((obj) => {
+                  this.$set(
+                      obj, 'countdown', initTime(obj.endTime)
+                  )
+                })
+                this.resources = list;
+                this.total = res.data.total
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -162,18 +160,6 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
                       type: 'success'
                   });
                   this.dialogFormVisible = false;
-                  // getAuctionNew(id).then(res=>{
-                  //     this.resources[id-1].updatedPrice = res.data.updatedPrice
-                  //     this.resource.updatedPrice = res.data.updatedPrice
-                  //     this.form.price=res.data.updatedPrice
-                  // }).catch(err=>{
-                  //     this.$message({
-                  //         showClose: true,
-                  //         message: '刷新失败',
-                  //         type: 'error'
-                  //     });
-                  //     console.log(err);
-                  // });
               }).catch(err=>{
                   this.$message({
                       showClose: true,
@@ -183,6 +169,17 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
                   console.log(err);
               })
             },
+          countdown() {
+              // let _this = this;
+              console.log('!');
+              console.log(this.resources);
+              setInterval(function(){
+                for(let key in this.resources) {
+                  let end = new Date(this.resources[key]['endTime']);
+                  // console.log(end);
+                }
+            }, 1000);
+          },
             updatePrice(id){
                 getAuction(id).then(res=>{
                     this.resources[id-1].updatedPrice = res.data.updatedPrice
@@ -204,6 +201,24 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
             }
         },
         mounted(){
+          setInterval(() => {
+            for(let key in this.resources) {
+              let endTime = new Date(this.resources[key]['endTime'])
+
+              let now = new Date().getTime();
+              let time = endTime.getTime() - now;
+
+              if(time > 0){
+                let dd = Math.floor(time / (1000 * 60 * 60 * 24));
+                let hh = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let mm = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+                let ss = Math.floor((time % (1000 * 60)) / 1000);
+                this.resources[key]['countdown']=dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+              }
+              else
+                this.resources[key]['countdown'] = '结束'
+            }
+          }, 1000)
           document.getElementById("diceng").style.height=window.innerHeight;
         },
         created() {
@@ -212,17 +227,7 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
         data(){
             return {
                 state:"all",
-                resources:[
-                    {
-                        id:1,
-                        name:"钢铁交易数据",
-                        content:"钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验钢铁交易模拟数据用于系统测试与试验",
-                        endingtime:"2020-04-23",
-                        startingtime:"2020-04-23",
-                        score:"5",
-                        state:"ready"
-                    },
-                ],
+                resources:[],
                 resource: [],
                 total:0,
                 currentPage:1,
@@ -233,7 +238,6 @@ import {doAuction, getAuctions, getAuction, getAuctionsNew, getAuctionNew, doAuc
                 }
             }
         }
-
     }
 </script>
 
