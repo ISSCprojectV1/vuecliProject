@@ -46,6 +46,9 @@
                 <el-form-item label="工作时间" >
                     <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
                 </el-form-item>
+                <el-form-item label="截止时间" >
+                    <el-input type="number" v-model="deadLine" placeholder="如非末尾任务请勿输入"></el-input>
+                </el-form-item>
                 <el-form-item label="内容">
                     <el-popover
                             trigger="hover"
@@ -106,6 +109,7 @@
                 dateEnd: '',
                 dateEnd2: '',
                 workingTime:'',
+                deadLine:'',
                 timeadvise:'',
                 content:'',
                 tradeuser:false,
@@ -162,6 +166,7 @@
                 this.priority=(this.taskin.priority)?this.taskin.priority:1;
                 this.commodityName=this.taskin.commodityName
                 this.workingTime=this.taskin.workingTime
+                this.deadLine=this.taskin.deadLine
                 this.humanUse=this.taskin.humanUse
                 this.content=this.taskin.content
                 this.operatorName=this.taskin.operatorName
@@ -274,6 +279,7 @@ let wortstatue=null
                     "startTime":startData,//
                     "endTime":endData,//
                     "workingTime":this.workingTime,//
+                    "deadLine":this.deadLine,
                     "timeadvise":this.timeadvise,
                     "content":this.content,
                     "tradeuser":this.tradeuser,
@@ -305,6 +311,7 @@ let wortstatue=null
                     this.dateEnd= '',
                     this.dateEnd2= '',
                     this.workingTime = ''
+                this.deadLine=''
             }
         }
     }

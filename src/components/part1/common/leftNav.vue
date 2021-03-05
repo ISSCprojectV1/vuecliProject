@@ -30,7 +30,6 @@
         <span slot="title">附加功能：数据共享</span>
       </el-menu-item>
 
-
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">
           <i class="el-icon-menu"></i>
