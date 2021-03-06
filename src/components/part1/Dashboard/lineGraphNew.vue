@@ -2,7 +2,12 @@
   <div style="width: 100%; height: 550px">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="value" placeholder="请选择查询商品"></el-input>
+        <el-autocomplete
+            v-model="value"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入查询商品"
+            @select="handleSelect"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onClickQuery">查询</el-button>
@@ -58,10 +63,12 @@ export default {
       options2: [],
       formRisk2: [],
       formRelation: [],
+      commodities: [], // 用于输入框补全建议
       dialogFormVisible: false
     }
   },
   mounted() {
+    this.commodities = this.loadAll();
     riskAlarmService().then(res => {
       this.formRisk = res.data.map(item => {
         return {
@@ -79,6 +86,7 @@ export default {
     })
   },
   methods: {
+    // 画图
     drawChartRiskPrediction() {
       let chart = echarts.init(document.getElementById('chart-risk-prediction'))
       let pieces = []
@@ -159,6 +167,21 @@ export default {
 
       chart.setOption(options);
     },
+    // 输入框自动建议
+    querySearch(queryString, cb) {
+      let commodities = this.commodities;
+      let results = queryString ? commodities.filter(this.createFilter(queryString)) : commodities;
+      cb(results); // 调用callback返回建议列表的数据
+    },
+    createFilter(queryString) {
+      return (commodity) => {
+        return (commodity.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      }
+    },
+    handleSelect() {
+      this.onClickQuery()
+    },
+    // 点击查询按钮
     onClickQuery() {
       riskAlarmService().then(res => {
         this.formRisk = res.data.map(item => {
@@ -175,7 +198,7 @@ export default {
         console.log(err)
       })
     },
-
+    // 点击查询关联商品按钮
     onClickQueryRelation() {
       let URL = "/getcommodityRelationdetails/" + this.value;
       getcommodityRelationdetails2(URL).then(res => {
@@ -190,12 +213,13 @@ export default {
         console.log(err)
       })
     },
+    // 点击查询结果表项
     onClickRelatedCommodity(name) {
       this.value = name
       this.dialogFormVisible = false
       this.drawChartRiskPrediction()
-    }
-    ,
+    },
+    // 绘制图例渐变矩形
     drawLegend() {
       let legend = document.getElementById("legend");
       let context = legend.getContext("2d");
@@ -209,6 +233,42 @@ export default {
       // 将填充样式设置为渐变对象
       context.fillStyle = grd;
       context.fillRect(5, 0, 40, 400);
+    },
+    loadAll() {
+      return [{"value": '锡'},
+        {"value": '锌'},
+        {"value": '铜'},
+        {"value": '铅'},
+        {"value": '镍'},
+        {"value": '铝'},
+        {"value": '白银99.99'},
+        {"value": '黄金99.99'},
+        {"value": '螺纹钢'},
+        {"value": '原油（中）'},
+        {"value": '聚乙烯'},
+        {"value": '天然橡胶（TSR20）'},
+        {"value": '尿素硝酸铵'},
+        {"value": '甲醇'},
+        {"value": '天然气'},
+        {"value": '动力煤'},
+        {"value": '焦煤'},
+        {"value": '铁矿石'},
+        {"value": '焦炭'},
+        {"value": '可可'},
+        {"value": '鸡蛋'},
+        {"value": '活猪'},
+        {"value": '豆粕'},
+        {"value": '豆油'},
+        {"value": '早籼稻'},
+        {"value": '油菜籽'},
+        {"value": '棉花一号'},
+        {"value": '菜籽油'},
+        {"value": '菜籽粕'},
+        {"value": '白糖'},
+        {"value": '大豆'},
+        {"value": '玉米'},
+        {"value": '小麦'},
+        {"value": '强筋小麦'}]
     }
   }
 }
