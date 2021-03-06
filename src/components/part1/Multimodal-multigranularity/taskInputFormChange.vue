@@ -134,13 +134,13 @@
                 console.log("taskQuery fail")
             });
             this.admintrue=getAdminTrue()?getAdminTrue():false
-            console.log(this.taskin.id)
-            console.log(this.taskin.changeflag)
-            console.log(this.taskin.name)
+
             this.id=this.taskin.id
             this.input=this.taskin.name
             this.priority=this.taskin.priority
             this.humanUse=this.taskin.humanUse
+            this.workingTime=this.taskin.workingTime
+            this.deadLine=this.taskin.deadLine
             //  if(this.taskin.content)
             // this.content=this.taskin.content+"\r\n"+"aaa"
             this.content=this.taskin.content
