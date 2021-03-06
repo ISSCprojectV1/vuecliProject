@@ -37,7 +37,7 @@
                     <el-select v-model="workStatus" placeholder="请选择任务状态" >
 
                         <el-option label="任务未执行" value="0"></el-option>
-                        <el-option label="任务已执行" value="1"></el-option>
+                        <el-option label="任务正常" value="1"></el-option>
                         <el-option label="任务异常" value="2"></el-option>
 
                     </el-select>
@@ -253,7 +253,7 @@ let wortstatue=null
                     wortstatue = null
                 if (this.workStatus === "已分配") // true
                     wortstatue = 0
-                if (this.workStatus  === "任务已经执行") // true
+                if (this.workStatus  === "任务正常") // true
                     wortstatue = 1
                 if (this.workStatus  === "任务出现异常") // true
                     wortstatue = 2

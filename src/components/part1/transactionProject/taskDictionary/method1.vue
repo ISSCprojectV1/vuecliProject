@@ -377,14 +377,14 @@ const legendData = {
       id: 'level2',
       x: legendX+legendXPadding,
       y: legendBeginY,
-      label: '任务未执行',
+      label: '任务未完成',
       style: {
         fill: '#778899',
       },
     },
     {
       id: 'level3',
-      label: '任务已执行',
+      label: '任务正常',
       x: legendX,
       y: legendBeginY + legendYPadding * 2,
       style: {
