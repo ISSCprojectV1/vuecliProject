@@ -17,18 +17,6 @@
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
       </el-menu-item>
-      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">模态与粒度+联盟形成</span>
-      </el-menu-item>
-      <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">风险预警监控</span>
-      </el-menu-item>
-      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">附加功能：数据共享</span>
-      </el-menu-item>
 
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
@@ -40,6 +28,15 @@
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>
       </el-submenu>
+      <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">风险预警监控</span>
+      </el-menu-item>
+      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">附加功能：数据共享</span>
+      </el-menu-item>
+
     </el-menu>
   </el-col>
 </el-row>
@@ -51,6 +48,13 @@
   export default {
     data(){
       return{
+
+
+        /*      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">模态与粒度+联盟形成</span>
+      </el-menu-item>
+*/
         defaultActive:"",
         accessRoutes:[
       /*    {
@@ -78,7 +82,7 @@
             component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
 
           },*/
-         /* {
+       /*  {
             title: "风险预警",
             routes: [
               {
@@ -103,8 +107,8 @@
               //   }
               // }
             ]
-          },
-     /*     {
+          },*/
+       {
             title:"模态与粒度+联盟形成",
             routes: [
               {
@@ -120,7 +124,7 @@
                 meta:{
                   title:"时间与商品粒度"
                 }
-              },
+              },]}
               /*{
                 path:"/trade/Multimodal-multigranularity/time_advise",
                 component: () => import("@/components/part2/time_advise"),
