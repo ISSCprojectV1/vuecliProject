@@ -17,7 +17,34 @@
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
       </el-menu-item>
+<<<<<<< HEAD
 
+=======
+      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">模态与粒度+联盟形成</span>
+      </el-menu-item>
+      <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">价格波动风险预警</span>
+      </el-menu-item>
+      <el-submenu index="/trade/auction" style="text-align: left;">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span style="font-size: 20px">数据共享</span>
+        </template>
+        <el-menu-item index="/trade/auction" style="text-align: left;padding-left: 80px;font-size: 18px">
+          <span slot="title">拍卖中心</span>
+        </el-menu-item>
+        <el-menu-item index="/trade/uploadResource" style="text-align: left;padding-left: 80px;font-size: 18px">
+          <span slot="title">上传数据</span>
+        </el-menu-item>
+      </el-submenu>
+<!--      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">-->
+<!--        <i class="el-icon-menu"></i>-->
+<!--        <span slot="title">数据共享</span>-->
+<!--      </el-menu-item>-->
+>>>>>>> bc418424159e3179a4c1c97aa0b57d30d14a61f3
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
         <template slot="title">

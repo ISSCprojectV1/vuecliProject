@@ -122,7 +122,8 @@ console.log(this.$router.currentRoute)
                     },
                     legend: {
                         orient: 'vertical',
-                        left: 'left',
+                      //  left: 'left',
+                        left: 50,
                         data: data[0]
                     },
                     series: [

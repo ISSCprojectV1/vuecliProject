@@ -111,6 +111,7 @@ let routes = [
                     title: "价格波动风险演化"
                 }
             },
+
             {
                 path: "/trade/riskPrediction/riskSurveillance",
                 component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
@@ -219,6 +220,13 @@ let routes = [
                 component: () => import("@/views/part3/incentiveMechanism/Download/home"),
                 meta:{
                     title:"拍卖"
+                }
+            },
+            {
+                path: "/trade/uploadResource",
+                component: () => import("@/components/part3/Console/mainuploadResource"),
+                meta: {
+                    title: "上传数据"
                 }
             },
             //trade风险评估

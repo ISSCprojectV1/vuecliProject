@@ -37,7 +37,7 @@
                     <el-select v-model="workStatus" placeholder="请选择任务状态" >
 
                         <el-option label="任务未执行" value="0"></el-option>
-                        <el-option label="任务已执行" value="1"></el-option>
+                        <el-option label="任务正常" value="1"></el-option>
                         <el-option label="任务异常" value="2"></el-option>
 
                     </el-select>
@@ -45,6 +45,9 @@
 
                 <el-form-item label="工作时间" >
                     <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
+                </el-form-item>
+                <el-form-item label="截止时间" >
+                    <el-input type="number" v-model="deadLine" placeholder="如非末尾任务请勿输入"></el-input>
                 </el-form-item>
                 <el-form-item label="内容">
                     <el-popover
@@ -106,6 +109,7 @@
                 dateEnd: '',
                 dateEnd2: '',
                 workingTime:'',
+                deadLine:'',
                 timeadvise:'',
                 content:'',
                 tradeuser:false,
@@ -130,13 +134,13 @@
                 console.log("taskQuery fail")
             });
             this.admintrue=getAdminTrue()?getAdminTrue():false
-            console.log(this.taskin.id)
-            console.log(this.taskin.changeflag)
-            console.log(this.taskin.name)
+
             this.id=this.taskin.id
             this.input=this.taskin.name
             this.priority=this.taskin.priority
             this.humanUse=this.taskin.humanUse
+            this.workingTime=this.taskin.workingTime
+            this.deadLine=this.taskin.deadLine
             //  if(this.taskin.content)
             // this.content=this.taskin.content+"\r\n"+"aaa"
             this.content=this.taskin.content
@@ -162,6 +166,7 @@
                 this.priority=(this.taskin.priority)?this.taskin.priority:1;
                 this.commodityName=this.taskin.commodityName
                 this.workingTime=this.taskin.workingTime
+                this.deadLine=this.taskin.deadLine
                 this.humanUse=this.taskin.humanUse
                 this.content=this.taskin.content
                 this.operatorName=this.taskin.operatorName
@@ -248,7 +253,7 @@ let wortstatue=null
                     wortstatue = null
                 if (this.workStatus === "已分配") // true
                     wortstatue = 0
-                if (this.workStatus  === "任务已经执行") // true
+                if (this.workStatus  === "任务正常") // true
                     wortstatue = 1
                 if (this.workStatus  === "任务出现异常") // true
                     wortstatue = 2
@@ -274,6 +279,7 @@ let wortstatue=null
                     "startTime":startData,//
                     "endTime":endData,//
                     "workingTime":this.workingTime,//
+                    "deadLine":this.deadLine,
                     "timeadvise":this.timeadvise,
                     "content":this.content,
                     "tradeuser":this.tradeuser,
@@ -305,6 +311,7 @@ let wortstatue=null
                     this.dateEnd= '',
                     this.dateEnd2= '',
                     this.workingTime = ''
+                this.deadLine=''
             }
         }
     }

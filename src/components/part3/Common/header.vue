@@ -2,7 +2,7 @@
     <div>
         <el-row>
           <!--lg: laptop at 150%-->
-          <el-col :xs="12" :sm="13" :md="14" :lg="16" :xl="16">
+          <el-col :xs="14" :sm="15" :md="16" :lg="18" :xl="18">
                 <el-menu :router="true" class="el-menu" mode="horizontal"
                  @select="handleSelect"
                  background-color="#00659B"
@@ -21,7 +21,7 @@
                 </el-menu>
 
             </el-col>
-          <el-col :xs="12" :sm="11" :md="10" :lg="8" :xl="8">
+          <el-col :xs="10" :sm="9" :md="8" :lg="6" :xl="6">
             <el-menu :router="true"
                      class="el-menu"
                      mode="horizontal"
@@ -55,7 +55,7 @@
 <!--                </el-submenu>-->
                 <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
                 <el-menu-item index="/console/index">个人中心</el-menu-item>
-                <el-menu-item index="/auction">拍卖中心</el-menu-item>
+<!--                <el-menu-item index="/auction">拍卖中心</el-menu-item>-->
                 <el-submenu index="/console/index">
                  <template slot="title"><img :src="userimg" class="img userprofile"></template>
                     <el-menu-item index="/console/index">
