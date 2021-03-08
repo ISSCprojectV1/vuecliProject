@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <!-- <button @click="toUpdate">切换数据</button> -->
-    <div id="container" style="width:1200px; height:600px"></div>
+    <div id="rule"  style="width:1000px; height:30px"></div>
+    <div id="container" style="width:1200px; height:600px">
+
+    </div>
   </div>
 </template>
 
@@ -340,16 +343,20 @@ legendContainer.id = 'legendContainer';
 const legendGraphDiv = document.createElement('div');
 legendGraphDiv.id = 'legend';
 legendContainer.appendChild(legendGraphDiv);
-graphDiv.parentNode.appendChild(legendContainer);
+        const graphDiv2 = document.getElementById('rule');
+        graphDiv2.appendChild(legendContainer);
+        //graphDiv.parentNode.appendChild(legendContainer);
 const legendGraph = new G6.Graph({
-  container: 'legend',
-  width: 300,
-  height: 200,
+  //container: 'legend',
+  container: 'rule',
+  width: 600,
+  height: 30,
   defaultNode: {
     size: 15,
     shape: 'circle',
     labelCfg: {
-      position: 'right',
+           position: 'right',
+      //position: 'top',
       offset: 10,
       style: {
         fontSize: 18,
@@ -358,9 +365,13 @@ const legendGraph = new G6.Graph({
     },
   },
 });
-const legendX = 20;
-const legendBeginY = 100;
-const legendXPadding = 125;
+const legendX = 45;
+//const legendX = 20;
+const legendBeginY = 15;
+//const legendBeginY = 100;
+    //    const legendXPadding = 125;
+    // const legendYPadding = 25;
+const legendXPadding = 150;
 const legendYPadding = 25;
 const legendData = {
   nodes: [
@@ -385,8 +396,9 @@ const legendData = {
     {
       id: 'level3',
       label: '任务正常',
-      x: legendX,
-      y: legendBeginY + legendYPadding * 2,
+      x: legendX+legendXPadding*2,
+      y: legendBeginY,
+      //y: legendBeginY + legendYPadding * 2,
       style: {
         fill: '#30BF78',
       },
@@ -394,8 +406,9 @@ const legendData = {
     {
       id: 'level4',
       label: '任务异常',
-      x: legendX+legendXPadding,
-      y: legendBeginY + legendYPadding * 2,
+      x: legendX+legendXPadding*3,
+      y: legendBeginY,
+    //  y: legendBeginY + legendYPadding * 2,
       style: {
         fill: '#DC143C',
       },
@@ -413,6 +426,7 @@ graph.node(function (node) {
                                     fill:'#6495ED',
                                     // stroke:''
                                 },
+
                             }
                         }
               
@@ -423,6 +437,9 @@ graph.node(function (node) {
                                     fill:'#778899',
                                     // stroke:''
                                 },
+                              style:{
+                                fill:"#FFFF00"
+                              }
                             }
                         }
                         if(node.workStatusColor === 1){
@@ -452,6 +469,7 @@ graph.node(function (node) {
                     });
 graph.data(data);
 graph.render();
+
 graph.on('node:mouseenter', evt => {
   const { item } = evt;
   graph.setItemState(item, 'hover', true);

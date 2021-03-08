@@ -247,7 +247,7 @@
                 var endData = new Date(this.dateEnd2).getTime();
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
                 console.log("humanuse:"+ this.humanUse )
-                let humannn=    this.humanUse=='是'?1:0;
+                let humannn=    (this.humanUse==true?1:0);
 let wortstatue=null
                 if (this.workStatus == "未分配") // true
                     wortstatue = null
