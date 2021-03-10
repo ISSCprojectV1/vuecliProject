@@ -133,7 +133,7 @@
             ).catch(()=>{
                 console.log("taskQuery fail")
             });
-            this.admintrue=getAdminTrue()?getAdminTrue():false
+            this.admintrue=getAdminTrue()=="admin"?true:false
 
             this.id=this.taskin.id
             this.input=this.taskin.name

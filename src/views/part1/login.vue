@@ -87,16 +87,22 @@ import {changetimeadvise, taskQuery,spaceResult,taskQueryById,getRolenameById} f
                       console.log(message.data.roleList)
                       if(!message.data.roleList)
                         return
+
                       for(var i=0;i<message.data.roleList.length;i++)
                       {
-                        console.log(message.data.roleList[i])
+                        console.log(message.data.roleList[i].roleName)
+                        console.log(message.data.roleList[i].roleName=='admin')
                         if(message.data.roleList[i].roleName=='user')
-                          setUserTrue("true")
-                        if(message.data.roleList[i].roleName=='admin')
-                          setAdminTrue("true")
+                        {    setUserTrue("true")}
+console.log(getUserTrue()
+)
+                       setAdminTrue(message.data.roleList[i].roleName)
+console.log(getAdminTrue())
+
                       }
-                      console.log(getUserTrue())
                       console.log(getAdminTrue())
+                      console.log(getUserTrue())
+
                     }
 
             ).catch( function(message){

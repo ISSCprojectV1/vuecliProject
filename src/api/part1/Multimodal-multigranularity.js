@@ -19,6 +19,21 @@ export function taskInput(data) {
         })
   }
 
+export function getReadyQueue() {
+    console.log("getReadyQueue")
+    return request({
+        url: '/getReadyQueue',
+        method: 'get',
+    })
+}
+export function modality() {
+  console.log("/modality")
+  return request({
+    url: '/modality',
+    method: 'get',
+  })
+}
+
 // 获得所有
 export function bourseget(data) {
   console.log("发送bourseget请求")

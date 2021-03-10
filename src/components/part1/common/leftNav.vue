@@ -18,10 +18,7 @@
         <span slot="title">首页</span>
       </el-menu-item>
 
-      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">模态与粒度+联盟形成</span>
-      </el-menu-item>
+
       <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
         <i class="el-icon-menu"></i>
         <span slot="title">价格波动风险预警</span>
@@ -134,7 +131,7 @@
             ]
           },*/
        {
-            title:"模态与粒度+联盟形成",
+            title:"模态与粒度建议",
             routes: [
               {
                 path:"/trade/Multimodal-multigranularity/stepBar",
