@@ -5,6 +5,12 @@
       <el-aside style="width: 350px">
         <div id="chart-risk-frequency" style="width: 350px; height: 480px"></div>
       </el-aside>
+      <el-dialog title="预警信息处理"
+                 :visible.sync="dialogTableVisible" center :append-to-body='true'
+                 :lock-scroll="false" width="30%"
+                 :close-on-click-modal="false">
+        <riskStatusChange :riskin="risktype"></riskStatusChange>
+      </el-dialog>
       <el-container style="width: 600px;" >
         <el-main style="padding-top: 0" class="tabpanel">
           <p style="margin-top: 0; font-weight: bolder; font-size: 18px; color: #333333">预警信息综合显示</p>
@@ -21,10 +27,13 @@
                 </el-table-column>
                 <el-table-column prop="date" label="发布时间" min-width="70"></el-table-column>
                 <el-table-column label="操作" min-width="80" >
-                  <el-button type="text" style="font-size: 20px">修改</el-button>
-                  <el-button type="text" style="font-size: 20px">送审</el-button>
-                  <el-button type="text" style="font-size: 20px">监控</el-button>
-                  <el-button type="text" style="font-size: 20px">删除</el-button>
+                  <template slot-scope="scope">
+                  <el-button type="text" style="font-size: 20px"  @click="addNewTask1(scope.row,1)">修改</el-button>
+                  <el-button type="text" style="font-size: 20px"   @click="addNewTask1(scope.row,2)">送审</el-button>
+                  <el-button type="text" style="font-size: 20px"  @click="gotofirst()" >监控</el-button>
+                    <el-button type="text" style="font-size: 20px"  @click="gotolast()" >监控</el-button>
+                  <el-button type="text" style="font-size: 20px"    @click="addNewTask1(scope.row,4)">删除</el-button>
+                   </template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
@@ -97,14 +106,21 @@
 
 <script>
 import echarts from "echarts";
-
+import riskStatusChange from "@/components/part1/riskPrediction/riskStatusChange";
 export default {
   name: "riskSurveillance",
   mounted() {
     this.drawChartRiskFrequency()
   },
+  components: {
+
+    riskStatusChange
+  },
+
   data() {
     return {
+      risktype:["","修改","送审","监控","删除"],
+      dialogTableVisible: false,
       formReleased: [
         {
           id: 1,
@@ -166,13 +182,32 @@ export default {
     }
   },
   methods: {
+    addNewTask1(scope,num) {
+      let data=["","修改","送审","监控","删除"]
+      data[0]=this.risktype[num]
+      this.risktype=data
+console.log( this.risktype[0])
+      console.log( this.risktype[0]=='修改')
+      this.dialogTableVisible = true;
+      console.log(scope)
+    },
+    gotofirst()
+    {
+      this.$router.push('/trade/dashboard')
+    },
+    gotolast()
+    {
+
+      this.$router.push(   '/trade/riskPrediction/riskPage')
+    },
+
     drawChartRiskFrequency() {
       let chart = echarts.init(document.getElementById('chart-risk-frequency'))
 
       let option = {
         // backgroundColor: '#FFFFFF',
         title: {
-          text: '当月预警频率',
+          text: '当月预警次数',
           left: 'center'
         },
         tooltip: {

@@ -6,65 +6,21 @@
 
             <el-form ref="form" :model="form" label-width="130px">
 
-                <el-form-item label="监管任务名称">
+                <el-form-item label="序号">
                     <el-input v-model="input" placeholder="请输入内容"></el-input>
                 </el-form-item>
 
-                <el-form-item label="监管任务优先级" v-if="this.admintrue">
-                    <el-select v-model="priority" placeholder="请选择任务优先级" >
-                        <el-option label="级别一" value="1"></el-option>
-                        <el-option label="级别二" value="2"></el-option>
-                        <el-option label="级别三" value="3"></el-option>
-                        <el-option label="级别四" value="4"></el-option>
-                        <el-option label="级别五" value="5"></el-option>
-                    </el-select>
-                </el-form-item>
 
-                <el-form-item label="是否人工分配"  v-if="this.admintrue" >
-                    <el-switch v-model="humanUse"
-                               active-text="人工分配"
-                    ></el-switch>
-                </el-form-item>
-                <el-form-item label="是否主动监管" v-if="this.admintrue">
-                    <el-switch v-model="tradeuser"
-                               active-text="主动监管"
-                    ></el-switch>
-                </el-form-item>
-                <el-form-item label="操作员"   v-if="this.admintrue">
+                <el-form-item label="类别"  >
                     <el-input v-model="operatorName" placeholder="请输入操作员名称"></el-input>
                 </el-form-item>
-                <el-form-item label="任务状态"  v-if="workStatus!='未分配'">
-                    <el-select v-model="workStatus" placeholder="请选择任务状态" >
 
-                        <el-option label="任务未执行" value="0"></el-option>
-                        <el-option label="任务正常" value="1"></el-option>
-                        <el-option label="任务异常" value="2"></el-option>
 
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="工作时间" >
+                <el-form-item label="修改"  v-if="this.riskin[0]=='修改'">
                     <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
                 </el-form-item>
-                <el-form-item label="截止时间" >
-                    <el-input type="number" v-model="deadLine" placeholder="如非末尾任务请勿输入"></el-input>
-                </el-form-item>
-                <el-form-item label="内容">
-                    <el-popover
-                            trigger="hover"
-                            placement="top"
-                            width="
-                    300"
-
-                            v-model="visible">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                        <div style="margin: 15px 0;"></div>
-                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                        </el-checkbox-group>
-
-                        <el-button  class="popbut" id="neirong" slot="reference"  >{{content}}</el-button>
-                    </el-popover>
+                <el-form-item label="预警信息" v-if="this.riskin[0]!='修改'">
+                    <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
                 </el-form-item>
 
 
@@ -103,7 +59,7 @@
                 taskinputt:this.taskin,
                 input: '',
                 priority: '',
-                humanUse: '',
+                humanUse: false,
                 dateStart: '',
                 dateStart2: '',
                 dateEnd: '',
@@ -119,37 +75,27 @@
                 workStatus: ''
             }
         },
-        props:['taskin'],
-        created(){
-            bourseget().then((res) => {
-                    let dataConvert = res.data.data;
-                    console.log(dataConvert)
-                    let temp=[]
-                    for(let i=0;i<dataConvert.length;i++)
-                        temp.push(dataConvert[i].bourse)
-                    this.cities=temp
-                    console.log(temp)
-                }
-            ).catch(()=>{
-                console.log("taskQuery fail")
-            });
-            this.admintrue=getAdminTrue()=="admin"?true:false
+        props:['riskin'],
 
-            this.id=this.taskin.id
-            this.input=this.taskin.name
-            this.priority=this.taskin.priority
-            this.humanUse=this.taskin.humanUse
-            this.workingTime=this.taskin.workingTime
-            this.deadLine=this.taskin.deadLine
-            //  if(this.taskin.content)
-            // this.content=this.taskin.content+"\r\n"+"aaa"
-            this.content=this.taskin.content
-            this.operatorName=this.taskin.operatorName
-            console.log(this.taskin.workStatus)
-            this.workStatus=this.taskin.workStatus
+        created(){
+            console.log(this.riskin)
+
+
+
+
             //npm   console.log(this.content)
             /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
           this.cleanForm();*/
+        },
+        watch:{
+            riskin:{
+
+                handler(val){
+                    console.log(val)
+                }
+
+            }
+
         },
         computed: {
             address(){
@@ -157,32 +103,7 @@
                 return ""
             }
         },
-        watch:{
-            'taskin.changeflag'(){
-                console.log("flag变了")
-                console.log(this.taskin)
-                this.id=this.taskin.id
-                this.input=this.taskin.name
-                this.priority=(this.taskin.priority)?this.taskin.priority:1;
-                this.commodityName=this.taskin.commodityName
-                this.workingTime=this.taskin.workingTime
-                this.deadLine=this.taskin.deadLine
-                this.humanUse=this.taskin.humanUse
-                this.content=this.taskin.content
-                this.operatorName=this.taskin.operatorName
-                this.workStatus=this.taskin.workStatus
-                if(!this.content)
-                    this.content='暂时未分配'
-                if(this.taskin.humanUse=='是')
-                    this.humanUse=1
-                if(this.taskin.humanUse=='否')
-                    this.humanUse=0
-                if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
-                    this.cleanForm()
-                let butt=document.getElementById("neirong")
-                console.log(butt.text)
-            }
-        },
+
         methods:{
             handleCheckAllChange(val) {
                 this.checkedCities = val ? this.cities : [];
@@ -247,8 +168,7 @@
                 var endData = new Date(this.dateEnd2).getTime();
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
                 console.log("humanuse:"+ this.humanUse )
-                let priorityy=    (this.priority=="无"?0:this.priority);
-                let humannn=    ((this.humanUse==true||this.humanUse=="是")?1:0);
+                let humannn=    (this.humanUse==true?1:0);
 let wortstatue=null
                 if (this.workStatus == "未分配") // true
                     wortstatue = null
@@ -275,7 +195,7 @@ let wortstatue=null
                 var data = {
                     "id":this.id,
                     "name":this.input,
-                    "priority":priorityy,
+                    "priority":this.priority,
                     "humanUse":humannn,  //
                     "startTime":startData,//
                     "endTime":endData,//

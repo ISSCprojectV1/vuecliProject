@@ -119,13 +119,13 @@ let routes = [
                     title: "预警监控"
                 }
             },
-            // {
-            //     path: "/trade/riskPredictionOld",
-            //     component: () => import("@/components/part1/riskPrediction/riskPage"),
-            //     meta: {
-            //         title: "价格波动风险演化-旧"
-            //     }
-            // },
+          /*  {
+                path: "/trade/riskPredictionOld",
+                component: () => import("@/components/part1/riskPrediction/riskPage"),
+                meta: {
+                    title: "价格波动风险演化-旧"
+                }
+            },*/
             {
                 path:"/trade/acpassTask/activetask/:id",
                 component: () => import("@/components/part1/acpassTask/activetask"),
