@@ -14,11 +14,15 @@
     
   </div>
 <div>
-  <div id="echart1"  style="display: flex">
-
+  <div id="echart1"  >
+<div>
     * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
+</div>
     <method1 ref="method1_child"  ></method1>
   </div>
+    <div>
+       当前监管任务
+    </div>
     <div id="form2" >
       <el-table
               ref="dormitoryTable2"
@@ -44,7 +48,7 @@
                      :current-page="currentPage"
                      :page-sizes="pageSizes"
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
+                     :total="totalCount2">
       </el-pagination>
     </div>
   </div>
@@ -78,7 +82,7 @@
                      :current-page="currentPage"
                      :page-sizes="pageSizes"
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
+                     :total="totalCount3">
       </el-pagination>
     <el-table
             v-if="usertrue"
@@ -108,7 +112,7 @@
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="任务优先级"   sortable    :sort-orders="['ascending', 'descending',null]" prop="priority" width="60">
+        <el-table-column label="任务优先级"   sortable    :sort-orders="['ascending', 'descending',null]"     :sort-by="['priority']" prop="priority" width="60">
 
         </el-table-column>
 
@@ -207,6 +211,8 @@ prioritychoose:[1,2,3],
       dormitory: [],
       dormitory2: [],
       currentPage:1,
+        totalCount2:10,
+        totalCount3:10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
       totalCount:100,
       // 个数选择器（可修改）
@@ -314,7 +320,8 @@ prioritychoose:[1,2,3],
      // console.log(dataConvert.length)
       for (let i = 0; i < dataConvert.length; i++) {
 
-
+  if(dataConvert[i].priority==0)
+      dataConvert[i].priority="无"
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
         else // false
@@ -352,7 +359,7 @@ prioritychoose:[1,2,3],
       let dataConvert = [];
       dataConvert = res;
       //console.log("aa")
-      this.totalCount = dataConvert.length
+      this.totalCount2 = dataConvert.length
       // console.log(dataConvert.length)
       for (let i = 0; i < dataConvert.length; i++) {
 
@@ -391,11 +398,15 @@ prioritychoose:[1,2,3],
     },
     dealwithData3(res) {
       this.modalitydata=res
+        this.totalCount3=this.modalitydata.length
       for (let i = 0; i < this.modalitydata.length; i++) {
         if (this.modalitydata[i].allocation) // true
           this.modalitydata[i].allocation = "是"
         else // false
-          this.modalitydata[i].allocation = "否"
+        {  this.modalitydata[i].allocation = "否"
+        this.modalitydata[i].id=null
+        }
+
 
         if (i == 0) {
           console.log(this.modalitydata[0])
