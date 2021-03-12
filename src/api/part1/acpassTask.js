@@ -173,3 +173,32 @@ export function getActiveCompanyDetail(company, currentPage, pageSize) {
         url: '/getActiveCompanyDetail/'
     })
 }
+
+// start - 主被动模态与空间粒度 - tab - 空间粒度
+
+export function getSpaceGranularity(taskId, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            taskid: taskId,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getSpaceans'
+    })
+}
+
+export function getSpaceDetail(platform, category, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            platform: platform,
+            category: category,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getSpaceDetail'
+    })
+}
+
+// end - 主被动模态与空间粒度 - tab - 空间粒度
