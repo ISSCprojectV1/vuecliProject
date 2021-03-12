@@ -184,71 +184,9 @@
       </el-tab-pane>
 
       <el-tab-pane label="空间粒度" name="space-granularity">
-        <el-container style="height: 800px; border: 10px solid #eee">
-          <el-aside width="800px" style="border: 10px solid #eee">
-            <el-table
-                :data="dataTableSpaceGranularity"
-                @row-click="onClickTableSpace"
-            >
-              <el-table-column
-                  label="平台名称"
-                  prop="platform"
-                  width="200">
-              </el-table-column>
-              <el-table-column
-                  label="省份"
-                  prop="province"
-                  width="80">
-              </el-table-column>
-              <el-table-column
-                  label="城市"
-                  prop="city"
-                  width="80">
-              </el-table-column>
-              <el-table-column
-                  label="商品类型"
-                  prop="category"
-                  width="80">
-              </el-table-column>
-              <el-table-column
-                  label="关联度"
-                  prop="associate"
-                  width="150">
-                <template slot-scope="scope">
-                  {{ scope.row.associate.toFixed(3) }}
-                </template>
-              </el-table-column>
-            </el-table>
-            <el-pagination
-                ref="pagination"
-                style="text-align: center; margin-top: 0.5rem"
-                background
-                layout="prev, pager, next"
-                @current-change="pageChange"
-                :total="totalTableSpace">
-            </el-pagination>
-          </el-aside>
-          <el-container style="height: 800px; border: 10px solid #eee">
-            <el-table id="tableSpaceDetail" :data="dataTableSpaceDetail">
-              <el-table-column
-                  label="交易主体"
-                  prop="company"
-                  width="250">
-              </el-table-column>
-              <el-table-column
-                  label="交易数量"
-                  prop="amount"
-                  width="100">
-              </el-table-column>
-              <el-table-column
-                  label="交易频次"
-                  prop="trasum"
-                  width="100">
-              </el-table-column>
-            </el-table>
-          </el-container>
-        </el-container>
+        <tab-space-granularity></tab-space-granularity>
       </el-tab-pane>
+
     </el-tabs>
 
   </div>
@@ -259,8 +197,6 @@ import {
   activegraph,
   getActiveCompanyDetail,
   getActiveGroup,
-  getSpaceDetail,
-  getSpaceGranularity
 } from "@/api/part1/acpassTask";
 import {
   activetaskgraph,
@@ -269,13 +205,15 @@ import {
   Louvainresult
 } from "@/api/part1/acpassTask";
 import echart from "echarts";
+import tabSpaceGranularity from "@/components/part1/acpassTask/tabSpaceGranularity";
+
 
 export default {
   name: "activetask",
+  components: {tabSpaceGranularity},
   created() {
     const id = this.$router.currentRoute.params.id;
     this.activeTradeGroup(id, 1, 8);
-    this.getResultSpaceGranularity(id, 1, 10);
     if (this.activeOrPassive()) {
       activetradeaction(id).then(res => {
         this.dataTableActive = res.data.data
@@ -304,11 +242,6 @@ export default {
       // tab 1: active table
       dataTableActive: [],
       threshold: '',
-      // tab 3: 空间粒度
-      dataTableSpaceGranularity: [],
-      totalTableSpace: 0,
-      dataTableSpaceDetail: [],
-      totalTableDetail: 0,
       // tab gone: 交易事件图
       value_space_granularity: '',
       options: [{
@@ -326,7 +259,6 @@ export default {
   mounted() {
     // const id = this.$router.currentRoute.params.id;
     // this.Activetaskgraph(id, 15);
-    document.getElementById("tableSpaceDetail").style.display = "none";
     document.getElementById("table23").style.display = "none";
     document.getElementById("echart123").style.display = "none";
   },
@@ -375,7 +307,6 @@ export default {
       let cnt = 0;
       this.Data = [];
       this.spanarray = [];
-      // console.log(this.tableData.length)
       for (let i = 0; i < this.tableData.length; i++) {
         this.spanarray.push({
           row: cnt,
@@ -538,27 +469,6 @@ export default {
         }
 
         myChart.setOption(option)
-      })
-    },
-    // tab - 空间粒度
-    getResultSpaceGranularity(taskId, currentPage = 1, pageSize = 10) {
-      getSpaceGranularity(taskId, currentPage, pageSize).then(res => {
-        this.dataTableSpaceGranularity = res.data.data.reslist
-        this.totalTableSpace = res.data.data.total
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    onClickTableSpace(row) {
-      this.getResultSpaceDetail(row.platform, row.category, 1, 10)
-    },
-    getResultSpaceDetail(platform, category, currentPage = 1, pageSize = 10) {
-      getSpaceDetail(platform, category, currentPage, pageSize).then(res => {
-        this.dataTableSpaceDetail = res.data.data.reslist
-        this.totalTableDetail = res.data.data.total
-        document.getElementById("tableSpaceDetail").style.display = "block"
-      }).catch(err => {
-        console.log(err)
       })
     },
     // 绘图
