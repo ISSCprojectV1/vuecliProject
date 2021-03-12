@@ -20,7 +20,7 @@
                 <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
                 <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
                 <el-table-column prop="risk" label="预警信息" min-width="50">
-                  <template scope="scope">
+                  <template slot-scope="scope">
                     <span v-if="scope.row.risk === '高风险'" style="color: red">{{scope.row.risk}}</span>
                     <span v-else-if="scope.row.risk === '低风险'" style="color: green">{{scope.row.risk}}</span>
                   </template>
@@ -42,7 +42,7 @@
                 <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
                 <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
                 <el-table-column prop="risk" label="预警信息" min-width="50">
-                  <template scope="scope">
+                  <template slot-scope="scope">
                     <span v-if="scope.row.risk === '高风险'" style="color: red">{{scope.row.risk}}</span>
                     <span v-else-if="scope.row.risk === '低风险'" style="color: green">{{scope.row.risk}}</span>
                   </template>
@@ -57,7 +57,7 @@
                 <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
                 <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
                 <el-table-column prop="risk" label="预警信息" min-width="50">
-                  <template scope="scope">
+                  <template slot-scope="scope">
                     <span v-if="scope.row.risk === '高风险'" style="color: red">{{scope.row.risk}}</span>
                     <span v-else-if="scope.row.risk === '低风险'" style="color: green">{{scope.row.risk}}</span>
                   </template>
@@ -72,7 +72,7 @@
                 <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
                 <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
                 <el-table-column prop="risk" label="预警信息" min-width="50">
-                  <template scope="scope">
+                  <template slot-scope="scope">
                     <span v-if="scope.row.risk === '高风险'" style="color: red">{{scope.row.risk}}</span>
                     <span v-else-if="scope.row.risk === '低风险'" style="color: green">{{scope.row.risk}}</span>
                   </template>
@@ -87,7 +87,7 @@
                 <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
                 <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
                 <el-table-column prop="risk" label="预警信息" min-width="50">
-                  <template scope="scope">
+                  <template slot-scope="scope">
                     <span v-if="scope.row.risk === '高风险'" style="color: red">{{scope.row.risk}}</span>
                     <span v-else-if="scope.row.risk === '低风险'" style="color: green">{{scope.row.risk}}</span>
                   </template>
@@ -186,10 +186,7 @@ export default {
       let data=["","修改","送审","监控","删除"]
       data[0]=this.risktype[num]
       this.risktype=data
-console.log( this.risktype[0])
-      console.log( this.risktype[0]=='修改')
       this.dialogTableVisible = true;
-      console.log(scope)
     },
     gotofirst()
     {
@@ -242,10 +239,5 @@ console.log( this.risktype[0])
 </script>
 
 <style scoped>
-  .el-tab-pane{
-    font-size: 30px !important;
-  }
-</style>
-<style>
 
 </style>
