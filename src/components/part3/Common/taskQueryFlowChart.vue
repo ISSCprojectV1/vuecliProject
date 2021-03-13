@@ -404,7 +404,8 @@ prioritychoose:[1,2,3],
           this.modalitydata[i].allocation = "是"
         else // false
         {  this.modalitydata[i].allocation = "否"
-        this.modalitydata[i].id=null
+        // this.modalitydata[i].id=null
+          this.modalitydata[i].taskId = "无"
         }
 
 
