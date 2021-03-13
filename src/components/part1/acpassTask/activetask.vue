@@ -11,54 +11,16 @@
       </el-tab-pane>
 
       <el-tab-pane label="被动模态" name="passive">
-        <el-table
-            :data="Data"
-
-            border
-            style="width: 100%; margin-top: 1px">
-          <el-table-column
-              prop="group"
-              label="编号"
-              width="50">
-          </el-table-column>
-          <!--              <el-table-column label="交易行为" align="center">-->
-
-          <el-table-column
-              prop="buyername"
-              label="买方姓名">
-          </el-table-column>
-          <el-table-column
-              prop="category"
-              label="商品">
-          </el-table-column>
-          <el-table-column
-              prop="amount"
-              label="数量">
-          </el-table-column>
-          <el-table-column
-              prop="price"
-              label="价格">
-          </el-table-column>
-
-          <el-table-column
-              prop="sellername"
-              label="卖方姓名">
-          </el-table-column>
-
-          <el-table-column
-              prop="belong"
-              label="归属">
-          </el-table-column>
-          <el-table-column
-              prop="tasksize"
-              label="空间粒度">
-          </el-table-column>
-          <el-table-column
-              prop="original"
-              label="原生任务"
-              v-if="activeOrPassive()"
-          >
-          </el-table-column>
+        <el-table :data="Data" border style="width: 100%; margin-top: 1px">
+          <el-table-column prop="group" label="编号" width="50"></el-table-column>
+          <el-table-column prop="buyername" label="买方姓名" min-width="130"></el-table-column>
+          <el-table-column prop="category" label="商品"></el-table-column>
+          <el-table-column prop="amount" label="数量"></el-table-column>
+          <el-table-column prop="price" label="价格"></el-table-column>
+          <el-table-column prop="sellername" label="卖方姓名" min-width="130"></el-table-column>
+          <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
+          <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
+          <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
           <!--                <el-table-column-->
           <!--                        prop=""-->
           <!--                        label="交易模式">-->
@@ -70,7 +32,7 @@
         </el-table>
         <el-pagination
             ref="pagination"
-            style="text-align: center"
+            style="text-align: center; padding: 0.5rem"
             background
             layout="prev, pager, next"
             :page-size="5"
@@ -78,8 +40,6 @@
             :total="total1"
         >
         </el-pagination>
-
-
       </el-tab-pane>
 
       <el-tab-pane label="空间粒度" name="space-granularity">
