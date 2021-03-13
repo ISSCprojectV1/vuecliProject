@@ -27,21 +27,9 @@
         <div id="tableSpaceDetail" style="width: 100%; height: 100%">
           <h2>跨平台用户统计表</h2>
           <el-table :data="dataTableSpaceDetail" style="width: 100%">
-            <el-table-column
-                label="交易主体"
-                prop="company"
-                min-width="270">
-            </el-table-column>
-            <el-table-column
-                label="交易数量"
-                prop="amount"
-                min-width="100">
-            </el-table-column>
-            <el-table-column
-                label="交易频次"
-                prop="trasum"
-                min-width="100">
-            </el-table-column>
+            <el-table-column label="交易主体" prop="company" min-width="270"></el-table-column>
+            <el-table-column label="交易数量" prop="amount" min-width="100"></el-table-column>
+            <el-table-column label="交易频次" prop="trasum" min-width="100"></el-table-column>
           </el-table>
           <el-pagination
               ref="pagination"
