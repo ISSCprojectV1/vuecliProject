@@ -17,7 +17,7 @@
       <el-form-item>
         <el-button type="primary" v-on:click="onSubmit('loginForm')">登录</el-button>
       </el-form-item>
-         <el-link type="primary" style="margin-left:10px" v-on:click="onRegister()">注册</el-link>
+         <el-link type="primary" v-on:click="onRegister()">注册</el-link>
     </el-form>
 
     <el-dialog
@@ -91,8 +91,8 @@ import {changetimeadvise, taskQuery,spaceResult,taskQueryById,getRolenameById} f
                       for(var i=0;i<message.data.roleList.length;i++)
                       {
                         console.log(message.data.roleList[i].roleName)
-                        console.log(message.data.roleList[i].roleName=='admin')
-                        if(message.data.roleList[i].roleName=='user')
+                        console.log(message.data.roleList[i].roleName==='admin')
+                        if(message.data.roleList[i].roleName==='user')
                         {    setUserTrue("true")}
 console.log(getUserTrue()
 )
