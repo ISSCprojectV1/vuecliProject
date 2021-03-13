@@ -7,108 +7,7 @@
 
     <el-tabs v-model="activeName">
       <el-tab-pane label="主动模态" name="table">
-        <el-container style="width: 100%">
-          <el-aside style="width: 580px">
-            <el-table
-                :data="dataTableActive"
-                @row-click="handle"
-            >
-              <el-table-column
-                  prop="company"
-                  label="交易主体"
-                  width="120">
-              </el-table-column>
-              <el-table-column
-                  prop="category"
-                  label="商品类型"
-                  width="80">
-              </el-table-column>
-              <el-table-column
-                  prop="abnormalValue"
-                  label="异常值"
-                  width="70">
-                <template slot-scope="scope">
-                  <span v-if="Number.isNaN(scope.row.abnormalValue)">无</span>
-                  <span v-else-if="isAbnormal(scope.row.abnormalValue)" style="color: red">
-                    {{ scope.row.abnormalValue.toFixed(3) }}
-                  </span>
-                  <span v-else style="color: green">
-                    {{ scope.row.abnormalValue.toFixed(3) }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                  label="信用等级"
-                  width="80">
-                <template slot-scope="scope">
-                  <span v-if="Number.isNaN(scope.row.abnormalValue)"></span>
-                  <span v-else-if="isAbnormal(scope.row.abnormalValue)">
-                    建议监管
-                  </span>
-                  <span v-else>
-                    正常
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                  label="信用评分"
-                  width="80">80
-              </el-table-column>
-              <el-table-column
-                  label="详细信息"
-                  fixed="right"
-                  width="130">
-                <template slot-scope="scope">
-                  <el-button @click="gotoData(scope.row)" type="text" size="small">实体统一</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <el-pagination
-                ref="pagination"
-                style="text-align: center; margin-top: 0.5rem"
-                background
-                layout="prev, pager, next"
-                @current-change="pageChange"
-                :total="total">
-            </el-pagination>
-          </el-aside>
-          <el-container style="width: 600px;">
-            <el-main style="padding-top: 0">
-              <div id="echart123" style="width: 600px;height: 550px;"></div>
-              <div id="table23">
-                <el-table
-                    :data="tableData3"
-                    style="width: 600px;">
-                  <el-table-column
-                      prop="seller"
-                      label="主要交易卖方"
-                      min-width="150">
-                  </el-table-column>
-                  <el-table-column
-                      prop="buyer"
-                      label="主要交易买方"
-                      min-width="150">
-                  </el-table-column>
-                  <el-table-column
-                      prop="amount"
-                      label="交易数"
-                      min-width="40">
-                  </el-table-column>
-                </el-table>
-                <el-pagination
-                    ref="pagination"
-                    style="text-align: center; margin-top: 0.5rem"
-                    background
-                    layout="prev, pager, next"
-                    :page-size="10"
-                    @current-change="pageChange"
-                    :total="total3"
-                >
-                </el-pagination>
-              </div>
-            </el-main>
-          </el-container>
-        </el-container>
+        <tab-active-modal></tab-active-modal>
       </el-tab-pane>
 
       <el-tab-pane label="被动模态" name="passive">
@@ -195,8 +94,6 @@
 <script>
 import {
   activegraph,
-  getActiveCompanyDetail,
-  getActiveGroup,
 } from "@/api/part1/acpassTask";
 import {
   activetaskgraph,
@@ -206,14 +103,14 @@ import {
 } from "@/api/part1/acpassTask";
 import echart from "echarts";
 import tabSpaceGranularity from "@/components/part1/acpassTask/tabSpaceGranularity";
+import tabActiveModal from "@/components/part1/acpassTask/tabActiveModal";
 
 
 export default {
   name: "activetask",
-  components: {tabSpaceGranularity},
+  components: {tabSpaceGranularity, tabActiveModal},
   created() {
     const id = this.$router.currentRoute.params.id;
-    this.activeTradeGroup(id, 1, 8);
     if (this.activeOrPassive()) {
       activetradeaction(id).then(res => {
         this.dataTableActive = res.data.data
@@ -259,33 +156,9 @@ export default {
   mounted() {
     // const id = this.$router.currentRoute.params.id;
     // this.Activetaskgraph(id, 15);
-    document.getElementById("table23").style.display = "none";
-    document.getElementById("echart123").style.display = "none";
+    // document.getElementById("echart123").style.display = "none";
   },
   methods: {
-    handle(row) {
-      this.gotoTable(row.company)
-    },
-    // 用于active table, 比较异常值与阈值并返回是否异常
-    isAbnormal(abnormalValue) {
-      return abnormalValue >= this.threshold;
-    },
-    gotoData(company) {
-      this.$router.push({
-        path: '/trade/dataFusion/dataquery',
-        query: {
-          data: company
-        }
-      });
-    },
-    gotoTable(company) {
-      document.getElementById("table23").style.display = "block";
-      document.getElementById("echart123").style.display = "none";
-      this.getActiveTradeDetail(company, 1, 8);
-    },
-    goback() {
-      this.$router.back(-1)
-    },
     passivetradeactionList(id, currentPage, pageSize) {
       passivetradeaction(id, currentPage, pageSize).then(res => {
         // console.log(res)
@@ -332,42 +205,10 @@ export default {
         console.log(err)
       })
     },
-    pageChange(page) {
-      const id = this.$router.currentRoute.params.id;
-      this.currentPage = page;
-      this.activeTradeGroup(id, page, 8);
-    },
     pageChange1(page) {
       const id = this.$router.currentRoute.params.id;
       this.currentPage = page;
       this.passivetradeactionList(id, page, 5)
-    },
-    activeTradeGroup(id, currentPage, pageSize) {
-      getActiveGroup(id, currentPage, pageSize).then(res => {
-        let data = res.data.data.reslist;
-        this.total = res.data.data.total;
-        for (let i = 0; i < data.length; i++) {
-          data[i].id = i + 1
-        }
-        this.threshold = res.data.data.threshold
-        this.dataTableActive = data
-        // 顺便画初始图
-        // if(this.dataTableActive[0])
-        //  this.gotoDetail(this.dataTableActive[0].company)
-      }).catch(err => {
-        console.log("请求失败")
-        console.log(err)
-      })
-    },
-    getActiveTradeDetail(company, currentPage, pageSize) {
-      getActiveCompanyDetail(company, currentPage, pageSize).then(res => {
-        let data = res.data.data.reslist;
-        this.total3 = res.data.data.total;
-        this.tableData3 = data
-      }).catch(err => {
-        console.log("请求失败")
-        console.log(err)
-      })
     },
     onSubmit(limit) {
       const id = this.$router.currentRoute.params.id;
