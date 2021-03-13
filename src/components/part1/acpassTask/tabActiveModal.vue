@@ -17,7 +17,7 @@
                   </span>
             </template>
           </el-table-column>
-          <el-table-column label="信用等级" min-width="70">
+          <el-table-column label="监管建议" min-width="70">
             <template slot-scope="scope">
               <span v-if="Number.isNaN(scope.row.abnormalValue)"></span>
               <span v-else-if="isAbnormal(scope.row.abnormalValue)">建议监管</span>
