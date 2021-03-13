@@ -35,7 +35,7 @@
     </div>
     <el-pagination
         ref="pagination"
-        style="text-align: center"
+        style="text-align: center; padding-top: 1rem; padding-bottom: 1rem"
         background
         layout="prev, pager, next"
         @current-change="pageChange"
