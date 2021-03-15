@@ -136,7 +136,7 @@ let routes = [
             },
             {
                 path: "manage/upload",
-                component:()=>import("@/components/part3/Common/mainUpload"),
+                component:()=>import("@/components/part3/Common/uploadRecord"),
                 meta:{
                     title:"上传明细"
                 }
