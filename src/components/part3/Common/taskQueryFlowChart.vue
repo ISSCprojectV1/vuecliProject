@@ -262,7 +262,7 @@ prioritychoose:[1,2,3],
       });
     },
     addNewTask1() {
-
+console.log(this.taskin)
       this.dialogTableVisible = true;
 
     },

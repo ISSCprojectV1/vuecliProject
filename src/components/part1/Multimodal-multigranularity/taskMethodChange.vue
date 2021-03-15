@@ -158,7 +158,7 @@
             }
         },
         watch:{
-            'taskin.changeflag'(){
+            'taskin.id'(){
                 console.log("flag变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id

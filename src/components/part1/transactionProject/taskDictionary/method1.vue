@@ -52,7 +52,7 @@ export default {
               var input = res.data;
                var result_nodes = [];
           var result_target = [];
-
+console.log(input)
           for(let i = 0; i<input.data.length;i++){
      //       console.log(input.data[i])
               var node = {};
@@ -444,9 +444,10 @@ legendGraph.render();
           const { id, x, y } = item.getModel()
 
 this.taskin=item.getModel();
-          this.taskin.name=this.taskin.id
-          this.taskin.id=this.taskin.userId
-console.log(item.getModel())
+         this.taskin.name=item.getModel().label
+      this.taskin.id=item.getModel().userId
+
+console.log(this.taskin)
           this.addNewTask1()
         //  console.log(`id:${id}, x:${x}, y:${y}`)
         })
