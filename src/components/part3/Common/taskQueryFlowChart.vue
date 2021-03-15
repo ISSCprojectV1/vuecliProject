@@ -6,12 +6,18 @@
              :close-on-click-modal="false">
     <taskInputFormChange :taskin="taskin"></taskInputFormChange>
   </el-dialog>
+  <el-dialog title="操作员设置"
+             :visible.sync="dialogTableVisible2" center :append-to-body='true'
+             :lock-scroll="false" width="30%"
+             :close-on-click-modal="false">
+    <operatorChange :taskin="taskin"></operatorChange>
+  </el-dialog>
   <div>
 
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
     <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
     <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
-    
+    <el-button type="primary" @click="changeOperator" style="margin-left:15px;margin-right:14px">设置操作员</el-button>
   </div>
 <div>
   <div id="echart1"  >
@@ -155,6 +161,7 @@ import method1 from "@/components/part1/transactionProject/taskDictionary/method
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {taskQuery,teamform,taskAllocation,getReadyQueue,modality} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
+import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
 /*
 *         <el-table-column
                 label="推荐主被动模态"
@@ -174,7 +181,9 @@ export default {
   name: "taskQueryFlowChart",
   components: {
     method1,
-    taskInputFormChange
+    taskInputFormChange,
+    operatorChange
+
   },
   mounted () {
 
@@ -220,6 +229,7 @@ prioritychoose:[1,2,3],
       // 默认每页显示的条数（可修改）
       PageSize:10,
       dialogTableVisible: false,
+      dialogTableVisible2: false,
       taskin: {
         changeflag:
         Number.NEGATIVE_INFINITY
@@ -254,7 +264,12 @@ prioritychoose:[1,2,3],
     addNewTask1() {
 
       this.dialogTableVisible = true;
-      console.log("aaa")
+
+    },
+    changeOperator() {
+
+      this.dialogTableVisible2 = true;
+
     },
     getData1(){
       // 获取表格数据

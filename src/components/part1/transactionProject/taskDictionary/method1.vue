@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <el-dialog title="任务信息反馈"
+               :visible.sync="dialogTableVisible" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+      <taskMethodChange :taskin="taskin"></taskMethodChange>
+    </el-dialog>
     <!-- <button @click="toUpdate">切换数据</button> -->
     <div id="rule"  style="width:1000px; height:30px"></div>
     <div id="container" style="width:1200px; height:600px">
@@ -12,13 +18,22 @@
 // import {init,update} from './utils/g6Utils.min.js';
 import G6 from '@antv/g6'
 import {getTaskApi} from "@/api/part1/transactionProject";
-
+import taskMethodChange from "@/components/part1/Multimodal-multigranularity/taskMethodChange";
 // import insertCss from 'insert-css'
 
 export default {
   name: '这里',
   data () {
-    return {};
+    return {
+      dialogTableVisible: false,
+      taskin:[],
+    };
+
+  },
+  components: {
+    taskMethodChange,
+
+
   },
     mounted () {
         this.$nextTick(() => {
@@ -27,6 +42,11 @@ export default {
       })
   },
   methods: {
+    addNewTask1() {
+
+      this.dialogTableVisible = true;
+
+    },
       getData(){
           getTaskApi().then((res) => {
               var input = res.data;
@@ -417,6 +437,19 @@ const legendData = {
 };
 legendGraph.data(legendData);
 legendGraph.render();
+        graph.on('node:click', (e) => {
+
+
+          const { item } = e
+          const { id, x, y } = item.getModel()
+
+this.taskin=item.getModel();
+          this.taskin.name=this.taskin.id
+          this.taskin.id=this.taskin.userId
+console.log(item.getModel())
+          this.addNewTask1()
+        //  console.log(`id:${id}, x:${x}, y:${y}`)
+        })
 graph.node(function (node) {
                         // depth 类似节点标识
                         if(node.workStatusColor === null){
