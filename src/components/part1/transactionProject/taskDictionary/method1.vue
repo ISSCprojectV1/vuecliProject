@@ -448,7 +448,10 @@ this.taskin=item.getModel();
       this.taskin.id=item.getModel().userId
 
 console.log(this.taskin)
-          this.addNewTask1()
+          if(item.getModel().humanUse=="人工监管参与"){
+            this.addNewTask1()
+          }
+
         //  console.log(`id:${id}, x:${x}, y:${y}`)
         })
 graph.node(function (node) {
