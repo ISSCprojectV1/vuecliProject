@@ -10,14 +10,20 @@
              :visible.sync="dialogTableVisible2" center :append-to-body='true'
              :lock-scroll="false" width="30%"
              :close-on-click-modal="false">
-    <operatorChange :taskin="taskin"></operatorChange>
+    <operatorChange :taskin="taskin2"></operatorChange>
   </el-dialog>
+    <el-dialog title="任务信息查看"
+               :visible.sync="dialogTableVisible3" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+        <taskInputFormChange :taskin="taskin"></taskInputFormChange>
+    </el-dialog>
   <div>
 
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
     <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
     <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
-    <el-button type="primary" @click="changeOperator" style="margin-left:15px;margin-right:14px">设置操作员</el-button>
+    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px">设置操作员</el-button>
   </div>
 <div>
   <div id="echart1"  >
@@ -70,7 +76,19 @@
               border>
 
         <el-table-column type="selection" width="45"></el-table-column>
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
+          <el-table-column label="主被动模态" prop="id">
+              <template slot-scope="scope">
+                  <el-link  type="primary">
+                      <div @click="gotoDetail(scope.row)">
+                          {{ scope.row.id }}
+                      </div>
+                  </el-link>
+              </template>
+          </el-table-column>
+        <el-table-column label="序号" prop="id" width="60">
+
+
+        </el-table-column>
         <el-table-column label="操作员名称" prop="name">
         </el-table-column>
 
@@ -80,7 +98,15 @@
 
         <el-table-column label="当前任务编号" prop="taskId" width="60">
         </el-table-column>
-
+          <el-table-column
+                  label="操作员设置"
+                  fixed="right"
+                  min-width="180"
+          >
+              <template slot-scope="scope">
+                  <el-button @click="   changeOperator(scope.row)" type="text" size="small"  >操作员修改</el-button>
+              </template>
+          </el-table-column>
 
       </el-table>
       <el-pagination @size-change="handleSizeChange"
@@ -230,10 +256,12 @@ prioritychoose:[1,2,3],
       PageSize:10,
       dialogTableVisible: false,
       dialogTableVisible2: false,
+      dialogTableVisible3:false,
       taskin: {
         changeflag:
         Number.NEGATIVE_INFINITY
       },
+      taskin2:[]
     }
   },
   methods: {
@@ -266,11 +294,27 @@ console.log(this.taskin)
       this.dialogTableVisible = true;
 
     },
-    changeOperator() {
+    gotoDetail(){
+      this.dialogTableVisible3 = true;
+    },
+    changeOperator (res) {
+if(res!='new')
+{let data=[]
+  data.name=res.name
+this.taskin2=data
 
+  console.log(this.taskin2.name)
+}else{
+  let data=[]
+  data.name=''
+  this.taskin2=data
+
+  console.log(this.taskin2.name)
+}
       this.dialogTableVisible2 = true;
 
     },
+
     getData1(){
       // 获取表格数据
       console.log("获取表格数据")

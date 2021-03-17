@@ -158,7 +158,7 @@
             }
         },
         watch:{
-            'taskin.id'(){
+            'taskin.changeflag'(){
                 console.log("flag变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id
@@ -173,7 +173,7 @@
                 this.workStatus=this.taskin.workStatus
                 if(!this.content)
                     this.content='暂时未分配'
-                if(this.taskin.humanUse=='是'||this.taskin.humanUse=='人工监管参与')
+                if(this.taskin.humanUse=='是')
                     this.humanUse=1
                 if(this.taskin.humanUse=='否')
                     this.humanUse=0

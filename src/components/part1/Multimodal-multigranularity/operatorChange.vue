@@ -7,11 +7,11 @@
             <el-form ref="form" :model="form" label-width="130px">
 
                 <el-form-item label="用户名">
-                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                    <el-input v-model="id" placeholder="请输入内容"></el-input>
                 </el-form-item>
 
                 <el-form-item label="操作员名称">
-                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                    <el-input v-model="name" placeholder="请输入内容"></el-input>
                 </el-form-item>
 
 
@@ -49,13 +49,8 @@
                 cities: cityOptions,
                 isIndeterminate: false,
                 taskinputt:this.taskin,
-                input: '',
-                priority: '',
+                name: '',
                 humanUse: '',
-                dateStart: '',
-                dateStart2: '',
-                dateEnd: '',
-                dateEnd2: '',
                 workingTime:'',
                 deadLine:'',
                 timeadvise:'',
@@ -69,22 +64,9 @@
         },
         props:['taskin'],
         created(){
-            bourseget().then((res) => {
-                    let dataConvert = res.data.data;
-                    console.log(dataConvert)
-                    let temp=[]
-                    for(let i=0;i<dataConvert.length;i++)
-                        temp.push(dataConvert[i].bourse)
-                    this.cities=temp
-                    console.log(temp)
-                }
-            ).catch(()=>{
-                console.log("taskQuery fail")
-            });
-            this.admintrue=getAdminTrue()=="admin"?true:false
 
             this.id=this.taskin.id
-            this.input=this.taskin.name
+            this.name=this.taskin.name
             this.priority=this.taskin.priority
             this.humanUse=this.taskin.humanUse
             this.workingTime=this.taskin.workingTime
@@ -100,17 +82,14 @@
           this.cleanForm();*/
         },
         computed: {
-            address(){
-                console.log(this.taskin)
-                return ""
-            }
+
         },
         watch:{
-            'taskin.changeflag'(){
-                console.log("flag变了")
+            'taskin.name'(){
+                console.log("名字变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id
-                this.input=this.taskin.name
+                this.name=this.taskin.name
                 this.priority=(this.taskin.priority)?this.taskin.priority:1;
                 this.commodityName=this.taskin.commodityName
                 this.workingTime=this.taskin.workingTime
