@@ -94,6 +94,9 @@
      <el-form-item label="工作时间">
 <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
    </el-form-item>
+        <el-form-item label="截止时间">
+            <el-input v-model="deadLine"  type="number" placeholder="如非末尾任务请勿输入"></el-input>
+        </el-form-item>
 
 <el-button type="success" @click="creatTask">立即创建</el-button>
  <el-dialog
@@ -126,6 +129,9 @@
   <el-form-item label="工作时间">
     {{workingTime}}
   </el-form-item>
+       <el-form-item label="截止时间">
+           {{deadLine}}
+       </el-form-item>
 </el-form>
 
   <span slot="footer" class="dialog-footer">
@@ -191,6 +197,7 @@ data() {
       dateEnd: '',
       dateEnd2: '',
       workingTime:'',
+        deadLine:'',
       timeadvise:'',
       content:this.flatName,
       tradeuser:false,
@@ -251,9 +258,10 @@ data() {
           this.priority=(this.taskin.priority)?this.taskin.priority:1;
             this.commodityName=this.taskin.commodityName
 this.workingTime=this.taskin.workingTime
+            this.deadLine=this.taskin.deadLine
             this.humanUse=this.taskin.humanUse
 
-            this.content=this.taskin.contentf
+            this.content=this.taskin.content
             if(!this.content)
                 this.content='暂时未分配'
 if(this.taskin.humanUse=='是')
@@ -441,14 +449,15 @@ console.log("发送请求前")
       //  this.    content+=this.checkedCities[i];
       //  if(i>0)
       //      this.    content+=','+this.checkedCities[i];
-
+    let humannn=    (this.humanUse==true?1:0);
   var inputData = { 
   "name":this.input,
 "priority":this.priority,
 "startTime":1587807522386,
 "endTime":1588404415698,
-"humanUse":this.humanUse,
+"humanUse":humannn,
 "workingTime":this.workingTime,
+"deadLine":this.deadLine,
 "timeadvise":this.timeadvise,
 "tradeuser":this.tradeuser,
 "content":this.flatName,
@@ -479,6 +488,7 @@ cleanForm(){
       this.dateEnd= '',
       this.dateEnd2= '',
       this.workingTime = ''
+    this.deadLine=''
 },
 
     // 主动监管名单部分

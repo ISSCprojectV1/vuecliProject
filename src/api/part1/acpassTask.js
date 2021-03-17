@@ -1,47 +1,48 @@
 import request from "@/utils/request";
 
-export function activetask(currentPage,pageSize) {
-    return request.get('/activetask?'+"currentPage="+currentPage+"&pageSize="+pageSize)
+export function activetask(currentPage, pageSize) {
+    return request.get('/activetask?' + "currentPage=" + currentPage + "&pageSize=" + pageSize)
 }
 
-export function passivetradeaction(id,currentPage,pageSize) {
+export function passivetradeaction(id, currentPage, pageSize) {
     return request({
         method: 'GET',
         params: {
-            id:id,
-            currentPage:currentPage,
-            pageSize:pageSize
+            id: id,
+            currentPage: currentPage,
+            pageSize: pageSize
         },
-        url:'/passivetradeaction',
-    })
-}
-export function GetSpacetask(currentPage,pageSize) {
-    return request({
-        method: 'GET',
-        params: {
-            currentPage:currentPage,
-            pageSize:pageSize
-        },
-        url:'/spacetask',
+        url: '/passivetradeaction',
     })
 }
 
-export function Louvainresult(id,limit) {
+export function GetSpacetask(currentPage, pageSize) {
     return request({
         method: 'GET',
         params: {
-            id:id,
-            limit:limit
+            currentPage: currentPage,
+            pageSize: pageSize
         },
-        url:'/louvainresult',
+        url: '/spacetask',
+    })
+}
+
+export function Louvainresult(id, limit) {
+    return request({
+        method: 'GET',
+        params: {
+            id: id,
+            limit: limit
+        },
+        url: '/louvainresult',
     })
 }
 
 export function activetradeaction(id) {
     return request({
         method: 'GET',
-        params: {id:id},
-        url:'/activetradeaction',
+        params: {id: id},
+        url: '/activetradeaction',
     })
 }
 
@@ -49,52 +50,51 @@ export function addactivetask(data) {
     return request({
         method: 'POST',
         data: data,
-        url:'/addactivetask',
+        url: '/addactivetask',
     })
 }
 
 
-
-export function activetradegroup(id,currentPage,pageSize) {
+export function activetradegroup(id, currentPage, pageSize) {
     return request({
         method: 'GET',
         params: {
-            taskid:id,
-            currentPage:currentPage,
-            pageSize:pageSize
+            taskid: id,
+            currentPage: currentPage,
+            pageSize: pageSize
         },
-        url:'/activetradegroup',
+        url: '/activetradegroup',
     })
 }
 
-export function activetaskgraph(id,limit) {
+export function activetaskgraph(id, limit) {
     return request({
         method: 'GET',
         params: {
-            id:id,
-            limit:limit
+            id: id,
+            limit: limit
         },
-        url:'/activetaskgraph',
+        url: '/activetaskgraph',
     })
 }
 
-export function activetradedetailinfo(id,currentPage,pageSize) {
+export function activetradedetailinfo(id, currentPage, pageSize) {
     return request({
         method: 'GET',
         params: {
-            groupid:id,
-            currentPage:currentPage,
-            pageSize:pageSize
+            groupid: id,
+            currentPage: currentPage,
+            pageSize: pageSize
         },
-        url:'/activetradedetailinfo',
+        url: '/activetradedetailinfo',
     })
 }
 
 export function activetradegraph(id) {
     return request({
         method: 'GET',
-        params: {id:id},
-        url:'/activetradegraph',
+        params: {id: id},
+        url: '/activetradegraph',
     })
 }
 
@@ -108,6 +108,29 @@ export function activegraph(company) {
     })
 }
 
+export function exceptionRelationAnalysis(start, end, threshold_f, threshold_fp) {
+    return request({
+        method: 'POST',
+        data: {
+            "start": start,
+            "end": end,
+            "threshold_f": threshold_f,
+            "threshold_fp": threshold_fp
+        },
+        url: '/ExceptionRelationAnalysis'
+    })
+}
+
+export function exceptionRelationPredict(sourceId, threshold) {
+    return request({
+        method: 'POST',
+        data: {
+            "source_id": sourceId,
+            "threshold_p": threshold
+        },
+        url: 'ExceptionRelationPredict'
+    })
+}
 
 export function riskAlarmService() {
     return request({
@@ -120,8 +143,8 @@ export function getAct(category, platform) {
     return request({
         method: 'GET',
         params: {
-          category: category,
-          platform: platform
+            category: category,
+            platform: platform
         },
         url: '/getAct/'
     })
@@ -150,3 +173,43 @@ export function getActiveCompanyDetail(company, currentPage, pageSize) {
         url: '/getActiveCompanyDetail/'
     })
 }
+
+// start - 主被动模态与空间粒度 - tab - 空间粒度
+
+export function getSpaceGranularity(taskId, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            taskid: taskId,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getSpaceans'
+    })
+}
+
+export function getSpaceDetail(platform, category, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            platform: platform,
+            category: category,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getSpaceDetail'
+    })
+}
+
+// end - 主被动模态与空间粒度 - tab - 空间粒度
+
+// start - 个人中心 - 明细管理 - 上传明细
+
+export function getUploadDetail(currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        url: '/uploadDetails/' + currentPage + '/' + pageSize
+    })
+}
+
+// end - 个人中心 - 明细管理 - 上传明细

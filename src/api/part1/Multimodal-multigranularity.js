@@ -19,6 +19,28 @@ export function taskInput(data) {
         })
   }
 
+export function getReadyQueue() {
+    console.log("getReadyQueue")
+    return request({
+        url: '/getReadyQueue',
+        method: 'get',
+    })
+}
+export function modality() {
+  console.log("/modality")
+  return request({
+    url: '/modality',
+    method: 'get',
+  })
+}
+// 获得所有用户
+export function getAllUsers() {
+  console.log("发送/getAllUsers请求")
+  return request({
+    url: '/getAllUsers',
+    method: 'get',
+  })
+}
 // 获得所有
 export function bourseget(data) {
   console.log("发送bourseget请求")
@@ -32,6 +54,15 @@ export function changeTaskStatus(data) {
   console.log("发送changeTaskStatus请求")
   return request({
     url: '/taskOperateStatus',
+    method: 'post',
+    data
+  })
+}
+// 修改操作员
+export function changemodality(data) {
+  console.log("发送/modality请求")
+  return request({
+    url: '/modality',
     method: 'post',
     data
   })
@@ -80,6 +111,14 @@ export function taskQuery() {
         })
   }
 
+// 根据userid获取角色名称
+export function getModalityByUserId(url) {
+  console.log("获取getRolenameById数据 ")
+  return request({
+    url: url,
+    method: 'get'
+  })
+}
 // 获取角色名称
 export function getRolenameById(url) {
   console.log("获取getRolenameById数据 ")
@@ -88,7 +127,6 @@ export function getRolenameById(url) {
     method: 'get'
   })
 }
-
 export function taskQueryById(url) {
   return request({
     method: 'GET',

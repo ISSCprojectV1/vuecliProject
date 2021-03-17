@@ -1,7 +1,16 @@
 <template>
   <div id="app">
+    <el-dialog title="任务信息反馈"
+               :visible.sync="dialogTableVisible" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+      <taskMethodChange :taskin="taskin"></taskMethodChange>
+    </el-dialog>
     <!-- <button @click="toUpdate">切换数据</button> -->
-    <div id="container" style="width:1200px; height:600px"></div>
+    <div id="rule"  style="width:1000px; height:30px"></div>
+    <div id="container" style="width:1200px; height:600px">
+
+    </div>
   </div>
 </template>
 
@@ -9,13 +18,22 @@
 // import {init,update} from './utils/g6Utils.min.js';
 import G6 from '@antv/g6'
 import {getTaskApi} from "@/api/part1/transactionProject";
-
+import taskMethodChange from "@/components/part1/Multimodal-multigranularity/taskMethodChange";
 // import insertCss from 'insert-css'
 
 export default {
   name: '这里',
   data () {
-    return {};
+    return {
+      dialogTableVisible: false,
+      taskin:[],
+    };
+
+  },
+  components: {
+    taskMethodChange,
+
+
   },
     mounted () {
         this.$nextTick(() => {
@@ -24,12 +42,17 @@ export default {
       })
   },
   methods: {
+    addNewTask1() {
+
+      this.dialogTableVisible = true;
+
+    },
       getData(){
           getTaskApi().then((res) => {
               var input = res.data;
                var result_nodes = [];
           var result_target = [];
-
+console.log(input)
           for(let i = 0; i<input.data.length;i++){
      //       console.log(input.data[i])
               var node = {};
@@ -340,16 +363,20 @@ legendContainer.id = 'legendContainer';
 const legendGraphDiv = document.createElement('div');
 legendGraphDiv.id = 'legend';
 legendContainer.appendChild(legendGraphDiv);
-graphDiv.parentNode.appendChild(legendContainer);
+        const graphDiv2 = document.getElementById('rule');
+        graphDiv2.appendChild(legendContainer);
+        //graphDiv.parentNode.appendChild(legendContainer);
 const legendGraph = new G6.Graph({
-  container: 'legend',
-  width: 300,
-  height: 200,
+  //container: 'legend',
+  container: 'rule',
+  width: 600,
+  height: 30,
   defaultNode: {
     size: 15,
     shape: 'circle',
     labelCfg: {
-      position: 'right',
+           position: 'right',
+      //position: 'top',
       offset: 10,
       style: {
         fontSize: 18,
@@ -358,9 +385,13 @@ const legendGraph = new G6.Graph({
     },
   },
 });
-const legendX = 20;
-const legendBeginY = 100;
-const legendXPadding = 125;
+const legendX = 45;
+//const legendX = 20;
+const legendBeginY = 15;
+//const legendBeginY = 100;
+    //    const legendXPadding = 125;
+    // const legendYPadding = 25;
+const legendXPadding = 150;
 const legendYPadding = 25;
 const legendData = {
   nodes: [
@@ -377,16 +408,17 @@ const legendData = {
       id: 'level2',
       x: legendX+legendXPadding,
       y: legendBeginY,
-      label: '任务未执行',
+      label: '任务未完成',
       style: {
         fill: '#778899',
       },
     },
     {
       id: 'level3',
-      label: '任务已执行',
-      x: legendX,
-      y: legendBeginY + legendYPadding * 2,
+      label: '任务正常',
+      x: legendX+legendXPadding*2,
+      y: legendBeginY,
+      //y: legendBeginY + legendYPadding * 2,
       style: {
         fill: '#30BF78',
       },
@@ -394,8 +426,9 @@ const legendData = {
     {
       id: 'level4',
       label: '任务异常',
-      x: legendX+legendXPadding,
-      y: legendBeginY + legendYPadding * 2,
+      x: legendX+legendXPadding*3,
+      y: legendBeginY,
+    //  y: legendBeginY + legendYPadding * 2,
       style: {
         fill: '#DC143C',
       },
@@ -404,6 +437,23 @@ const legendData = {
 };
 legendGraph.data(legendData);
 legendGraph.render();
+        graph.on('node:click', (e) => {
+
+
+          const { item } = e
+          const { id, x, y } = item.getModel()
+
+this.taskin=item.getModel();
+         this.taskin.name=item.getModel().label
+      this.taskin.id=item.getModel().userId
+
+console.log(this.taskin)
+          if(item.getModel().humanUse=="人工监管参与"){
+            this.addNewTask1()
+          }
+
+        //  console.log(`id:${id}, x:${x}, y:${y}`)
+        })
 graph.node(function (node) {
                         // depth 类似节点标识
                         if(node.workStatusColor === null){
@@ -413,6 +463,7 @@ graph.node(function (node) {
                                     fill:'#6495ED',
                                     // stroke:''
                                 },
+
                             }
                         }
               
@@ -423,6 +474,9 @@ graph.node(function (node) {
                                     fill:'#778899',
                                     // stroke:''
                                 },
+                              style:{
+                                fill:"#FFFF00"
+                              }
                             }
                         }
                         if(node.workStatusColor === 1){
@@ -452,6 +506,7 @@ graph.node(function (node) {
                     });
 graph.data(data);
 graph.render();
+
 graph.on('node:mouseenter', evt => {
   const { item } = evt;
   graph.setItemState(item, 'hover', true);

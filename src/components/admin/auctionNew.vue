@@ -7,8 +7,8 @@
             <el-table-column label="编号" min-width="80" prop=id></el-table-column>
             <el-table-column label="名称" min-width="100" prop=name></el-table-column>
             <el-table-column label="描述" min-width="100" prop=description></el-table-column>
-            <el-table-column label="开始时间" min-width="120" prop=startTime></el-table-column>
-            <el-table-column label="结束时间" min-width="120" prop=endTime></el-table-column>
+            <el-table-column label="开始时间" min-width="125" prop=startTime></el-table-column>
+            <el-table-column label="结束时间" min-width="125" prop=endTime></el-table-column>
             <el-table-column label="状态" min-width="80" prop=status></el-table-column>
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
@@ -95,8 +95,7 @@
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                    :default-value="defaultTime">
+                        end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
             </el-form>
@@ -186,7 +185,16 @@ export default {
         getAuctions(currentPage, pageSize = 10) {
             getAllAuctionsNew(currentPage, pageSize).then(res => {
                 console.log(res)
-                this.tableData = res.data.list
+                this.tableData = res.data.list.map(item => {
+                  return {
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    status: item.status,
+                    startTime: item.startTime.split('.')[0].replace('T', ' '),
+                    endTime: item.endTime.split('.')[0].replace('T', ' '),
+                  }
+                })
                 this.total = res.data.total
             }).catch(err => {
                 console.log(err)

@@ -88,15 +88,23 @@
                 formLabelWidth: '120px',
                 total:0,//总数
                 currentPage:1,
-
-
                 tableData:[],
             }
         },
         methods: {
             getAuctions(currentPage,pageSize=10){
                 getuploadfile(currentPage,pageSize).then(res=>{
-                    this.tableData = res.data.list
+                    this.tableData = res.data.list.map(item => {
+                      return {
+                        id: item.id,
+                        auctionId: item.id,
+                        userId: item.userId,
+                        gmtCreated: item.gmtCreated.split('.')[0].replace('T', ' '),
+                        fileName: item.fileName,
+                        filePath: item.filePath,
+                        status: item.status
+                      }
+                    })
                     this.total = res.data.total
                 }).catch(err=>{
                     console.log(err)

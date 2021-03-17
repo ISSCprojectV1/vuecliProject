@@ -4,72 +4,25 @@
 
 
 
-            <el-form ref="form" :model="form" label-width="130px">
+            <el-form ref="form" :model="form" label-width="130px" >
 
-                <el-form-item label="监管任务名称">
-                    <el-input v-model="input" placeholder="请输入内容"></el-input>
+                <el-form-item label="用户名称">
+                <el-select v-model="id"  >
+                    <el-option
+                            v-for="item in operatorinput"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
                 </el-form-item>
-
-                <el-form-item label="监管任务优先级" v-if="this.admintrue">
-                    <el-select v-model="priority" placeholder="请选择任务优先级" >
-                        <el-option label="级别一" value="1"></el-option>
-                        <el-option label="级别二" value="2"></el-option>
-                        <el-option label="级别三" value="3"></el-option>
-                        <el-option label="级别四" value="4"></el-option>
-                        <el-option label="级别五" value="5"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="是否人工分配"  v-if="this.admintrue" >
-                    <el-switch v-model="humanUse"
-                               active-text="人工分配"
-                    ></el-switch>
-                </el-form-item>
-                <el-form-item label="是否主动监管" v-if="this.admintrue">
-                    <el-switch v-model="tradeuser"
-                               active-text="主动监管"
-                    ></el-switch>
-                </el-form-item>
-                <el-form-item label="操作员"   v-if="this.admintrue">
-                    <el-input v-model="operatorName" placeholder="请输入操作员名称"></el-input>
-                </el-form-item>
-                <el-form-item label="任务状态"  v-if="workStatus!='未分配'">
-                    <el-select v-model="workStatus" placeholder="请选择任务状态" >
-
-                        <el-option label="任务未执行" value="0"></el-option>
-                        <el-option label="任务正常" value="1"></el-option>
-                        <el-option label="任务异常" value="2"></el-option>
-
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="工作时间" >
-                    <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
-                </el-form-item>
-                <el-form-item label="截止时间" >
-                    <el-input type="number" v-model="deadLine" placeholder="如非末尾任务请勿输入"></el-input>
-                </el-form-item>
-                <el-form-item label="内容">
-                    <el-popover
-                            trigger="hover"
-                            placement="top"
-                            width="
-                    300"
-
-                            v-model="visible">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                        <div style="margin: 15px 0;"></div>
-                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                        </el-checkbox-group>
-
-                        <el-button  class="popbut" id="neirong" slot="reference"  >{{content}}</el-button>
-                    </el-popover>
+                <el-form-item label="操作员名称">
+                    <el-input v-model="name" placeholder="请输入内容"></el-input>
                 </el-form-item>
 
 
-                <el-button type="success" @click="postAddress">立即创建</el-button>
-                <el-button type="info" @click="abortForm">取消创建</el-button>
+                <el-button type="success" @click="postAddress">确认设置</el-button>
+                <el-button type="info" @click="abortForm">取消</el-button>
 
             </el-form>
         </div>
@@ -90,7 +43,7 @@
             <el-option label="海西商品交易所" value="海西商品交易所"></el-option>
         </el-select>
     </el-form-item>*/
-    import {taskInput,bourseget} from "@/api/part1/Multimodal-multigranularity";
+    import {taskInput,bourseget,changemodality,getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
     import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
     const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
     export default {
@@ -101,13 +54,8 @@
                 cities: cityOptions,
                 isIndeterminate: false,
                 taskinputt:this.taskin,
-                input: '',
-                priority: '',
+                name: '',
                 humanUse: '',
-                dateStart: '',
-                dateStart2: '',
-                dateEnd: '',
-                dateEnd2: '',
                 workingTime:'',
                 deadLine:'',
                 timeadvise:'',
@@ -116,27 +64,16 @@
                 commodityName:'',
                 admintrue:false,
                 operatorName:'',
-                workStatus: ''
+                workStatus: '',
+              operatorinput:[]
             }
         },
-        props:['taskin'],
+        props:['taskin','operatorin','modity'],
         created(){
-            bourseget().then((res) => {
-                    let dataConvert = res.data.data;
-                    console.log(dataConvert)
-                    let temp=[]
-                    for(let i=0;i<dataConvert.length;i++)
-                        temp.push(dataConvert[i].bourse)
-                    this.cities=temp
-                    console.log(temp)
-                }
-            ).catch(()=>{
-                console.log("taskQuery fail")
-            });
-            this.admintrue=getAdminTrue()=="admin"?true:false
-
+            this.operatorinput=this.operatorin
+       //   console.log(this.operatorinput)
             this.id=this.taskin.id
-            this.input=this.taskin.name
+            this.name=this.taskin.name
             this.priority=this.taskin.priority
             this.humanUse=this.taskin.humanUse
             this.workingTime=this.taskin.workingTime
@@ -152,17 +89,14 @@
           this.cleanForm();*/
         },
         computed: {
-            address(){
-                console.log(this.taskin)
-                return ""
-            }
+
         },
         watch:{
-            'taskin.changeflag'(){
-                console.log("flag变了")
+            'taskin.name'(){
+                console.log("名字变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id
-                this.input=this.taskin.name
+                this.name=this.taskin.name
                 this.priority=(this.taskin.priority)?this.taskin.priority:1;
                 this.commodityName=this.taskin.commodityName
                 this.workingTime=this.taskin.workingTime
@@ -238,28 +172,9 @@
                          message: '已取消'
                        });       */
                 });
-                this.$parent.$parent.dialogTableVisible = false
+                this.$parent.$parent.dialogTableVisible2 = false
             },
             postData(){
-                console.log("发送请求前")
-
-                var startData = new Date(this.dateStart2).getTime();
-                var endData = new Date(this.dateEnd2).getTime();
-                console.log("elementui 时间形式"+ startData +"时间2：" + endData)
-                console.log("humanuse:"+ this.humanUse )
-                let priorityy=    (this.priority=="无"?0:this.priority);
-                let humannn=    ((this.humanUse==true||this.humanUse=="是")?1:0);
-let wortstatue=null
-                if (this.workStatus == "未分配") // true
-                    wortstatue = null
-                if (this.workStatus === "已分配") // true
-                    wortstatue = 0
-                if (this.workStatus  === "任务正常") // true
-                    wortstatue = 1
-                if (this.workStatus  === "任务出现异常") // true
-                    wortstatue = 2
-            if (this.workStatus==null||this.workStatus==1||this.workStatus==0||this.workStatus==2)
-                wortstatue=this.workStatus
                 //this. content=''
                 //let cit=this.checkedCities
 //let conttt=''
@@ -272,24 +187,45 @@ let wortstatue=null
                 //  this.    content+=this.checkedCities[i];
                 //  if(i>0)
                 //      this.    content+=','+this.checkedCities[i];
-                var data = {
-                    "id":this.id,
-                    "name":this.input,
-                    "priority":priorityy,
-                    "humanUse":humannn,  //
-                    "startTime":startData,//
-                    "endTime":endData,//
-                    "workingTime":this.workingTime,//
-                    "deadLine":this.deadLine,
-                    "timeadvise":this.timeadvise,
-                    "content":this.content,
-                    "tradeuser":this.tradeuser,
-                    "commodityName":this.commodityName,
-                    "operatorName":this.operatorName,
-                    "workStatus":wortstatue
-                };
-                console.log(data);
-                taskInput(data).then(function (response) {
+              let postdata={}
+              if(this.modity!=null)
+              {
+                postdata = {
+                  "id":this.modity.id,
+                  "name":this.modity.name,
+                  "team":this.modity.team,
+                  "num":this.modity.num,  //
+                  "allocation":(this.modity.allocation=="是"?true:false),//
+                  "taskId":this.modity.taskId,//
+                  "taskName":this.modity.taskName,//
+                  "releaseTime":this.modity.releaseTime,
+                  "type":this.modity.type,
+                  "operatorId":this.modity.operatorId,
+                  "userId":this.id,
+              }
+
+
+                }else
+              {
+                {
+                  postdata = {
+                    "id": null,
+                    "name": this.name,
+                    "team": null,
+                    "num": null,  //
+                    "allocation": null,//
+                    "taskId": null,//
+                    "taskName": null,//
+                    "releaseTime": null,
+                    "type": null,
+                    "operatorId": null,
+                    "userId": this.id,
+                  }
+                }
+
+                }
+                console.log(postdata);
+             changemodality(postdata).then(function (response) {
                     console.log(response)
                 })
                     .catch(function (error) {

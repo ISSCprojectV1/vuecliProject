@@ -557,7 +557,7 @@ console.log(res)
         if (dataConvert[i].workStatus === 0) // true
           dataConvert[i].workStatus = "已分配"
         if (dataConvert[i].workStatus === 1) // true
-          dataConvert[i].workStatus = "任务已经执行"
+          dataConvert[i].workStatus = "任务正常"
         if (dataConvert[i].workStatus === 2) // true
           dataConvert[i].workStatus = "任务出现异常"
 

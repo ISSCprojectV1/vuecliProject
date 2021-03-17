@@ -94,7 +94,7 @@
                         routes:[
                             {
                                 path: "/console/manage/upload",
-                                component:()=>import("@/components/part3/Common/mainUpload"),
+                                component:()=>import("@/components/part3/Common/uploadRecord"),
                                 meta:{
                                     title:"上传明细"
                                 }
@@ -106,13 +106,13 @@
                                     title:"积分明细"
                                 }
                             },
-                            {
-                                path: "/console/manage/download",
-                                component:()=>import("@/components/part3/Common/mainDownload"),
-                                meta:{
-                                    title:"下载明细"
-                                }
-                            },
+                            // {
+                            //     path: "/console/manage/download",
+                            //     component:()=>import("@/components/part3/Common/mainDownload"),
+                            //     meta:{
+                            //         title:"下载明细"
+                            //     }
+                            // },
 
 
                         ],

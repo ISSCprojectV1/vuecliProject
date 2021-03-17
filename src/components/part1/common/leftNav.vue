@@ -17,18 +17,28 @@
         <i class="el-icon-house"></i>
         <span slot="title">首页</span>
       </el-menu-item>
-      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">模态与粒度+联盟形成</span>
-      </el-menu-item>
+
+
       <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
         <i class="el-icon-menu"></i>
-        <span slot="title">风险预警监控</span>
+        <span slot="title">价格波动风险预警</span>
       </el-menu-item>
-      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">附加功能：数据共享</span>
-      </el-menu-item>
+      <el-submenu index="/trade/auction" style="text-align: left;">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span style="font-size: 20px">数据共享</span>
+        </template>
+        <el-menu-item index="/trade/auction" style="text-align: left;padding-left: 80px;font-size: 18px">
+          <span slot="title">拍卖中心</span>
+        </el-menu-item>
+        <el-menu-item index="/trade/uploadResource" style="text-align: left;padding-left: 80px;font-size: 18px">
+          <span slot="title">上传数据</span>
+        </el-menu-item>
+      </el-submenu>
+<!--      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">-->
+<!--        <i class="el-icon-menu"></i>-->
+<!--        <span slot="title">数据共享</span>-->
+<!--      </el-menu-item>-->
 
 
       <el-submenu v-for="routes in this.accessRoutes" :key="routes.title" :index="routes.title" style="text-align: left">
@@ -40,6 +50,15 @@
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>
       </el-submenu>
+      <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">风险预警监控</span>
+      </el-menu-item>
+      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">附加功能：数据共享</span>
+      </el-menu-item>
+
     </el-menu>
   </el-col>
 </el-row>
@@ -51,6 +70,13 @@
   export default {
     data(){
       return{
+
+
+        /*      <el-menu-item index="/trade/Multimodal-multigranularity/stepBar" style="text-align: left;font-size: 20px">
+        <i class="el-icon-menu"></i>
+        <span slot="title">模态与粒度+联盟形成</span>
+      </el-menu-item>
+*/
         defaultActive:"",
         accessRoutes:[
       /*    {
@@ -78,7 +104,7 @@
             component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
 
           },*/
-         /* {
+       /*  {
             title: "风险预警",
             routes: [
               {
@@ -103,9 +129,9 @@
               //   }
               // }
             ]
-          },
-     /*     {
-            title:"模态与粒度+联盟形成",
+          },*/
+       {
+            title:"模态与粒度建议",
             routes: [
               {
                 path:"/trade/Multimodal-multigranularity/stepBar",
@@ -120,7 +146,7 @@
                 meta:{
                   title:"时间与商品粒度"
                 }
-              },
+              },]}
               /*{
                 path:"/trade/Multimodal-multigranularity/time_advise",
                 component: () => import("@/components/part2/time_advise"),
