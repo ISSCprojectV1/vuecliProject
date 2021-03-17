@@ -10,20 +10,20 @@
              :visible.sync="dialogTableVisible2" center :append-to-body='true'
              :lock-scroll="false" width="30%"
              :close-on-click-modal="false">
-    <operatorChange :taskin="taskin2"></operatorChange>
+    <operatorChange :taskin="taskin2" :operatorin="operatorin" :modity="modity"></operatorChange>
   </el-dialog>
     <el-dialog title="任务信息查看"
                :visible.sync="dialogTableVisible3" center :append-to-body='true'
                :lock-scroll="false" width="30%"
                :close-on-click-modal="false">
-        <taskInputFormChange :taskin="taskin"></taskInputFormChange>
+        <taskInputFormChange :taskin="taskin" ></taskInputFormChange>
     </el-dialog>
   <div>
 
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
     <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
     <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
-    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px">设置操作员</el-button>
+    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px">新增操作员</el-button>
   </div>
 <div>
   <div id="echart1"  >
@@ -75,16 +75,7 @@
               style="width: 100%"
               border>
 
-        <el-table-column type="selection" width="45"></el-table-column>
-          <el-table-column label="主被动模态" prop="id">
-              <template slot-scope="scope">
-                  <el-link  type="primary">
-                      <div @click="gotoDetail(scope.row)">
-                          {{ scope.row.id }}
-                      </div>
-                  </el-link>
-              </template>
-          </el-table-column>
+
         <el-table-column label="序号" prop="id" width="60">
 
 
@@ -97,6 +88,16 @@
         </el-table-column>
 
         <el-table-column label="当前任务编号" prop="taskId" width="60">
+        </el-table-column>
+
+        <el-table-column label="主被动模态" prop="taskId">
+          <template slot-scope="scope">
+            <el-link  type="primary">
+              <div @click="gotoDetail(scope.row)">
+                {{ scope.row.taskId }}
+              </div>
+            </el-link>
+          </template>
         </el-table-column>
           <el-table-column
                   label="操作员设置"
@@ -185,7 +186,7 @@
   import {getUserTrue,getAdminTrue} from "@/utils/auth"
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {taskQuery,teamform,taskAllocation,getReadyQueue,modality} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
 import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
 /*
@@ -233,7 +234,16 @@ this.modality()
     console.log(  this.usertrue)
   },
   created() {
+ getAllUsers().then((res) => {
+      console.log(res.data.data)
+   let data=res.data.data
+   this.allusers=data
+this.operatorin=data
 
+
+    }).catch(()=>{
+      console.log("getallusers fail")
+    });
   },
   data() {
     return {
@@ -244,6 +254,7 @@ prioritychoose:[1,2,3],
       caozuoyuanvalue:[],
       modalitydata:[],
       dormitory: [],
+      modity:[],
       dormitory2: [],
       currentPage:1,
         totalCount2:10,
@@ -261,7 +272,9 @@ prioritychoose:[1,2,3],
         changeflag:
         Number.NEGATIVE_INFINITY
       },
-      taskin2:[]
+      allusers:[],
+      taskin2:[],
+      operatorin:[]
     }
   },
   methods: {
@@ -300,6 +313,8 @@ console.log(this.taskin)
     changeOperator (res) {
 if(res!='new')
 {let data=[]
+  this.modity=res
+  console.log(res)
   data.name=res.name
 this.taskin2=data
 
@@ -308,7 +323,8 @@ this.taskin2=data
   let data=[]
   data.name=''
   this.taskin2=data
-
+  this.modity=null
+  console.log(this.modity)
   console.log(this.taskin2.name)
 }
       this.dialogTableVisible2 = true;

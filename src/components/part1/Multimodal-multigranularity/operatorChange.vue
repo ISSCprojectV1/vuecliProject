@@ -4,16 +4,21 @@
 
 
 
-            <el-form ref="form" :model="form" label-width="130px">
+            <el-form ref="form" :model="form" label-width="130px" >
 
-                <el-form-item label="用户名">
-                    <el-input v-model="id" placeholder="请输入内容"></el-input>
+                <el-form-item label="用户名称">
+                <el-select v-model="id"  >
+                    <el-option
+                            v-for="item in operatorinput"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
                 </el-form-item>
-
                 <el-form-item label="操作员名称">
                     <el-input v-model="name" placeholder="请输入内容"></el-input>
                 </el-form-item>
-
 
 
                 <el-button type="success" @click="postAddress">确认设置</el-button>
@@ -38,7 +43,7 @@
             <el-option label="海西商品交易所" value="海西商品交易所"></el-option>
         </el-select>
     </el-form-item>*/
-    import {taskInput,bourseget} from "@/api/part1/Multimodal-multigranularity";
+    import {taskInput,bourseget,changemodality,getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
     import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
     const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
     export default {
@@ -59,12 +64,14 @@
                 commodityName:'',
                 admintrue:false,
                 operatorName:'',
-                workStatus: ''
+                workStatus: '',
+              operatorinput:[]
             }
         },
-        props:['taskin'],
+        props:['taskin','operatorin','modity'],
         created(){
-
+            this.operatorinput=this.operatorin
+       //   console.log(this.operatorinput)
             this.id=this.taskin.id
             this.name=this.taskin.name
             this.priority=this.taskin.priority
@@ -165,28 +172,9 @@
                          message: '已取消'
                        });       */
                 });
-                this.$parent.$parent.dialogTableVisible = false
+                this.$parent.$parent.dialogTableVisible2 = false
             },
             postData(){
-                console.log("发送请求前")
-
-                var startData = new Date(this.dateStart2).getTime();
-                var endData = new Date(this.dateEnd2).getTime();
-                console.log("elementui 时间形式"+ startData +"时间2：" + endData)
-                console.log("humanuse:"+ this.humanUse )
-                let priorityy=    (this.priority=="无"?0:this.priority);
-                let humannn=    ((this.humanUse==true||this.humanUse=="是")?1:0);
-let wortstatue=null
-                if (this.workStatus == "未分配") // true
-                    wortstatue = null
-                if (this.workStatus === "已分配") // true
-                    wortstatue = 0
-                if (this.workStatus  === "任务正常") // true
-                    wortstatue = 1
-                if (this.workStatus  === "任务出现异常") // true
-                    wortstatue = 2
-            if (this.workStatus==null||this.workStatus==1||this.workStatus==0||this.workStatus==2)
-                wortstatue=this.workStatus
                 //this. content=''
                 //let cit=this.checkedCities
 //let conttt=''
@@ -199,24 +187,45 @@ let wortstatue=null
                 //  this.    content+=this.checkedCities[i];
                 //  if(i>0)
                 //      this.    content+=','+this.checkedCities[i];
-                var data = {
-                    "id":this.id,
-                    "name":this.input,
-                    "priority":priorityy,
-                    "humanUse":humannn,  //
-                    "startTime":startData,//
-                    "endTime":endData,//
-                    "workingTime":this.workingTime,//
-                    "deadLine":this.deadLine,
-                    "timeadvise":this.timeadvise,
-                    "content":this.content,
-                    "tradeuser":this.tradeuser,
-                    "commodityName":this.commodityName,
-                    "operatorName":this.operatorName,
-                    "workStatus":wortstatue
-                };
-                console.log(data);
-                taskInput(data).then(function (response) {
+              let postdata={}
+              if(this.modity!=null)
+              {
+                postdata = {
+                  "id":this.modity.id,
+                  "name":this.modity.name,
+                  "team":this.modity.team,
+                  "num":this.modity.num,  //
+                  "allocation":(this.modity.allocation=="是"?true:false),//
+                  "taskId":this.modity.taskId,//
+                  "taskName":this.modity.taskName,//
+                  "releaseTime":this.modity.releaseTime,
+                  "type":this.modity.type,
+                  "operatorId":this.modity.operatorId,
+                  "userId":this.id,
+              }
+
+
+                }else
+              {
+                {
+                  postdata = {
+                    "id": null,
+                    "name": this.name,
+                    "team": null,
+                    "num": null,  //
+                    "allocation": null,//
+                    "taskId": null,//
+                    "taskName": null,//
+                    "releaseTime": null,
+                    "type": null,
+                    "operatorId": null,
+                    "userId": this.id,
+                  }
+                }
+
+                }
+                console.log(postdata);
+             changemodality(postdata).then(function (response) {
                     console.log(response)
                 })
                     .catch(function (error) {
