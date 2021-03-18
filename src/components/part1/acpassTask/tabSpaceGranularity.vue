@@ -8,7 +8,7 @@
           <el-table-column label="省份" prop="province" min-width="80"></el-table-column>
           <el-table-column label="城市" prop="city" min-width="80"></el-table-column>
           <el-table-column label="商品类型" prop="category" min-width="100"></el-table-column>
-          <el-table-column label="关联度" prop="associate" min-width="100">
+          <el-table-column label="关联度（取值范围：0-1）" prop="associate" min-width="170">
             <template slot-scope="scope">
               {{ scope.row.associate.toFixed(3) }}
             </template>
@@ -28,7 +28,7 @@
           <h2>跨平台用户统计表</h2>
           <el-table :data="dataTableSpaceDetail" style="width: 100%">
             <el-table-column label="交易主体" prop="company" min-width="270"></el-table-column>
-            <el-table-column label="交易数量" prop="amount" min-width="100"></el-table-column>
+            <el-table-column label="交易数目" prop="amount" min-width="100"></el-table-column>
             <el-table-column label="交易频次" prop="trasum" min-width="100"></el-table-column>
           </el-table>
           <el-pagination
