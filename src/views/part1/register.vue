@@ -139,4 +139,5 @@ import loginByEmail from "@/api/part1/common.js"
     margin: 0 auto 40px auto;
     color: #303133;
   }
+
 </style>

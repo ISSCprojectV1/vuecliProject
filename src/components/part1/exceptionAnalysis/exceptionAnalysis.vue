@@ -51,15 +51,22 @@
                     style="width: 100%">
                     <el-table-column
                         prop="target"
-                        label="目标事件">
+                        label="目标事件"
+                        sortable>
                     </el-table-column>
                     <el-table-column
                         prop="delay_time"
-                        label="发生时延">
+                        label="发生时延"
+                        sortable>
                     </el-table-column>
                     <el-table-column
                         prop="probability"
-                        label="发生概率">
+                        label="发生概率"
+                        sortable>
+                    </el-table-column>
+                    <el-table-column
+                        prop="path"
+                        label="关联路径">
                     </el-table-column>
                 </el-table>
             </el-tab-pane>
@@ -68,7 +75,7 @@
 </template>
 
 <script>
-import {exceptionRelationAnalysis, exceptionRelationPredict} from "@/api/part1/acpassTask";
+import {exceptionRelationAnalysis, exceptionRelationPredict} from "@/api/part1/exceptionRelation";
 import echarts from "echarts";
 
 export default {
@@ -236,6 +243,7 @@ export default {
         onClickPredict() {
             exceptionRelationPredict(this.formPredict.sourceId, this.formPredict.thresholdP).then(res => {
                 this.resultPredict = res.data
+                this.resultPredict = this.resultPredict.filter(one => one.path != this.formPredict.sourceId)
                 console.log(this.resultPredict)
             }).catch(err => {
                 console.log(err)
