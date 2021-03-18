@@ -4,7 +4,7 @@
 
 
 
-            <el-form ref="form" :model="form" label-width="130px">
+            <el-form  label-width="130px">
 
                 <el-form-item label="监管任务名称">
                     <el-input v-model="input" placeholder="请输入内容"></el-input>
@@ -56,7 +56,7 @@
                             width="
                     300"
 
-                            v-model="visible">
+                           >
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                         <div style="margin: 15px 0;"></div>
                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
@@ -121,7 +121,7 @@
         },
         props:['taskin'],
         created(){
-            bourseget().then((res) => {
+         /*   bourseget().then((res) => {
                     let dataConvert = res.data.data;
                     console.log(dataConvert)
                     let temp=[]
@@ -132,7 +132,7 @@
                 }
             ).catch(()=>{
                 console.log("taskQuery fail")
-            });
+            });*/
             this.admintrue=getAdminTrue()=="admin"?true:false
 
             this.id=this.taskin.id
@@ -158,7 +158,7 @@
             }
         },
         watch:{
-            'taskin.changeflag'(){
+            'taskin.id'(){
                 console.log("flag变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id

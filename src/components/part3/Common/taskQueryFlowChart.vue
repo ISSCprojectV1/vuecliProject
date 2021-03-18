@@ -16,7 +16,7 @@
                :visible.sync="dialogTableVisible3" center :append-to-body='true'
                :lock-scroll="false" width="30%"
                :close-on-click-modal="false">
-        <taskInputFormChange :taskin="taskin" ></taskInputFormChange>
+        <taskInputFormShow :taskin="taskin3" ></taskInputFormShow>
     </el-dialog>
   <div>
 
@@ -183,11 +183,14 @@
 </template>
 
 <script>
+    /*
+    * */
   import {getUserTrue,getAdminTrue} from "@/utils/auth"
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
+import taskInputFormShow from "@/components/part1/Multimodal-multigranularity/taskInputFormShow";
 import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
 /*
 *         <el-table-column
@@ -209,6 +212,7 @@ export default {
   components: {
     method1,
     taskInputFormChange,
+    taskInputFormShow,
     operatorChange
 
   },
@@ -256,6 +260,7 @@ prioritychoose:[1,2,3],
       dormitory: [],
       modity:[],
       dormitory2: [],
+      dorshow: [],
       currentPage:1,
         totalCount2:10,
         totalCount3:10,
@@ -274,6 +279,7 @@ prioritychoose:[1,2,3],
       },
       allusers:[],
       taskin2:[],
+      taskin3:[],
       operatorin:[]
     }
   },
@@ -307,8 +313,26 @@ console.log(this.taskin)
       this.dialogTableVisible = true;
 
     },
-    gotoDetail(){
+    gotoDetail(res){
       this.dialogTableVisible3 = true;
+      console.log(res)
+      console.log(res.taskId)
+      console.log(this.dorshow)
+      if(res.taskId)
+      {let dor=[]
+        console.log(this.dormitory)
+        dor=this.dormitory
+        for(let i=0;i<dor.length;i++)
+        {
+          if(dor[i].id==res.taskId)
+          {
+            this.taskin3=dor[i]
+            console.log("aaa")
+            console.log(this.taskin3)
+            break;
+          }
+        }
+      }
     },
     changeOperator (res) {
 if(res!='new')
@@ -426,7 +450,9 @@ this.taskin2=data
       }
       dataConvert.reverse()
       this.dormitory = dataConvert;
+      this.dorshow=dataConvert
       console.log( this.dormitory)
+      console.log( this.dorshow)
       //this.loading = false;
     },
     dealwithData2(res) {
@@ -482,6 +508,7 @@ this.taskin2=data
         // this.modalitydata[i].id=null
           this.modalitydata[i].taskId = "无"
         }
+
 
 
         if (i == 0) {
