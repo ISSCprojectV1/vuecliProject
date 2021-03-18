@@ -185,10 +185,11 @@
 <script>
     /*
     * */
-  import {getUserTrue,getAdminTrue} from "@/utils/auth"
+
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers} from "@/api/part1/Multimodal-multigranularity";
+import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
+import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers,getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
 import taskInputFormShow from "@/components/part1/Multimodal-multigranularity/taskInputFormShow";
 import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
@@ -233,17 +234,25 @@ if(getAdminTrue()=="user")
 this.modality()
       this.usertrue=true
     }
-    console.log(getAdminTrue())
-    console.log(  this.usertrue)
-    console.log(  this.usertrue)
+
   },
   created() {
+    this.getData1()
  getAllUsers().then((res) => {
       console.log(res.data.data)
    let data=res.data.data
    this.allusers=data
 this.operatorin=data
 
+
+    }).catch(()=>{
+      console.log("getallusers fail")
+    });
+ let data="/getModalityByUserId/"+getToken()
+ getModalityByUserId(data).then((res) => {
+      console.log(res)
+if(res.data.data)
+{this.dealwithOperatorData(res.data.data)}
 
     }).catch(()=>{
       console.log("getallusers fail")
@@ -393,7 +402,7 @@ this.taskin2=data
       document.getElementById("form").style.display="block";
       document.getElementById("form2").style.display="none";
       document.getElementById("form3").style.display="none";
-      this.getData1()
+
 
     },
     changeform21()
@@ -497,46 +506,46 @@ this.taskin2=data
       console.log( this.dormitory2)
       //this.loading = false;
     },
-    dealwithData3(res) {
-      this.modalitydata=res
-        this.totalCount3=this.modalitydata.length
-      for (let i = 0; i < this.modalitydata.length; i++) {
-        if (this.modalitydata[i].allocation) // true
-          this.modalitydata[i].allocation = "是"
-        else // false
-        {  this.modalitydata[i].allocation = "否"
-        // this.modalitydata[i].id=null
-          this.modalitydata[i].taskId = "无"
-        }
+    dealwithOperatorData(res){
 
-
-
-        if (i == 0) {
-          console.log(this.modalitydata[0])
-      let    keys = [];
-          let value=[]
-            let neirong={}
-          for (let property in this.modalitydata[0])
-          {
-              keys.push(property)
-              value.push(this.modalitydata[0][property])
+        console.log(res)
+        let    keys = [];
+        let value=[]
+        let neirong={}
+        for (let property in res)
+        {
+          keys.push(property)
+          value.push(res[property])
           neirong["neirong"]=property
-            neirong["shuzhi"]=this.modalitydata[0][property]
-              var jsonObj = {"neirong":property,"shuzhi":this.modalitydata[0][property]};
-              this.tabledata3.push(jsonObj)
+          neirong["shuzhi"]=res[property]
+          var jsonObj = {"neirong":property,"shuzhi":res[property]};
+          this.tabledata3.push(jsonObj)
           //    let obj1 = JSON.parse(neirong);
-            //  console.log(obj1)
-              /*
+          //  console.log(obj1)
 
-        */
-          }
-          console.log(  this.tabledata3)
 
-          console.log(keys)
-          console.log(value)
-          console.log(keys.length)
-        }
 
+
+      console.log(  this.tabledata3)
+      console.log(keys.length)
+    }
+},
+dealwithData3(res) {
+  this.modalitydata=res
+    this.totalCount3=this.modalitydata.length
+  for (let i = 0; i < this.modalitydata.length; i++) {
+    if (this.modalitydata[i].allocation) // true
+      this.modalitydata[i].allocation = "是"
+    else // false
+    {  this.modalitydata[i].allocation = "否"
+    // this.modalitydata[i].id=null
+      this.modalitydata[i].taskId = "无"
+    }
+
+
+/*
+
+*/
 
       }
     },
