@@ -14,7 +14,7 @@
       <el-form-item >
         <el-button type="primary" v-on:click="onSubmit('registerForm')">注册</el-button>
       </el-form-item>
-        <el-link type="primary" style="margin-left:10px" v-on:click="backLogin()">返回登录页面</el-link>
+        <el-link type="primary" v-on:click="backLogin()">返回登录页面</el-link>
 
     </el-form>
 
