@@ -7,8 +7,8 @@
       <el-table-column prop="filePath" label="文件路径"></el-table-column>
       <el-table-column prop="status" label="文件状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.status === 1">未审核</span>
-          <span v-else-if="scope.row.status === 2">审核通过</span>
+          <span v-if="scope.row.status === '1'">未审核</span>
+          <span v-else-if="scope.row.status === '2'">审核通过</span>
           <span v-else>已迁移</span>
         </template>
       </el-table-column>
