@@ -1,132 +1,132 @@
 <template>
   <div>
     <h2>大宗商品预警监控平台</h2>
-    <el-container style="width: 100%">
-      <el-aside style="width: 350px">
-        <div id="chart-risk-frequency" style="width: 350px; height: 480px"></div>
+    <el-container style="height: 650px; border: 10px solid #eee">
+      <el-aside width="370px" style="border: 10px solid #eee; background-color: white;">
+        <div id="chart-risk-frequency" style="margin-top: 1rem; width: 350px; height: 480px"></div>
       </el-aside>
 
-      <el-container style="width: 600px;">
-        <el-main style="padding-top: 0">
+      <el-container style="border: 10px solid #eee">
+        <el-header>
+          <h4>预警信息综合显示</h4>
+        </el-header>
 
-          <p style="margin-top: 0; font-weight: bolder; font-size: 18px; color: #333333">预警信息综合显示</p>
+        <el-tabs v-model="tabSelected" @tab-click="handleTabClick" type="border-card" style="width: 100%; height: 100%">
 
-          <el-tabs v-model="tabSelected" @tab-click="handleTabClick">
+          <el-tab-pane label="已发布">
+            <el-table :data="formReleased">
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
+              <el-table-column prop="info" label="预警信息" min-width="40">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="发布时间" min-width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="80">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="onClickModify(scope.row)">修改</el-button>
+                  <el-button type="text" @click="pendInfo(scope.row)">送审</el-button>
+                  <el-button type="text" @click="goToFirst()">监控</el-button>
+                  <el-button type="text" @click="goToLast()">监控</el-button>
+                  <el-button type="text" @click="deleteInfo(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
 
-            <el-tab-pane label="已发布">
-              <el-table :data="formReleased">
-                <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-                <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-                <el-table-column prop="info" label="预警信息" min-width="50">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="time" label="发布时间" min-width="70">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" min-width="80">
-                  <template slot-scope="scope">
-                    <el-button type="text" @click="onClickModify(scope.row)">修改</el-button>
-                    <el-button type="text" @click="pendInfo(scope.row)">送审</el-button>
-                    <el-button type="text" @click="goToFirst()">监控</el-button>
-                    <el-button type="text" @click="goToLast()">监控</el-button>
-                    <el-button type="text" @click="deleteInfo(scope.row)">删除</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
+          <el-tab-pane label="待处理">
+            <el-table :data="formPending">
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
+              <el-table-column prop="info" label="预警信息" min-width="40">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="发布时间" min-width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="80">
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
 
-            <el-tab-pane label="待处理">
-              <el-table :data="formPending">
-                <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-                <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-                <el-table-column prop="info" label="预警信息" min-width="50">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="time" label="发布时间" min-width="70">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" min-width="80">
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
+          <el-tab-pane label="已修改">
+            <el-table :data="formModified">
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
+              <el-table-column prop="info" label="预警信息" min-width="40">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="发布时间" min-width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="80">
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
 
-            <el-tab-pane label="已修改">
-              <el-table :data="formModified">
-                <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-                <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-                <el-table-column prop="info" label="预警信息" min-width="50">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="time" label="发布时间" min-width="70">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" min-width="80">
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
+          <el-tab-pane label="已送审">
+            <el-table :data="formSent">
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
+              <el-table-column prop="info" label="预警信息" min-width="40">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="发布时间" min-width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="80">
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
 
-            <el-tab-pane label="已送审">
-              <el-table :data="formSent">
-                <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-                <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-                <el-table-column prop="info" label="预警信息" min-width="50">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="time" label="发布时间" min-width="70">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" min-width="80">
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
+          <el-tab-pane label="已删除">
+            <el-table :data="formDeleted">
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
+              <el-table-column prop="info" label="预警信息" min-width="40">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="发布时间" min-width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="80">
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
 
-            <el-tab-pane label="已删除">
-              <el-table :data="formDeleted">
-                <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-                <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-                <el-table-column prop="info" label="预警信息" min-width="50">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                    <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="time" label="发布时间" min-width="70">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作" min-width="80">
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
+        </el-tabs>
 
-          </el-tabs>
-        </el-main>
       </el-container>
 
       <el-dialog
@@ -162,6 +162,7 @@
           <el-button @click="dialogModifyVisible = false">取消</el-button>
         </div>
       </el-dialog>
+
     </el-container>
   </div>
 </template>
@@ -228,7 +229,7 @@ export default {
       this.dialogModifyVisible = true;
     },
     modifyInfo() {
-      if(this.formRowSelected.status === '已发布')
+      if (this.formRowSelected.status === '已发布')
         this.formRowSelected.status = 0;
       updateRiskInfo(this.formRowSelected).then(res => {
         this.$message({
