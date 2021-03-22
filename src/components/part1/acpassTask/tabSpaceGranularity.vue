@@ -1,14 +1,14 @@
 <template>
   <div style="width: 100%">
-    <el-container style="height: 700px; border: 10px solid #eee">
-      <el-aside width="800px" style="border: 10px solid #eee">
+    <el-container style="height: 700px; border: 0.5rem solid #eee">
+      <el-aside width="53%" style="border: 0.5rem solid #eee">
         <h2>交易平台监管粒度推荐表</h2>
         <el-table :data="dataTableSpaceGranularity" highlight-current-row @row-click="onClickTableSpace">
-          <el-table-column label="平台名称" prop="platform" min-width="250"></el-table-column>
-          <el-table-column label="省份" prop="province" min-width="80"></el-table-column>
-          <el-table-column label="城市" prop="city" min-width="80"></el-table-column>
-          <el-table-column label="商品类型" prop="category" min-width="100"></el-table-column>
-          <el-table-column label="关联度（取值范围：0-1）" prop="associate" min-width="170">
+          <el-table-column label="平台名称" fixed="left" prop="platform" min-width="180"></el-table-column>
+          <el-table-column label="省份" prop="province" min-width="60"></el-table-column>
+          <el-table-column label="城市" prop="city" min-width="60"></el-table-column>
+          <el-table-column label="商品类型" prop="category" min-width="80"></el-table-column>
+          <el-table-column label="关联度（取值范围：0-1）" prop="associate" min-width="100">
             <template slot-scope="scope">
               {{ scope.row.associate.toFixed(3) }}
             </template>
@@ -23,13 +23,13 @@
             :total="totalTableSpace">
         </el-pagination>
       </el-aside>
-      <el-container style="border: 10px solid #eee">
+      <el-container style="border: 0.5rem solid #eee">
         <div id="tableSpaceDetail" style="width: 100%; height: 100%">
           <h2>跨平台用户统计表</h2>
           <el-table :data="dataTableSpaceDetail" style="width: 100%">
-            <el-table-column label="交易主体" prop="company" min-width="270"></el-table-column>
-            <el-table-column label="交易数目" prop="amount" min-width="100"></el-table-column>
-            <el-table-column label="交易频次" prop="trasum" min-width="100"></el-table-column>
+            <el-table-column label="交易主体" prop="company" fixed="left" min-width="260"></el-table-column>
+            <el-table-column label="交易数目" prop="amount" min-width="80"></el-table-column>
+            <el-table-column label="交易频次" prop="trasum" min-width="80"></el-table-column>
           </el-table>
           <el-pagination
               ref="pagination"
@@ -87,10 +87,10 @@ export default {
     onClickTableSpace(row) {
       this.platform = row.platform;
       this.category = row.category;
-      this.getResultSpaceDetail(row.platform, row.category, 1, 10)
+      this.getResultSpaceDetail(row.platform, row.category, 1, 8)
     },
     // table detail
-    getResultSpaceDetail(platform, category, currentPage = 1, pageSize = 10) {
+    getResultSpaceDetail(platform, category, currentPage = 1, pageSize = 8) {
       getSpaceDetail(platform, category, currentPage, pageSize).then(res => {
         this.dataTableSpaceDetail = res.data.data.reslist
         this.totalTableDetail = res.data.data.total
@@ -100,7 +100,7 @@ export default {
       })
     },
     onPageChangeDetail(page) {
-      this.getResultSpaceDetail(this.platform, this.category, page, 10);
+      this.getResultSpaceDetail(this.platform, this.category, page, 8);
     }
   }
 }
