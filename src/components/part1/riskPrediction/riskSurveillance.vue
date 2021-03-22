@@ -31,11 +31,23 @@
               </el-table-column>
               <el-table-column label="操作" min-width="80">
                 <template slot-scope="scope">
-                  <el-button type="text" @click="onClickModify(scope.row)">修改</el-button>
-                  <el-button type="text" @click="pendInfo(scope.row)">送审</el-button>
-                  <el-button type="text" @click="goToFirst()">监控</el-button>
-                  <el-button type="text" @click="goToLast()">监控</el-button>
-                  <el-button type="text" @click="deleteInfo(scope.row)">删除</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
+                  <el-popconfirm
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定送审？"
+                      @onConfirm="pendInfo(scope.row)">
+                    <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
+                  </el-popconfirm>
+                  <el-button type="text" class="el-option-in-table" @click="goToFirst()">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToLast()">监控</el-button>
+                  <el-popconfirm
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定删除？"
+                      @onConfirm="deleteInfo(scope.row)">
+                    <el-button type="text" class="el-option-in-table" slot="reference">删除</el-button>
+                  </el-popconfirm>
                 </template>
               </el-table-column>
             </el-table>
@@ -176,6 +188,7 @@ export default {
   data() {
     return {
       tabSelected: '',
+      infoSelected: '', // store old info for comparison
       formRowSelected: {},
       tabIndex: ["已发布", "待处理", "已修改", "已送审", "已删除"],
       dialogModifyVisible: false,
@@ -226,18 +239,25 @@ export default {
         info: row.info,
         status: (row.status === 0) ? "已发布" : row.status
       };
+      this.infoSelected = row.info;
       this.dialogModifyVisible = true;
     },
     modifyInfo() {
-      if (this.formRowSelected.status === '已发布')
+      if (this.formRowSelected.status === '已发布') {
         this.formRowSelected.status = 0;
-      updateRiskInfo(this.formRowSelected).then(res => {
+        if (this.infoSelected === this.formRowSelected.info) {
+          this.dialogModifyVisible = false;
+          return;
+        } else
+          this.formRowSelected.status = 2;
+      }
+      updateRiskInfo(this.formRowSelected).then(() => {
         this.$message({
           message: '修改成功',
           type: 'success'
         })
         this.getRiskInfo(0)
-      }).catch(err => {
+      }).catch(() => {
         this.$message({
           message: '修改失败',
           type: 'error'
@@ -251,13 +271,13 @@ export default {
         info: row.info,
         status: 3
       }
-      updateRiskInfo(data).then(res => {
+      updateRiskInfo(data).then(() => {
         this.$message({
           message: '送审成功',
           type: 'success'
         })
         this.getRiskInfo(0)
-      }).catch(err => {
+      }).catch(() => {
         this.$message({
           message: '送审失败',
           type: 'error'
@@ -270,13 +290,13 @@ export default {
         info: row.info,
         status: 4
       }
-      updateRiskInfo(data).then(res => {
+      updateRiskInfo(data).then(() => {
         this.$message({
           message: '删除成功',
           type: 'success'
         })
         this.getRiskInfo(0)
-      }).catch(err => {
+      }).catch(() => {
         this.$message({
           message: '删除失败',
           type: 'error'
@@ -294,7 +314,6 @@ export default {
       let chart = echarts.init(document.getElementById('chart-risk-frequency'))
 
       let option = {
-        // backgroundColor: '#FFFFFF',
         title: {
           text: '当月预警次数',
           left: 'center'
@@ -331,5 +350,9 @@ export default {
 </script>
 
 <style scoped>
-
+.el-option-in-table {
+  margin-left: 5px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 </style>
