@@ -23,7 +23,8 @@
         <el-button type="primary" @click="onClickQueryRelation" style="margin-top: 1rem">查询关联商品</el-button>
 
         <el-dialog :visible.sync="dialogFormVisible" width="30%" :title="value + '关联商品'" center>
-            <el-table :data="formRelation" stripe>
+            <el-table :data="formRelation"
+                      :default-sort="{prop: 'similarity', order: 'descending'}" stripe>
                 <el-table-column
                     prop="name"
                     label="关联商品">
@@ -35,7 +36,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="similarity"
-                    label="相关度">
+                    label="相关度" sortable>
                 </el-table-column>
             </el-table>
         </el-dialog>

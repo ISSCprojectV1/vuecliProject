@@ -141,6 +141,13 @@ let routes = [
                 }
             },
             {
+                path:"/trade/teamTable/:team",
+                component: () => import("@/components/part3/Common/teamTable"),
+                meta:{
+                    title:"联盟详情"
+                }
+            },
+            {
                 path:"/trade/acpassTask/activetaskDetail/:id",
                 component: () => import("@/components/part1/acpassTask/activetaskDetail"),
                 meta:{
@@ -205,7 +212,7 @@ let routes = [
             },
             {
                 path:"/trade/transactionProject/map",
-                component: () => import("@/components/part1/transactionProject/map"),
+                component: () => import("@/components/part1/transactionProject/maplianmeng"),
                 meta:{
                     title:"网络图"
                 }

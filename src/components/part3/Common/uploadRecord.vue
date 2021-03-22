@@ -1,6 +1,10 @@
 <template>
   <div id="base">
-    <el-table :data="dataTable">
+    <el-table
+        stripe
+        border
+        :header-cell-style="{'background-color': '#f5f7fa'}"
+        :data="dataTable">
       <el-table-column prop="fileName" label="文件名称"></el-table-column>
       <el-table-column prop="auctionId" label="所属拍卖"></el-table-column>
       <el-table-column prop="gmtCreated" label="上传时间"></el-table-column>
