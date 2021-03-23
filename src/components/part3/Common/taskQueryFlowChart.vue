@@ -38,6 +38,12 @@
         任务等待队列
       </div>
       <el-table
+              :header-cell-style="{
+      'background-color': '#dfdfdf',
+      'color': 'rgb(96, 97, 98)',
+      'font-weight':'bold',
+      'font-size':'16px'
+      }"
               ref="dormitoryTable2"
               :data="dormitory2.slice((currentPage-1)*PageSize,currentPage*PageSize)"
               tooltip-effect="dark"
@@ -50,9 +56,9 @@
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="任务优先级" prop="priority"  width="50">
+        <el-table-column label="任务优先级" prop="priority" >
         </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        <el-table-column label="任务执行时间" prop="workingTime" >
         </el-table-column>
 
       </el-table>
@@ -94,7 +100,7 @@
         </el-table-column>
         <el-table-column
                 label="操作员设置"
-         
+
         >
           <template slot-scope="scope">
             <el-button @click="   changeOperator(scope.row)" type="text" size="small"  >操作员修改</el-button>
