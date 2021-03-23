@@ -173,9 +173,9 @@
                 this.workStatus=this.taskin.workStatus
                 if(!this.content)
                     this.content='暂时未分配'
-                if(this.taskin.humanUse=='是')
+                if((this.taskin.humanUse=='是')||(this.taskin.humanUse='人工监管参与'))
                     this.humanUse=1
-                if(this.taskin.humanUse=='否')
+                if((this.taskin.humanUse=='否')||(this.taskin.humanUse='人工监管未参与'))
                     this.humanUse=0
                 if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
                     this.cleanForm()
