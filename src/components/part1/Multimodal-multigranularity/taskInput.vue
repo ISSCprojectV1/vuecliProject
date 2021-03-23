@@ -142,16 +142,24 @@
 <el-button type="info" @click="abortForm">取消创建</el-button>
 
         <el-dialog :visible.sync="dialogActiveVisible" title="主动监管名单" width="40%" center>
-          <p style="font-size: 1rem">平台风险值： <span style="margin-right: 1rem; color: red;">{{valueRisk}}</span>
-            风险程度：<span style="color: red">{{valueMean}}</span></p>
-          <el-table :data="formActiveList" stripe>
+          <p style="font-size: 1rem">
+            平台风险值：
+            <span v-if="valueMean === '高'" style="margin-right: 1rem; color: red">{{valueRisk}}</span>
+            <span v-else-if="valueMean === '中'" style="margin-right: 1rem; color: orange">{{valueRisk}}</span>
+            <span v-else-if="valueMean === '低'" style="margin-right: 1rem; color: green">{{valueRisk}}</span>
+            风险程度：
+            <span v-if="valueMean === '高'" style="color: red">{{valueMean}}</span>
+            <span v-else-if="valueMean === '中'" style="color: orange">{{valueMean}}</span>
+            <span v-else-if="valueMean === '低'" style="color: green">{{valueMean}}</span>
+          </p>
+          <el-table :data="formActiveList" :default-sort="{prop: 'p', order: 'descending'}" stripe>
             <el-table-column
               prop="name"
               label="主体">
             </el-table-column>
             <el-table-column
                 prop="p"
-                label="异常值">
+                label="异常值" sortable>
               <template slot-scope="scope">
                 <span>{{parseFloat(scope.row.p).toFixed(3)}}</span>
               </template>
