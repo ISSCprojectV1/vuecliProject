@@ -23,7 +23,7 @@
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
     <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
     <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
-    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px">新增操作员</el-button>
+    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>
   </div>
 <div>
   <div id="echart1"  >
@@ -32,10 +32,11 @@
 </div>
     <method1 ref="method1_child"  ></method1>
   </div>
-    <div>
-       当前监管任务
-    </div>
+
     <div id="form2" >
+      <div>
+        任务等待队列
+      </div>
       <el-table
               ref="dormitoryTable2"
               :data="dormitory2.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -64,33 +65,25 @@
       </el-pagination>
     </div>
   </div>
-  <div id="form3"  style="display: none">
+  <div id="form3"  style="display: none" >
 
       <el-table
-
+              v-if="this.admintrue"
               ref="dormitoryTable3"
               :data="modalitydata.slice((currentPage-1)*PageSize,currentPage*PageSize)"
               tooltip-effect="dark"
               stripe
               style="width: 100%"
-              border>
+              border
+     >
 
 
         <el-table-column label="序号" prop="id" width="60">
-
-
         </el-table-column>
         <el-table-column label="操作员名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="是否被占用"   prop="allocation" width="60">
-
-        </el-table-column>
-
-        <el-table-column label="当前任务编号" prop="taskId" width="60">
-        </el-table-column>
-
-        <el-table-column label="主被动模态" prop="taskId">
+        <el-table-column label="当前任务编号" prop="taskId">
           <template slot-scope="scope">
             <el-link  type="primary">
               <div @click="gotoDetail(scope.row)">
@@ -99,15 +92,14 @@
             </el-link>
           </template>
         </el-table-column>
-          <el-table-column
-                  label="操作员设置"
-                  fixed="right"
-                  min-width="180"
-          >
-              <template slot-scope="scope">
-                  <el-button @click="   changeOperator(scope.row)" type="text" size="small"  >操作员修改</el-button>
-              </template>
-          </el-table-column>
+        <el-table-column
+                label="操作员设置"
+         
+        >
+          <template slot-scope="scope">
+            <el-button @click="   changeOperator(scope.row)" type="text" size="small"  >操作员修改</el-button>
+          </template>
+        </el-table-column>
 
       </el-table>
       <el-pagination @size-change="handleSizeChange"
@@ -184,6 +176,9 @@
 
 <script>
     /*
+            <el-table-column label="是否被占用"   prop="allocation" width="60">
+
+        </el-table-column>
     * */
 
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
@@ -221,23 +216,26 @@ export default {
 
       //  执行echarts方法
       this.getData();
+    this.getData1();
       this.getData2();
 
 if(getAdminTrue()=="admin")
 
 {
-
+  this.modality()
+this.admintrue=true
   this.usertrue=false
 }
 if(getAdminTrue()=="user")
     {
 this.modality()
+      this.admintrue=false
       this.usertrue=true
     }
-
+console.log(this.admintrue)
   },
   created() {
-    this.getData1()
+
  getAllUsers().then((res) => {
       console.log(res.data.data)
    let data=res.data.data
@@ -257,7 +255,9 @@ if(res.data.data)
     }).catch(()=>{
       console.log("getallusers fail")
     });
+    this.getData1()
   },
+
   data() {
     return {
   tabledata3:[],

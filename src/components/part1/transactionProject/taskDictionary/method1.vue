@@ -77,7 +77,7 @@ console.log(input)
 
                // 节点状态--用颜色表示
                if(input.data[i].workStatus === 0){
-               node.workStatus = '任务未执行';
+               node.workStatus = '任务未完成';
                }
                else if(input.data[i].workStatus === 1){
                node.workStatus = '任务已执行';
@@ -239,6 +239,9 @@ const tooltip = new G6.Tooltip({
       </ul>
        <ul>
         <h3>* 任务优先级: ${e.item.getModel().priority}</h3>
+      </ul>
+          <ul>
+        <h3>* 人: ${e.item.getModel().humanUse}</h3>
       </ul>
       <ul>
         <h3>* 任务开始时间: ${e.item.getModel().workingStartTime}</h3>
