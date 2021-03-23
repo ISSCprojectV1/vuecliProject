@@ -491,18 +491,8 @@ function renderMap(map,data){
     },
 
     getData() {
-        var idd=getToken()
-        console.log(idd)
-        var url='/getTaskById/'+idd
-        console.log(url)
-     //  console.log(taskQueryById(url))
-      var url2='/getroles/'+idd
-      console.log(  getRolenameById(url2))
       // 获取表格数据
       console.log("获取表格数据")
-        console.log(this.user)
-console.log(getToken())
-
       taskQuery().then((res) => {
         console.log("look----",res.data)
         this.dealwithData(res)
@@ -572,10 +562,10 @@ console.log(getToken())
  
     GetTeamData(team){
         var url='/yu/getOneTeamResult/'+team
-       getOneTeamResult(url).then((res) => {
+        getOneTeamResult(url).then((res) => {
         console.log("look----",res.data)
         this.dealwithData(res)
-         document.getElementById("form").style.display="block";
+        document.getElementById("form").style.display="block";
         document.getElementById("map").style.display="none";
       }).catch(() => {
         console.log("getTransactionData fail")
@@ -586,10 +576,12 @@ console.log(getToken())
     console.log(this.$router.currentRoute.params.team);
     const team = this.$router.currentRoute.params.team;
     //this.getData();
-    this.GetTeamData(team);
+    //this.GetTeamData(team);
+    
   },
   mounted() {
-    this.loading = true;
+    this.loading = false;
+    this.onClickQuery2();
   }
 }
 </script>
