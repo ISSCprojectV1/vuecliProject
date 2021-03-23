@@ -533,8 +533,8 @@ console.log(getToken())
       //     dataConvert[i].humanUse = "是"
       //   else // false
       //     dataConvert[i].humanUse = "否"
-      //   if (!dataConvert[i].timeadvise) // true
-      //     dataConvert[i].timeadvise = "否"
+      //   if (!dataConvert[i].timeAdvise) // true
+      //     dataConvert[i].timeAdvise = "否"
       //   if (!dataConvert[i].commodityName) // true
       //     dataConvert[i].commodityName = "暂无"
 
