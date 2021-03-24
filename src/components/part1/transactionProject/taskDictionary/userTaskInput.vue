@@ -60,7 +60,7 @@
 </template>
 
 <script>
-    import G6 from '@antv/g6'
+  //  import G6 from '@antv/g6'
     import {postTaskDecompositionApi,getbendiApi} from "@/api/part1/transactionProject";
 
     export default {
@@ -313,6 +313,7 @@ const data = {
     nodes:nodes_new,
     edges:edges_new
 };
+/*
 const tooltip = new G6.Tooltip({
   pageX: 10,
   offsetY: 20,
@@ -332,7 +333,7 @@ const tooltip = new G6.Tooltip({
     return outDiv
   },
   itemTypes: ['node']
-});
+});*//*
 const width = document.getElementById('container').scrollWidth;
 const height = document.getElementById('container').scrollHeight || 500;
 const graph = new G6.Graph({
@@ -409,7 +410,7 @@ const graph = new G6.Graph({
             radius: 10
         },
     },
-});
+});*//*
 graph.node(function (node) {
     // depth 类似节点标识
                         if(node.agent == true){
@@ -443,7 +444,7 @@ graph.on('node:mouseenter', evt => {
 graph.on('node:mouseleave', evt => {
   const { item } = evt;
   graph.setItemState(item, 'hover', false);
-});
+});*/
 console.log("刷新了这个页面-页面结束");
       },
       // 分页激活调用

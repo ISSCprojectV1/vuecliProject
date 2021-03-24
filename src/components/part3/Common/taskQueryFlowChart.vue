@@ -261,7 +261,7 @@ if(res.data.data)
     }).catch(()=>{
       console.log("getallusers fail")
     });
-    this.getData1()
+  //  this.getData1()
   },
 
   data() {
@@ -378,7 +378,7 @@ this.taskin2=data
         console.log(res.data.data)
         this. dealwithData(res.data.data)
       }).catch(()=>{
-        console.log("getTransactionData fail")
+        console.log("获取表格数据 fail")
       });
     } ,
     handleSizeChange(val) {
@@ -397,6 +397,7 @@ this.taskin2=data
       getTaskApi().then((res) => {
         var input = res.data;
         this.dealwithData(input)
+        console.log("gettask")
   console.log(input)
       }).catch(()=>{
         console.log("getTaskApi fail")
@@ -524,16 +525,30 @@ this.taskin2=data
           value.push(res[property])
           neirong["neirong"]=property
           neirong["shuzhi"]=res[property]
-          var jsonObj = {"neirong":property,"shuzhi":res[property]};
-          this.tabledata3.push(jsonObj)
+          if(property=="id"){
+            let jsonObj = {"neirong":"序号","shuzhi":res[property]};
+            this.tabledata3.push(jsonObj)
+
+          }
+          if(property=="name"){
+            let jsonObj = {"neirong":"操作员名称","shuzhi":res[property]};
+            this.tabledata3.push(jsonObj)
+
+          }
+          if(property=="taskId"){
+            let jsonObj = {"neirong":"当前任务编号","shuzhi":res[property]};
+            this.tabledata3.push(jsonObj)
+
+          }
+
           //    let obj1 = JSON.parse(neirong);
           //  console.log(obj1)
 
 
 
 
-      console.log(  this.tabledata3)
-      console.log(keys.length)
+   //   console.log(  this.tabledata3)
+ //     console.log(keys.length)
     }
 },
 dealwithData3(res) {

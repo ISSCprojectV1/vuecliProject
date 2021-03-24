@@ -23,6 +23,7 @@ import taskMethodChange from "@/components/part1/Multimodal-multigranularity/tas
 
 export default {
   name: '这里',
+
   data () {
     return {
       dialogTableVisible: false,
@@ -224,10 +225,14 @@ const data = {
 const tooltip = new G6.Tooltip({
   pageX: 10,
   offsetY: 20,
+  offsetX: 10,
+  fixToNode: [1, 0],
   getContent(e) {
     const outDiv = document.createElement('div');
     outDiv.style.width = '180px';
-    outDiv.style.textAlign = 'left';
+
+  outDiv.style.textAlign = 'left';
+   // outDiv.style.padding='0px 10px 24px 10px;'
     //console.log(e.item.getModel())
     outDiv.innerHTML = `
       <h2>${e.item.getModel().label}任务详情</h2>
@@ -538,7 +543,7 @@ console.log("刷新了这个页面-页面结束");
       font-size: 12px;
       color: #545454;
       background-color: rgba(255, 255, 255, 0.9);
-      padding: 10px 8px;
+      padding: 0px 10px 24px 10px;
       box-shadow: rgb(174, 174, 174) 0px 0px 10px;
     }
  #legendContainer{

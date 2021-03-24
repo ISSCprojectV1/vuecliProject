@@ -138,7 +138,7 @@
             this.id=this.taskin.id
             this.input=this.taskin.name
             this.priority=this.taskin.priority
-            this.humanUse=this.taskin.humanUse
+            this.humanUse=((this.taskin.humanUse=='是')||(this.taskin.humanUse=='人工监管参与'))?1:0
             this.workingTime=this.taskin.workingTime
             this.deadLine=this.taskin.deadLine
             //  if(this.taskin.content)
@@ -150,6 +150,7 @@
             //npm   console.log(this.content)
             /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
           this.cleanForm();*/
+          console.log(this)
         },
         computed: {
             address(){
@@ -158,7 +159,7 @@
             }
         },
         watch:{
-            'taskin.changeflag'(){
+            'taskin.id'(){
                 console.log("flag变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id
@@ -173,15 +174,14 @@
                 this.workStatus=this.taskin.workStatus
                 if(!this.content)
                     this.content='暂时未分配'
-                if((this.taskin.humanUse=='是')||(this.taskin.humanUse='人工监管参与'))
+                if((this.taskin.humanUse=='是')||(this.taskin.humanUse=='人工监管参与'))
                     this.humanUse=1
-                if((this.taskin.humanUse=='否')||(this.taskin.humanUse='人工监管未参与'))
+                if((this.taskin.humanUse=='否')||(this.taskin.humanUse=='人工监管未参与'))
                     this.humanUse=0
-                if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
-                    this.cleanForm()
-                let butt=document.getElementById("neirong")
-                console.log(butt.text)
+         console.log( this.humanUse)
+              console.log(this)
             }
+
         },
         methods:{
             handleCheckAllChange(val) {
@@ -214,11 +214,14 @@
                             contt+=','+this.checkedCities[i];
                     }
                     console.log(contt)
-                    console.log("111")
+                    console.log(this.humanUse)
                     this.content=contt
                     this.postData();
-                    //this.$parent.$parent.getData()
-                    this.$parent.$parent.reloadPage()
+                  console.log(this)
+                //  this.$parent.$parent.reloadPage()
+                  console.log("aaa")
+                 //   this.$parent.getData()
+                   // this.$parent.reloadPage()
                     /* this.$message({
                        type: 'success',
                        message: '创建成功!'
@@ -248,7 +251,7 @@
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
                 console.log("humanuse:"+ this.humanUse )
                 let priorityy=    (this.priority=="无"?0:this.priority);
-                let humannn=    ((this.humanUse==true||this.humanUse=="是")?1:0);
+                let humannn=    ((this.humanUse==true||this.humanUse=="是"||this.humanUse=="人工监管参与")?1:0);
 let wortstatue=null
                 if (this.workStatus == "未分配") // true
                     wortstatue = null
@@ -291,6 +294,9 @@ let wortstatue=null
                 console.log(data);
                 taskInput(data).then(function (response) {
                     console.log(response)
+                  console.log(this)
+               //   console.log(this.$parent)
+             //     console.log(this.$parent.$parent)
                 })
                     .catch(function (error) {
                         console.log(error);

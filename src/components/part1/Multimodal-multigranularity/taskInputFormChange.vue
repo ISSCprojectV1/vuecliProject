@@ -116,7 +116,8 @@
                 commodityName:'',
                 admintrue:false,
                 operatorName:'',
-                workStatus: ''
+                workStatus: '',
+              getfresh:''
             }
         },
         props:['taskin'],
@@ -214,11 +215,13 @@
                             contt+=','+this.checkedCities[i];
                     }
                     console.log(contt)
-                    console.log("111")
+
                     this.content=contt
                     this.postData();
+                    console.log(this.getfresh)
+
                     //this.$parent.$parent.getData()
-                    this.$parent.$parent.reloadPage()
+                 //   this.$parent.$parent.reloadPage()
                     /* this.$message({
                        type: 'success',
                        message: '创建成功!'
@@ -242,7 +245,6 @@
             },
             postData(){
                 console.log("发送请求前")
-
                 var startData = new Date(this.dateStart2).getTime();
                 var endData = new Date(this.dateEnd2).getTime();
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
@@ -289,13 +291,22 @@ let wortstatue=null
                     "workStatus":wortstatue
                 };
                 console.log(data);
-                taskInput(data).then(function (response) {
-                    console.log(response)
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                let temp=''
+                taskInput(data).then((response) =>{
+                  console.log(response)
+                  let temp=response.data.code
+      console.log(temp)
+this.getfresh=temp
+                  if(this.getfresh==200){
+                    console.log(this)
+                    this.$parent.$parent.getData1()
+                  }
+
+            }).catch(function (error) {
+                  console.log(error);
+                });
             },
+
             abortForm(){
                 console.log("zhioiiiiiii")
                 this.cleanForm();

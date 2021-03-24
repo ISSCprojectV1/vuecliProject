@@ -225,8 +225,10 @@
 
                 }
                 console.log(postdata);
-             changemodality(postdata).then(function (response) {
+             changemodality(postdata).then((response) =>{
                     console.log(response)
+               if(response.data.code==200)
+                 this.$parent.$parent.modality()
                 })
                     .catch(function (error) {
                         console.log(error);
