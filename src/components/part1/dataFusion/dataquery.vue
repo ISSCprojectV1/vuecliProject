@@ -89,9 +89,8 @@ console.log(this.$router.currentRoute)
         let tiankong= document.getElementById("diceng");
         tiankong.style.height=window.innerHeight+"px"
             console.log( this.$route.query.data)
-        console.log(tiankong.style.height)
+
         let announcement=document.getElementById("announcement");
-        console.log(tiankong)
           this.xinyongpingren=(!this.$route.query.data.abnormalValue||isNaN(this.$route.query.data.abnormalValue))?100:100-5*this.$route.query.data.abnormalValue.toFixed(3);
           this.lookupcompany(this.$route.query.data.company)
       },
