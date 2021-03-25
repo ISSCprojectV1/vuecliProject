@@ -54,7 +54,7 @@
           </el-tab-pane>
 
           <el-tab-pane label="待处理">
-            <el-table :data="formPending">
+            <el-table :data="formReleased">
               <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
@@ -70,6 +70,25 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" min-width="80">
+                <template slot-scope="scope">
+                  <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
+                  <el-popconfirm
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定送审？"
+                      @onConfirm="pendInfo(scope.row)">
+                    <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
+                  </el-popconfirm>
+                  <el-button type="text" class="el-option-in-table" @click="goToFirst()">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToLast()">监控</el-button>
+                  <el-popconfirm
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定删除？"
+                      @onConfirm="deleteInfo(scope.row)">
+                    <el-button type="text" class="el-option-in-table" slot="reference">删除</el-button>
+                  </el-popconfirm>
+                </template>
               </el-table-column>
             </el-table>
           </el-tab-pane>
