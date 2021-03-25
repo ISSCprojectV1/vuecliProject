@@ -24,10 +24,22 @@
               <span v-else>正常</span>
             </template>
           </el-table-column>
-          <el-table-column label="信用评分" min-width="80">80</el-table-column>
+          <el-table-column label="信用评分" min-width="80">
+            <template slot-scope="scope">
+              <span v-if="Number.isNaN(scope.row.abnormalValue)">100</span>
+              <span v-else-if="isAbnormal(scope.row.abnormalValue)" style="color: red">
+                    {{100- 5*scope.row.abnormalValue.toFixed(3) }}
+                  </span>
+              <span v-else style="color: green">
+                    {{100- 5*scope.row.abnormalValue.toFixed(3) }}
+                  </span>
+            </template>
+
+
+          </el-table-column>
           <el-table-column label="详细信息" fixed="right" min-width="80">
             <template slot-scope="scope">
-              <el-button @click="goToDataQuery(scope.row.company)" type="text" size="small">实体统一</el-button>
+              <el-button @click="goToDataQuery(scope.row)" type="text" size="small">实体统一</el-button>
             </template>
           </el-table-column>
         </el-table>
