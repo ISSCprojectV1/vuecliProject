@@ -50,7 +50,7 @@ let routes = [
 
               {
                   path:'taskQueryTransactionCoalition',
-                  component: () => import("@/components/part3/Common/taskQueryTransactionCoalition")
+                  component: () => import("@/components/part3/Common/taskQueryTransactionCoalition copy")
               },
 
         ]
