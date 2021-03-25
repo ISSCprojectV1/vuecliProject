@@ -91,7 +91,7 @@ console.log(this.$router.currentRoute)
         console.log(tiankong.style.height)
         let announcement=document.getElementById("announcement");
         console.log(tiankong)
-            this.lookupcompany(this.$route.query.data.company)
+            this.lookupcompany(this.$route.query.data)
       },
         methods:{
             goback(){
