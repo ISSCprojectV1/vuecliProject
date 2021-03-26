@@ -19,10 +19,6 @@
       </el-menu-item>
 
 
-      <el-menu-item index="/trade/riskPrediction/riskSurveillance/" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">价格波动风险预警</span>
-      </el-menu-item>
       <el-submenu index="/trade/auction" style="text-align: left;">
         <template slot="title">
           <i class="el-icon-menu"></i>
@@ -263,6 +259,13 @@
         /*    {
                 title: "异常事件分析",
                 routes: [
+                  {
+                    path: "/trade/exceptionAnalysis/data",
+                    component: () => import("@/components/part1/exceptionAnalysis/exceptionData"),
+                    meta: {
+                      title: "仿真数据"
+                    }
+                  },
                     {
                         path: "/trade/exceptionAnalysis/page",
                         component: () => import("@/components/part1/exceptionAnalysis/exceptionAnalysis"),

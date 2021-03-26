@@ -78,6 +78,7 @@
 
 
     export default {
+
         name: "dataquery",
         created() {
             console.log( this.$route.query)
@@ -88,10 +89,10 @@ console.log(this.$router.currentRoute)
         let tiankong= document.getElementById("diceng");
         tiankong.style.height=window.innerHeight+"px"
             console.log( this.$route.query.data)
-        console.log(tiankong.style.height)
+
         let announcement=document.getElementById("announcement");
-        console.log(tiankong)
-            this.lookupcompany(this.$route.query.data.company)
+          this.xinyongpingren=(!this.$route.query.data.abnormalValue||isNaN(this.$route.query.data.abnormalValue))?100:100-5*this.$route.query.data.abnormalValue.toFixed(3);
+          this.lookupcompany(this.$route.query.data.company)
       },
         methods:{
             goback(){
@@ -151,9 +152,10 @@ console.log(this.$router.currentRoute)
                     multibyname(this.companyData.name).then(res=>{
                      //   this.tableData = res.data.data
                         console.log( document.getElementsByName("pingfen")[0].innerText)
-                        document.getElementsByName("pingfen")[0].innerText="信用评分：80"
+                        document.getElementsByName("pingfen")[0].innerText="信用评分："+this.xinyongpingren
+
                         console.log( document.getElementsByName("pingji")[0].innerText)
-                        console.log("内蒙古魔筷网络科技有限公司")
+                        console.log("阿拉善盟成大矿业有限责任公司")
 
                         var self = this;
 
@@ -182,7 +184,7 @@ console.log(this.$router.currentRoute)
                         self.tableData=b_temp
 
                         console.log(this.tableData)
-                        document.getElementsByName("pingji")[0].innerText="信用评级：正常"
+                     //   document.getElementsByName("pingji")[0].innerText="信用评级：正常"
                     //    this.total=this.tableData.length
                     //    this.yeshu=this.total/this.pageSize
                     }).catch(err=>{
@@ -214,6 +216,8 @@ console.log(this.$router.currentRoute)
         },
         data(){
             return {
+
+              xinyongpingren: 0,
                 queryform: {
                     company: "",
                     taxnum: ""

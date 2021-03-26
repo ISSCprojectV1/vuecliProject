@@ -33,7 +33,14 @@ export function modality() {
     method: 'get',
   })
 }
-
+// 获得所有用户
+export function getAllUsers() {
+  console.log("发送/getAllUsers请求")
+  return request({
+    url: '/getAllUsers',
+    method: 'get',
+  })
+}
 // 获得所有
 export function bourseget(data) {
   console.log("发送bourseget请求")
@@ -47,6 +54,15 @@ export function changeTaskStatus(data) {
   console.log("发送changeTaskStatus请求")
   return request({
     url: '/taskOperateStatus',
+    method: 'post',
+    data
+  })
+}
+// 修改操作员
+export function changemodality(data) {
+  console.log("发送/modality请求")
+  return request({
+    url: '/modality',
     method: 'post',
     data
   })
@@ -95,6 +111,14 @@ export function taskQuery() {
         })
   }
 
+// 根据userid获取角色名称
+export function getModalityByUserId(url) {
+  console.log("获取getRolenameById数据 ")
+  return request({
+    url: url,
+    method: 'get'
+  })
+}
 // 获取角色名称
 export function getRolenameById(url) {
   console.log("获取getRolenameById数据 ")
@@ -103,7 +127,6 @@ export function getRolenameById(url) {
     method: 'get'
   })
 }
-
 export function taskQueryById(url) {
   return request({
     method: 'GET',
@@ -386,3 +409,19 @@ export function updateCommodity(data) {
     data
   })
 }
+//获取某联盟内的数据
+export function getOneTeamResult(URL) {
+  console.log("发送getOneTeamResult请求")
+    return request({
+      url: URL,
+      method: 'get'
+        })
+  }
+//获取所有监管机构的数据
+export function getAllRegulators() {
+  console.log("发送getAllRegulators请求")
+    return request({
+      url: '/yu/getAllRegulators',
+      method: 'get'
+        })
+  }

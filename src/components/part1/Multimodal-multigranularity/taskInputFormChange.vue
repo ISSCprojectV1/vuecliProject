@@ -4,7 +4,7 @@
 
 
 
-            <el-form ref="form" :model="form" label-width="130px">
+            <el-form  label-width="130px">
 
                 <el-form-item label="监管任务名称">
                     <el-input v-model="input" placeholder="请输入内容"></el-input>
@@ -56,7 +56,7 @@
                             width="
                     300"
 
-                            v-model="visible">
+                           >
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                         <div style="margin: 15px 0;"></div>
                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
@@ -116,12 +116,13 @@
                 commodityName:'',
                 admintrue:false,
                 operatorName:'',
-                workStatus: ''
+                workStatus: '',
+              getfresh:''
             }
         },
         props:['taskin'],
         created(){
-            bourseget().then((res) => {
+         /*   bourseget().then((res) => {
                     let dataConvert = res.data.data;
                     console.log(dataConvert)
                     let temp=[]
@@ -132,7 +133,7 @@
                 }
             ).catch(()=>{
                 console.log("taskQuery fail")
-            });
+            });*/
             this.admintrue=getAdminTrue()=="admin"?true:false
 
             this.id=this.taskin.id
@@ -158,7 +159,7 @@
             }
         },
         watch:{
-            'taskin.changeflag'(){
+            'taskin.id'(){
                 console.log("flag变了")
                 console.log(this.taskin)
                 this.id=this.taskin.id
@@ -214,11 +215,13 @@
                             contt+=','+this.checkedCities[i];
                     }
                     console.log(contt)
-                    console.log("111")
+
                     this.content=contt
                     this.postData();
+                    console.log(this.getfresh)
+
                     //this.$parent.$parent.getData()
-                    this.$parent.$parent.reloadPage()
+                 //   this.$parent.$parent.reloadPage()
                     /* this.$message({
                        type: 'success',
                        message: '创建成功!'
@@ -242,7 +245,6 @@
             },
             postData(){
                 console.log("发送请求前")
-
                 var startData = new Date(this.dateStart2).getTime();
                 var endData = new Date(this.dateEnd2).getTime();
                 console.log("elementui 时间形式"+ startData +"时间2：" + endData)
@@ -289,13 +291,22 @@ let wortstatue=null
                     "workStatus":wortstatue
                 };
                 console.log(data);
-                taskInput(data).then(function (response) {
-                    console.log(response)
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                let temp=''
+                taskInput(data).then((response) =>{
+                  console.log(response)
+                  let temp=response.data.code
+      console.log(temp)
+this.getfresh=temp
+                  if(this.getfresh==200){
+                    console.log(this)
+                    this.$parent.$parent.getData1()
+                  }
+
+            }).catch(function (error) {
+                  console.log(error);
+                });
             },
+
             abortForm(){
                 console.log("zhioiiiiiii")
                 this.cleanForm();

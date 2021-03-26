@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <el-dialog title="任务信息反馈"
+               :visible.sync="dialogTableVisible" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+      <taskMethodChange :taskin="taskin"></taskMethodChange>
+    </el-dialog>
     <!-- <button @click="toUpdate">切换数据</button> -->
     <div id="rule"  style="width:1000px; height:30px"></div>
     <div id="container" style="width:1200px; height:600px">
@@ -12,13 +18,23 @@
 // import {init,update} from './utils/g6Utils.min.js';
 import G6 from '@antv/g6'
 import {getTaskApi} from "@/api/part1/transactionProject";
-
+import taskMethodChange from "@/components/part1/Multimodal-multigranularity/taskMethodChange";
 // import insertCss from 'insert-css'
 
 export default {
   name: '这里',
+
   data () {
-    return {};
+    return {
+      dialogTableVisible: false,
+      taskin:[],
+    };
+
+  },
+  components: {
+    taskMethodChange,
+
+
   },
     mounted () {
         this.$nextTick(() => {
@@ -27,12 +43,17 @@ export default {
       })
   },
   methods: {
+    addNewTask1() {
+
+      this.dialogTableVisible = true;
+
+    },
       getData(){
           getTaskApi().then((res) => {
               var input = res.data;
                var result_nodes = [];
           var result_target = [];
-
+console.log(input)
           for(let i = 0; i<input.data.length;i++){
      //       console.log(input.data[i])
               var node = {};
@@ -57,7 +78,7 @@ export default {
 
                // 节点状态--用颜色表示
                if(input.data[i].workStatus === 0){
-               node.workStatus = '任务未执行';
+               node.workStatus = '任务未完成';
                }
                else if(input.data[i].workStatus === 1){
                node.workStatus = '任务已执行';
@@ -204,10 +225,14 @@ const data = {
 const tooltip = new G6.Tooltip({
   pageX: 10,
   offsetY: 20,
+  offsetX: 10,
+  fixToNode: [1, 0],
   getContent(e) {
     const outDiv = document.createElement('div');
     outDiv.style.width = '180px';
-    outDiv.style.textAlign = 'left';
+
+  outDiv.style.textAlign = 'left';
+   // outDiv.style.padding='0px 10px 24px 10px;'
     //console.log(e.item.getModel())
     outDiv.innerHTML = `
       <h2>${e.item.getModel().label}任务详情</h2>
@@ -219,6 +244,9 @@ const tooltip = new G6.Tooltip({
       </ul>
        <ul>
         <h3>* 任务优先级: ${e.item.getModel().priority}</h3>
+      </ul>
+          <ul>
+        <h3>* 人: ${e.item.getModel().humanUse}</h3>
       </ul>
       <ul>
         <h3>* 任务开始时间: ${e.item.getModel().workingStartTime}</h3>
@@ -417,6 +445,23 @@ const legendData = {
 };
 legendGraph.data(legendData);
 legendGraph.render();
+        graph.on('node:click', (e) => {
+
+
+          const { item } = e
+          const { id, x, y } = item.getModel()
+
+this.taskin=item.getModel();
+         this.taskin.name=item.getModel().label
+      this.taskin.id=item.getModel().userId
+
+console.log(this.taskin)
+          if(item.getModel().humanUse=="人工监管参与"){
+            this.addNewTask1()
+          }
+
+        //  console.log(`id:${id}, x:${x}, y:${y}`)
+        })
 graph.node(function (node) {
                         // depth 类似节点标识
                         if(node.workStatusColor === null){
@@ -498,7 +543,7 @@ console.log("刷新了这个页面-页面结束");
       font-size: 12px;
       color: #545454;
       background-color: rgba(255, 255, 255, 0.9);
-      padding: 10px 8px;
+      padding: 0px 10px 24px 10px;
       box-shadow: rgb(174, 174, 174) 0px 0px 10px;
     }
  #legendContainer{

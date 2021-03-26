@@ -17,33 +17,33 @@
               stripe
               style="width: 100%"
               border>
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name" width="200">
+        <el-table-column label="序号" prop="id" width="50"></el-table-column>
+        <el-table-column label="监管任务名称" prop="name" width="105">
         </el-table-column>
         <!--
         <el-table-column label="任务优先级" prop="priority" width="60">
         </el-table-column>
         !-->
-        <el-table-column label="监管商品" prop="commodityName" width="100">
+        <el-table-column label="监管商品" prop="commodityName" width="77">
         </el-table-column>
-        <el-table-column label="监管平台" prop="content" width="200">
-        </el-table-column>
-
-        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+        <el-table-column label="监管平台" prop="content" width="180">
         </el-table-column>
 
-        <el-table-column label="任务状态" prop="workStatus" width="100">
+        <el-table-column label="人模态分布" prop="humanUse" width="93">
+        </el-table-column>
+        <el-table-column label="机器模态分布数" prop="agentNum" width="120">
+        </el-table-column>
+
+        <el-table-column label="任务状态" prop="workStatus" width="105">
         </el-table-column>
 <!-- 联盟部分 -->
-        <el-table-column label="属于联盟" prop="team" width="100">
+        <el-table-column label="属于联盟" prop="team" width="77">
         <!-- 根据team查询联盟信息 -->
 		<template slot-scope="scope">
-		<el-button  type="text" @click="queryWarehouseHandle(scope.row.id)">{{scope.row.team}}</el-button>
+		<el-button  type="text" @click="queryWarehouseHandle(scope.row.team)">{{scope.row.team}}</el-button>
 		</template>
         </el-table-column>
-        <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails">
+        <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails" width="200">
         </el-table-column>
         <el-table-column label="联盟演化">
             <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
@@ -68,6 +68,7 @@ import {taskQuery,teamform,getTeamResult} from "@/api/part1/Multimodal-multigran
 
 export default {
   name: "taskQueryTransactionCoalition",
+  inject:['reload'],
   data() {
     return {
       dormitory: [],
@@ -104,11 +105,12 @@ export default {
       // var dataConvert = [];
       taskQuery().then((res) => {
         console.log(res)
-        let URL = '/yu/getAllResult';
+        let URL = '/yu/createTeamByCost';
         getTeamResult(URL).then((resultTeam)=>{
         let result = res.data.data;
         for(let i=0;i<result.length;i++){
           let workTeamStr = '';
+         /*
           for(let j = 0;j<resultTeam.data.data[i].length;j++){
             if(resultTeam.data.data[i][j] == 0){
               resultTeam.data.data[i][j] = "工商局"
@@ -121,10 +123,14 @@ export default {
             else{
                 workTeamStr = workTeamStr+"监管机构"+resultTeam.data.data[i][j]+",";
             }
+          }*/
+          for(let j = 0;j<resultTeam.data.data[i].length;j++){
+            workTeamStr = workTeamStr+resultTeam.data.data[i][j]+" "
           }
+
           result[i].workTeam = workTeamStr;
         }
-        this. dealwithData(result)
+        this. dealwithData(result);
         }).catch(()=>{
         console.log("getTransactionData fail")
       });
@@ -137,23 +143,32 @@ export default {
     } ,
     // 获取联盟形成结果
     teamformation(){
-     console.log("点击")
-     let URL = '/yu/getAllResult';
-     let teamResult = [];
-      getTeamResult(URL).then((res) => {
-        console.log("获取联盟形成结果",res.data.data[1]);
-        this.dealwithData(res);
+    //  console.log("点击")
+    //  let URL = '/yu/createTeamByCost';
+    //  let teamResult = [];
+    //   getTeamResult(URL).then((res) => {
+    //     console.log("获取联盟形成结果",res.data.data[1]);
+    //     this.dealwithData(res);
 
-        //this.dormitory
-      }).catch(()=>{
-        console.log("getTeamResult fail")
-      });
-      return teamResult;
+    //     //this.dormitory
+    //   }).catch(()=>{
+    //     console.log("getTeamResult fail")
+    //   });
+    //   return teamResult;
+     document.getElementById("echart1").style.display="none";
+      document.getElementById("form").style.display="block";
+      this.getData1()
     },
     // 跳转至异常事件分析页面
     teamEvolution(){
       console.log("/trade/exceptionAnalysis/page")
         this.$router.push(`/trade/exceptionAnalysis/page`);
+    },
+     queryWarehouseHandle(team) {
+      this.$router.push(`/trade/teamTable/${team}`);
+      console.log(`/trade/teamTable/${team}`)
+      // this.$router.push(`/trade/transactionProject/map`);
+      // console.log("/trade/transactionProject/map");
     },
     changeform12()
     {
@@ -509,7 +524,7 @@ export default {
     },
 
     dealwithData(res) {
-console.log(res)
+console.log("dataconvert:"+res)
       let dataConvert = [];
       dataConvert = res;
       let result = [];
@@ -547,6 +562,7 @@ console.log(res)
           dataConvert[i].content = "无"
         }
 
+
         if (!dataConvert[i]) // true
         {
           dataConvert[i].workTeam = "暂时未分配"
@@ -563,6 +579,7 @@ console.log(res)
 
           // 获取联盟分配结果
       }
+      dataConvert.reverse()
       this.dormitory = dataConvert;
       console.log(    this.dormitory)
     },
@@ -584,6 +601,7 @@ console.log(res)
   },
   created() {
     this.getData1();
+    //this.reload();
 
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
+    <div class="dormitoryData">
       <el-table
           ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -8,20 +8,22 @@
           stripe
           style="width: 100%"
           border
-          >
-<!--任务基本-->
+          v-loading="loading"
+          element-loading-text="加载中"
+      >
+        <!--任务基本-->
         <el-table-column label="序号" prop="id" width="60"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
-<!--人机模态
-        <el-table-column label="人机模态" width="80" align = "center">
-        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-        </el-table-column>
-        </el-table-column>
-        -->
-<!--主被动模态-->
+        <!--人机模态
+                <el-table-column label="人机模态" width="80" align = "center">
+                <el-table-column label="人模态分布" prop="humanUse" width="80">
+                </el-table-column>
+                <el-table-column label="机器模态分布数" prop="agentNum" width="80">
+                </el-table-column>
+                </el-table-column>
+                -->
+        <!--主被动模态-->
         <el-table-column label="主被动模态" prop="content">
           <template slot-scope="scope">
             <el-link :disabled="setdis(scope)" type="primary">
@@ -31,7 +33,7 @@
             </el-link>
           </template>
         </el-table-column>
-<!--时间粒度-->
+        <!--时间粒度-->
         <el-table-column label="时间粒度（天）" prop="timeadvise" width="80">
           <template slot-scope="scope">
             <el-link :disabled="setgoto(scope)">
@@ -41,108 +43,108 @@
             </el-link>
           </template>
         </el-table-column>
-<!--商品粒度-->     
-        <el-table-column label="商品粒度" width="80" align = "center">
-        <el-table-column label="监管种类" prop="commodityName">
-        </el-table-column>
-        <el-table-column label="扩展监管种类" prop="subtask">
-        </el-table-column>
-        <el-table-column label="补充商品粒度">
-          <template slot-scope="commodity">
+        <!--商品粒度-->
+        <el-table-column label="商品粒度" width="80" align="center">
+          <el-table-column label="监管种类" prop="commodityName">
+          </el-table-column>
+          <el-table-column label="扩展监管种类" prop="subtask">
+          </el-table-column>
+          <el-table-column label="补充商品粒度">
+            <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
               <!--推荐的商品粒度-->
               <el-dialog
-  title="推荐商品粒度名单"
-  :visible.sync="commodityDialogVisible"
-  width="50%"
-  append-to-body="true"
-  >
-   <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
-    <el-table
-    ref="multipleTable"
-    :data="tableData"
-    tooltip-effect="dark"
-    style="width: 100%"
-    @selection-change="handleSelectionChange"
-    >
+                  title="推荐商品粒度名单"
+                  :visible.sync="commodityDialogVisible"
+                  width="50%"
+                  :append-to-body="true"
+              >
+                <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
+                <el-table
+                    ref="multipleTable"
+                    :data="tableData"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange"
+                >
 
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
-<el-table-column
-      prop="commodityDialog_id"
-      label="商品代号"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="commodityDialog_name"
-      label="商品类别名称"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="commodityDialog_num"
-      label="关联度"
-      sortable
-      width="120">
-    </el-table-column>
-  </el-table>
-  <span slot="footer" class="dialog-footer">
+                  <el-table-column
+                      type="selection"
+                      width="55">
+                  </el-table-column>
+                  <el-table-column
+                      prop="commodityDialog_id"
+                      label="商品代号"
+                      width="120">
+                  </el-table-column>
+                  <el-table-column
+                      prop="commodityDialog_name"
+                      label="商品类别名称"
+                      width="120">
+                  </el-table-column>
+                  <el-table-column
+                      prop="commodityDialog_num"
+                      label="关联度"
+                      sortable
+                      width="120">
+                  </el-table-column>
+                </el-table>
+                <span slot="footer" class="dialog-footer">
     <el-button @click="commodityDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="updateCommodity()">确 定</el-button>
   </span>
-</el-dialog>
-          </template>
-        </el-table-column>
+              </el-dialog>
+            </template>
+          </el-table-column>
         </el-table-column>
 
-<!--空间粒度-->     
-        <el-table-column label="空间粒度" width="80" align = "center">
-        <el-table-column label="监管平台" prop="content">
-        </el-table-column>
-        <el-table-column label="扩展监管平台" prop="resourceNeed">
-        </el-table-column>
-        <el-table-column label="补充空间粒度">
-          <template slot-scope="flat">
+        <!--空间粒度-->
+        <el-table-column label="空间粒度" width="80" align="center">
+          <el-table-column label="监管平台" prop="content">
+          </el-table-column>
+          <el-table-column label="扩展监管平台" prop="resourceNeed">
+          </el-table-column>
+          <el-table-column label="补充空间粒度">
+            <template slot-scope="flat">
               <el-button type="text" @click="getFlats(flat.row)">补充粒度</el-button>
               <!--推荐的空间粒度-->
               <el-dialog
-  title="推荐空间粒度名单"
-  :visible.sync="flatDialogVisible"
-  width="50%"
-  append-to-body="true"
-  >
-   <!-- 获取到的空间粒度推荐表，可通过首列的复选框决定要加入的监管空间-->
-    <el-table
-    ref="flatTable"
-    :data="flatData"
-    tooltip-effect="dark"
-    style="width: 100%"
-    @selection-change="handleFlatChange"
-    >
+                  title="推荐空间粒度名单"
+                  :visible.sync="flatDialogVisible"
+                  width="50%"
+                  :append-to-body="true"
+              >
+                <!-- 获取到的空间粒度推荐表，可通过首列的复选框决定要加入的监管空间-->
+                <el-table
+                    ref="flatTable"
+                    :data="flatData"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleFlatChange"
+                >
 
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
-<el-table-column
-      prop="platform"
-      label="平台名称"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="association"
-      label="关联度"
-      width="120">
-    </el-table-column>
-  </el-table>
-  <span slot="footer" class="dialog-footer">
+                  <el-table-column
+                      type="selection"
+                      width="55">
+                  </el-table-column>
+                  <el-table-column
+                      prop="platform"
+                      label="平台名称"
+                      width="120">
+                  </el-table-column>
+                  <el-table-column
+                      prop="association"
+                      label="关联度"
+                      width="120">
+                  </el-table-column>
+                </el-table>
+                <span slot="footer" class="dialog-footer">
     <el-button @click="commodityDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="updateFlat()">确 定</el-button>
   </span>
-</el-dialog>
-          </template>
-        </el-table-column>
+              </el-dialog>
+            </template>
+          </el-table-column>
         </el-table-column>
 
       </el-table>
@@ -158,19 +160,25 @@
 </template>
 
 <script>
-import {changetimeadvise, taskQuery,spaceResult,getRolenameById,getcommodityRelationdetails2,updateCommodity,getrecommendrlatform} from "@/api/part1/Multimodal-multigranularity";
+import {
+  changetimeadvise,
+  taskQuery,
+  spaceResult,
+  getRolenameById,
+  getcommodityRelationdetails2,
+  updateCommodity,
+  getrecommendrlatform
+} from "@/api/part1/Multimodal-multigranularity";
 
-import {setToken,getToken} from "@/utils/auth"
+import {getToken} from "@/utils/auth"
 
 export default {
   name: "taskQueryTableView",
-  components: {
-
-},
-inject:['reload'],
+  components: {},
+  inject: ['reload'],
   data() {
     return {
-      tempId:0,
+      tempId: 0,
       dormitory: [],
       // 默认显示第几页
       currentPage: 1,
@@ -186,18 +194,18 @@ inject:['reload'],
         Number.NEGATIVE_INFINITY
       },
       // 补全商品粒度
-      commodityDialogVisible:false,
+      commodityDialogVisible: false,
       // 商品粒度推荐表
-      tableData:[],
+      tableData: [],
       // 商品粒度复选框
-      multipleSelection:[],
+      multipleSelection: [],
       // 空间粒度表格显示状态
-      flatDialogVisible:false,
+      flatDialogVisible: false,
       // 空间粒度推荐表
-      flatData:[],
+      flatData: [],
       // 空间粒度复选框
-      flatsSelection:[],
-      
+      flatsSelection: [],
+
     }
   },
   methods: {
@@ -205,130 +213,128 @@ inject:['reload'],
     * 商品粒度模块Method
     */
     // 补全商品粒度，获得商品粒度推荐名单
-    getCommodity(val){
+    getCommodity(val) {
       this.temp = val.id;
-      console.log("getCommodity:",this.temp)
-           this.commodityDialogVisible = true;
-          let URL = '/getcommodityRelationdetails/'+val.commodityName;
-          getcommodityRelationdetails2(URL).then((response)=>{
-            console.log("result------",response.data)
-            for(let i=0;i<response.data.length;i++){
-              let temp = {};
-              console.log("result:",response.data[i])
-              temp.commodityDialog_id = response.data[i].id2;
-              temp.commodityDialog_name = response.data[i].name2;
-              temp.commodityDialog_num = response.data[i].similarity;
-              this.tableData.push(temp);
-            }
+      console.log("getCommodity:", this.temp)
+      this.commodityDialogVisible = true;
+      let URL = '/getcommodityRelationdetails/' + val.commodityName;
+      getcommodityRelationdetails2(URL).then((response) => {
+        console.log("result------", response.data)
+        for (let i = 0; i < response.data.length; i++) {
+          let temp = {};
+          console.log("result:", response.data[i])
+          temp.commodityDialog_id = response.data[i].id2;
+          temp.commodityDialog_name = response.data[i].name2;
+          temp.commodityDialog_num = response.data[i].similarity;
+          this.tableData.push(temp);
+        }
 
-              })
-              .catch(function (error) {
-               console.log(error);
-                });
+      })
+          .catch(function (error) {
+            console.log(error);
+          });
 
     },
     // 追加商品粒度复选框
-          handleSelectionChange(val) {
-        this.multipleSelection=val;
-      },
-      // 确认追加该粒度
-      updateCommodity(val){
-        this.commodityDialogVisible = false;
-        let seletCommodity = [];
-        for(let i = 0;i<this.multipleSelection.length;i++){
-          seletCommodity.push(this.multipleSelection[i].commodityDialog_name)
-        }
-        var newCommodity = {
-          "id": this.temp,
-          "subtask":seletCommodity.join(',')
-        }
-        console.log("newCommodity",newCommodity)
-            updateCommodity(newCommodity).then(function (response) {
-})
-  .catch(function (error) {
-    console.log(error);
-  });
-         this.$message({
-          message: '扩展监管种类 成功',
-          type: 'success'
-        });
-           this.reload();// 刷新页面
-
-      },
-       /*
-    * 空间粒度模块Method
-    */
-   // 获得空间粒度推荐名单
-    getFlats(val){
-      console.log("怎么还是不对",val)
-      this.temp = val.id;
-           this.flatDialogVisible = true;
-          let URL = '/getrecommendrlatform'+'?commodity='+encodeURIComponent(val.commodityName)+'&platform='+val.content;
-          getrecommendrlatform(URL).then((response)=>{
-            console.log("result------",response.data.data)
-            for(let i=0;i<response.data.data.length;i++){
-              let temp = {};
-              console.log("result:",response.data.data[i])
-              temp.platform = response.data.data[i].platform;
-              temp.association = response.data.data[i].association;
-              this.flatData.push(temp);
-            }
-            console.log("flatData:",this.flatData)
-              })
-              .catch(function (error) {
-               console.log(error);
-                });
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // 确认追加该粒度
+    updateCommodity(val) {
+      this.commodityDialogVisible = false;
+      let seletCommodity = [];
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        seletCommodity.push(this.multipleSelection[i].commodityDialog_name)
+      }
+      var newCommodity = {
+        "id": this.temp,
+        "subtask": seletCommodity.join(',')
+      }
+      console.log("newCommodity", newCommodity)
+      updateCommodity(newCommodity).then(function (response) {
+      })
+          .catch(function (error) {
+            console.log(error);
+          });
+      this.$message({
+        message: '扩展监管种类 成功',
+        type: 'success'
+      });
+      this.reload();// 刷新页面
 
     },
-        // 追加空间粒度复选框
-          handleFlatChange(val) {
-        this.flatsSelection=val;
-      },
-          // 确认追加该空间粒度
-      updateFlat(val){
-        this.flatDialogVisible = false;
-        console.log("选中的新商品：",this.temp);
-        let seletFlats = [];
-        for(let i = 0;i<this.flatsSelection.length;i++){
-          seletFlats.push(this.flatsSelection[i].platform)
+    /*
+ * 空间粒度模块Method
+ */
+    // 获得空间粒度推荐名单
+    getFlats(val) {
+      console.log("怎么还是不对", val)
+      this.temp = val.id;
+      this.flatDialogVisible = true;
+      let URL = '/getrecommendrlatform' + '?commodity=' + encodeURIComponent(val.commodityName) + '&platform=' + val.content;
+      getrecommendrlatform(URL).then((response) => {
+        console.log("result------", response.data.data)
+        for (let i = 0; i < response.data.data.length; i++) {
+          let temp = {};
+          console.log("result:", response.data.data[i])
+          temp.platform = response.data.data[i].platform;
+          temp.association = response.data.data[i].association;
+          this.flatData.push(temp);
         }
-        var newFlats = {
-          "id":this.temp,
-          "resourceNeed":seletFlats.join(',')
-        }
-            updateCommodity(newFlats).then(function (response) {
-  
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-  this.$message({
-          message: '扩展监管平台 成功',
-          type: 'success'
-        });
-           this.reload();// 刷新页面
-      },
-    changespaceResult(){
-      spaceResult().then((res) => {
-        let datt=res.data.data
-for( var i=0;i<datt.length;i++)
-{
-  for(var j=0;j<this.dormitory.length;j++)
-  {
-    //console.log(datt[i].id)
-   // console.log(this.dormitory[j].id)
-   // console.log(datt[i].id==this.dormitory[j].id)
-    if(datt[i].id==this.dormitory[j].id)
-    {
-      this.dormitory[j].subtask=datt[i].subtask
-      console.log(this.dormitory[j])
-      console.log(this.dormitory)
-      break;
-    }
-  }
-}console.log(this.dormitory)
+        console.log("flatData:", this.flatData)
+      })
+          .catch(function (error) {
+            console.log(error);
+          });
 
-  console.log(res.data.data)
+    },
+    // 追加空间粒度复选框
+    handleFlatChange(val) {
+      this.flatsSelection = val;
+    },
+    // 确认追加该空间粒度
+    updateFlat(val) {
+      this.flatDialogVisible = false;
+      console.log("选中的新商品：", this.temp);
+      let seletFlats = [];
+      for (let i = 0; i < this.flatsSelection.length; i++) {
+        seletFlats.push(this.flatsSelection[i].platform)
+      }
+      var newFlats = {
+        "id": this.temp,
+        "resourceNeed": seletFlats.join(',')
+      }
+      updateCommodity(newFlats).then(function (response) {
+
+      })
+          .catch(function (error) {
+            console.log(error);
+          });
+      this.$message({
+        message: '扩展监管平台 成功',
+        type: 'success'
+      });
+      this.reload();// 刷新页面
+    },
+    changespaceResult() {
+      spaceResult().then((res) => {
+        let datt = res.data.data
+        for (var i = 0; i < datt.length; i++) {
+          for (var j = 0; j < this.dormitory.length; j++) {
+            //console.log(datt[i].id)
+            // console.log(this.dormitory[j].id)
+            // console.log(datt[i].id==this.dormitory[j].id)
+            if (datt[i].id == this.dormitory[j].id) {
+              this.dormitory[j].subtask = datt[i].subtask
+              console.log(this.dormitory[j])
+              console.log(this.dormitory)
+              break;
+            }
+          }
+        }
+        console.log(this.dormitory)
+
+        console.log(res.data.data)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
@@ -374,20 +380,20 @@ for( var i=0;i<datt.length;i++)
     },
 
     getData() {
-        var idd=getToken()
-        console.log(idd)
-        var url='/getTaskById/'+idd
-        console.log(url)
-     //  console.log(taskQueryById(url))
-      var url2='/getroles/'+idd
-      console.log(  getRolenameById(url2))
+      var idd = getToken()
+      console.log(idd)
+      var url = '/getTaskById/' + idd
+      console.log(url)
+      //  console.log(taskQueryById(url))
+      var url2 = '/getroles/' + idd
+      console.log(getRolenameById(url2))
       // 获取表格数据
       console.log("获取表格数据")
-        console.log(this.user)
-console.log(getToken())
+      console.log(this.user)
+      console.log(getToken())
 
       taskQuery().then((res) => {
-        console.log("look----",res.data)
+        console.log("look----", res.data)
         this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
@@ -396,7 +402,6 @@ console.log(getToken())
     dealwithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
-      console.log("dataConvert = res.data.data;"+res.data.data);
       this.totalCount = dataConvert.length
       for (let i = 0; i < dataConvert.length; i++) {
         let data = this.timestampToTime(dataConvert[i].gmtCreate);
@@ -410,7 +415,7 @@ console.log(getToken())
 
         data = this.timestampToTime(dataConvert[i].endTime)
         dataConvert[i].endTime = data
-        
+
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
         else // false
@@ -430,7 +435,7 @@ console.log(getToken())
           dataConvert[i].team = "暂时未分配"
         }
 
-       if (!dataConvert[i].subtask) // 追加种类
+        if (!dataConvert[i].subtask) // 追加种类
         {
           dataConvert[i].subtask = "无"
         }
@@ -477,7 +482,8 @@ console.log(getToken())
   width: 100%;
   height: 600px;
 }
-  .el-table thead{
-    color: black;
-  }
+
+.el-table thead {
+  color: black;
+}
 </style>

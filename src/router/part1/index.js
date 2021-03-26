@@ -50,7 +50,7 @@ let routes = [
 
               {
                   path:'taskQueryTransactionCoalition',
-                  component: () => import("@/components/part3/Common/taskQueryTransactionCoalition")
+                  component: () => import("@/components/part3/Common/taskQueryTransactionCoalition copy")
               },
 
         ]
@@ -98,6 +98,13 @@ let routes = [
                 }
             },
             {
+                path: "/trade/exceptionAnalysis/data",
+                component: () => import("@/components/part1/exceptionAnalysis/exceptionData"),
+                meta: {
+                    title: "仿真数据"
+                }
+            },
+            {
                 path: "/trade/exceptionAnalysis/page",
                 component: () => import("@/components/part1/exceptionAnalysis/exceptionAnalysis"),
                 meta: {
@@ -131,6 +138,13 @@ let routes = [
                 component: () => import("@/components/part1/acpassTask/activetask"),
                 meta:{
                     title:"主动任务组"
+                }
+            },
+            {
+                path:"/trade/teamTable/:team",
+                component: () => import("@/components/part3/Common/teamTable"),
+                meta:{
+                    title:"联盟详情"
                 }
             },
             {
@@ -198,7 +212,7 @@ let routes = [
             },
             {
                 path:"/trade/transactionProject/map",
-                component: () => import("@/components/part1/transactionProject/map"),
+                component: () => import("@/components/part1/transactionProject/maplianmeng"),
                 meta:{
                     title:"网络图"
                 }

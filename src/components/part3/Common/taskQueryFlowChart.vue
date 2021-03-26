@@ -6,12 +6,24 @@
              :close-on-click-modal="false">
     <taskInputFormChange :taskin="taskin"></taskInputFormChange>
   </el-dialog>
+  <el-dialog title="操作员设置"
+             :visible.sync="dialogTableVisible2" center :append-to-body='true'
+             :lock-scroll="false" width="30%"
+             :close-on-click-modal="false">
+    <operatorChange :taskin="taskin2" :operatorin="operatorin" :modity="modity"></operatorChange>
+  </el-dialog>
+    <el-dialog title="任务信息查看"
+               :visible.sync="dialogTableVisible3" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+        <taskInputFormShow :taskin="taskin3" ></taskInputFormShow>
+    </el-dialog>
   <div>
 
     <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
     <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
     <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
-    
+    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>
   </div>
 <div>
   <div id="echart1"  >
@@ -20,11 +32,18 @@
 </div>
     <method1 ref="method1_child"  ></method1>
   </div>
-    <div>
-       当前监管任务
-    </div>
+
     <div id="form2" >
+      <div>
+        任务等待队列
+      </div>
       <el-table
+              :header-cell-style="{
+      'background-color': '#dfdfdf',
+      'color': 'rgb(96, 97, 98)',
+      'font-weight':'bold',
+      'font-size':'16px'
+      }"
               ref="dormitoryTable2"
               :data="dormitory2.slice((currentPage-1)*PageSize,currentPage*PageSize)"
               tooltip-effect="dark"
@@ -37,9 +56,9 @@
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="任务优先级" prop="priority"  width="50">
+        <el-table-column label="任务优先级" prop="priority" >
         </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        <el-table-column label="任务执行时间" prop="workingTime" >
         </el-table-column>
 
       </el-table>
@@ -52,29 +71,41 @@
       </el-pagination>
     </div>
   </div>
-  <div id="form3"  style="display: none">
+  <div id="form3"  style="display: none" >
 
       <el-table
-
+              v-if="this.admintrue"
               ref="dormitoryTable3"
               :data="modalitydata.slice((currentPage-1)*PageSize,currentPage*PageSize)"
               tooltip-effect="dark"
               stripe
               style="width: 100%"
-              border>
+              border
+     >
 
-        <el-table-column type="selection" width="45"></el-table-column>
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
+
+        <el-table-column label="序号" prop="id" width="60">
+        </el-table-column>
         <el-table-column label="操作员名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="是否被占用"   prop="allocation" width="60">
-
+        <el-table-column label="当前任务编号" prop="taskId">
+          <template slot-scope="scope">
+            <el-link  type="primary">
+              <div @click="gotoDetail(scope.row)">
+                {{ scope.row.taskId }}
+              </div>
+            </el-link>
+          </template>
         </el-table-column>
+        <el-table-column
+                label="操作员设置"
 
-        <el-table-column label="当前任务编号" prop="taskId" width="60">
+        >
+          <template slot-scope="scope">
+            <el-button @click="   changeOperator(scope.row)" type="text" size="small"  >操作员修改</el-button>
+          </template>
         </el-table-column>
-
 
       </el-table>
       <el-pagination @size-change="handleSizeChange"
@@ -150,11 +181,19 @@
 </template>
 
 <script>
-  import {getUserTrue,getAdminTrue} from "@/utils/auth"
+    /*
+            <el-table-column label="是否被占用"   prop="allocation" width="60">
+
+        </el-table-column>
+    * */
+
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {taskQuery,teamform,taskAllocation,getReadyQueue,modality} from "@/api/part1/Multimodal-multigranularity";
+import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
+import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers,getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
+import taskInputFormShow from "@/components/part1/Multimodal-multigranularity/taskInputFormShow";
+import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
 /*
 *         <el-table-column
                 label="推荐主被动模态"
@@ -174,32 +213,57 @@ export default {
   name: "taskQueryFlowChart",
   components: {
     method1,
-    taskInputFormChange
+    taskInputFormChange,
+    taskInputFormShow,
+    operatorChange
+
   },
   mounted () {
 
       //  执行echarts方法
       this.getData();
+    this.getData1();
       this.getData2();
 
 if(getAdminTrue()=="admin")
 
 {
-
+  this.modality()
+this.admintrue=true
   this.usertrue=false
 }
 if(getAdminTrue()=="user")
     {
 this.modality()
+      this.admintrue=false
       this.usertrue=true
     }
-    console.log(getAdminTrue())
-    console.log(  this.usertrue)
-    console.log(  this.usertrue)
+console.log(this.admintrue)
   },
   created() {
 
+ getAllUsers().then((res) => {
+      console.log(res.data.data)
+   let data=res.data.data
+   this.allusers=data
+this.operatorin=data
+
+
+    }).catch(()=>{
+      console.log("getallusers fail")
+    });
+ let data="/getModalityByUserId/"+getToken()
+ getModalityByUserId(data).then((res) => {
+      console.log(res)
+if(res.data.data)
+{this.dealwithOperatorData(res.data.data)}
+
+    }).catch(()=>{
+      console.log("getallusers fail")
+    });
+  //  this.getData1()
   },
+
   data() {
     return {
   tabledata3:[],
@@ -209,7 +273,9 @@ prioritychoose:[1,2,3],
       caozuoyuanvalue:[],
       modalitydata:[],
       dormitory: [],
+      modity:[],
       dormitory2: [],
+      dorshow: [],
       currentPage:1,
         totalCount2:10,
         totalCount3:10,
@@ -220,10 +286,16 @@ prioritychoose:[1,2,3],
       // 默认每页显示的条数（可修改）
       PageSize:10,
       dialogTableVisible: false,
+      dialogTableVisible2: false,
+      dialogTableVisible3:false,
       taskin: {
         changeflag:
         Number.NEGATIVE_INFINITY
       },
+      allusers:[],
+      taskin2:[],
+      taskin3:[],
+      operatorin:[]
     }
   },
   methods: {
@@ -252,10 +324,52 @@ prioritychoose:[1,2,3],
       });
     },
     addNewTask1() {
-
+console.log(this.taskin)
       this.dialogTableVisible = true;
-      console.log("aaa")
+
     },
+    gotoDetail(res){
+      this.dialogTableVisible3 = true;
+      console.log(res)
+      console.log(res.taskId)
+      console.log(this.dorshow)
+      if(res.taskId)
+      {let dor=[]
+        console.log(this.dormitory)
+        dor=this.dormitory
+        for(let i=0;i<dor.length;i++)
+        {
+          if(dor[i].id==res.taskId)
+          {
+            this.taskin3=dor[i]
+            console.log("aaa")
+            console.log(this.taskin3)
+            break;
+          }
+        }
+      }
+    },
+    changeOperator (res) {
+if(res!='new')
+{let data=[]
+  this.modity=res
+  console.log(res)
+  data.name=res.name
+this.taskin2=data
+
+  console.log(this.taskin2.name)
+}else{
+  let data=[]
+  data.name=''
+  this.taskin2=data
+  this.modity=null
+  console.log(this.modity)
+  console.log(this.taskin2.name)
+}
+      this.dialogTableVisible2 = true;
+
+    },
+
     getData1(){
       // 获取表格数据
       console.log("获取表格数据")
@@ -264,7 +378,7 @@ prioritychoose:[1,2,3],
         console.log(res.data.data)
         this. dealwithData(res.data.data)
       }).catch(()=>{
-        console.log("getTransactionData fail")
+        console.log("获取表格数据 fail")
       });
     } ,
     handleSizeChange(val) {
@@ -283,6 +397,7 @@ prioritychoose:[1,2,3],
       getTaskApi().then((res) => {
         var input = res.data;
         this.dealwithData(input)
+        console.log("gettask")
   console.log(input)
       }).catch(()=>{
         console.log("getTaskApi fail")
@@ -294,7 +409,7 @@ prioritychoose:[1,2,3],
       document.getElementById("form").style.display="block";
       document.getElementById("form2").style.display="none";
       document.getElementById("form3").style.display="none";
-      this.getData1()
+
 
     },
     changeform21()
@@ -351,7 +466,9 @@ prioritychoose:[1,2,3],
       }
       dataConvert.reverse()
       this.dormitory = dataConvert;
+      this.dorshow=dataConvert
       console.log( this.dormitory)
+      console.log( this.dorshow)
       //this.loading = false;
     },
     dealwithData2(res) {
@@ -396,44 +513,60 @@ prioritychoose:[1,2,3],
       console.log( this.dormitory2)
       //this.loading = false;
     },
-    dealwithData3(res) {
-      this.modalitydata=res
-        this.totalCount3=this.modalitydata.length
-      for (let i = 0; i < this.modalitydata.length; i++) {
-        if (this.modalitydata[i].allocation) // true
-          this.modalitydata[i].allocation = "是"
-        else // false
-        {  this.modalitydata[i].allocation = "否"
-        this.modalitydata[i].id=null
-        }
+    dealwithOperatorData(res){
 
-
-        if (i == 0) {
-          console.log(this.modalitydata[0])
-      let    keys = [];
-          let value=[]
-            let neirong={}
-          for (let property in this.modalitydata[0])
-          {
-              keys.push(property)
-              value.push(this.modalitydata[0][property])
+        console.log(res)
+        let    keys = [];
+        let value=[]
+        let neirong={}
+        for (let property in res)
+        {
+          keys.push(property)
+          value.push(res[property])
           neirong["neirong"]=property
-            neirong["shuzhi"]=this.modalitydata[0][property]
-              var jsonObj = {"neirong":property,"shuzhi":this.modalitydata[0][property]};
-              this.tabledata3.push(jsonObj)
-          //    let obj1 = JSON.parse(neirong);
-            //  console.log(obj1)
-              /*
+          neirong["shuzhi"]=res[property]
+          if(property=="id"){
+            let jsonObj = {"neirong":"序号","shuzhi":res[property]};
+            this.tabledata3.push(jsonObj)
 
-        */
           }
-          console.log(  this.tabledata3)
+          if(property=="name"){
+            let jsonObj = {"neirong":"操作员名称","shuzhi":res[property]};
+            this.tabledata3.push(jsonObj)
 
-          console.log(keys)
-          console.log(value)
-          console.log(keys.length)
-        }
+          }
+          if(property=="taskId"){
+            let jsonObj = {"neirong":"当前任务编号","shuzhi":res[property]};
+            this.tabledata3.push(jsonObj)
 
+          }
+
+          //    let obj1 = JSON.parse(neirong);
+          //  console.log(obj1)
+
+
+
+
+   //   console.log(  this.tabledata3)
+ //     console.log(keys.length)
+    }
+},
+dealwithData3(res) {
+  this.modalitydata=res
+    this.totalCount3=this.modalitydata.length
+  for (let i = 0; i < this.modalitydata.length; i++) {
+    if (this.modalitydata[i].allocation) // true
+      this.modalitydata[i].allocation = "是"
+    else // false
+    {  this.modalitydata[i].allocation = "否"
+    // this.modalitydata[i].id=null
+      this.modalitydata[i].taskId = "无"
+    }
+
+
+/*
+
+*/
 
       }
     },
