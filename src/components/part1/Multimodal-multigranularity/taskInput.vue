@@ -22,8 +22,8 @@
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
               <!--动态读取该品类对应的平台-->
               <el-option
-                  v-for="flat in flatList"
-                  :key="flat.flatName"
+                  v-for="(flat, index) in flatList"
+                  :key="index"
                   :label="flat.flatName"
                   :value="flat.flatName"
                   @change="handleChange"
@@ -103,77 +103,78 @@
         <el-button type="info" @click="abortForm">取消创建</el-button>
       </el-form>
 
-      <el-dialog
-          title="确认创建任务"
-          :visible.sync="formDialogVisible"
-          width="50%">
-        <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
-        <el-form label-position="left" label-width="120px">
-          <el-form-item label="监管商品类别">
-            {{ commodityName }}
-          </el-form-item>
-          <el-form-item label="监管交易平台">
-            {{ flatName }}
-          </el-form-item>
-          <el-form-item label="监管任务类型">
-            {{ taskType }}
-          </el-form-item>
-          <el-form-item label="监管任务优先级">
-            级别{{ priority }}
-          </el-form-item>
-          <el-form-item label="监管方式">
-            {{ humanUse ? "人工分配" : "机器分配" }}，{{ tradeUser ? "主动监管" : "被动监管" }}
-          </el-form-item>
-          <el-form-item label="监管周期开始">
-            {{ dateStart }}
-          </el-form-item>
-          <el-form-item label="监管周期结束">
-            {{ dateEnd }}
-          </el-form-item>
-          <el-form-item label="工作时间">
-            {{ workingTime }}
-          </el-form-item>
-          <el-form-item label="截止时间">
-            {{ deadLine }}
-          </el-form-item>
-        </el-form>
+    </div>
 
-        <span slot="footer" class="dialog-footer">
+    <el-dialog
+        title="确认创建任务"
+        :visible.sync="formDialogVisible"
+        width="50%">
+      <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
+      <el-form label-position="left" label-width="120px">
+        <el-form-item label="监管商品类别">
+          {{ commodityName }}
+        </el-form-item>
+        <el-form-item label="监管交易平台">
+          {{ flatName }}
+        </el-form-item>
+        <el-form-item label="监管任务类型">
+          {{ taskType }}
+        </el-form-item>
+        <el-form-item label="监管任务优先级">
+          级别{{ priority }}
+        </el-form-item>
+        <el-form-item label="监管方式">
+          {{ humanUse ? "人工分配" : "机器分配" }}，{{ tradeUser ? "主动监管" : "被动监管" }}
+        </el-form-item>
+        <el-form-item label="监管周期开始">
+          {{ dateStart }}
+        </el-form-item>
+        <el-form-item label="监管周期结束">
+          {{ dateEnd }}
+        </el-form-item>
+        <el-form-item label="工作时间">
+          {{ workingTime }}
+        </el-form-item>
+        <el-form-item label="截止时间">
+          {{ deadLine }}
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
     <el-button @click="formDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="formDialogTrue">确 定</el-button>
   </span>
-      </el-dialog>
+    </el-dialog>
 
-      <el-dialog :visible.sync="dialogActiveVisible" title="主动监管名单" width="40%" center>
-        <p style="font-size: 1rem">
-          平台风险值：
-          <span v-if="valueMean === '高'" style="margin-right: 1rem; color: red">{{ valueRisk }}</span>
-          <span v-else-if="valueMean === '中'" style="margin-right: 1rem; color: orange">{{ valueRisk }}</span>
-          <span v-else-if="valueMean === '低'" style="margin-right: 1rem; color: green">{{ valueRisk }}</span>
-          风险程度：
-          <span v-if="valueMean === '高'" style="color: red">{{ valueMean }}</span>
-          <span v-else-if="valueMean === '中'" style="color: orange">{{ valueMean }}</span>
-          <span v-else-if="valueMean === '低'" style="color: green">{{ valueMean }}</span>
-        </p>
-        <el-table :data="formActiveList" :default-sort="{prop: 'p', order: 'descending'}" stripe>
-          <el-table-column
-              prop="name"
-              label="主体">
-          </el-table-column>
-          <el-table-column
-              prop="p"
-              label="异常值" sortable>
-            <template slot-scope="scope">
-              <span>{{ parseFloat(scope.row.p).toFixed(3) }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-dialog>
-
-    </div>
+    <el-dialog :visible.sync="dialogActiveVisible" title="主动监管名单" width="40%" center>
+      <p style="font-size: 1rem">
+        平台风险值：
+        <span v-if="valueMean === '高'" style="margin-right: 1rem; color: red">{{ valueRisk }}</span>
+        <span v-else-if="valueMean === '中'" style="margin-right: 1rem; color: orange">{{ valueRisk }}</span>
+        <span v-else-if="valueMean === '低'" style="margin-right: 1rem; color: green">{{ valueRisk }}</span>
+        风险程度：
+        <span v-if="valueMean === '高'" style="color: red">{{ valueMean }}</span>
+        <span v-else-if="valueMean === '中'" style="color: orange">{{ valueMean }}</span>
+        <span v-else-if="valueMean === '低'" style="color: green">{{ valueMean }}</span>
+      </p>
+      <el-table :data="formActiveList" :default-sort="{prop: 'p', order: 'descending'}" stripe>
+        <el-table-column
+            prop="name"
+            label="主体">
+        </el-table-column>
+        <el-table-column
+            prop="p"
+            label="异常值" sortable>
+          <template slot-scope="scope">
+            <span>{{ parseFloat(scope.row.p).toFixed(3) }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
   </div>
-</template>>
+</template>
+
 <script>
 import {
   taskInput,
@@ -324,10 +325,10 @@ export default {
       getplatform(URL).then((response) => {
         result = response.data.data;
         this.setFlatList(result);
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
+        console.log(this.flatList);
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     // @setFlats---将推荐的空间填入表格中
     setFlats(result) {
@@ -514,9 +515,9 @@ export default {
     // 主动监管名单部分
     getActiveList() {
       getAct(this.commodityName, this.flatName).then(res => {
-        this.valueRisk = res.data[0][0].riskvalue
-        this.valueMean = res.data[0][0].riskmean
-        this.formActiveList = res.data[1]
+        this.valueRisk = res.data.data[0][0].riskvalue
+        this.valueMean = res.data.data[0][0].riskmean
+        this.formActiveList = res.data.data[1]
       })
       this.dialogActiveVisible = true
     }
@@ -524,6 +525,7 @@ export default {
 }
 
 </script>
+
 <style lang="scss" scoped>
 .task-input-box {
   font-size: 0;
