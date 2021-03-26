@@ -23,7 +23,7 @@
                 </el-table-column>
                 </el-table-column>
                 -->
-        <!--主被动模态-->
+        <!--
         <el-table-column label="主被动模态" prop="content">
           <template slot-scope="scope">
             <el-link :disabled="setdis(scope)" type="primary">
@@ -32,7 +32,7 @@
               </div>
             </el-link>
           </template>
-        </el-table-column>
+        </el-table-column>--主被动模态-->
         <!--时间粒度-->
         <el-table-column label="时间粒度（天）" prop="timeadvise" width="80">
           <template slot-scope="scope">

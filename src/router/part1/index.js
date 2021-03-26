@@ -42,6 +42,10 @@ let routes = [
                    path:'taskQueryTableView',
                  component: () => import("@/components/part3/Common/taskQueryTableView")
                },
+              {
+                  path:'taskQueryOnlyModityView',
+                  component: () => import("@/components/part3/Common/taskQueryOnlyModityView")
+              },
 
               {
                   path:'taskQueryFlowChart',

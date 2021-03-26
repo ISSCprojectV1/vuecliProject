@@ -38,12 +38,16 @@ export default {
           num: 1
         },
         {
-          title: '联盟形成',
+          title: '主动模态',
           num: 2
         },
         {
-          title: '人际资源调度',
+          title: '联盟形成',
           num: 3
+        },
+        {
+          title: '人机器资源调度',
+          num: 4
         }]
     }
   },
@@ -62,14 +66,14 @@ export default {
         this.stepActive = 0
         return
       }
-      if (this.stepActive === 2) {
+      if (this.stepActive === 3) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-        this.stepActive = 1
+        this.stepActive = 2
         return
       }
-      if (this.stepActive === 3) {
+      if (this.stepActive === 4) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
-        this.stepActive = 2
+        this.stepActive = 3
       }
     },
     golater() {
@@ -79,14 +83,14 @@ export default {
         this.stepActive = 1
         return
       }
-      if (this.stepActive === 1) {
+      if (this.stepActive === 3) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
-        this.stepActive = 2
+        this.stepActive = 3
         return
       }
-      if (this.stepActive === 2) {
+      if (this.stepActive === 4) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
-        this.stepActive = 3
+        this.stepActive = 4
       }
     },
     onClickStep(numStep) {
@@ -100,12 +104,16 @@ export default {
           this.stepActive = 1
           break
         case 2:
-          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
           this.stepActive = 2
           break
         case 3:
-          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
           this.stepActive = 3
+          break
+        case 4:
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+          this.stepActive = 4
           break
         default:
           break
