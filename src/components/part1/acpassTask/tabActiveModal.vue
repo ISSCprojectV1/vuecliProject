@@ -28,14 +28,12 @@
             <template slot-scope="scope">
               <span v-if="Number.isNaN(scope.row.abnormalValue)">100</span>
               <span v-else-if="isAbnormal(scope.row.abnormalValue)" style="color: red">
-                    {{100- 5*scope.row.abnormalValue.toFixed(3) }}
+                    {{ (100 - 5 * scope.row.abnormalValue).toFixed(3) }}
                   </span>
               <span v-else style="color: green">
-                    {{100- 5*scope.row.abnormalValue.toFixed(3) }}
+                    {{ (100 - 5 * scope.row.abnormalValue).toFixed(3) }}
                   </span>
             </template>
-
-
           </el-table-column>
           <el-table-column label="详细信息" fixed="right" min-width="80">
             <template slot-scope="scope">
@@ -54,24 +52,24 @@
         </el-pagination>
       </el-aside>
       <el-container style="border: 0.5rem solid #eee">
-          <div id="tableCompanyDetail" style="width: 100%; height: 100%">
-            <h2>主体交易详情</h2>
-            <el-table :data="dataTableDetail" style="width: 100%">
-              <el-table-column prop="seller" label="主要交易卖方" fixed="left" min-width="100"></el-table-column>
-              <el-table-column prop="buyer" label="主要交易买方" min-width="100"></el-table-column>
-              <el-table-column prop="amount" label="交易数" min-width="60"></el-table-column>
-            </el-table>
-            <el-pagination
-                ref="pagination"
-                style="text-align: center; margin-top: 0.5rem"
-                background
-                layout="prev, pager, next"
-                :page-size="8"
-                @current-change="onPageChangeDetail"
-                :total="totalTableDetail"
-            >
-            </el-pagination>
-          </div>
+        <div id="tableCompanyDetail" style="width: 100%; height: 100%">
+          <h2>主体交易详情</h2>
+          <el-table :data="dataTableDetail" style="width: 100%">
+            <el-table-column prop="seller" label="主要交易卖方" fixed="left" min-width="100"></el-table-column>
+            <el-table-column prop="buyer" label="主要交易买方" min-width="100"></el-table-column>
+            <el-table-column prop="amount" label="交易数" min-width="60"></el-table-column>
+          </el-table>
+          <el-pagination
+              ref="pagination"
+              style="text-align: center; margin-top: 0.5rem"
+              background
+              layout="prev, pager, next"
+              :page-size="8"
+              @current-change="onPageChangeDetail"
+              :total="totalTableDetail"
+          >
+          </el-pagination>
+        </div>
       </el-container>
     </el-container>
   </div>
