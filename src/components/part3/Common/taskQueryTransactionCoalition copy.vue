@@ -6,7 +6,7 @@
   <div>
     <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
     <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
-    <el-button @click="changeform12()" type="text" size="small">表格试图</el-button>
+    <el-button @click="changeform12()" type="text" size="small">表格视图</el-button>
     <div id="echart1" style="width: 1000px; height: 800px"></div>
 
     <div id="form" style="display: none">
