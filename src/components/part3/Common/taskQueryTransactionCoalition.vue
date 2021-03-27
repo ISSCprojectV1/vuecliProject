@@ -1,185 +1,184 @@
 <template>
-<div>
   <div>
-    <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
-  </div>
-  <div>
-    <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
-    <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
-    <el-button @click="changeform12()" type="text" size="small">表格视图</el-button>
-    <div id="echart1" style="width: 1000px; height: 800px"></div>
+    <div>
+      <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+    </div>
+    <div>
+      <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
+      <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
+      <el-button @click="changeform12()" type="text" size="small">表格视图</el-button>
+      <div id="echart1" style="width: 1000px; height: 800px"></div>
 
-    <div id="form" style="display: none">
-      <el-table
-              ref="dormitoryTable"
-              :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-              tooltip-effect="dark"
-              stripe
-              style="width: 100%"
-              border>
-        <el-table-column label="序号" prop="id" width="50"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name" width="105">
-        </el-table-column>
-        <!--
-        <el-table-column label="任务优先级" prop="priority" width="60">
-        </el-table-column>
-        !-->
-        <el-table-column label="监管商品" prop="commodityName" width="77">
-        </el-table-column>
-        <el-table-column label="监管平台" prop="content" width="180">
-        </el-table-column>
+      <div id="form" style="display: none">
+        <el-table
+            ref="dormitoryTable"
+            :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+            tooltip-effect="dark"
+            stripe
+            style="width: 100%"
+            border>
+          <el-table-column label="序号" prop="id" width="50"></el-table-column>
+          <el-table-column label="监管任务名称" prop="name" width="105">
+          </el-table-column>
+          <!--
+          <el-table-column label="任务优先级" prop="priority" width="60">
+          </el-table-column>
+          !-->
+          <el-table-column label="监管商品" prop="commodityName" width="77">
+          </el-table-column>
+          <el-table-column label="监管平台" prop="content" min-width="180">
+          </el-table-column>
 
-        <el-table-column label="人模态分布" prop="humanUse" width="93">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="120">
-        </el-table-column>
+          <el-table-column label="人模态分布" prop="humanUse" width="93">
+          </el-table-column>
+          <el-table-column label="机器模态分布数" prop="agentNum" width="120">
+          </el-table-column>
 
-        <el-table-column label="任务状态" prop="workStatus" width="105">
-        </el-table-column>
-<!-- 联盟部分 -->
-        <el-table-column label="属于联盟" prop="team" width="77">
-        <!-- 根据team查询联盟信息 -->
-		<template slot-scope="scope">
-		<el-button  type="text" @click="queryWarehouseHandle(scope.row.team)">{{scope.row.team}}</el-button>
-		</template>
-        </el-table-column>
-        <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails" width="200">
-        </el-table-column>
-        <el-table-column label="联盟演化">
+          <el-table-column label="任务状态" prop="workStatus" width="105">
+          </el-table-column>
+          <!-- 联盟部分 -->
+          <el-table-column label="属于联盟" prop="team" width="77">
+            <!-- 根据team查询联盟信息 -->
+            <template slot-scope="scope">
+              <el-button type="text" @click="queryWarehouseHandle(scope.row.team)">{{ scope.row.team }}</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails" min-width="200">
+          </el-table-column>
+          <el-table-column label="联盟演化">
             <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
-        </el-table-column>
-        
+          </el-table-column>
+
         </el-table>
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="pageSizes"
-                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
-      </el-pagination>
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :total="totalCount">
+        </el-pagination>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 import echart from "echarts";
-import {taskQuery,teamform,getTeamResult} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery, teamform, getTeamResult} from "@/api/part1/Multimodal-multigranularity";
 
 export default {
   name: "taskQueryTransactionCoalition",
-  inject:['reload'],
+  inject: ['reload'],
   data() {
     return {
       dormitory: [],
-      currentPage:1,
+      currentPage: 1,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
-      totalCount:100,
+      totalCount: 100,
       // 个数选择器（可修改）
-      pageSizes:[5,10],
+      pageSizes: [5, 10],
       // 默认每页显示的条数（可修改）
-      PageSize:10,
+      PageSize: 10,
     }
   },
 
   mounted() {
 
-    },
+  },
   methods: {
     // 每页显示的条数
     handleSizeChange(val) {
       // 改变每页显示的条数
-      this.PageSize=val
+      this.PageSize = val
       // 注意：在改变每页显示的条数时，要将页码显示到第一页
-      this.currentPage=1
+      this.currentPage = 1
     },
     // 显示第几页
     handleCurrentChange(val) {
       // 改变默认的页数
-      this.currentPage=val
+      this.currentPage = val
     },
 
-    getData1(){
+    getData1() {
       // 获取表格数据
       console.log("获取表格数据")
       // var dataConvert = [];
       taskQuery().then((res) => {
         console.log(res)
         let URL = '/yu/createTeamByCost';
-        getTeamResult(URL).then((resultTeam)=>{
-        let result = res.data.data;
-        for(let i=0;i<result.length;i++){
-          let workTeamStr = '';
-         /*
-          for(let j = 0;j<resultTeam.data.data[i].length;j++){
-            if(resultTeam.data.data[i][j] == 0){
-              resultTeam.data.data[i][j] = "工商局"
-              workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
+        getTeamResult(URL).then((resultTeam) => {
+          let result = res.data.data;
+          for (let i = 0; i < result.length; i++) {
+            let workTeamStr = '';
+            /*
+             for(let j = 0;j<resultTeam.data.data[i].length;j++){
+               if(resultTeam.data.data[i][j] == 0){
+                 resultTeam.data.data[i][j] = "工商局"
+                 workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
+               }
+               else if(resultTeam.data.data[i][j] == 3){
+                 resultTeam.data.data[i][j] = "金融监管局"
+                 workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
+               }
+               else{
+                   workTeamStr = workTeamStr+"监管机构"+resultTeam.data.data[i][j]+",";
+               }
+             }*/
+            for (let j = 0; j < resultTeam.data.data[i].length; j++) {
+              workTeamStr = workTeamStr + resultTeam.data.data[i][j] + " "
             }
-            else if(resultTeam.data.data[i][j] == 3){
-              resultTeam.data.data[i][j] = "金融监管局"
-              workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
-            }
-            else{
-                workTeamStr = workTeamStr+"监管机构"+resultTeam.data.data[i][j]+",";
-            }
-          }*/
-          for(let j = 0;j<resultTeam.data.data[i].length;j++){
-            workTeamStr = workTeamStr+resultTeam.data.data[i][j]+" "
+
+            result[i].workTeam = workTeamStr;
           }
+          this.dealwithData(result);
+        }).catch(() => {
+          console.log("getTransactionData fail")
+        });
 
-          result[i].workTeam = workTeamStr;
-        }
-        this. dealwithData(result);
-        }).catch(()=>{
+        document.getElementById("form").style.display = "block";
+        document.getElementById("echart1").style.display = "none";
+      }).catch(() => {
         console.log("getTransactionData fail")
       });
-
-        document.getElementById("form").style.display="block";
-        document.getElementById("echart1").style.display="none";
-      }).catch(()=>{
-        console.log("getTransactionData fail")
-      });
-    } ,
+    },
     // 获取联盟形成结果
-    teamformation(){
-    //  console.log("点击")
-    //  let URL = '/yu/createTeamByCost';
-    //  let teamResult = [];
-    //   getTeamResult(URL).then((res) => {
-    //     console.log("获取联盟形成结果",res.data.data[1]);
-    //     this.dealwithData(res);
+    teamformation() {
+      //  console.log("点击")
+      //  let URL = '/yu/createTeamByCost';
+      //  let teamResult = [];
+      //   getTeamResult(URL).then((res) => {
+      //     console.log("获取联盟形成结果",res.data.data[1]);
+      //     this.dealwithData(res);
 
-    //     //this.dormitory
-    //   }).catch(()=>{
-    //     console.log("getTeamResult fail")
-    //   });
-    //   return teamResult;
-     document.getElementById("echart1").style.display="none";
-      document.getElementById("form").style.display="block";
+      //     //this.dormitory
+      //   }).catch(()=>{
+      //     console.log("getTeamResult fail")
+      //   });
+      //   return teamResult;
+      document.getElementById("echart1").style.display = "none";
+      document.getElementById("form").style.display = "block";
       this.getData1()
     },
     // 跳转至异常事件分析页面
-    teamEvolution(){
+    teamEvolution() {
       console.log("/trade/exceptionAnalysis/page")
-        this.$router.push(`/trade/exceptionAnalysis/page`);
+      this.$router.push(`/trade/exceptionAnalysis/page`);
     },
-     queryWarehouseHandle(team) {
+    queryWarehouseHandle(team) {
       this.$router.push(`/trade/teamTable/${team}`);
       console.log(`/trade/teamTable/${team}`)
       // this.$router.push(`/trade/transactionProject/map`);
       // console.log("/trade/transactionProject/map");
     },
-    changeform12()
-    {
-      document.getElementById("echart1").style.display="none";
-      document.getElementById("form").style.display="block";
+    changeform12() {
+      document.getElementById("echart1").style.display = "none";
+      document.getElementById("form").style.display = "block";
       this.getData1()
 
     },
     drawechart1() {
-      document.getElementById("form").style.display="none";
-      document.getElementById("echart1").style.display="block";
+      document.getElementById("form").style.display = "none";
+      document.getElementById("echart1").style.display = "block";
       const handle = function handleData(data, index, color = '#00f6ff') {
         //index标识第几层
         return data.map((item, index2) => {
@@ -251,7 +250,7 @@ export default {
       let renwu = []
       let renwhhetask = []
       for (let i = 0; i < this.dormitory.length; i++) {
-    //    console.log(this.dormitory[i].operatorName)
+        //    console.log(this.dormitory[i].operatorName)
         if (renwu.indexOf(this.dormitory[i].operatorName) === -1) {
           renwu.push(this.dormitory[i].operatorName)
           renwhhetask[this.dormitory[i].operatorName] = []
@@ -259,10 +258,10 @@ export default {
         renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
       }
       for (let i = 0; i < this.dormitory.length; i++) {
-   //     console.log(renwhhetask[i])
+        //     console.log(renwhhetask[i])
       }
 
-  //    console.log(renwhhetask.keys())
+      //    console.log(renwhhetask.keys())
 
       const getdata = function getData() {
         let data = {
@@ -291,7 +290,7 @@ export default {
         let arr = []
         arr.push(data)
         arr = handle(arr, 0)
-    //    console.log(arr);
+        //    console.log(arr);
         return arr;
       };
 
@@ -353,8 +352,8 @@ export default {
       echart1.setOption(option);
     },
     drawechart12() {
-      document.getElementById("form").style.display="none";
-      document.getElementById("echart1").style.display="block";
+      document.getElementById("form").style.display = "none";
+      document.getElementById("echart1").style.display = "block";
       const handle = function handleData(data, index, color = '#00f6ff') {
         //index标识第几层
         return data.map((item, index2) => {
@@ -431,7 +430,7 @@ export default {
 
       }
       for (let i = 0; i < this.dormitory.length; i++) {
-     //   console.log(renwhhetask[i])
+        //   console.log(renwhhetask[i])
       }
       const getdata = function getData() {
         let data = {
@@ -461,7 +460,7 @@ export default {
         arr.push(data)
         //
         arr = handle(arr, 0)
-    //    console.log(arr);
+        //    console.log(arr);
         return arr;
       };
 
@@ -524,7 +523,7 @@ export default {
     },
 
     dealwithData(res) {
-console.log("dataconvert:"+res)
+      console.log("dataconvert:" + res)
       let dataConvert = [];
       dataConvert = res;
       let result = [];
@@ -543,11 +542,11 @@ console.log("dataconvert:"+res)
         data = this.timestampToTime(dataConvert[i].endTime)
         dataConvert[i].endTime = data
 
-        if(dataConvert[i].subtask){
-        dataConvert[i].commodityName = dataConvert[i].commodityName + ","+dataConvert[i].subtask
+        if (dataConvert[i].subtask) {
+          dataConvert[i].commodityName = dataConvert[i].commodityName + "," + dataConvert[i].subtask
         }
-        if(dataConvert[i].resourceNeed){
-        dataConvert[i].content = dataConvert[i].content + ","+dataConvert[i].resourceNeed
+        if (dataConvert[i].resourceNeed) {
+          dataConvert[i].content = dataConvert[i].content + "," + dataConvert[i].resourceNeed
         }
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
@@ -577,11 +576,11 @@ console.log("dataconvert:"+res)
         if (dataConvert[i].workStatus === 2) // true
           dataConvert[i].workStatus = "任务出现异常"
 
-          // 获取联盟分配结果
+        // 获取联盟分配结果
       }
       dataConvert.reverse()
       this.dormitory = dataConvert;
-      console.log(    this.dormitory)
+      console.log(this.dormitory)
     },
     // 转换时间戳
     timestampToTime(cjsj) {
@@ -595,7 +594,7 @@ console.log("dataconvert:"+res)
       return Y + M + D + h + m + s
     },
     // @getDetails() 点击下拉，获得详细数据
-    getDetails(){
+    getDetails() {
       console.log("GET details______________")
     },
   },
