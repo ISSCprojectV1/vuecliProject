@@ -63,7 +63,8 @@
                     ref="multipleTable"
                     :data="tableData"
                     tooltip-effect="dark"
-                    @selection-change="handleSelectionChange" stripe>
+                    @selection-change="handleSelectionChange"
+                    :default-sort="{prop: 'commodityDialog_num', order: 'descending'}" stripe>
                   <el-table-column
                       type="selection"
                       min-width="55">
@@ -81,8 +82,8 @@
                   <el-table-column
                       prop="commodityDialog_num"
                       label="关联度"
-                      sortable
-                      min-width="100">
+                      min-width="100"
+                      sortable>
                   </el-table-column>
                 </el-table>
                 <span slot="footer" class="dialog-footer">
@@ -211,26 +212,21 @@ export default {
     */
     // 补全商品粒度，获得商品粒度推荐名单
     getCommodity(val) {
+      this.tableData = [];
       this.temp = val.id;
-      console.log("getCommodity:", this.temp)
       this.commodityDialogVisible = true;
       let URL = '/getcommodityRelationdetails/' + val.commodityName;
       getcommodityRelationdetails2(URL).then((response) => {
-        console.log("result------", response.data)
         for (let i = 0; i < response.data.length; i++) {
           let temp = {};
-          console.log("result:", response.data[i])
           temp.commodityDialog_id = response.data[i].id2;
           temp.commodityDialog_name = response.data[i].name2;
           temp.commodityDialog_num = response.data[i].similarity;
           this.tableData.push(temp);
         }
-
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
-
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     // 追加商品粒度复选框
     handleSelectionChange(val) {
@@ -263,7 +259,7 @@ export default {
     /* 空间粒度模块Method */
     // 获得空间粒度推荐名单
     getFlats(val) {
-      this.flatData= [];
+      this.flatData = [];
       this.temp = val.id;
       this.flatDialogVisible = true;
       let URL = '/getrecommendrlatform' + '?commodity=' + encodeURIComponent(val.commodityName) + '&platform=' + val.content;
