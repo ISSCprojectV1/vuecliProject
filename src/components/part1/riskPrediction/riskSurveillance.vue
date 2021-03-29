@@ -3,7 +3,7 @@
     <h2>大宗商品预警监控平台</h2>
     <el-container style="height: 650px; border: 10px solid #eee">
       <el-aside width="370px" style="border: 10px solid #eee; background-color: white;">
-        <div id="chart-risk-frequency" style="margin-top: 1rem; width: 350px; height: 480px"></div>
+        <div id="chart-risk-frequency" style="margin-top: 1rem; width: 350px; height: 500px"></div>
       </el-aside>
 
       <el-container style="border: 10px solid #eee">
@@ -39,8 +39,7 @@
                       @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
-                  <el-button type="text" class="el-option-in-table" @click="goToFirst()">监控</el-button>
-                  <el-button type="text" class="el-option-in-table" @click="goToLast()">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage()">监控</el-button>
                   <el-popconfirm
                       confirm-button-text="确定"
                       cancel-button-text="取消"
@@ -79,8 +78,7 @@
                       @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
-                  <el-button type="text" class="el-option-in-table" @click="goToFirst()">监控</el-button>
-                  <el-button type="text" class="el-option-in-table" @click="goToLast()">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage()">监控</el-button>
                   <el-popconfirm
                       confirm-button-text="确定"
                       cancel-button-text="取消"
@@ -325,7 +323,7 @@ export default {
     goToFirst() {
       this.$router.push('/trade/dashboard')
     },
-    goToLast() {
+    goToRiskPage() {
       this.$router.push('/trade/riskPrediction/riskPage')
     },
     // 绘图
@@ -340,24 +338,36 @@ export default {
         tooltip: {
           show: true
         },
+        grid: {containLabel: true},
         xAxis: {},
         yAxis: {
           type: 'category',
           data: ['小麦', '大豆', '玉米', '棉花']
         },
+        visualMap: {
+          orient: 'horizontal',
+          left: 'center',
+          min: 0,
+          max: 15,
+          text: ['高风险', '低风险'],
+          dimension: 0,
+          inRange: {
+            color: ['#008000', '#FFD700', '#FF0000']
+          }
+        },
         series: [
           {
             type: 'bar',
-            barWidth: '50px',
-            itemStyle: {
-              normal: {
-                color: function (params) {
-                  let colorList = ['#91cc75', '#fac858', '#ee6666', '#73c0de']
-                  return colorList[params.dataIndex]
-                }
-              }
-            },
-            data: [5, 15, 11, 11]
+            barWidth: '40px',
+            // itemStyle: {
+            //   normal: {
+            //     color: function (params) {
+            //       let colorList = ['#91cc75', '#fac858', '#ee6666', '#73c0de']
+            //       return colorList[params.dataIndex]
+            //     }
+            //   }
+            // },
+            data: [2, 15, 11, 11]
           }
         ]
       }

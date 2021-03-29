@@ -6,21 +6,24 @@
     </div>
     <div>
       <el-form :inline="true">
-        <el-form-item >
+        <el-form-item>
           <el-select v-model="id" placeholder="请选择任务名称">
             <!--动态读取该品类对应的平台-->
             <el-option
-                    v-for="flat in taskInfo"
-                    :key="flat.id"
-                    :label="flat.id+'.'+flat.name"
-                    :value="flat.id"
+                v-for="flat in taskInfo"
+                :key="flat.id"
+                :label="flat.id+'.'+flat.name"
+                :value="flat.id"
             >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-      <el-button type="primary" @click="lookForAllTasks" class="button">查询</el-button>
-          </el-form-item>
+          <el-button type="primary" @click="lookForAllTasks" class="button">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="goBack">返回</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <el-tabs v-model="activeName">
@@ -82,7 +85,13 @@ import {
 import echart from "echarts";
 import tabSpaceGranularity from "@/components/part1/acpassTask/tabSpaceGranularity";
 import tabActiveModal from "@/components/part1/acpassTask/tabActiveModal";
-import {changetimeadvise, taskQuery,spaceResult,taskQueryById,getRolenameById} from "@/api/part1/Multimodal-multigranularity";
+import {
+  changetimeadvise,
+  taskQuery,
+  spaceResult,
+  taskQueryById,
+  getRolenameById
+} from "@/api/part1/Multimodal-multigranularity";
 
 export default {
   name: "activetask",
@@ -91,7 +100,7 @@ export default {
     taskQuery().then(res => {
       console.log("res")
       console.log(res)
-      this.taskInfo=res.data.data
+      this.taskInfo = res.data.data
     }).catch(err => {
       console.log(err);
       console.log("出现错误")
@@ -114,8 +123,8 @@ export default {
       activeName: "table",
       total: 0,
       form: {},
-      id:'',
-      taskInfo:[],
+      id: '',
+      taskInfo: [],
       total1: 0,
       loading: false,
       show: false,
@@ -145,7 +154,6 @@ export default {
     // const id = this.$router.currentRoute.params.id;
     // this.Activetaskgraph(id, 15);
     // document.getElementById("echart123").style.display = "none";
-
   },
   methods: {
     passivetradeactionList(id, currentPage, pageSize) {
@@ -227,8 +235,8 @@ export default {
         }
       }
     },
-    lookForAllTasks(){
-console.log(this.id)
+    lookForAllTasks() {
+      console.log(this.id)
 
     },
     gotoDetail(company) {
@@ -523,6 +531,9 @@ console.log(this.id)
       };
 
       echart1.setOption(option);
+    },
+    goBack() {
+      history.go(-1);
     }
   }
 }

@@ -56,37 +56,34 @@
               <el-dialog
                   title="推荐商品粒度名单"
                   :visible.sync="commodityDialogVisible"
-                  width="50%"
-                  :append-to-body="true"
-              >
+                  width="40%"
+                  :append-to-body="true">
                 <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
                 <el-table
                     ref="multipleTable"
                     :data="tableData"
                     tooltip-effect="dark"
-                    style="width: 100%"
                     @selection-change="handleSelectionChange"
-                >
-
+                    :default-sort="{prop: 'commodityDialog_num', order: 'descending'}" stripe>
                   <el-table-column
                       type="selection"
-                      width="55">
+                      min-width="55">
                   </el-table-column>
                   <el-table-column
                       prop="commodityDialog_id"
                       label="商品代号"
-                      width="120">
+                      min-width="120">
                   </el-table-column>
                   <el-table-column
                       prop="commodityDialog_name"
                       label="商品类别名称"
-                      width="120">
+                      min-width="120">
                   </el-table-column>
                   <el-table-column
                       prop="commodityDialog_num"
                       label="关联度"
-                      sortable
-                      width="120">
+                      min-width="100"
+                      sortable>
                   </el-table-column>
                 </el-table>
                 <span slot="footer" class="dialog-footer">
@@ -111,7 +108,7 @@
               <el-dialog
                   title="推荐空间粒度名单"
                   :visible.sync="flatDialogVisible"
-                  width="50%"
+                  width="40%"
                   :append-to-body="true"
               >
                 <!-- 获取到的空间粒度推荐表，可通过首列的复选框决定要加入的监管空间-->
@@ -119,23 +116,24 @@
                     ref="flatTable"
                     :data="flatData"
                     tooltip-effect="dark"
-                    style="width: 100%"
                     @selection-change="handleFlatChange"
-                >
-
+                    :default-sort="{prop: 'association', order: 'descending'}" stripe>
                   <el-table-column
                       type="selection"
-                      width="55">
+                      min-width="55">
                   </el-table-column>
                   <el-table-column
                       prop="platform"
                       label="平台名称"
-                      width="120">
+                      min-width="120">
                   </el-table-column>
                   <el-table-column
                       prop="association"
                       label="关联度"
-                      width="120">
+                      min-width="100" sortable>
+                    <template slot-scope="scope">
+                      {{ scope.row.association.toFixed(4) }}
+                    </template>
                   </el-table-column>
                 </el-table>
                 <span slot="footer" class="dialog-footer">
@@ -214,26 +212,21 @@ export default {
     */
     // 补全商品粒度，获得商品粒度推荐名单
     getCommodity(val) {
+      this.tableData = [];
       this.temp = val.id;
-      console.log("getCommodity:", this.temp)
       this.commodityDialogVisible = true;
       let URL = '/getcommodityRelationdetails/' + val.commodityName;
       getcommodityRelationdetails2(URL).then((response) => {
-        console.log("result------", response.data)
         for (let i = 0; i < response.data.length; i++) {
           let temp = {};
-          console.log("result:", response.data[i])
           temp.commodityDialog_id = response.data[i].id2;
           temp.commodityDialog_name = response.data[i].name2;
           temp.commodityDialog_num = response.data[i].similarity;
           this.tableData.push(temp);
         }
-
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
-
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     // 追加商品粒度复选框
     handleSelectionChange(val) {
@@ -263,30 +256,23 @@ export default {
       this.reload();// 刷新页面
 
     },
-    /*
- * 空间粒度模块Method
- */
+    /* 空间粒度模块Method */
     // 获得空间粒度推荐名单
     getFlats(val) {
-      console.log("怎么还是不对", val)
+      this.flatData = [];
       this.temp = val.id;
       this.flatDialogVisible = true;
       let URL = '/getrecommendrlatform' + '?commodity=' + encodeURIComponent(val.commodityName) + '&platform=' + val.content;
       getrecommendrlatform(URL).then((response) => {
-        console.log("result------", response.data.data)
         for (let i = 0; i < response.data.data.length; i++) {
           let temp = {};
-          console.log("result:", response.data.data[i])
           temp.platform = response.data.data[i].platform;
           temp.association = response.data.data[i].association;
           this.flatData.push(temp);
         }
-        console.log("flatData:", this.flatData)
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
-
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     // 追加空间粒度复选框
     handleFlatChange(val) {
@@ -324,7 +310,7 @@ export default {
             //console.log(datt[i].id)
             // console.log(this.dormitory[j].id)
             // console.log(datt[i].id==this.dormitory[j].id)
-            if (datt[i].id == this.dormitory[j].id) {
+            if (datt[i].id === this.dormitory[j].id) {
               this.dormitory[j].subtask = datt[i].subtask
               console.log(this.dormitory[j])
               console.log(this.dormitory)
