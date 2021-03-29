@@ -20,7 +20,7 @@ import G6 from '@antv/g6'
 import {getTaskApi} from "@/api/part1/transactionProject";
 import taskMethodChange from "@/components/part1/Multimodal-multigranularity/taskMethodChange";
 // import insertCss from 'insert-css'
-
+import {timestampToTime} from "@/utils/part3";
 export default {
   name: '这里',
 
@@ -249,13 +249,14 @@ const tooltip = new G6.Tooltip({
         <h3>* 人: ${e.item.getModel().humanUse}</h3>
       </ul>
       <ul>
-        <h3>* 任务开始时间: ${e.item.getModel().workingStartTime}</h3>
+        <h3>* 任务开始时间: ${(Number.isNaN(e.item.getModel().workingStartTime))?e.item.getModel().workingStartTime:
+            (timestampToTime(e.item.getModel().workingStartTime))}</h3>
       </ul>
       <ul>
         <h3>* ${e.item.getModel().humanUse}</h3>
       </ul>
       <ul>
-        <h3>* 工作时间: ${e.item.getModel().workingTime}</h3>
+        <h3>* 工作时间: ${e.item.getModel().workingTime/3600000+"小时"}</h3>
       </ul>
   <ul>
         <h3>* 操作员: ${e.item.getModel().operatorName}</h3>

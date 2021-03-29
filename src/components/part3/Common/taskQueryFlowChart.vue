@@ -25,11 +25,13 @@
     <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
     <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>
   </div>
+    <p></p>
 <div>
   <div id="echart1"  >
 <div>
     * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
 </div>
+      <p></p>
     <method1 ref="method1_child"  ></method1>
   </div>
 
@@ -51,16 +53,22 @@
               style="width: 100%"
               border>
 
-        <el-table-column type="selection" width="45"></el-table-column>
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name">
+        <el-table-column type="selection"  min-width="60"></el-table-column>
+        <el-table-column label="序号" prop="id"  min-width="60"></el-table-column>
+        <el-table-column label="监管任务名称" prop="name"  min-width="60">
         </el-table-column>
 
-        <el-table-column label="任务优先级" prop="priority" >
+        <el-table-column label="任务优先级" prop="priority"  min-width="60" >
         </el-table-column>
-        <el-table-column label="任务执行时间" prop="workingTime" >
-        </el-table-column>
+          <el-table-column label="任务执行时间" min-width="60">
+              <template slot-scope="scope">
 
+            <span >
+                    {{scope.row.workingTime /3600000+"小时"}}
+                  </span>
+
+              </template>
+          </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -147,7 +155,14 @@
 
         </el-table-column>
 
-        <el-table-column label="任务执行时间" prop="workingTime" width="60">
+        <el-table-column label="任务执行时间" width="60">
+          <template slot-scope="scope">
+
+            <span >
+                    {{scope.row.workingTime /3600000+"小时"}}
+                  </span>
+
+          </template>
         </el-table-column>
 
 
@@ -193,6 +208,7 @@ import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} fro
 import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers,getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
 import taskInputFormShow from "@/components/part1/Multimodal-multigranularity/taskInputFormShow";
+
 import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
 /*
 *         <el-table-column
