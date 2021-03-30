@@ -51,9 +51,9 @@
 
 <script>
 import echarts from 'echarts'
-import {riskAlarmService} from "@/api/part1/acpassTask";
 
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
+import {riskAlarmService} from "@/api/part1/riskPrediction";
 
 export default {
   name: "lineGraphNew",

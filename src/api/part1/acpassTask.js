@@ -108,37 +108,6 @@ export function activegraph(company) {
     })
 }
 
-export function exceptionRelationAnalysis(start, end, threshold_f, threshold_fp) {
-    return request({
-        method: 'POST',
-        data: {
-            "start": start,
-            "end": end,
-            "threshold_f": threshold_f,
-            "threshold_fp": threshold_fp
-        },
-        url: '/ExceptionRelationAnalysis'
-    })
-}
-
-export function exceptionRelationPredict(sourceId, threshold) {
-    return request({
-        method: 'POST',
-        data: {
-            "source_id": sourceId,
-            "threshold_p": threshold
-        },
-        url: 'ExceptionRelationPredict'
-    })
-}
-
-export function riskAlarmService() {
-    return request({
-        method: 'GET',
-        url: '/risk/alarm'
-    })
-}
-
 export function getAct(category, platform) {
     return request({
         method: 'GET',

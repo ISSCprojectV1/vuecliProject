@@ -56,4 +56,9 @@ export function getRiskInfoByStatus(status) {
 }
 // riskSurveillance end
 
-
+export function riskAlarmService() {
+    return request({
+        method: 'GET',
+        url: '/risk/alarm'
+    })
+}
