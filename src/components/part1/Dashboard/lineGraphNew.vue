@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import echarts from 'echarts'
-
+import echarts from 'echarts';
+import * as echarts5 from 'echarts5';
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
 import {riskAlarmService} from "@/api/part1/riskPrediction";
 
@@ -61,7 +61,7 @@ export default {
     return {
       options: [],
       formRisk: [],
-      value: '',
+      value: '小麦',
       options2: [],
       formRisk2: [],
       formRelation: [],
@@ -90,7 +90,7 @@ export default {
   methods: {
     // 画图
     drawChartRiskPrediction() {
-      let chart = echarts.init(document.getElementById('chart-risk-prediction'))
+      let chart = echarts5.init(document.getElementById('chart-risk-prediction'))
       let pieces = []
       for (let i = 0; i < this.formRisk.length;) {
         let j = i + 1;
@@ -121,24 +121,22 @@ export default {
 
       let options = {
         title: {
-          text: '小麦价格波动风险演化图',
+          text: '价格波动风险演化图',
           left: 0
         },
         tooltip: {
           trigger: 'axis'
         },
-        legend: {},
-        grid: {
-          // y: '5%',
-          // y2: '12%'
-        },
-        dataZoom: [{
-          startValue: '2018-02-01',
-          minSpan: 1,
-          bottom: 0
-        }, {
-          type: 'inside'
-        }],
+        dataZoom: [
+          {
+            type: 'slider',
+            start: 95,
+            minSpan: 1
+          },
+          {
+            type: 'inside'
+          }
+        ],
         visualMap: {
           dimension: 0,
           pieces: pieces,

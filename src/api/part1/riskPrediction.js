@@ -56,9 +56,18 @@ export function getRiskInfoByStatus(status) {
 }
 // riskSurveillance end
 
+// risk chart start
 export function riskAlarmService() {
     return request({
         method: 'GET',
         url: '/risk/alarm'
     })
 }
+
+export function getDataRiskChart(name) {
+    return request({
+        method: 'GET',
+        url: 'risk/name/' + name
+    })
+}
+// risk chart end

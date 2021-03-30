@@ -17,7 +17,8 @@
     </el-form>
 
     <div id="chart-risk-prediction"
-         style="width: 1000px; height: 500px; margin-left: auto; margin-right: auto;"></div>
+         style="width: 1000px; height: 500px; margin-left: auto; margin-right: auto;">
+    </div>
 
     <el-button type="primary" @click="onClickQueryRelation" style="margin-top: 2rem">查询关联商品</el-button>
 
@@ -45,7 +46,8 @@
 <script>
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
 import echarts from "echarts";
-import {riskAlarmService} from "@/api/part1/riskPrediction";
+import * as echarts5 from "echarts5";
+import {getDataRiskChart, riskAlarmService} from "@/api/part1/riskPrediction";
 
 export default {
   name: "riskPageNew",
@@ -92,7 +94,7 @@ export default {
       this.onClickQuery()
     },
     onClickQuery() {
-      riskAlarmService().then(res => {
+      getDataRiskChart(this.value).then(res => {
         this.formRisk = res.data.map(item => {
           return {
             id: item.id,
@@ -108,50 +110,49 @@ export default {
       })
     },
     drawChartRiskPrediction() {
-      let chart = echarts.init(document.getElementById('chart-risk-prediction'))
+      let chart = echarts5.init(document.getElementById('chart-risk-prediction'))
       let pieces = []
       for (let i = 0; i < this.formRisk.length;) {
         let j = i + 1;
         if (this.formRisk[i].risk <= 0.333) {
           while (j < this.formRisk.length)
             if (this.formRisk[j].risk <= 0.333)
-              j++
+              j++;
             else
               break;
           pieces.push({gte: i, lt: j, color: 'green'})
         } else if (this.formRisk[i].risk <= 0.666) {
           while (j < this.formRisk.length)
             if (this.formRisk[j].risk <= 0.666 && this.formRisk[j].risk > 0.333)
-              j++
+              j++;
             else
               break;
           pieces.push({gte: i, lt: j, color: 'yellow'})
         } else {
           while (j < this.formRisk.length)
             if (this.formRisk[j].risk > 0.666)
-              j++
+              j++;
             else
               break;
           pieces.push({gte: i, lt: j, color: 'red'})
         }
-        i = j
+        i = j;
       }
 
       let options = {
         tooltip: {
           trigger: 'axis'
         },
-        grid: {
-          y: '5%',
-          y2: '10%'
-        },
-        dataZoom: [{
-          startValue: '2018-02-01',
-          minSpan: 1,
-          bottom: 0
-        }, {
-          type: 'inside'
-        }],
+        dataZoom: [
+          {
+            type: 'slider',
+            start: 95,
+            minSpan: 1
+          },
+          {
+            type: 'inside'
+          }
+        ],
         visualMap: {
           dimension: 0,
           pieces: pieces,
