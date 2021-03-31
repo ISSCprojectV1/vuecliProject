@@ -127,7 +127,7 @@
             ]
           },*/
        {
-            title:"模态与粒度建议",
+            title:"模态粒度与建议",
             routes: [
               {
                 path:"/trade/Multimodal-multigranularity/stepBar",

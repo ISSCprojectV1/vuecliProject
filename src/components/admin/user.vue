@@ -79,22 +79,22 @@
 
         <el-dialog title="修改用户信息" :visible.sync="dialogFormUpdateVisible">
             <el-form :model="form">
-                <el-form-item label="name" :label-width="formLabelWidth">
+                <el-form-item label="用户名" :label-width="formLabelWidth">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="accountId" :label-width="formLabelWidth">
+                <el-form-item label="用户账号名" :label-width="formLabelWidth">
                     <el-input v-model="form.accountId" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="email" :label-width="formLabelWidth">
+                <el-form-item label="邮箱" :label-width="formLabelWidth">
                     <el-input v-model="form.email" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="score" :label-width="formLabelWidth">
+                <el-form-item label="分数" :label-width="formLabelWidth">
                     <el-input v-model="form.score" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="reputation" :label-width="formLabelWidth">
+                <el-form-item label="名声" :label-width="formLabelWidth">
                     <el-input v-model="form.reputation" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="role" :label-width="formLabelWidth">
+                <el-form-item label="角色" :label-width="formLabelWidth">
                     <el-select v-model="form.roleId" clearable placeholder="请选择">
                         <el-option
                                 v-for="item in roleOptions"

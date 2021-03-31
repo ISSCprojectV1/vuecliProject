@@ -91,12 +91,13 @@
         </el-form-item>
         <!--监管周期-->
 
-        <el-form-item label="工作时间">
+        <el-form-item label="工作时间（小时）">
           <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
         </el-form-item>
 
         <el-form-item label="截止时间">
-          <el-input v-model="deadLine" type="number" placeholder="如非末尾任务请勿输入"></el-input>
+          <el-date-picker type="date" placeholder="选择结束日期" v-model="deadLine" style="width: 100%;"></el-date-picker>
+
         </el-form-item>
 
         <el-button type="success" @click="createTask">立即创建</el-button>
@@ -132,7 +133,7 @@
         <el-form-item label="监管周期结束">
           {{ dateEnd }}
         </el-form-item>
-        <el-form-item label="工作时间">
+        <el-form-item label="工作时间（小时）">
           {{ workingTime }}
         </el-form-item>
         <el-form-item label="截止时间">
@@ -176,6 +177,7 @@
 </template>
 
 <script>
+  /*     <el-input v-model="deadLine" type="number" placeholder="如非末尾任务请勿输入"></el-input>*/
 import {
   taskInput,
   bourseget,
@@ -477,8 +479,8 @@ export default {
         "startTime": 1587807522386,
         "endTime": 1588404415698,
         "humanUse": humannn,
-        "workingTime": this.workingTime,
-        "deadLine": this.deadLine,
+        "workingTime": this.workingTime*3600000,
+        "deadLine": new Date(this.deadLine).getTime(),
         "timeadvise": this.timeAdvise,
         "tradeuser": this.tradeUser,
         "content": this.flatName,

@@ -18,12 +18,20 @@
                :close-on-click-modal="false">
         <taskInputFormShow :taskin="taskin3" ></taskInputFormShow>
     </el-dialog>
-  <div>
+  <div>     <el-row>
 
-    <el-button type="primary" @click="changeform12" style="margin-left:15px;margin-right:14px">表格视图</el-button>
-    <el-button type="primary" @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>
-    <el-button type="primary" @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>
-    <el-button type="primary" @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>
+      <el-col :span="this.admintrue?6:8">
+
+    <el-button type="primary"  class="elbun" @click="changeform12" style="margin-left:15px;margin-right:14px" >表格视图</el-button>
+      </el-col>
+      <el-col :span="this.admintrue?6:8">
+    <el-button type="primary" class="elbun"  @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>    </el-col>
+          <el-col :span="this.admintrue?6:8">
+    <el-button type="primary" class="elbun"  @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>    </el-col>
+              <el-col :span="this.admintrue?6:0">
+    <el-button type="primary" class="elbun"  @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>    </el-col>
+  </el-row>
+
   </div>
     <p></p>
 <div>
@@ -619,5 +627,15 @@ dealwithData3(res) {
 </script>
 
 <style scoped>
+    .elbun{
+        width: 136px;
+        height:50px;
+        margin-left: 50px;
+        margin-right: 50px;
+        font-size: 20px;
+        align-items: center;
+        justify-content: center;
+    }
+
 
 </style>
