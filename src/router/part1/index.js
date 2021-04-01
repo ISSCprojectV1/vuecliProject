@@ -145,6 +145,13 @@ let routes = [
                 }
             },
             {
+                path: "/trade/acpassTask/viewSpaceGranularity/:id",
+                component: () => import("@/components/part1/acpassTask/viewSpaceGranularity"),
+                meta: {
+                    title: "空间粒度"
+                }
+            },
+            {
                 path:"/trade/teamTable/:team",
                 component: () => import("@/components/part3/Common/teamTable"),
                 meta:{

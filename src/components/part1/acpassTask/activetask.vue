@@ -4,6 +4,7 @@
     <div class="title">
       <div style="display: inline-block; margin-bottom:20px; font-size: 40px;">主被动模态与空间粒度</div>
     </div>
+
     <div>
       <el-form :inline="true">
         <el-form-item>
@@ -26,6 +27,7 @@
         </el-form-item>
       </el-form>
     </div>
+
     <el-tabs v-model="activeName">
       <el-tab-pane label="主动模态" name="table">
         <tab-active-modal></tab-active-modal>
@@ -42,14 +44,6 @@
           <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
           <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
           <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
-          <!--                <el-table-column-->
-          <!--                        prop=""-->
-          <!--                        label="交易模式">-->
-          <!--                    <template slot-scope="scope">-->
-          <!--                        <el-button @click="look(scope.row)" type="button" size="small">查看</el-button>-->
-          <!--                    </template>-->
-          <!--                </el-table-column>-->
-          <!--              </el-table-column>-->
         </el-table>
         <el-pagination
             ref="pagination"
@@ -61,10 +55,6 @@
             :total="total1"
         >
         </el-pagination>
-      </el-tab-pane>
-
-      <el-tab-pane label="空间粒度" name="space-granularity">
-        <tab-space-granularity></tab-space-granularity>
       </el-tab-pane>
 
     </el-tabs>
@@ -83,7 +73,6 @@ import {
   Louvainresult
 } from "@/api/part1/acpassTask";
 import echart from "echarts";
-import tabSpaceGranularity from "@/components/part1/acpassTask/tabSpaceGranularity";
 import tabActiveModal from "@/components/part1/acpassTask/tabActiveModal";
 import {
   changetimeadvise,
@@ -95,7 +84,7 @@ import {
 
 export default {
   name: "activetask",
-  components: {tabSpaceGranularity, tabActiveModal},
+  components: {tabActiveModal},
   created() {
     taskQuery().then(res => {
       console.log("res")
@@ -158,11 +147,9 @@ export default {
   methods: {
     passivetradeactionList(id, currentPage, pageSize) {
       passivetradeaction(id, currentPage, pageSize).then(res => {
-        // console.log(res)
         this.tableData = res.data.data.reslist
         let data = res.data.data.reslist;
         this.total1 = res.data.data.total
-        // console.log(this.total1)
         for (let i = 0; i < data.length; i++) {
           data[i].id = i + 1
         }
@@ -191,7 +178,6 @@ export default {
     },
     Activetaskgraph(id, limit) {
       Louvainresult(id, limit).then(res => {
-        // console.log(res.data.data)
         this.drawechart(res.data.data)
       }).catch(err => {
         console.log(err)
@@ -209,10 +195,7 @@ export default {
     },
     onSubmit(limit) {
       const id = this.$router.currentRoute.params.id;
-
-      console.log(limit)
       const query_str = this.value_space_granularity + this.form.limit
-      console.log(query_str)
       this.Activetaskgraph(id, query_str);
     },
     activeOrPassive() {
@@ -237,7 +220,6 @@ export default {
     },
     lookForAllTasks() {
       console.log(this.id)
-
     },
     gotoDetail(company) {
       document.getElementById("echart123").style.display = "block";

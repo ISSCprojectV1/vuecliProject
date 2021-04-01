@@ -455,7 +455,7 @@ export default {
     },
     // 详情跳空间粒度模块
     goToSpaceDetail(id) {
-      this.$router.push(`/trade/acpassTask/activetask/${id}`);
+      this.$router.push(`/trade/acpassTask/viewSpaceGranularity/${id}`);
     },
   },
   created() {
