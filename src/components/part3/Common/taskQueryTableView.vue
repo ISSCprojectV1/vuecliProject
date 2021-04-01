@@ -87,9 +87,9 @@
                   </el-table-column>
                 </el-table>
                 <span slot="footer" class="dialog-footer">
-    <el-button @click="commodityDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="updateCommodity()">确 定</el-button>
-  </span>
+                  <el-button @click="commodityDialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="updateCommodity()">确 定</el-button>
+                 </span>
               </el-dialog>
             </template>
           </el-table-column>
@@ -141,6 +141,7 @@
     <el-button type="primary" @click="updateFlat()">确 定</el-button>
   </span>
               </el-dialog>
+              <el-button type="text" style="margin-left: 0.5rem" @click="goToSpaceDetail(flat.row.id)">详情</el-button>
             </template>
           </el-table-column>
         </el-table-column>
@@ -292,17 +293,16 @@ export default {
       }
       updateCommodity(newFlats).then(function (response) {
 
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
+      }).catch(function (error) {
+        console.log(error);
+      });
       this.$message({
         message: '扩展监管平台 成功',
         type: 'success'
       });
       this.reload();// 刷新页面
     },
-    changespaceResult() {
+    changeSpaceResult() {
       spaceResult().then((res) => {
         let datt = res.data.data
         for (var i = 0; i < datt.length; i++) {
@@ -452,6 +452,10 @@ export default {
       const m = date.getMinutes() + ':';
       const s = date.getSeconds();
       return Y + M + D + h + m + s
+    },
+    // 详情跳空间粒度模块
+    goToSpaceDetail(id) {
+      this.$router.push(`/trade/acpassTask/activetask/${id}`);
     },
   },
   created() {

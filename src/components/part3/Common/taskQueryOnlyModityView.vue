@@ -240,7 +240,6 @@ export default {
     },
     gotoDetail(id) {
       this.$router.push(`/trade/acpassTask/activetask/${id}`);
-      console.log(`/trade/acpassTask/activetask/${id}`)
     },
     changetime(data) {
       changetimeadvise().then((res) => {
