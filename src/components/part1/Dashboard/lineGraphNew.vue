@@ -34,9 +34,8 @@
             prop="name"
             label="关联商品">
           <template slot-scope="scope">
-            <a @click="onClickRelatedCommodity(scope.row.name)" style="color: blue; cursor: pointer">{{
-                scope.row.name
-              }}</a>
+            <a @click="onClickRelatedCommodity(scope.row.name)" style="color: blue; cursor: pointer">
+              {{ scope.row.name }}</a>
           </template>
         </el-table-column>
         <el-table-column
@@ -50,10 +49,9 @@
 </template>
 
 <script>
-import echarts from 'echarts';
 import * as echarts5 from 'echarts5';
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
-import {riskAlarmService} from "@/api/part1/riskPrediction";
+import {getDataRiskChart, riskAlarmService} from "@/api/part1/riskPrediction";
 
 export default {
   name: "lineGraphNew",
@@ -71,7 +69,7 @@ export default {
   },
   mounted() {
     this.commodities = this.loadAll();
-    riskAlarmService().then(res => {
+    getDataRiskChart(this.value).then(res => {
       this.formRisk = res.data.map(item => {
         return {
           id: item.id,
@@ -183,7 +181,7 @@ export default {
     },
     // 点击查询按钮
     onClickQuery() {
-      riskAlarmService().then(res => {
+      getDataRiskChart(this.value).then(res => {
         this.formRisk = res.data.map(item => {
           return {
             id: item.id,
