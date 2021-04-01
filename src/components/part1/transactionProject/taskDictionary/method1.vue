@@ -22,7 +22,7 @@ import taskMethodChange from "@/components/part1/Multimodal-multigranularity/tas
 // import insertCss from 'insert-css'
 import {timestampToTime} from "@/utils/part3";
 export default {
-  name: '这里',
+ // name: '这里',
 
   data () {
     return {
@@ -263,7 +263,7 @@ const tooltip = new G6.Tooltip({
       </ul>
           <ul>
         <h3>* 截止时间: ${(Number.isNaN(e.item.getModel().endTime))?e.item.getModel().endTime:
-            (timestampToTime(e.item.getModel().endTime))}</h3>
+            ((!e.item.getModel().endTime)?"NaN-NaN-NaN":timestampToTime(e.item.getModel().endTime))}</h3>
       </ul>
 `
 
