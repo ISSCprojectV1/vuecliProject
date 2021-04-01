@@ -137,7 +137,7 @@
                   </el-table-column>
                 </el-table>
                 <span slot="footer" class="dialog-footer">
-    <el-button @click="commodityDialogVisible = false">取 消</el-button>
+    <el-button @click="flatDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="updateFlat()">确 定</el-button>
   </span>
               </el-dialog>
