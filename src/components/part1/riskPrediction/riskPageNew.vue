@@ -45,7 +45,6 @@
 
 <script>
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
-import echarts from "echarts";
 import * as echarts5 from "echarts5";
 import {getDataRiskChart, riskAlarmService} from "@/api/part1/riskPrediction";
 
@@ -61,9 +60,16 @@ export default {
       dialogFormVisible: false
     }
   },
+  created() {
+
+  },
   mounted() {
     this.commodities = this.loadAll();
-    riskAlarmService().then(res => {
+
+    let commodityFromStore = this.$store.state.commodityForMonitoring;
+    if (commodityFromStore)
+      this.value = commodityFromStore;
+    getDataRiskChart(this.value).then(res => {
       this.formRisk = res.data.map(item => {
         return {
           id: item.id,

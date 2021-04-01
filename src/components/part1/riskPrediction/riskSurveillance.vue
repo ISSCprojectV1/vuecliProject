@@ -39,7 +39,7 @@
                       @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
-                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage()">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
                   <el-popconfirm
                       confirm-button-text="确定"
                       cancel-button-text="取消"
@@ -78,7 +78,7 @@
                       @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
-                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage()">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
                   <el-popconfirm
                       confirm-button-text="确定"
                       cancel-button-text="取消"
@@ -323,7 +323,8 @@ export default {
     goToFirst() {
       this.$router.push('/trade/dashboard')
     },
-    goToRiskPage() {
+    goToRiskPage(row) {
+      this.$store.commit('setCommodityForMonitoring', row.goods)
       this.$router.push('/trade/riskPrediction/riskPage')
     },
     // 绘图
