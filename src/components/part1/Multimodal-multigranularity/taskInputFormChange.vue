@@ -46,7 +46,7 @@
                 <el-form-item label="工作时间" >
                     <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
                 </el-form-item>
-                <el-form-item label="截止时间" >
+                <el-form-item label="结束时间" >
                     <el-input type="number" v-model="deadLine" placeholder="如非末尾任务请勿输入"></el-input>
                 </el-form-item>
                 <el-form-item label="内容">
