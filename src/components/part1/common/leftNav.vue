@@ -357,9 +357,6 @@
   }
 </script>
 <style>
-  .el-menu-item:hover{
-    background: #0677B3 !important;
-  }
   .el-submenu__title:hover {
     background: #0677B3 !important;
   }
