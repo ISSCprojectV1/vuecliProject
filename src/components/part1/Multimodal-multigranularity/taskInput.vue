@@ -487,8 +487,9 @@ export default {
         "commodityName": this.commodityName
       };
       console.log(inputData);
-      taskInput(inputData).then(function (response) {
-
+      taskInput(inputData).then((response) =>{
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+this.$parent.$children[0].active=1
       })
           .catch(function (error) {
             console.log(error);
