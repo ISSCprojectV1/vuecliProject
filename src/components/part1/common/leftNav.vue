@@ -50,10 +50,6 @@
         <i class="el-icon-menu"></i>
         <span slot="title">风险预警监控</span>
       </el-menu-item>
-      <el-menu-item index="/trade/auction" style="text-align: left;font-size: 20px">
-        <i class="el-icon-menu"></i>
-        <span slot="title">附加功能：数据共享</span>
-      </el-menu-item>
 
     </el-menu>
   </el-col>
