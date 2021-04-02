@@ -24,14 +24,14 @@
               <span v-else>正常</span>
             </template>
           </el-table-column>
-          <el-table-column label="信用评分" min-width="80">
+          <el-table-column prop="creditScore" label="信用评分" min-width="80">
             <template slot-scope="scope">
-              <span v-if="Number.isNaN(scope.row.abnormalValue)">100</span>
+              <span v-if="Number.isNaN(scope.row.abnormalValue)">无</span>
               <span v-else-if="isAbnormal(scope.row.abnormalValue)" style="color: red">
-                    {{ (100 - 5 * scope.row.abnormalValue).toFixed(3) }}
+                    {{ scope.row.creditScore.toFixed(3) }}
                   </span>
               <span v-else style="color: green">
-                    {{ (100 - 5 * scope.row.abnormalValue).toFixed(3) }}
+                    {{ scope.row.creditScore.toFixed(3) }}
                   </span>
             </template>
           </el-table-column>
@@ -110,9 +110,6 @@ export default {
         });
         this.threshold = res.data.data.threshold;
         this.totalTableActive = res.data.data.total;
-        // 顺便画初始图
-        // if(this.dataTableActive[0])
-        //  this.gotoDetail(this.dataTableActive[0].company)
       }).catch(err => {
         console.log(err)
       })
