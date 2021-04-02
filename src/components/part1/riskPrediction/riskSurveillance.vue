@@ -197,7 +197,7 @@
 </template>
 
 <script>
-import echarts from "echarts";
+import * as echarts5 from "echarts5";
 import {getRiskInfoByStatus, updateRiskInfo} from "@/api/part1/riskPrediction";
 
 export default {
@@ -329,7 +329,7 @@ export default {
     },
     // 绘图
     drawChartRiskFrequency() {
-      let chart = echarts.init(document.getElementById('chart-risk-frequency'))
+      let chart = echarts5.init(document.getElementById('chart-risk-frequency'))
 
       let option = {
         title: {
