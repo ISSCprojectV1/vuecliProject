@@ -43,7 +43,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="工作时间" >
+                <el-form-item label="工作时间（小时）" >
                     <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
                 </el-form-item>
                 <el-form-item label="结束时间" >
@@ -139,7 +139,7 @@
             this.input=this.taskin.name
             this.priority=this.taskin.priority
             this.humanUse=((this.taskin.humanUse=='是')||(this.taskin.humanUse=='人工监管参与'))?1:0
-            this.workingTime=this.taskin.workingTime
+            this.workingTime=this.taskin.workingTime/3600000
             this.deadLine=this.taskin.deadLine
             //  if(this.taskin.content)
             // this.content=this.taskin.content+"\r\n"+"aaa"
@@ -166,7 +166,7 @@
                 this.input=this.taskin.name
                 this.priority=(this.taskin.priority)?this.taskin.priority:1;
                 this.commodityName=this.taskin.commodityName
-                this.workingTime=this.taskin.workingTime
+                this.workingTime=this.taskin.workingTime/3600000
                 this.deadLine=this.taskin.deadLine
                 this.humanUse=this.taskin.humanUse
                 this.content=this.taskin.content
@@ -282,7 +282,7 @@ let wortstatue=null
                     "humanUse":humannn,  //
                     "startTime":startData,//
                     "endTime":endData,//
-                    "workingTime":this.workingTime,//
+                    "workingTime":this.workingTime*3600000,//
                     "deadLine":this.deadLine,
                     "timeadvise":this.timeadvise,
                     "content":this.content,
