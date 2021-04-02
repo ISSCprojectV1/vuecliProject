@@ -11,9 +11,9 @@ import admin from "@/router/admin"
 
 
 export const constantRoutes = admin.concat(routes1).concat(routes2).concat(routes3);
-const rounter = new VueRouter({
-    mode:"history",
-    routes:constantRoutes
+const router = new VueRouter({
+  mode: "history",
+  routes: constantRoutes
 });
 
-export default rounter;
+export default router;
