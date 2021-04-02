@@ -9,7 +9,7 @@
         >
             <el-table-column
                     v-for="(value,name,index) in tableData[0]"
-                    :label=name
+                    :label=dealWithChinese(name)
                     width="100"
                     :prop=name
                     :key=index>
@@ -47,16 +47,16 @@
 
         <el-dialog title="新增用户" :visible.sync="dialogFormAddVisible">
             <el-form :model="addUserform">
-                <el-form-item label="name" :label-width="formLabelWidth">
+                <el-form-item label="用户名" :label-width="formLabelWidth">
                     <el-input v-model="addUserform.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="accountId" :label-width="formLabelWidth">
+                <el-form-item label="账号" :label-width="formLabelWidth">
                     <el-input v-model="addUserform.accountId" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="password" :label-width="formLabelWidth">
+                <el-form-item label="密码" :label-width="formLabelWidth">
                     <el-input v-model="addUserform.password" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="role" :label-width="formLabelWidth">
+                <el-form-item label="角色" :label-width="formLabelWidth">
                     <el-select v-model="addUserform.roleId" clearable placeholder="请选择">
                         <el-option
                                 v-for="item in roleOptions"
@@ -186,11 +186,80 @@
             }
         },
         methods: {
+          dealWithChinese(name)
+          {
+
+           if(name=="id"){
+            name="编号"
+           }
+            if(name=="accountId"){
+              name="账号"
+            }         if(name=="password"){
+            name="密码"
+          }         if(name=="id"){
+            name="编号"
+          }         if(name=="score"){
+            name="分数"
+          }         if(name=="name"){
+            name="用户名"
+          }         if(name=="gmtCreate"){
+            name="创建时间"
+          }
+            if(name=="gmtModified"){
+              name="修改时间"
+            }
+            if(name=="reputation"){
+              name="信誉"
+            }
+return name
+       //
+
+
+          }
+          ,
             getUsersAPI(){
                 getUsers(1).then(res => {
                     console.log("请求用户列表api成功")
                     console.log(res.data)
-                    this.tableData = res.data.list
+
+             //     for(let i=0;i<res.data.list;i++)
+                //  {console.log()}
+                   this.tableData = res.data.list
+              /*    let    keys = [];
+                  let value=[]
+                  let neirong={}
+           console.log(this.tableData[0])
+                  for (let property in  res.data.list)
+                  {
+                    keys.push(property)
+                    value.push(res[property])
+               //     neirong["neirong"]=property
+                //    neirong["shuzhi"]=res[property]
+                    if(property=="id"){
+                      let jsonObj = {"neirong":"序号","shuzhi":res[property]};
+                      this.tabledata3.push(jsonObj)
+
+                    }
+                    if(property=="name"){
+                      let jsonObj = {"neirong":"操作员名称","shuzhi":res[property]};
+                      this.tabledata3.push(jsonObj)
+
+                    }
+                    if(property=="taskId"){
+                      let jsonObj = {"neirong":"当前任务编号","shuzhi":res[property]};
+                      this.tabledata3.push(jsonObj)
+
+                    }
+
+                    //    let obj1 = JSON.parse(neirong);
+                    //  console.log(obj1)
+
+
+
+
+                    //   console.log(  this.tabledata3)
+                    //     console.log(keys.length)
+                  }*/
                     this.total = res.data.total;
                 }).catch(err => {
                     console.log(err);

@@ -515,7 +515,7 @@ export default {
       echart1.setOption(option);
     },
     goBack() {
-      history.go(-1);
+      this.$router.go(-1);
     }
   }
 }
