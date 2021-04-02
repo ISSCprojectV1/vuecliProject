@@ -14,6 +14,9 @@
       <el-form-item>
         <el-button type="primary" @click="onClickQuery">查询</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="goBack">返回</el-button>
+      </el-form-item>
     </el-form>
 
     <div id="chart-risk-prediction"
@@ -46,7 +49,7 @@
 <script>
 import {getcommodityRelationdetails2} from "@/api/part1/Multimodal-multigranularity";
 import * as echarts5 from "echarts5";
-import {getDataRiskChart, riskAlarmService} from "@/api/part1/riskPrediction";
+import {getDataRiskChart} from "@/api/part1/riskPrediction";
 
 export default {
   name: "riskPageNew",
@@ -114,6 +117,9 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    goBack() {
+      history.back();
     },
     drawChartRiskPrediction() {
       let chart = echarts5.init(document.getElementById('chart-risk-prediction'))
