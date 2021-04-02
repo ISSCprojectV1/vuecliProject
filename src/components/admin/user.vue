@@ -9,7 +9,7 @@
     >
       <el-table-column
           v-for="(value,name,index) in tableData[0]"
-          :label=name
+          :label=dealWithChinese(name)
           min-width="100"
           :prop=name
           :key=index>
@@ -184,6 +184,38 @@ export default {
     }
   },
   methods: {
+    dealWithChinese(name)
+    {
+      if(name=="email"){
+        name="邮箱"
+      }
+      if(name=="id"){
+        name="编号"
+      }
+      if(name=="accountId"){
+        name="账号"
+      }         if(name=="password"){
+      name="密码"
+    }         if(name=="id"){
+      name="编号"
+    }         if(name=="score"){
+      name="分数"
+    }         if(name=="name"){
+      name="用户名"
+    }         if(name=="gmtCreate"){
+      name="创建时间"
+    }
+      if(name=="gmtModified"){
+        name="修改时间"
+      }
+      if(name=="reputation"){
+        name="信誉"
+      }
+      return name
+      //
+
+
+    },
     getUsersAPI() {
       getUsers(1).then(res => {
         console.log("请求用户列表api成功")
