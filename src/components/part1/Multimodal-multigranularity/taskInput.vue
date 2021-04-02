@@ -95,7 +95,7 @@
           <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
         </el-form-item>
 
-        <el-form-item label="截止时间">
+        <el-form-item label="结束时间">
           <el-date-picker type="date" placeholder="选择结束日期" v-model="deadLine" style="width: 100%;"></el-date-picker>
 
         </el-form-item>
@@ -136,7 +136,7 @@
         <el-form-item label="工作时间（小时）">
           {{ workingTime }}
         </el-form-item>
-        <el-form-item label="截止时间">
+        <el-form-item label="结束时间">
           {{ deadLine }}
         </el-form-item>
       </el-form>
