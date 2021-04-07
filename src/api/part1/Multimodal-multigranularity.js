@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import Axios from 'axios';
 
 // 模态粒度
 export function spaceResult() {
@@ -9,23 +8,25 @@ export function spaceResult() {
     method: 'get',
   })
 }
+
 // 新建任务
 export function taskInput(data) {
   console.log("发送taskInput请求")
-    return request({
-      url: '/task',
-      method: 'post',
-      data
-        })
-  }
+  return request({
+    url: '/task',
+    method: 'post',
+    data
+  })
+}
 
 export function getReadyQueue() {
-    console.log("getReadyQueue")
-    return request({
-        url: '/getReadyQueue',
-        method: 'get',
-    })
+  console.log("getReadyQueue")
+  return request({
+    url: '/getReadyQueue',
+    method: 'get',
+  })
 }
+
 export function modality() {
   console.log("/modality")
   return request({
@@ -33,6 +34,7 @@ export function modality() {
     method: 'get',
   })
 }
+
 // 获得所有用户
 export function getAllUsers() {
   console.log("发送/getAllUsers请求")
@@ -41,14 +43,16 @@ export function getAllUsers() {
     method: 'get',
   })
 }
+
 // 获得所有
-export function bourseget(data) {
+export function bourseget() {
   console.log("发送bourseget请求")
   return request({
     url: '/getAllbourse',
     method: 'get',
   })
 }
+
 // 修改状态
 export function changeTaskStatus(data) {
   console.log("发送changeTaskStatus请求")
@@ -58,6 +62,7 @@ export function changeTaskStatus(data) {
     data
   })
 }
+
 // 修改操作员
 export function changemodality(data) {
   console.log("发送/modality请求")
@@ -67,24 +72,26 @@ export function changemodality(data) {
     data
   })
 }
+
 export function teamform() {
-    console.log("发送teamform请求")
-    return request({
-        url: '/yu/coalitonByHungary',
-        method: 'get',
-    })
+  console.log("发送teamform请求")
+  return request({
+    url: '/yu/coalitonByHungary',
+    method: 'get',
+  })
 }
 
 
 // 搜索任务
 export function searchTask(data) {
   console.log("发送searchTask请求")
-    return request({
-      url: '/taskQuery',
-      method: 'post',
-      data
-        })
-  }
+  return request({
+    url: '/taskQuery',
+    method: 'post',
+    data
+  })
+}
+
 // 搜索任务
 export function changetimeadvise() {
   console.log("发送时间粒度请求")
@@ -93,32 +100,34 @@ export function changetimeadvise() {
     method: 'get',
   })
 }
-  // 分配任务
+
+// 分配任务
 export function taskAllocation() {
   console.log("发送taskAllocation 请求")
-    return request({
-      url: '/taskAllocation',
-      method: 'get'
-        })
-  }
+  return request({
+    url: '/taskAllocation',
+    method: 'get'
+  })
+}
 
-    // 获取任务列表
+// 获取任务列表
 export function taskQuery() {
   console.log("获取taskQuery表格数据")
-    return request({
-      url: '/task',
-      method: 'get'
-        })
-  }
+  return request({
+    url: '/task',
+    method: 'get'
+  })
+}
 
 // 根据userid获取角色名称
 export function getModalityByUserId(url) {
-  console.log("获取getRolenameById数据 ")
+  console.log("获取getModalityByUserId数据 ")
   return request({
     url: url,
     method: 'get'
   })
 }
+
 // 获取角色名称
 export function getRolenameById(url) {
   console.log("获取getRolenameById数据 ")
@@ -127,67 +136,68 @@ export function getRolenameById(url) {
     method: 'get'
   })
 }
+
 export function taskQueryById(url) {
   return request({
     method: 'GET',
-
-    url:url,
+    url: url,
   })
 }
+
 // 添加新模态  api
 export function modalityInput_api(data) {
   console.log("发送modalityInput_api请求")
-    return request({
-      url: '/modality',
-      method: 'post',
-      data
-        })
-  }
+  return request({
+    url: '/modality',
+    method: 'post',
+    data
+  })
+}
 
 // 获得模态任务列表
 export function modalityQuery() {
   console.log("获取modalityQuery表格数据 步骤二 发送modalityQuery请求 ")
-    return request({
-      url: '/modality',
-      method: 'get'
-        })
-  }
+  return request({
+    url: '/modality',
+    method: 'get'
+  })
+}
 
-  // 获得模态任务分配列表
+// 获得模态任务分配列表
 export function moAllocation() {
   console.log("获取moAllocation表格数据 步骤二 发送modalityAllocation请求 ")
-    return request({
-      url: '/modalityAllocation',
-      method: 'get'
-        })
-  }
+  return request({
+    url: '/modalityAllocation',
+    method: 'get'
+  })
+}
 
 // 获得元任务列表
 export function ExecutionQuery() {
   console.log("获取taskExecutionQuery表格数据 步骤二 发送taskExecutionQuery请求 ")
-    return request({
-      url: '/taskExecution',
-      method: 'get'
-        })
-  }
+  return request({
+    url: '/taskExecution',
+    method: 'get'
+  })
+}
 
 // 元任务查询（BY ID)
 export function taskExecutionQueryByid(URL) {
   console.log("获取taskExecutionQueryByid表格数据 步骤二 发送taskExecutionQueryByid请求 ")
-    return request({
-      url: URL,
-      method: 'get'
-        })
-  }
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
 
 // 粒度调整执行
 export function granularityExecution_api(URL) {
   console.log("获取granularityExecution_api表格数据 步骤二 发送granularityExecution_api请求 ")
-    return request({
-      url: URL,
-      method: 'get'
-        })
-  }
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
 
 // 获得商品信息
 export function getcommodityInfomation() {
@@ -340,7 +350,7 @@ export function getcommodityTimeadvise() {
 // 根据商品名称 获得时间粒度。
 // var URL ='/getcommodityTimeadvise2/'+this.commodityName;
 // @GetMapping("/getcommodityTimeadvise2/{name}")
-export function getcommodityTimeadvise2(URL)  {
+export function getcommodityTimeadvise2(URL) {
   console.log("根据商品名称 获得时间粒度！！！")
   return request({
     url: URL,
@@ -360,7 +370,7 @@ export function addcommodityTimeadvise() {
 // 根据商品名称 获得关联商品集。
 // var URL ='/getcommodityRelationdetails/'+this.commodityName;
 //  @GetMapping("/getcommodityRelationdetails/{name}")
-export function getcommodityRelationdetails2(URL)  {
+export function getcommodityRelationdetails2(URL) {
   console.log("根据商品名称 获得关联商品集合！！！")
   return request({
     url: URL,
@@ -373,34 +383,35 @@ export function getcommodityRelationdetails2(URL)  {
 // URL = /getplatform
 export function getplatform(URL) {
   console.log("发送getplatform请求")
-    return request({
-      url: URL,
-      method: 'get'
-        })
-  }
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
 // 根据商品名称&平台名称 获得可推荐的空间粒度
 // @GetRecommendPlatform(String commodity,String platform)
 // URL = /getrecommendrlatform?commodity=铝矿石&platform=青岛国际商品交易所
 export function getrecommendrlatform(URL) {
   console.log("发送getrecommendrlatform请求")
-    return request({
-      url: URL,
-      method: 'get'
-        })
-  }
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
 
-  // 获取联盟分配结果
-  // @getAllResult()
-  // URL = /yu/getAllResult
-  export function getTeamResult(URL) {
-    console.log("发送getTeamResult请求")
-      return request({
-        url: URL,
-        method: 'get'
-          })
-    }
+// 获取联盟分配结果
+// @getAllResult()
+// URL = /yu/getAllResult
+export function getTeamResult(URL) {
+  console.log("发送getTeamResult请求")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
 
-    // 追加商品粒度
+// 追加商品粒度
 export function updateCommodity(data) {
   console.log("追加商品粒度")
   return request({
@@ -409,19 +420,21 @@ export function updateCommodity(data) {
     data
   })
 }
+
 //获取某联盟内的数据
 export function getOneTeamResult(URL) {
   console.log("发送getOneTeamResult请求")
-    return request({
-      url: URL,
-      method: 'get'
-        })
-  }
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
 //获取所有监管机构的数据
 export function getAllRegulators() {
   console.log("发送getAllRegulators请求")
-    return request({
-      url: '/yu/getAllRegulators',
-      method: 'get'
-        })
-  }
+  return request({
+    url: '/yu/getAllRegulators',
+    method: 'get'
+  })
+}
