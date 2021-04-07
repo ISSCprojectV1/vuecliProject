@@ -2,7 +2,7 @@
   <div>
 
     <div class="title">
-      <div style="display: inline-block; margin-bottom:20px; font-size: 40px;">主被动模态与空间粒度</div>
+      <div style="display: inline-block; margin-bottom:20px; font-size: 40px;">主被动模态详情</div>
     </div>
 
     <div>

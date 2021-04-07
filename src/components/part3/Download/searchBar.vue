@@ -1,6 +1,6 @@
 <template>
   <div class="searchBar">
-    <announcement></announcement>
+<!--    <announcement></announcement>-->
     <el-row>
       <el-col :span="24">
         <div style="float: left"><span>分类：</span></div>
@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import announcement from "@/components/part3/Common/announcement";
+// import announcement from "@/components/part3/Common/announcement";
 
 export default {
   name: "searchBar",
   components: {
-    announcement
+    // announcement
   },
   data() {
     return {
