@@ -340,10 +340,29 @@ export default {
           show: true
         },
         grid: {containLabel: true},
-        xAxis: {},
+        xAxis: {
+          min: 0,
+          max: 30,
+          axisLabel: {
+            show: true,    //这行代码控制着坐标轴x轴的文字是否显示
+            textStyle: {
+              color: '#000',   //x轴上的字体颜色
+              fontSize:'16'    // x轴字体大小
+            }
+          },
+          axisLine:{
+            show: true,
+            lineStyle:{
+              color:'#000',
+             width:3,   //这里是坐标轴的宽度,可以去掉
+            }
+          },
+
+
+        },
         yAxis: {
           type: 'category',
-          data: ['小麦', '大豆', '玉米', '棉花']
+          data: ['棉花', '大豆', '玉米', '小麦']
         },
         visualMap: {
           orient: 'horizontal',
@@ -368,7 +387,7 @@ export default {
             //     }
             //   }
             // },
-            data: [2, 15, 11, 11]
+            data: [2, 9, 12,15]
           }
         ]
       }
