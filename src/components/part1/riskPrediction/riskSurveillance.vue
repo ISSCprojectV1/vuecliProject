@@ -30,7 +30,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" min-width="80">
-
+                <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
               </el-table-column>
             </el-table>
           </el-tab-pane>
@@ -215,7 +215,7 @@ export default {
     }
   },
   created() {
-    this.getRiskInfo(0)
+    this.getRiskInfo(1)
 
   },
   mounted() {
@@ -223,16 +223,29 @@ export default {
   },
   methods: {
     handleTabClick(tab) {
-      this.getRiskInfo(this.tabIndex.indexOf(tab.label))
+      console.log(tab.label)
+      let dataa=-1
+      console.log(this.tabIndex.indexOf(tab.label)==0)
+      if(this.tabIndex.indexOf(tab.label)==0)
+       dataa=1
+      if(this.tabIndex.indexOf(tab.label)==1)
+        dataa=0
+      if(dataa!=0&&dataa!=1)
+        dataa=this.tabIndex.indexOf(tab.label)
+      this.getRiskInfo(dataa)
     },
     getRiskInfo(status) {
       getRiskInfoByStatus(status).then(res => {
+        console.log(this.res)
+        console.log(status)
         switch (status) {
           case 0:
             this.formReleased = res.data;
+            console.log( this.formReleased)
             break;
           case 1:
-            this.formPending = res.data;
+            this.formReleased = res.data;
+            console.log( this.formReleased)
             break;
           case 2:
             this.formModified = res.data;
@@ -272,7 +285,7 @@ export default {
           message: '修改成功',
           type: 'success'
         })
-        this.getRiskInfo(0)
+        this.getRiskInfo(1)
       }).catch(() => {
         this.$message({
           message: '修改失败',
@@ -292,7 +305,7 @@ export default {
           message: '送审成功',
           type: 'success'
         })
-        this.getRiskInfo(0)
+        this.getRiskInfo(1)
       }).catch(() => {
         this.$message({
           message: '送审失败',
@@ -311,7 +324,7 @@ export default {
           message: '删除成功',
           type: 'success'
         })
-        this.getRiskInfo(0)
+        this.getRiskInfo(1)
       }).catch(() => {
         this.$message({
           message: '删除失败',
