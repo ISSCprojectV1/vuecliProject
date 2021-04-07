@@ -30,24 +30,7 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" min-width="80">
-                <template slot-scope="scope">
-                  <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
-                  <el-popconfirm
-                      confirm-button-text="确定"
-                      cancel-button-text="取消"
-                      title="是否确定送审？"
-                      @onConfirm="pendInfo(scope.row)">
-                    <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
-                  </el-popconfirm>
-                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
-                  <el-popconfirm
-                      confirm-button-text="确定"
-                      cancel-button-text="取消"
-                      title="是否确定删除？"
-                      @onConfirm="deleteInfo(scope.row)">
-                    <el-button type="text" class="el-option-in-table" slot="reference">删除</el-button>
-                  </el-popconfirm>
-                </template>
+                <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
               </el-table-column>
             </el-table>
           </el-tab-pane>
@@ -72,20 +55,14 @@
                 <template slot-scope="scope">
                   <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
                   <el-popconfirm
-                      confirm-button-text="确定"
-                      cancel-button-text="取消"
-                      title="是否确定送审？"
-                      @onConfirm="pendInfo(scope.row)">
+                          confirm-button-text="确定"
+                          cancel-button-text="取消"
+                          title="是否确定送审？"
+                          @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
                   <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
-                  <el-popconfirm
-                      confirm-button-text="确定"
-                      cancel-button-text="取消"
-                      title="是否确定删除？"
-                      @onConfirm="deleteInfo(scope.row)">
-                    <el-button type="text" class="el-option-in-table" slot="reference">删除</el-button>
-                  </el-popconfirm>
+
                 </template>
               </el-table-column>
             </el-table>
@@ -133,26 +110,6 @@
             </el-table>
           </el-tab-pane>
 
-          <el-tab-pane label="已删除">
-            <el-table :data="formDeleted">
-              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-              <el-table-column prop="info" label="预警信息" min-width="40">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="发布时间" min-width="70">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" min-width="80">
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
 
         </el-tabs>
 
@@ -199,7 +156,48 @@
 <script>
 import * as echarts5 from "echarts5";
 import {getRiskInfoByStatus, updateRiskInfo} from "@/api/part1/riskPrediction";
+/*
+*  <template slot-scope="scope">
+                  <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
+                  <el-popconfirm
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定送审？"
+                      @onConfirm="pendInfo(scope.row)">
+                    <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
+                  </el-popconfirm>
+                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
+                  <el-popconfirm
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定删除？"
+                      @onConfirm="deleteInfo(scope.row)">
+                    <el-button type="text" class="el-option-in-table" slot="reference">删除</el-button>
+                  </el-popconfirm>
+                </template>
+                *  <el-tab-pane label="已删除">
+            <el-table :data="formDeleted">
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
+              <el-table-column prop="info" label="预警信息" min-width="40">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="发布时间" min-width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="80">
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
 
+*
+* */
 export default {
   name: "riskSurveillance",
   data() {
@@ -217,23 +215,37 @@ export default {
     }
   },
   created() {
-    this.getRiskInfo(0)
+    this.getRiskInfo(1)
+
   },
   mounted() {
     this.drawChartRiskFrequency()
   },
   methods: {
     handleTabClick(tab) {
-      this.getRiskInfo(this.tabIndex.indexOf(tab.label))
+      console.log(tab.label)
+      let dataa=-1
+      console.log(this.tabIndex.indexOf(tab.label)==0)
+      if(this.tabIndex.indexOf(tab.label)==0)
+       dataa=1
+      if(this.tabIndex.indexOf(tab.label)==1)
+        dataa=0
+      if(dataa!=0&&dataa!=1)
+        dataa=this.tabIndex.indexOf(tab.label)
+      this.getRiskInfo(dataa)
     },
     getRiskInfo(status) {
       getRiskInfoByStatus(status).then(res => {
+        console.log(this.res)
+        console.log(status)
         switch (status) {
           case 0:
             this.formReleased = res.data;
+            console.log( this.formReleased)
             break;
           case 1:
-            this.formPending = res.data;
+            this.formReleased = res.data;
+            console.log( this.formReleased)
             break;
           case 2:
             this.formModified = res.data;
@@ -273,7 +285,7 @@ export default {
           message: '修改成功',
           type: 'success'
         })
-        this.getRiskInfo(0)
+        this.getRiskInfo(1)
       }).catch(() => {
         this.$message({
           message: '修改失败',
@@ -293,7 +305,7 @@ export default {
           message: '送审成功',
           type: 'success'
         })
-        this.getRiskInfo(0)
+        this.getRiskInfo(1)
       }).catch(() => {
         this.$message({
           message: '送审失败',
@@ -312,7 +324,7 @@ export default {
           message: '删除成功',
           type: 'success'
         })
-        this.getRiskInfo(0)
+        this.getRiskInfo(1)
       }).catch(() => {
         this.$message({
           message: '删除失败',
