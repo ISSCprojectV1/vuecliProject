@@ -15,7 +15,7 @@
 
           <el-tab-pane label="已发布">
             <el-table :data="formReleased">
-              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -37,7 +37,7 @@
 
           <el-tab-pane label="待处理">
             <el-table :data="formReleased">
-              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -70,7 +70,7 @@
 
           <el-tab-pane label="已修改">
             <el-table :data="formModified">
-              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -91,7 +91,7 @@
 
           <el-tab-pane label="已送审">
             <el-table :data="formSent">
-              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -240,26 +240,38 @@ export default {
         console.log(status)
         switch (status) {
           case 0:
-            this.formReleased = res.data;
+            this.formReleased = this.dealwithid(res.data);
             console.log( this.formReleased)
             break;
           case 1:
-            this.formReleased = res.data;
+            this.formReleased = this.dealwithid(res.data);
             console.log( this.formReleased)
             break;
           case 2:
-            this.formModified = res.data;
+            this.formModified = this.dealwithid(res.data);
             break;
           case 3:
-            this.formSent = res.data;
+            this.formSent = this.dealwithid(res.data);
             break;
           case 4:
-            this.formDeleted = res.data;
+            this.formDeleted = this.dealwithid(res.data);
             break;
           default:
             break;
         }
       })
+    },
+    dealwithid(data){
+      let counter=1
+      let temp=data;
+      for(let i=0;i<temp.length;i++)
+      {
+        temp[i].dealedid=counter
+        counter=counter+1
+      }
+      console.log(temp)
+
+      return  temp
     },
     // 操作
     onClickModify(row) {
