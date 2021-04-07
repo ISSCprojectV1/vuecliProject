@@ -262,7 +262,7 @@ const tooltip = new G6.Tooltip({
         <h3>* 操作员: ${e.item.getModel().operatorName}</h3>
       </ul>
           <ul>
-        <h3>* 截止时间: ${(Number.isNaN(e.item.getModel().endTime))?e.item.getModel().endTime:
+        <h3>* 结束时间: ${(Number.isNaN(e.item.getModel().endTime))?e.item.getModel().endTime:
             ((!e.item.getModel().endTime)?"NaN-NaN-NaN":timestampToTime(e.item.getModel().endTime))}</h3>
       </ul>
 `
