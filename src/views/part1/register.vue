@@ -21,8 +21,7 @@
     <el-dialog
       title="温馨提示"
       :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose">
+      width="30%">
       <span>信息填写不符合规范，请检查后重新登陆！</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
