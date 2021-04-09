@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {removeToken} from "@/utils/auth";
+import {removeAdminTrue, removeToken} from "@/utils/auth";
 
 export default {
   name: "header",
@@ -42,6 +42,7 @@ export default {
   methods: {
     logOut() {
       removeToken();
+      removeAdminTrue();
       this.$router.push("/login")
     }
   }
