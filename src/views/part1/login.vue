@@ -34,12 +34,10 @@
 
 <script>
 import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
-import {
-  getRolenameById
-} from "@/api/part1/Multimodal-multigranularity";
+import {getRolenameById} from "@/api/part1/Multimodal-multigranularity"
 import router from '@/router'
-import {asyncRoutes, constantRoutes} from "@/router";
-import {getMenusId} from "@/api/part3";
+import {asyncRoutes, constantRoutes} from "@/router"
+import {getMenusId} from "@/api/part3"
 
 export default {
   name: "Login",
@@ -98,16 +96,19 @@ export default {
     // 根据id获取role并设置cookies
     getRoleById(url) {
       getRolenameById(url).then(res => {
+        console.log('根据id获取role返回的res: ')
+        console.log(res)
         if (!res.data.roleList)
           return
 
         // 设置cookies
         let roleList = res.data.roleList
+        console.log('设置cookies前获取role list: ')
+        console.log(roleList)
         for (let i = 0; i < roleList.length; i++) {
-          if (roleList[i].roleName === 'user')  // 登录角色为user
-            setUserTrue("true")
-          else // 登录角色为admin
+          if (roleList[i].roleName === 'admin') { // 登录角色为admin
             setAdminTrue("true")
+          }
         }
 
         // 获取当前用户可以访问的组件id，并过滤routes
