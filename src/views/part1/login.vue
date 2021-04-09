@@ -37,7 +37,9 @@ import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue
 import {
   getRolenameById
 } from "@/api/part1/Multimodal-multigranularity";
-
+import router from '@/router'
+import {asyncRoutes, constantRoutes} from "@/router";
+import {getMenusId} from "@/api/part3";
 
 export default {
   name: "Login",
@@ -99,12 +101,38 @@ export default {
         if (!res.data.roleList)
           return
 
+        // 设置cookies
         let roleList = res.data.roleList
         for (let i = 0; i < roleList.length; i++) {
           if (roleList[i].roleName === 'user')  // 登录角色为user
             setUserTrue("true")
           else // 登录角色为admin
             setAdminTrue("true")
+        }
+
+        // 获取当前用户可以访问的组件id，并过滤routes
+        if (getAdminTrue()) {
+          getMenusId().then(res => {
+            let list = res.data
+            let routesTrade = {
+              path: '/trade',
+              component: () => import("@/components/part1/common/full"),
+              children: asyncRoutes[0].children.filter(function (el) {
+                return list.includes(el.id)
+              })
+            }
+            let routesConsole = {
+              path: '/console',
+              component: () => import("@/views/part3/incentiveMechanism/Console/home"),
+              children: asyncRoutes[1].children.filter(function (el) {
+                return list.includes(el.id)
+              })
+            }
+            router.addRoutes([routesTrade, routesConsole])
+            console.log('add routes.')
+          }).catch(err => {
+            console.log(err)
+          })
         }
 
         // 根据用户选择的登录角色进入不同页面，进入前首先通过cookies判断用户role
@@ -118,6 +146,7 @@ export default {
               type: 'error'
             });
         } else { // 用户希望进入trade界面，无需判断role
+          console.log('用户请求进入trade界面')
           this.$router.push('/trade/Dashboard')
         }
       }).catch(err => {

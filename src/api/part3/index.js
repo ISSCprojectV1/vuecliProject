@@ -207,3 +207,6 @@ export function mocktest() {
     return request.get('/mocktest/')
 }
 
+export function getMenusId() {
+    return request.get('/getMenusId')
+}
