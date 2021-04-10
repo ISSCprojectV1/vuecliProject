@@ -292,6 +292,7 @@ if(res.data.data)
     return {
   tabledata3:[],
       usertrue:true,
+      admintrue: true,
 prioritychoose:[1,2,3],
       caozuoyuankey:[],
       caozuoyuanvalue:[],
