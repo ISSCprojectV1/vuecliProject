@@ -7,14 +7,50 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
+    console.log(routes)
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+  }
+}
+
+const getters = {
+  hasAccessTo: (state) => (path) => {
+    if (!state.routes) {
+      console.log('state.routes is empty!')
+      return false
+    }
+    if (RegExp('/admin').test(path))
+      return true
+    for (let index in state.routes) {
+      if (state.routes[index].path === '/') {
+        if (path === '/')
+          return true;
+        else
+          continue;
+      }
+      if (RegExp(state.routes[index].path).test(path)) {
+        console.log('匹配到存储的允许的route：')
+        console.log(state.routes[index].path)
+        return true
+      }
+    }
+    // if (RegExp('trade').test(path)) { // path contains trade
+    //   for (let index in state.routes[0].children)
+    //     if (RegExp(state.routes[0].children[index].path).test(path))
+    //       return true
+    // } else if (RegExp('console').test(path)) { // path contains console
+    //   for (let index in state.routes[1].children)
+    //     if (RegExp(state.routes[1].children[index].path).test(path))
+    //       return true
+    // }
+    return false
   }
 }
 
 export default {
   namespaced: true,
   state,
+  getters,
   mutations
 }
 

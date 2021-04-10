@@ -112,45 +112,63 @@ export default {
         }
 
         // 获取当前用户可以访问的组件id，并过滤routes
-        if (getAdminTrue()) {
-          getMenusId().then(res => {
-            let list = res.data
-            let routesTrade = {
-              path: '/trade',
-              component: () => import("@/components/part1/common/full"),
-              children: asyncRoutes[0].children.filter(function (el) {
-                return list.includes(el.id)
-              })
-            }
-            let routesConsole = {
-              path: '/console',
-              component: () => import("@/views/part3/incentiveMechanism/Console/home"),
-              children: asyncRoutes[1].children.filter(function (el) {
-                return list.includes(el.id)
-              })
-            }
-            router.addRoutes([routesTrade, routesConsole])
-            console.log('add routes.')
-          }).catch(err => {
-            console.log(err)
-          })
-        }
+        getMenusId().then(res => {
+          if(Object.prototype.hasOwnProperty.call(asyncRoutes[0], 'children'))
+            console.log('asyncRoutes[0] has children')
+          if(Object.prototype.hasOwnProperty.call(asyncRoutes[1], 'children'))
+            console.log('asyncRoutes[1] has children')
 
-        // 根据用户选择的登录角色进入不同页面，进入前首先通过cookies判断用户role
-        if (this.form.role === 'admin') { // 用户希望进入admin界面
-          if (getAdminTrue())  // 当前用户是admin，允许进入
-            this.$router.push('/admin')
-          else // 当前用户不是是admin，不允许进入
-            this.$message({
-              showClose: true,
-              message: '您没有权限',
-              type: 'error'
-            });
-        } else { // 用户希望进入trade界面，无需判断role
-          console.log('用户请求进入trade界面')
-          this.$router.push('/trade/Dashboard')
-        }
+          let list = res.data
+          let routesTrade = {
+            path: '/trade',
+            component: () => import("@/components/part1/common/full"),
+            children: asyncRoutes[0].children.filter(function (el) {
+              return list.includes(el.id)
+            })
+          }
+          let routesConsole = {
+            path: '/console',
+            component: () => import("@/views/part3/incentiveMechanism/Console/home"),
+            children: asyncRoutes[1].children.filter(function (el) {
+              return list.includes(el.id)
+            })
+          }
+
+          // store to store
+          let childRoutesTrade = asyncRoutes[0].children.filter(function (el) {
+            return list.includes(el.id)
+          })
+          let childRoutesConsole = asyncRoutes[1].children.filter(function (el) {
+            return list.includes(el.id)
+          })
+
+          this.$store.commit('permission/SET_ROUTES', childRoutesTrade.concat(childRoutesConsole))
+          console.log('after commit.')
+          // add routes
+          router.addRoutes([routesTrade, routesConsole])
+          console.log('add routes.')
+
+          // 根据用户选择的登录角色进入不同页面，进入前首先通过cookies判断用户role
+          if (this.form.role === 'admin') { // 用户希望进入admin界面
+            console.log('用户请求进入admin界面')
+            if (getAdminTrue())  // 当前用户是admin，允许进入
+              this.$router.push('/admin')
+            else // 当前用户不是是admin，不允许进入
+              this.$message({
+                showClose: true,
+                message: '您没有权限',
+                type: 'error'
+              });
+          } else { // 用户希望进入trade界面，无需判断role
+            console.log('用户请求进入trade界面')
+            this.$router.push('/trade/Dashboard')
+          }
+        }).catch(err => {
+          console.log('getMenusId报错')
+          console.log(err)
+        })
       }).catch(err => {
+        console.log('getRolenameById报错')
         console.log(err)
       })
     },

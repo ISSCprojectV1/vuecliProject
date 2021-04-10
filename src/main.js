@@ -7,7 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import echarts from 'echarts'
-//import '@/permission'
+import '@/permission'
 
 
 
