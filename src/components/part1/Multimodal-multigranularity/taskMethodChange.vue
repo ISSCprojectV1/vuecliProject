@@ -39,7 +39,10 @@
                         <el-option label="任务未执行" value="0"></el-option>
                         <el-option label="任务正常" value="1"></el-option>
                         <el-option label="任务异常" value="2"></el-option>
-
+                        setStepbarPosition(state, stepbarposition) {
+                        state.stepbarposition= stepbarposition;
+                        }
+                        stepbarposition:"",
                     </el-select>
                 </el-form-item>
 

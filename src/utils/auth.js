@@ -1,23 +1,36 @@
 import Cookies from 'js-cookie'
 
-const cookieKey = "UserId"
+const tokenKey = "UserId"
+const tokenRole = 'Role'
 const cookieUserTrue = "UserTrue"
 const cookieAdminTrue = "AdminTrue"
 
 export function getToken() {
-  return Cookies.get(cookieKey);
+  return Cookies.get(tokenKey)
 }
 
 export function setToken(token) {
-  return Cookies.set(cookieKey, token)
+  return Cookies.set(tokenKey, token)
 }
 
 export function removeToken() {
-  return Cookies.remove(cookieKey)
+  return Cookies.remove(tokenKey)
+}
+
+export function getRole() {
+  return Cookies.get(tokenRole)
+}
+
+export function setRole(token) {
+  return Cookies.set(tokenRole, token)
+}
+
+export function removeRole() {
+  return Cookies.remove(tokenRole)
 }
 
 export function getUserTrue() {
-  return Cookies.get(cookieUserTrue);
+  return Cookies.get(cookieUserTrue)
 }
 
 export function setUserTrue(token) {
@@ -29,7 +42,7 @@ export function removeUserTrue() {
 }
 
 export function getAdminTrue() {
-  return Cookies.get(cookieAdminTrue);
+  return Cookies.get(cookieAdminTrue)
 }
 
 export function setAdminTrue(token) {
