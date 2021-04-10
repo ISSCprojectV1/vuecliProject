@@ -47,7 +47,7 @@ export const asyncRoutes = [
       },
       {
         id: 9,
-        path: "/trade/Multimodal-multigranularity/stepBar/",
+        path: "/trade/Multimodal-multigranularity/stepBar",
         component: () => import("@/components/part1/Multimodal-multigranularity/stepBar"),
         children: [
           {
@@ -160,7 +160,7 @@ export const asyncRoutes = [
       },
       {
         id: 5,
-        path: "/console/userinfo/changePassword",
+        path: "/console/changePassword",
         component: () => import("@/components/part3/User/changePassword"),
       },
       {

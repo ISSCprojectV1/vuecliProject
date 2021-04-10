@@ -78,7 +78,7 @@
                                 }
                             },
                             {
-                                path:'/console/userinfo/changePassword',
+                                path:'/console/changePassword',
                                 component: ()=>import("@/components/part3/User/changePassword"),
                                 meta:{
                                     title:"修改密码"

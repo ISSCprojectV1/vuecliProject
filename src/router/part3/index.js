@@ -52,7 +52,7 @@ let routes = [
         }
       },
       {
-        path: 'userinfo/changePassword',
+        path: 'changePassword',
         component: () => import("@/components/part3/User/changePassword"),
         meta: {
           title: "修改密码"
