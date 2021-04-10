@@ -52,7 +52,47 @@ export default {
     }
   },
   created() {
-    this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
+    if(!this.$store.state.stepbarposition){
+      this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
+    }
+
+    console.log("aa")
+    console.log(this.$store.state.stepbarposition)
+    switch (this.$store.state.stepbarposition) {
+      case 0:
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
+        this.$store.commit('setStepbarPosition', 0);
+        console.log( this.$store.state.stepbarposition)
+        this.stepActive = 0
+        break
+      case 1:
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+        this.$store.commit('setStepbarPosition', 1);
+        console.log( this.$store.state.stepbarposition)
+        this.stepActive = 1
+        break
+      case 2:
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
+        this.$store.commit('setStepbarPosition', 2);
+        console.log( this.$store.state.stepbarposition)
+        this.stepActive = 2
+        break
+      case 3:
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
+        this.$store.commit('setStepbarPosition', 3);
+        console.log( this.$store.state.stepbarposition)
+        this.stepActive = 3
+        break
+      case 4:
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+        this.$store.commit('setStepbarPosition', 4);
+        console.log( this.$store.state.stepbarposition)
+        this.stepActive = 4
+        break
+      default:
+        break
+    }
+
   },
   methods: {
     goformer() {
@@ -63,16 +103,19 @@ export default {
        }*/
       if (this.stepActive === 1) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
+        this.$store.commit('setStepbarPosition', 0);
         this.stepActive = 0
         return
       }
       if (this.stepActive === 3) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+        this.$store.commit('setStepbarPosition', 2);
         this.stepActive = 2
         return
       }
       if (this.stepActive === 4) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
+        this.$store.commit('setStepbarPosition', 3);
         this.stepActive = 3
       }
     },
@@ -80,16 +123,19 @@ export default {
       console.log(this.stepActive)
       if (this.stepActive === 0) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+        this.$store.commit('setStepbarPosition', 1);
         this.stepActive = 1
         return
       }
       if (this.stepActive === 3) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
+        this.$store.commit('setStepbarPosition', 3);
         this.stepActive = 3
         return
       }
       if (this.stepActive === 4) {
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+        this.$store.commit('setStepbarPosition', 4);
         this.stepActive = 4
       }
     },
@@ -97,22 +143,32 @@ export default {
       switch (numStep) {
         case 0:
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
+          this.$store.commit('setStepbarPosition', 0);
+          console.log( this.$store.state.stepbarposition)
           this.stepActive = 0
           break
         case 1:
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+          this.$store.commit('setStepbarPosition', 1);
+          console.log( this.$store.state.stepbarposition)
           this.stepActive = 1
           break
         case 2:
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
+          this.$store.commit('setStepbarPosition', 2);
+          console.log( this.$store.state.stepbarposition)
           this.stepActive = 2
           break
         case 3:
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
+          this.$store.commit('setStepbarPosition', 3);
+          console.log( this.$store.state.stepbarposition)
           this.stepActive = 3
           break
         case 4:
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+          this.$store.commit('setStepbarPosition', 4);
+          console.log( this.$store.state.stepbarposition)
           this.stepActive = 4
           break
         default:

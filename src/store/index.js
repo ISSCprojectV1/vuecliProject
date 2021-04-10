@@ -2,7 +2,7 @@ import Vue from "vue"
 import Vuex from "vuex"
 import permission from './modules/permission';
 import user from './modules/user';
-
+import stepbar from './modules/stepbar';
 import {getGrades, getSubjects} from "@/api/part3";
 
 Vue.use(Vuex);
@@ -10,11 +10,13 @@ Vue.use(Vuex);
 export default new Vuex.Store(
     {
       modules: {
-        //   permission,
-        user
+        // permission,
+        user,
+      //  stepbar
       },
       state: {
         isLogin: true,
+        stepbarposition:"",
         userID: "",
         grades: [],
         subjects: [],
@@ -28,6 +30,9 @@ export default new Vuex.Store(
         },
         setCommodityForMonitoring(state, commodity) {
           state.commodityForMonitoring = commodity;
+        },
+        setStepbarPosition(state, stepbarposition) {
+          state.stepbarposition= stepbarposition;
         }
       },
       actions: {
