@@ -17,9 +17,7 @@ const getters = {
   hasAccessTo: (state) => (path) => {
     console.log('requesting routing to:')
     console.log(path)
-    console.log('state.routes:')
-    console.log(state.routes)
-    if(path === '/login') {
+    if (path === '/login') {
       console.log('path is login, return true')
       return true
     }
@@ -29,6 +27,19 @@ const getters = {
     }
     if (RegExp('/admin').test(path))
       return true
+    let path_new = path
+    if (!isNaN(parseInt(path.split('/').pop(), 10))) {
+      console.log('进来了！！！！')
+      path_new = ''
+      let arr = path.split('/')
+      console.log('arr')
+      console.log(arr)
+      for (let i = 1; i < arr.length - 1; i++)
+        path_new = path_new + '/' + arr[i]
+      path_new = path_new + '/:id'
+      console.log('生成path_new')
+      console.log(path_new)
+    }
     for (let index in state.routes) {
       console.log(state.routes[index].path)
       if (state.routes[index].path === '/') {
@@ -37,21 +48,12 @@ const getters = {
         else
           continue;
       }
-      if (RegExp(state.routes[index].path).test(path)) {
+      if (RegExp(state.routes[index].path).test(path_new)) {
         console.log('匹配到存储的允许的route：')
         console.log(state.routes[index].path)
         return true
       }
     }
-    // if (RegExp('trade').test(path)) { // path contains trade
-    //   for (let index in state.routes[0].children)
-    //     if (RegExp(state.routes[0].children[index].path).test(path))
-    //       return true
-    // } else if (RegExp('console').test(path)) { // path contains console
-    //   for (let index in state.routes[1].children)
-    //     if (RegExp(state.routes[1].children[index].path).test(path))
-    //       return true
-    // }
     return false
   }
 }
