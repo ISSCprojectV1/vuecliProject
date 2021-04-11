@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
         } else { // 用户没有权限
           Message({
             showClose: true,
-            message: 'permission.js温馨提醒您没有权限',
+            message: '无权限访问',
             type: 'error'
           })
           next(false)

@@ -156,7 +156,7 @@ export default {
             else // 当前用户不是是admin，不允许进入
               this.$message({
                 showClose: true,
-                message: '您没有权限',
+                message: '没有管理员权限',
                 type: 'error'
               });
           } else { // 用户希望进入trade界面，无需判断role
