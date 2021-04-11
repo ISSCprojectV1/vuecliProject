@@ -15,6 +15,14 @@ const mutations = {
 
 const getters = {
   hasAccessTo: (state) => (path) => {
+    console.log('requesting routing to:')
+    console.log(path)
+    console.log('state.routes:')
+    console.log(state.routes)
+    if(path === '/login') {
+      console.log('path is login, return true')
+      return true
+    }
     if (!state.routes) {
       console.log('state.routes is empty!')
       return false
@@ -22,6 +30,7 @@ const getters = {
     if (RegExp('/admin').test(path))
       return true
     for (let index in state.routes) {
+      console.log(state.routes[index].path)
       if (state.routes[index].path === '/') {
         if (path === '/')
           return true;
