@@ -12,7 +12,7 @@ router.beforeEach((to, from, next) => {
   console.log('start router guard')
   console.log(to.path)
   NProgress.start();
-console.log(getToken())
+
   if (getToken()) { // 有用户登录
     console.log('有用户登录')
     // if (to.path === '/login') { // 用户已登录，则把login页面重定向到首页
@@ -25,19 +25,18 @@ console.log(getToken())
         console.log('hasAccessTo?')
         console.log(to.path)
         console.log(store.getters["permission/hasAccessTo"](to.path))
-
-     // if (store.getters["permission/hasAccessTo"](to.path)) { // 用户有权限
+        if (store.getters["permission/hasAccessTo"](to.path)) { // 用户有权限
           next()
-       //   NProgress.done()
-     //   } else { // 用户没有权限
-       //   Message({
-        //    showClose: true,
-        //    message: 'permission.js温馨提醒您没有权限',
-        //    type: 'error'
-       //  })
-       //   next(false)
-       //   NProgress.done()
-     //   }
+          NProgress.done()
+        } else { // 用户没有权限
+          Message({
+            showClose: true,
+            message: '无权限访问',
+            type: 'error'
+          })
+          next(false)
+          NProgress.done()
+        }
       } catch (error) {
         console.log('permission.js报错')
         console.log(error)
