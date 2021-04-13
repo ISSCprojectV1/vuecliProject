@@ -222,7 +222,7 @@ export default {
           let temp = {};
           temp.commodityDialog_id = response.data[i].id2;
           temp.commodityDialog_name = response.data[i].name2;
-          temp.commodityDialog_num = response.data[i].similarity;
+          temp.commodityDialog_num = response.data[i].correlation;
           this.tableData.push(temp);
         }
       }).catch(function (error) {
