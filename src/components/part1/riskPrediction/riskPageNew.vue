@@ -20,9 +20,15 @@
     </el-form>
 
     <div id="chart-risk-prediction"
-         style="width: 1000px; height: 500px; margin-left: auto; margin-right: auto;">
+         style="width: 93%; height: 480px; margin-left: auto; margin-right: auto; float: left;display:inline-block;"></div>
+    <!--  图例 begin  -->
+    <div style="margin-left: auto; margin-right: auto; padding-top: 10px;width: 50px;display:inline-block;">
+      <p style="text-align: center; width: 50px; float: left; font-size: 14px">高风险</p>
+      <canvas id="legend" width="50" height="380" style="float: left; margin-left: auto; margin-right: auto;"></canvas>
+      <p style="text-align: center; width: 50px; float: left; font-size: 14px">低风险</p>
     </div>
 
+    <!--  图例 end  -->
     <el-button type="primary" @click="onClickQueryRelation" style="margin-top: 2rem">查询关联商品</el-button>
 
     <el-dialog :visible.sync="dialogFormVisible" width="30%" :title="value + '关联商品'" center>
@@ -83,11 +89,26 @@ export default {
         }
       })
       this.drawChartRiskPrediction()
+      this.drawLegend()
     }).catch(err => {
       console.log(err)
     })
   },
   methods: {
+    drawLegend() {
+      let legend = document.getElementById("legend");
+      let context = legend.getContext("2d");
+      // 创建渐变对象：线性渐变
+      let grd = context.createLinearGradient(0, 0, 0, 400);
+      // 设置渐变颜色及方式
+      grd.addColorStop(0, "red");
+      grd.addColorStop(0.3, "orange");
+      grd.addColorStop(0.6, "yellow");
+      grd.addColorStop(1, "green");
+      // 将填充样式设置为渐变对象
+      context.fillStyle = grd;
+      context.fillRect(5, 0, 40, 400);
+    },
     // 输入框自动建议
     querySearch(queryString, cb) {
       let commodities = this.commodities;

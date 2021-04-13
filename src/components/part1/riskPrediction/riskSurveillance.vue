@@ -15,7 +15,7 @@
 
           <el-tab-pane label="已发布">
             <el-table :data="formReleased">
-              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -30,14 +30,16 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作" min-width="80">
+                <template slot-scope="scope">
                 <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
+                </template>
               </el-table-column>
             </el-table>
           </el-tab-pane>
 
           <el-tab-pane label="待处理">
             <el-table :data="formReleased">
-              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -70,7 +72,7 @@
 
           <el-tab-pane label="已修改">
             <el-table :data="formModified">
-              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -91,7 +93,7 @@
 
           <el-tab-pane label="已送审">
             <el-table :data="formSent">
-              <el-table-column prop="dealedid" label="序号" min-width="30"></el-table-column>
+              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
@@ -261,17 +263,15 @@ export default {
         }
       })
     },
-    dealwithid(data){
-      let counter=1
-      let temp=data;
-      for(let i=0;i<temp.length;i++)
-      {
-        temp[i].dealedid=counter
-        counter=counter+1
-      }
-      console.log(temp)
 
-      return  temp
+    dealwithid(data){
+data.sort(function (a,b) {
+  let x = a.id;
+  let y = b.id;
+  return (x> y) ? 1 : x < y ? -1 : 0;
+})
+
+      return  data
     },
     // 操作
     onClickModify(row) {

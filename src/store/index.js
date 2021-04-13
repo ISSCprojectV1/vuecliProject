@@ -10,10 +10,11 @@ Vue.use(Vuex);
 export default new Vuex.Store(
   {
     modules: {
-      permission,
+     permission,
       user
     },
     state: {
+      stepbarposition:"",
       isLogin: true,
       userID: "",
       grades: [],
@@ -26,6 +27,10 @@ export default new Vuex.Store(
       setData(state, payload) {
         state[payload.name] = payload.value;
       },
+      setStepbarPosition(state, stepbarposition) {
+        state.stepbarposition= stepbarposition;
+      }
+,
       setCommodityForMonitoring(state, commodity) {
         state.commodityForMonitoring = commodity;
       }
