@@ -141,7 +141,17 @@ export const asyncRoutes = [
         id: 23,
         path: "/trade/Multimodal-multigranularity/priceshow",
         component: () => import("@/components/part2/priceshow"),
-      }
+      },
+      {
+        id: 24,
+        path: "/trade/dataFusion/dataquery",
+        component: () => import("@/components/part1/dataFusion/dataquery"),
+      },
+      {
+        id: 25,
+        path: "/trade/dataFusion/datacluster",
+        component: () => import("@/components/part1/dataFusion/datacluster"),
+      },
     ]
   },
   {
