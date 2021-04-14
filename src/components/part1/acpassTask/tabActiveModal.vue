@@ -26,12 +26,12 @@
           </el-table-column>
           <el-table-column prop="creditScore" label="信用评分" min-width="80">
             <template slot-scope="scope">
-              <span v-if="Number.isNaN(scope.row.abnormalValue)">无</span>
-              <span v-else-if="isAbnormal(scope.row.abnormalValue)" style="color: red">
-                    {{ scope.row.creditScore.toFixed(3) }}
+              <span v-if="Number.isNaN(scope.row.creditScore)">无</span>
+              <span v-else-if="isAbnormal(scope.row.creditScore)" style="color: red">
+                    {{ scope.row.creditScore=="NaN"?"暂无":scope.row.creditScore.toFixed(3)}}
                   </span>
               <span v-else style="color: green">
-                    {{ scope.row.creditScore.toFixed(3) }}
+                    {{ scope.row.creditScore=="NaN"?"暂无":scope.row.creditScore.toFixed(3)}}
                   </span>
             </template>
           </el-table-column>
@@ -126,7 +126,8 @@ export default {
       this.$router.push({
         path: '/trade/dataFusion/dataquery',
         query: {
-          data: company
+          data: company,
+
         }
       });
     },

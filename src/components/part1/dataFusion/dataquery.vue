@@ -91,9 +91,15 @@ console.log(this.$router.currentRoute)
             console.log( this.$route.query.data)
 
         let announcement=document.getElementById("announcement");
-          this.xinyongpingren=(!this.$route.query.data.abnormalValue||isNaN(this.$route.query.data.abnormalValue))?100:100-5*this.$route.query.data.abnormalValue.toFixed(3);
+          this.xinyongpingren=(!this.$route.query.data.creditScore||isNaN(this.$route.query.data.creditScore))?"暂无":this.$route.query.data.creditScore.toFixed(3);
           this.lookupcompany(this.$route.query.data.company)
+          console.log("aaa")
+
+
+//          console.log(data)
+          console.log(this.tableData)
       },
+
         methods:{
             goback(){
                 this.$router.go(-1)
@@ -147,6 +153,7 @@ console.log(this.$router.currentRoute)
                 echarts.setOption(option);
             },
             lookupcompany(name){
+
             companydataname(name).then(res=>{
                     this.companyData = res.data.data
                     multibyname(this.companyData.name).then(res=>{
@@ -156,34 +163,57 @@ console.log(this.$router.currentRoute)
 
                         console.log( document.getElementsByName("pingji")[0].innerText)
                         console.log("阿拉善盟成大矿业有限责任公司")
+                      let self = this;
 
-                        var self = this;
+                      let b_temp = new Array;
 
-                        var b_temp = new Array;
+                      Object.assign(b_temp , self.tableData)
 
-                        Object.assign(b_temp , self.tableData)
-                        var json= [
-                            {"id":21,
-                                "name":"乌兰浩特市尚能再生能源有限公司",
-                                "number":"0.91"
-                            },{"id":22,
-                                "name":"内蒙古通源起航商贸有限公司",
-                                "number":"0.83"
-                            },
-                            {"id":23,
-                                "name":"内蒙古鑫傲通锐运输有限公司",
-                                "number":"0.65"
-                            },{"id":24,
-                                "name":"内蒙古申益贸易有限责任公司",
-                                "number":"0.33"
-                            },{"id":25,
-                                "name":"内蒙古同泰信息科技有限公司",
-                                "number":"0.12"
-                            }]
+                      if(name=="南京荣鑫科技"){
+
+                      let json=  [{"id":'1917476207545647800',
+                        "name":"广西威日矿业有限责任公司",
+                        "number":"0.51"
+                      },{"id":'4103116114073751188',
+                        "name":"福建省连城锰矿有限责任公司",
+                        "number":"0.43"
+                      },
+                        {"id":'8125320480324371278',
+                          "name":"石柱振兴矿业有限责任公司",
+                          "number":"0.35"
+                        },{"id":'5839169703024309693',
+                          "name":"贵州兴霖矿业有限公司",
+                          "number":"0.32"
+                        },{"id":'1389003601266664596',
+                          "name":"贵州明德硫铁开发有限公司",
+                          "number":"0.27"
+                        }]
+                      b_temp=json
+                      self.tableData=b_temp
+                      }
+else{
+                        let json= [
+                          {"id":'4103116114073751182',
+                            "name":"乌兰浩特市尚能再生能源有限公司",
+                            "number":"0.81"
+                          },{"id":'5839169703024309691',
+                            "name":"内蒙古通源起航商贸有限公司",
+                            "number":"0.63"
+                          },
+                          {"id":'1241215754710945437',
+                            "name":"内蒙古鑫傲通锐运输有限公司",
+                            "number":"0.55"
+                          },{"id":'7547126321510949837',
+                            "name":"内蒙古申益贸易有限责任公司",
+                            "number":"0.43"
+                          },{"id":'9169683785121167734',
+                            "name":"内蒙古同泰信息科技有限公司",
+                            "number":"0.39"
+                          }]
                         b_temp=json
                         self.tableData=b_temp
-
-                        console.log(this.tableData)
+                      }
+                      console.log(this.tableData)
                      //   document.getElementsByName("pingji")[0].innerText="信用评级：正常"
                     //    this.total=this.tableData.length
                     //    this.yeshu=this.total/this.pageSize
