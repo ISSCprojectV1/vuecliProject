@@ -55,10 +55,10 @@
                 <template slot-scope="scope">
                   <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
                   <el-popconfirm
-                          confirm-button-text="确定"
-                          cancel-button-text="取消"
-                          title="是否确定送审？"
-                          @onConfirm="pendInfo(scope.row)">
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定送审？"
+                      @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
                   <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
@@ -156,48 +156,7 @@
 <script>
 import * as echarts5 from "echarts5";
 import {getRiskInfoByStatus, updateRiskInfo} from "@/api/part1/riskPrediction";
-/*
-*  <template slot-scope="scope">
-                  <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
-                  <el-popconfirm
-                      confirm-button-text="确定"
-                      cancel-button-text="取消"
-                      title="是否确定送审？"
-                      @onConfirm="pendInfo(scope.row)">
-                    <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
-                  </el-popconfirm>
-                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
-                  <el-popconfirm
-                      confirm-button-text="确定"
-                      cancel-button-text="取消"
-                      title="是否确定删除？"
-                      @onConfirm="deleteInfo(scope.row)">
-                    <el-button type="text" class="el-option-in-table" slot="reference">删除</el-button>
-                  </el-popconfirm>
-                </template>
-                *  <el-tab-pane label="已删除">
-            <el-table :data="formDeleted">
-              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
-              <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
-              <el-table-column prop="info" label="预警信息" min-width="40">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="time" label="发布时间" min-width="70">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" min-width="80">
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
 
-*
-* */
 export default {
   name: "riskSurveillance",
   data() {
@@ -216,62 +175,55 @@ export default {
   },
   created() {
     this.getRiskInfo(1)
-
   },
   mounted() {
     this.drawChartRiskFrequency()
   },
   methods: {
     handleTabClick(tab) {
-      console.log(tab.label)
-      let dataa=-1
-      console.log(this.tabIndex.indexOf(tab.label)==0)
-      if(this.tabIndex.indexOf(tab.label)==0)
-       dataa=1
-      if(this.tabIndex.indexOf(tab.label)==1)
-        dataa=0
-      if(dataa!=0&&dataa!=1)
-        dataa=this.tabIndex.indexOf(tab.label)
+      let dataa = -1
+      if (this.tabIndex.indexOf(tab.label) === 0)
+        dataa = 1
+      if (this.tabIndex.indexOf(tab.label) === 1)
+        dataa = 0
+      if (dataa !== 0 && dataa !== 1)
+        dataa = this.tabIndex.indexOf(tab.label)
       this.getRiskInfo(dataa)
     },
     getRiskInfo(status) {
       getRiskInfoByStatus(status).then(res => {
-        console.log(this.res)
-        console.log(status)
         switch (status) {
           case 0:
-            this.formReleased = this.dealwithid(res.data);
-            console.log( this.formReleased)
+            this.formReleased = this.dealWithId(res.data);
+            console.log(this.formReleased)
             break;
           case 1:
-            this.formReleased = this.dealwithid(res.data);
-            console.log( this.formReleased)
+            this.formReleased = this.dealWithId(res.data);
+            console.log(this.formReleased)
             break;
           case 2:
-            this.formModified = this.dealwithid(res.data);
+            this.formModified = this.dealWithId(res.data);
             break;
           case 3:
-            this.formSent = this.dealwithid(res.data);
+            this.formSent = this.dealWithId(res.data);
             break;
           case 4:
-            this.formDeleted = this.dealwithid(res.data);
+            this.formDeleted = this.dealWithId(res.data);
             break;
           default:
             break;
         }
       })
     },
-    dealwithid(data){
-      let counter=1
-      let temp=data;
-      for(let i=0;i<temp.length;i++)
-      {
-        temp[i].dealedid=counter
-        counter=counter+1
+    dealWithId(data) {
+      let counter = 1
+      let temp = data;
+      for (let i = 0; i < temp.length; i++) {
+        temp[i].dealedid = counter
+        counter = counter + 1
       }
-      console.log(temp)
 
-      return  temp
+      return temp
     },
     // 操作
     onClickModify(row) {
@@ -371,14 +323,14 @@ export default {
             show: true,    //这行代码控制着坐标轴x轴的文字是否显示
             textStyle: {
               color: '#000',   //x轴上的字体颜色
-              fontSize:'16'    // x轴字体大小
+              fontSize: '16'    // x轴字体大小
             }
           },
-          axisLine:{
+          axisLine: {
             show: true,
-            lineStyle:{
-              color:'#000',
-             width:3,   //这里是坐标轴的宽度,可以去掉
+            lineStyle: {
+              color: '#000',
+              width: 3,   //这里是坐标轴的宽度,可以去掉
             }
           },
 
@@ -411,7 +363,7 @@ export default {
             //     }
             //   }
             // },
-            data: [2, 9, 12,15]
+            data: [2, 9, 12, 15]
           }
         ]
       }
