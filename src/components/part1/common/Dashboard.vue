@@ -15,8 +15,7 @@
 
 <script>
   import PanelGroup from '@/components/part1/Dashboard/panelGroup'
-  import lineGraph from '@/components/part1/Dashboard/lineGraph'
-  import lineGraphNew from "@/components/part1/Dashboard/lineGraphNew";
+  import lineGraphNew from "@/components/part1/Dashboard/lineGraphNew"
   import barChart from '@/components/part1/Dashboard/barChart'
   const lineChartData = {
     newVisitis: {
@@ -51,10 +50,7 @@
     },
     mounted() {
       let tiankong= document.getElementById("diceng");
-      console.log(window.innerHeight)
-      console.log(document.body.scrollHeight)
       tiankong.style.height=(window.innerHeight>document.body.scrollHeight?window.innerHeight:document.body.scrollHeight)+"px"
-      console.log(tiankong.style.height)
     },
     methods: {
       handleSetLineChartData(type) {
