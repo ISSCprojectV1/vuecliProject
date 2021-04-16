@@ -16,7 +16,7 @@
       </el-table-column>
       <el-table-column
           label="操作"
-          width="180">
+          min-width="150">
         <template slot-scope="scope">
           <el-button
               size="mini"
@@ -31,7 +31,7 @@
               title="确定删除该用户吗？"
               @onConfirm="handleDelete(scope.row.id)"
           >
-            <el-button size="mini" type="danger" slot="reference">删除</el-button>
+            <el-button size="mini" type="danger" style="margin-left: 0.5rem" slot="reference">删除</el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -101,7 +101,7 @@
                 :value="item.id">
             </el-option>
           </el-select>
-          <el-button type="primary" @click="changeRole(form)" class="button">修改角色</el-button>
+          <el-button type="primary" @click="changeRole(form)" style="margin-left: 0.5rem" class="button">修改角色</el-button>
         </el-form-item>
 
       </el-form>
@@ -184,32 +184,36 @@ export default {
     }
   },
   methods: {
-    dealWithChinese(name)
-    {
-      if(name=="email"){
-        name="邮箱"
+    dealWithChinese(name) {
+      if (name == "email") {
+        name = "邮箱"
       }
-      if(name=="id"){
-        name="编号"
+      if (name == "id") {
+        name = "编号"
       }
-      if(name=="accountId"){
-        name="账号"
-      }         if(name=="password"){
-      name="密码"
-    }         if(name=="id"){
-      name="编号"
-    }         if(name=="score"){
-      name="分数"
-    }         if(name=="name"){
-      name="用户名"
-    }         if(name=="gmtCreate"){
-      name="创建时间"
-    }
-      if(name=="gmtModified"){
-        name="修改时间"
+      if (name == "accountId") {
+        name = "账号"
       }
-      if(name=="reputation"){
-        name="信誉"
+      if (name == "password") {
+        name = "密码"
+      }
+      if (name == "id") {
+        name = "编号"
+      }
+      if (name == "score") {
+        name = "分数"
+      }
+      if (name == "name") {
+        name = "用户名"
+      }
+      if (name == "gmtCreate") {
+        name = "创建时间"
+      }
+      if (name == "gmtModified") {
+        name = "修改时间"
+      }
+      if (name == "reputation") {
+        name = "信誉"
       }
       return name
       //

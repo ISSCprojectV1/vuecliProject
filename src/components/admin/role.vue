@@ -19,17 +19,17 @@
       </el-table-column>
       <el-table-column
           label="编号"
-          width="180"
+          min-width="180"
           prop="id">
       </el-table-column>
       <el-table-column
           label="角色名称"
-          width="180"
+          min-width="180"
           prop="roleName">
       </el-table-column>
       <el-table-column
           label="操作"
-          width="180">
+          min-width="180">
         <template slot-scope="scope">
           <el-button
               size="mini"
