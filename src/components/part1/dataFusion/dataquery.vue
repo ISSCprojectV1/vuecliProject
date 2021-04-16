@@ -47,7 +47,7 @@
                 style="width: 100%">
             <el-table-column
                     prop="id"
-                    label="编号"
+                    label="社会统一信用代码"
                     min-width="180">
             </el-table-column>
             <el-table-column
