@@ -124,10 +124,19 @@ export default {
 }
 </script>
 <style>
+.el-submenu__title:hover {
+  background: #0677B3 !important;
+}
+
 .el-menu-vertical-demo {
   padding: 0;
   margin: 0;
   border: 0;
+}
+
+.el-icon-arrow-down:before {
+  content: "\e6df";
+  color: #ffffff;
 }
 
 .el-icon-menu:before {
@@ -139,4 +148,5 @@ export default {
   content: "\e754";
   color: #FFFFFF;
 }
+
 </style>
