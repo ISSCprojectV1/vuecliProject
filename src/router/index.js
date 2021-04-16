@@ -42,11 +42,13 @@ export const asyncRoutes = [
     children: [
       {
         id: 8,
+        name: '首页',
         path: "/trade/Dashboard",
         component: () => import("@/components/part1/common/Dashboard"),
       },
       {
         id: 9,
+        name: '模态与粒度步骤',
         path: "/trade/Multimodal-multigranularity/stepBar",
         component: () => import("@/components/part1/Multimodal-multigranularity/stepBar"),
         children: [
@@ -74,21 +76,25 @@ export const asyncRoutes = [
       },
       {
         id: 10,
+        name: '风险预警监控',
         path: "/trade/riskPrediction/riskSurveillance",
         component: () => import("@/components/part1/riskPrediction/riskSurveillance"),
       },
       {
         id: 11,
+        name: '价格波动风险演化',
         path: "/trade/riskPrediction/riskPage",
         component: () => import("@/components/part1/riskPrediction/riskPageNew"),
       },
       {
         id: 12,
+        name: '拍卖中心',
         path: "/trade/auction",
         component: () => import("@/views/part3/incentiveMechanism/Download/home"),
       },
       {
         id: 13,
+        name: '上传数据',
         path: "/trade/uploadResource",
         component: () => import("@/components/part3/Console/mainuploadResource"),
       },

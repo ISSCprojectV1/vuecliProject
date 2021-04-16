@@ -7,7 +7,6 @@ const state = {
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    console.log(routes)
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
   }
@@ -15,33 +14,30 @@ const mutations = {
 
 const getters = {
   hasAccessTo: (state) => (path) => {
-    console.log('requesting routing to:')
-    console.log(path)
-    if (path === '/login') {
-      console.log('path is login, return true')
+    console.log("store判断当前路由", path, "是否有权限")
+    if (path === '/login') { // 登录界面直接进
       return true
     }
-    if (!state.routes) {
-      console.log('state.routes is empty!')
+    if (!state.routes) { // state.routes为空
       return false
     }
-    if (RegExp('/admin').test(path))
+    if (RegExp('/admin').test(path)) // 管理员界面直接进，因为在login时已经判断了是否为管理员
       return true
+
     let path_new = path
+    // 判断是否有动态路由存在，有则修改path再进行判断
     if (!isNaN(parseInt(path.split('/').pop(), 10))) {
-      console.log('进来了！！！！')
       path_new = ''
       let arr = path.split('/')
-      console.log('arr')
-      console.log(arr)
       for (let i = 1; i < arr.length - 1; i++)
         path_new = path_new + '/' + arr[i]
-      path_new = path_new + '/:id'
-      console.log('生成path_new')
-      console.log(path_new)
+      if (path.includes('teamTable'))
+        path_new = path_new + '/:team'
+      else
+        path_new = path_new + '/:id'
     }
+
     for (let index in state.routes) {
-      console.log(state.routes[index].path)
       if (state.routes[index].path === '/') {
         if (path === '/')
           return true;
@@ -49,8 +45,6 @@ const getters = {
           continue;
       }
       if (RegExp(state.routes[index].path).test(path_new)) {
-        console.log('匹配到存储的允许的route：')
-        console.log(state.routes[index].path)
         return true
       }
     }

@@ -96,15 +96,12 @@ export default {
     // 根据id获取role并设置cookies
     getRoleById(url) {
       getRolenameById(url).then(res => {
-        console.log('根据id获取role返回的res: ')
-        console.log(res)
         if (!res.data.roleList)
           return
 
         // 设置cookies
         let roleList = res.data.roleList
-        console.log('设置cookies前获取role list: ')
-        console.log(roleList)
+        console.log('后端返回的当前登录用户角色为: ', roleList[0])
         for (let i = 0; i < roleList.length; i++) {
           if (roleList[i].roleName === 'admin') { // 登录角色为admin
             setAdminTrue("true")
@@ -113,11 +110,6 @@ export default {
 
         // 获取当前用户可以访问的组件id，并过滤routes
         getMenusId().then(res => {
-          if(Object.prototype.hasOwnProperty.call(asyncRoutes[0], 'children'))
-            console.log('asyncRoutes[0] has children')
-          if(Object.prototype.hasOwnProperty.call(asyncRoutes[1], 'children'))
-            console.log('asyncRoutes[1] has children')
-
           let list = res.data
           let routesTrade = {
             path: '/trade',
@@ -143,10 +135,9 @@ export default {
           })
 
           this.$store.commit('permission/SET_ROUTES', childRoutesTrade.concat(childRoutesConsole))
-          console.log('after commit.')
+
           // add routes
           router.addRoutes([routesTrade, routesConsole])
-          console.log('add routes.')
 
           // 根据用户选择的登录角色进入不同页面，进入前首先通过cookies判断用户role
           if (this.form.role === 'admin') { // 用户希望进入admin界面

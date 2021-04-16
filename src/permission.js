@@ -9,12 +9,12 @@ import {Message} from 'element-ui';
 const whiteList = ['/login', '/register',];
 
 router.beforeEach((to, from, next) => {
-  console.log('start router guard')
-  console.log(to.path)
+  console.log('请求跳转到路由：', to.path)
   NProgress.start();
 
   if (getToken()) { // 有用户登录
     console.log('有用户登录')
+    // 刷新问题在于刷新之后Cookies还在但是route表被清空了
     // if (to.path === '/login') { // 用户已登录，则把login页面重定向到首页
     //   console.log('免登录')
     //   next({path: '/trade/Dashboard'})
@@ -22,9 +22,6 @@ router.beforeEach((to, from, next) => {
     // } else
     { // 请求进入其他页面，则要先验证是否在可访问页面set中
       try {
-        console.log('hasAccessTo?')
-        console.log(to.path)
-        console.log(store.getters["permission/hasAccessTo"](to.path))
         if (store.getters["permission/hasAccessTo"](to.path)) { // 用户有权限
           next()
           NProgress.done()
@@ -38,7 +35,6 @@ router.beforeEach((to, from, next) => {
           NProgress.done()
         }
       } catch (error) {
-        console.log('permission.js报错')
         console.log(error)
       }
     }
@@ -53,7 +49,6 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(() => {
-  console.log('end router guard')
   NProgress.done()
 })
 
