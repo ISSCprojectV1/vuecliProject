@@ -101,7 +101,7 @@
                 :value="item.id">
             </el-option>
           </el-select>
-          <el-button type="primary" @click="changeRole(form)" class="button">修改角色</el-button>
+          <el-button type="primary" @click="changeRole(form)" style="margin-left: 0.5rem" class="button">修改角色</el-button>
         </el-form-item>
 
       </el-form>
