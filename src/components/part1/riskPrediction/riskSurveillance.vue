@@ -195,11 +195,9 @@ export default {
         switch (status) {
           case 0:
             this.formReleased = this.dealWithId(res.data);
-            console.log(this.formReleased)
             break;
           case 1:
             this.formReleased = this.dealWithId(res.data);
-            console.log(this.formReleased)
             break;
           case 2:
             this.formModified = this.dealWithId(res.data);
