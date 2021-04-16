@@ -31,7 +31,7 @@
               </el-table-column>
               <el-table-column label="操作" min-width="80">
                 <template slot-scope="scope">
-                <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
+                  <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -57,10 +57,10 @@
                 <template slot-scope="scope">
                   <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
                   <el-popconfirm
-                          confirm-button-text="确定"
-                          cancel-button-text="取消"
-                          title="是否确定送审？"
-                          @onConfirm="pendInfo(scope.row)">
+                      confirm-button-text="确定"
+                      cancel-button-text="取消"
+                      title="是否确定送审？"
+                      @onConfirm="pendInfo(scope.row)">
                     <el-button type="text" class="el-option-in-table" slot="reference">送审</el-button>
                   </el-popconfirm>
                   <el-button type="text" class="el-option-in-table" @click="goToRiskPage(scope.row)">监控</el-button>
@@ -226,28 +226,24 @@ export default {
   methods: {
     handleTabClick(tab) {
       console.log(tab.label)
-      let dataa=-1
-      console.log(this.tabIndex.indexOf(tab.label)==0)
-      if(this.tabIndex.indexOf(tab.label)==0)
-       dataa=1
-      if(this.tabIndex.indexOf(tab.label)==1)
-        dataa=0
-      if(dataa!=0&&dataa!=1)
-        dataa=this.tabIndex.indexOf(tab.label)
+      let dataa = -1
+      console.log(this.tabIndex.indexOf(tab.label) == 0)
+      if (this.tabIndex.indexOf(tab.label) == 0)
+        dataa = 1
+      if (this.tabIndex.indexOf(tab.label) == 1)
+        dataa = 0
+      if (dataa != 0 && dataa != 1)
+        dataa = this.tabIndex.indexOf(tab.label)
       this.getRiskInfo(dataa)
     },
     getRiskInfo(status) {
       getRiskInfoByStatus(status).then(res => {
-        console.log(this.res)
-        console.log(status)
         switch (status) {
           case 0:
             this.formReleased = this.dealwithid(res.data);
-            console.log( this.formReleased)
             break;
           case 1:
             this.formReleased = this.dealwithid(res.data);
-            console.log( this.formReleased)
             break;
           case 2:
             this.formModified = this.dealwithid(res.data);
@@ -264,14 +260,14 @@ export default {
       })
     },
 
-    dealwithid(data){
-data.sort(function (a,b) {
-  let x = a.id;
-  let y = b.id;
-  return (x> y) ? 1 : x < y ? -1 : 0;
-})
+    dealwithid(data) {
+      data.sort(function (a, b) {
+        let x = a.id;
+        let y = b.id;
+        return (x > y) ? 1 : x < y ? -1 : 0;
+      })
 
-      return  data
+      return data
     },
     // 操作
     onClickModify(row) {
@@ -371,14 +367,14 @@ data.sort(function (a,b) {
             show: true,    //这行代码控制着坐标轴x轴的文字是否显示
             textStyle: {
               color: '#000',   //x轴上的字体颜色
-              fontSize:'16'    // x轴字体大小
+              fontSize: '16'    // x轴字体大小
             }
           },
-          axisLine:{
+          axisLine: {
             show: true,
-            lineStyle:{
-              color:'#000',
-             width:3,   //这里是坐标轴的宽度,可以去掉
+            lineStyle: {
+              color: '#000',
+              width: 3,   //这里是坐标轴的宽度,可以去掉
             }
           },
 
@@ -411,7 +407,7 @@ data.sort(function (a,b) {
             //     }
             //   }
             // },
-            data: [2, 9, 12,15]
+            data: [2, 9, 12, 15]
           }
         ]
       }
