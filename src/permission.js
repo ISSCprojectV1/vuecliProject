@@ -15,6 +15,10 @@ router.beforeEach((to, from, next) => {
 
   if (getToken()) { // 有用户登录
     console.log('有用户登录')
+    if (whiteList.indexOf(to.path) !== -1) { // temporal-fix of login with uncleaned cookies
+      next()
+      NProgress.done()
+    }
     if (store.state.permission.routes.length === 0) {
       getMenusId().then(res => {
         let list = res.data
@@ -48,7 +52,7 @@ router.beforeEach((to, from, next) => {
         try {
           if (store.getters["permission/hasAccessTo"](to.path)) { // 用户有权限
             console.log("在这里")
-            next({ ...to, replace: true })
+            next({...to, replace: true})
             NProgress.done()
           } else { // 用户没有权限
             Message({
