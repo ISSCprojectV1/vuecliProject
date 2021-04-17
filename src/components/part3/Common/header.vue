@@ -76,7 +76,7 @@
 <script>
 import logoimg from "@/assets/part3/seu.png"
 import userprofile from "@/assets/part3/userprofile.jpg"
-import {removeAdminTrue, removeToken} from "@/utils/auth"
+import {removeAdminTrue, removeRole, removeToken} from "@/utils/auth"
 
 export default {
   name: "Header",
@@ -93,6 +93,7 @@ export default {
     logOut() {
       removeToken();
       removeAdminTrue();
+      removeRole();
       this.$router.push("/login")
     }
   }

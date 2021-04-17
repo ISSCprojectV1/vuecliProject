@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
+import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue, setRole} from "@/utils/auth"
 import {getRolenameById} from "@/api/part1/Multimodal-multigranularity"
 import router from '@/router'
 import {asyncRoutes, constantRoutes} from "@/router"
@@ -102,6 +102,7 @@ export default {
         // 设置cookies
         let roleList = res.data.roleList
         console.log('后端返回的当前登录用户角色为: ', roleList[0])
+        setRole(roleList[0].roleName)
         for (let i = 0; i < roleList.length; i++) {
           if (roleList[i].roleName === 'admin') { // 登录角色为admin
             setAdminTrue("true")
