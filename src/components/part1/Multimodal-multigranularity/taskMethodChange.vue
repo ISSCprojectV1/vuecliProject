@@ -91,6 +91,7 @@
         </el-select>
     </el-form-item>*/
     import {taskInput,bourseget} from "@/api/part1/Multimodal-multigranularity";
+    import {timestampToTime} from "@/utils/part3";
     import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
     const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属','南京贵重金属交易所'];
     export default {
@@ -167,7 +168,8 @@
                 this.priority=(this.taskin.priority)?this.taskin.priority:1;
                 this.commodityName=this.taskin.commodityName
                 this.workingTime=this.taskin.workingTime/3600000
-                this.deadLine=this.taskin.deadLine
+                this.deadLine=(Number.isNaN(this.taskin.deadLine))?this.taskin.deadLine:
+                    (timestampToTime(this.taskin.deadLine))
                 this.humanUse=this.taskin.humanUse
                 this.content=this.taskin.content
                 this.operatorName=this.taskin.operatorName
