@@ -248,20 +248,22 @@ export default {
       this.getData();
     this.getData1();
       this.getData2();
-
-if(getAdminTrue()=="admin")
+console.log(getAdminTrue())
+if(getAdminTrue())
 
 {
-  this.modality()
+
 this.admintrue=true
   this.usertrue=false
+  this.modality()
 }
-if(getAdminTrue()=="user")
+else
     {
-this.modality()
+
       this.admintrue=false
       this.usertrue=true
     }
+
 console.log(this.admintrue)
   },
   created() {

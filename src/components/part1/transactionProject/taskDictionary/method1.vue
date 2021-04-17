@@ -65,7 +65,7 @@ console.log(input)
               node.startTime = input.data[i].startTime;
               node.endTime = input.data[i].endTime;
               node.workingTime = input.data[i].workingTime;
-
+node.deadLine=input.data[i].deadLine;
               // humanuse
               if(input.data[i].humanUse === true)
                node.humanUse = '人工监管参与';
@@ -262,8 +262,8 @@ const tooltip = new G6.Tooltip({
         <h3>* 操作员: ${e.item.getModel().operatorName}</h3>
       </ul>
           <ul>
-        <h3>* 结束时间: ${(Number.isNaN(e.item.getModel().endTime))?e.item.getModel().endTime:
-            ((!e.item.getModel().endTime)?"NaN-NaN-NaN":timestampToTime(e.item.getModel().endTime))}</h3>
+        <h3>* 截止时间: ${(Number.isNaN(e.item.getModel().deadLine))?e.item.getModel().deadLine:
+            ((!e.item.getModel().deadLine)?"NaN-NaN-NaN":timestampToTime(e.item.getModel().deadLine))}</h3>
       </ul>
 `
 
