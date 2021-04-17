@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div style="margin-bottom: 0.5rem;">
+    <div style="margin-bottom: 0.5rem">
       <el-steps :active="stepActive" finish-status="success" align-center simple>
         <el-step v-for="item in steps" :key="item.num" :title="item.title"
                  :class="stepActive === item.num ? 'step-active' : 'step-active'"
-                 @click.native="onClickStep(item.num)"></el-step>
+                 @click.native="onClickStep(item.title, item.num)"></el-step>
       </el-steps>
     </div>
     <div>
@@ -14,15 +14,8 @@
 </template>
 
 <script>
-/*
-*   <div>
-        <el-tag>点击步骤条相关步骤查看对应内容</el-tag>
-        </div>
-        <div>
-        <el-button @click="goformer()">上一步</el-button>
-        <el-button @click="golater()" >下一步</el-button>
-            </div>
-* */
+import {getRole} from "@/utils/auth";
+
 export default {
   name: "stepBar",
   data() {
@@ -52,131 +45,98 @@ export default {
     }
   },
   created() {
-    if(!this.$store.state.stepbarposition){
-      this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
-    }
+    // 根据role设置steps
+    let role = getRole();
+    if (role === 'RS')
+      this.steps = [
+        {
+          title: '粒度补全',
+          num: 0
+        },
+        {
+          title: '主动模态',
+          num: 1
+        },
+        {
+          title: '人机器资源调度',
+          num: 2
+        }
+      ]
+    if (role === 'OMS')
+      this.steps = [
+        {
+          title: '任务输入',
+          num: 0
+        },
+        {
+          title: '联盟形成',
+          num: 1
+        },
+        {
+          title: '人机器资源调度',
+          num: 2
+        }
+      ]
 
-    console.log("aa")
-    console.log(this.$store.state.stepbarposition)
+    // 判断返回上一个step的界面
+    if (!this.$store.state.stepbarposition) {
+      this.onClickStep(this.steps[0].title, 0)
+    }
     switch (this.$store.state.stepbarposition) {
       case 0:
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
         this.$store.commit('setStepbarPosition', 0);
-        console.log( this.$store.state.stepbarposition)
         this.stepActive = 0
         break
       case 1:
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
         this.$store.commit('setStepbarPosition', 1);
-        console.log( this.$store.state.stepbarposition)
         this.stepActive = 1
         break
       case 2:
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
         this.$store.commit('setStepbarPosition', 2);
-        console.log( this.$store.state.stepbarposition)
         this.stepActive = 2
         break
       case 3:
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
         this.$store.commit('setStepbarPosition', 3);
-        console.log( this.$store.state.stepbarposition)
         this.stepActive = 3
         break
       case 4:
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
         this.$store.commit('setStepbarPosition', 4);
-        console.log( this.$store.state.stepbarposition)
         this.stepActive = 4
         break
       default:
         break
     }
-
   },
   methods: {
-    goformer() {
-      /* if(this.stepActive>=1)
-       {
-           this.$router.go(-1)
-           this.stepActive--
-       }*/
-      if (this.stepActive === 1) {
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
-        this.$store.commit('setStepbarPosition', 0);
-        this.stepActive = 0
-        return
-      }
-      if (this.stepActive === 3) {
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-        this.$store.commit('setStepbarPosition', 2);
-        this.stepActive = 2
-        return
-      }
-      if (this.stepActive === 4) {
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
-        this.$store.commit('setStepbarPosition', 3);
-        this.stepActive = 3
-      }
-    },
-    golater() {
-      console.log(this.stepActive)
-      if (this.stepActive === 0) {
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-        this.$store.commit('setStepbarPosition', 1);
-        this.stepActive = 1
-        return
-      }
-      if (this.stepActive === 3) {
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
-        this.$store.commit('setStepbarPosition', 3);
-        this.stepActive = 3
-        return
-      }
-      if (this.stepActive === 4) {
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
-        this.$store.commit('setStepbarPosition', 4);
-        this.stepActive = 4
-      }
-    },
-    onClickStep(numStep) {
-      switch (numStep) {
-        case 0:
+    onClickStep(title, numStep) {
+      switch (title) {
+        case '任务输入':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
-          this.$store.commit('setStepbarPosition', 0);
-          console.log( this.$store.state.stepbarposition)
-          this.stepActive = 0
           break
-        case 1:
+        case '粒度补全':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-          this.$store.commit('setStepbarPosition', 1);
-          console.log( this.$store.state.stepbarposition)
-          this.stepActive = 1
           break
-        case 2:
+        case '主动模态':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
-          this.$store.commit('setStepbarPosition', 2);
-          console.log( this.$store.state.stepbarposition)
-          this.stepActive = 2
           break
-        case 3:
+        case '联盟形成':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
-          this.$store.commit('setStepbarPosition', 3);
-          console.log( this.$store.state.stepbarposition)
-          this.stepActive = 3
           break
-        case 4:
+        case '人机器资源调度':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
-          this.$store.commit('setStepbarPosition', 4);
-          console.log( this.$store.state.stepbarposition)
-          this.stepActive = 4
           break
         default:
           break
       }
-    }
+      this.$store.commit('setStepbarPosition', numStep);
+      this.stepActive = numStep;
+    },
   }
-
 }
 </script>
 
