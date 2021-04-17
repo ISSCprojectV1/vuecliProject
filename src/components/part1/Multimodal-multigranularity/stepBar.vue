@@ -81,36 +81,8 @@ export default {
     // 判断返回上一个step的界面
     if (!this.$store.state.stepbarposition) {
       this.onClickStep(this.steps[0].title, 0)
-    }
-    switch (this.$store.state.stepbarposition) {
-      case 0:
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
-        this.$store.commit('setStepbarPosition', 0);
-        this.stepActive = 0
-        break
-      case 1:
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-        this.$store.commit('setStepbarPosition', 1);
-        this.stepActive = 1
-        break
-      case 2:
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
-        this.$store.commit('setStepbarPosition', 2);
-        this.stepActive = 2
-        break
-      case 3:
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
-        this.$store.commit('setStepbarPosition', 3);
-        this.stepActive = 3
-        break
-      case 4:
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
-        this.$store.commit('setStepbarPosition', 4);
-        this.stepActive = 4
-        break
-      default:
-        break
-    }
+    } else
+      this.onClickStep(this.steps[this.$store.state.stepbarposition].title, this.$store.state.stepbarposition)
   },
   methods: {
     onClickStep(title, numStep) {
