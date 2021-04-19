@@ -37,7 +37,7 @@
             </el-table>
           </el-tab-pane>
 
-          <el-tab-pane label="待处理">
+          <el-tab-pane label="待处理" v-if="this.dialogVisible">
             <el-table :data="formReleased">
               <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
@@ -70,7 +70,7 @@
             </el-table>
           </el-tab-pane>
 
-          <el-tab-pane label="已修改">
+          <el-tab-pane label="已修改" v-if="this.dialogVisible">
             <el-table :data="formModified">
               <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
@@ -91,7 +91,7 @@
             </el-table>
           </el-tab-pane>
 
-          <el-tab-pane label="已送审">
+          <el-tab-pane label="已送审" v-if="this.dialogVisible">
             <el-table :data="formSent">
               <el-table-column prop="id" label="序号" min-width="30"></el-table-column>
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
@@ -157,6 +157,7 @@
 
 <script>
 import * as echarts5 from "echarts5";
+import {getRole} from "@/utils/auth"
 import {getRiskInfoByStatus, updateRiskInfo} from "@/api/part1/riskPrediction";
 /*
 *  <template slot-scope="scope">
@@ -213,7 +214,10 @@ export default {
       formPending: [],
       formModified: [],
       formSent: [],
-      formDeleted: []
+      formDeleted: [],
+      role:'',
+      dialogVisible:'',
+
     }
   },
   created() {
@@ -221,6 +225,12 @@ export default {
 
   },
   mounted() {
+    this.role=getRole()
+    if(this.role=="TPS")
+    {
+      this.dialogVisible=false
+    }else 
+      this.dialogVisible=true
     this.drawChartRiskFrequency()
   },
   methods: {
