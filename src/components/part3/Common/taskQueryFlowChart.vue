@@ -20,14 +20,14 @@
     </el-dialog>
   <div>     <el-row>
 
-      <el-col :span="this.admintrue?6:8">
+      <el-col :span="this.admintrue?6:12">
 
     <el-button type="primary"  class="elbun" @click="changeform12" style="margin-left:15px;margin-right:14px" >表格视图</el-button>
       </el-col>
-      <el-col :span="this.admintrue?6:8">
+      <el-col :span="this.admintrue?6:12">
     <el-button type="primary" class="elbun"  @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>    </el-col>
-          <el-col :span="this.admintrue?6:8">
-    <el-button type="primary" class="elbun"  @click="changeform3" style="margin-left:15px;margin-right:14px">操作员视图</el-button>    </el-col>
+          <el-col :span="this.admintrue?6:0">
+    <el-button type="primary" class="elbun"  @click="changeform3" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">操作员视图</el-button>    </el-col>
               <el-col :span="this.admintrue?6:0">
     <el-button type="primary" class="elbun"  @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>    </el-col>
   </el-row>
@@ -293,8 +293,8 @@ if(res.data.data)
   data() {
     return {
   tabledata3:[],
-      usertrue:true,
-      admintrue: true,
+      usertrue:false,
+      admintrue: false,
 prioritychoose:[1,2,3],
       caozuoyuankey:[],
       caozuoyuanvalue:[],

@@ -34,7 +34,8 @@
           </template>
         </el-table-column>--主被动模态-->
         <!--时间粒度-->
-        <el-table-column label="时间粒度（天）" prop="timeadvise" width="80">
+        <el-table-column label="时间粒度（天）" width="80" align="center">
+        <el-table-column label="推荐时间粒度" prop="timeadvise" width="80">
           <template slot-scope="scope">
             <el-link :disabled="setgoto(scope)">
               <div @click="goToprice()">
@@ -43,13 +44,17 @@
             </el-link>
           </template>
         </el-table-column>
+          <el-table-column label="补充时间粒度"  width="80" v-if="this.admin">
+            <el-button type="text" style="margin-left: 0.5rem"  @click="getTimeRecommend">补充粒度</el-button>
+          </el-table-column>
+        </el-table-column>
         <!--商品粒度-->
         <el-table-column label="商品粒度" width="80" align="center">
           <el-table-column label="监管种类" prop="commodityName">
           </el-table-column>
           <el-table-column label="扩展监管种类" prop="subtask">
           </el-table-column>
-          <el-table-column label="补充商品粒度">
+          <el-table-column label="补充商品粒度" v-if="this.admin">
             <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
               <!--推荐的商品粒度-->
@@ -99,9 +104,16 @@
         <el-table-column label="空间粒度" width="80" align="center">
           <el-table-column label="监管平台" prop="content">
           </el-table-column>
-          <el-table-column label="扩展监管平台" prop="resourceNeed">
+          <el-table-column label="扩展监管平台" prop="resourceNeed" >
+            <template slot-scope="flat">
+              <el-link >
+                <div  @click="goToSpaceDetail(flat.row.id)">
+                  {{ flat.row.resourceNeed }}
+                </div>
+              </el-link>
+            </template>
           </el-table-column>
-          <el-table-column label="补充空间粒度">
+          <el-table-column label="补充空间粒度" v-if="this.admin">
             <template slot-scope="flat">
               <el-button type="text" @click="getFlats(flat.row)">补充粒度</el-button>
               <!--推荐的空间粒度-->
@@ -141,7 +153,7 @@
     <el-button type="primary" @click="updateFlat()">确 定</el-button>
   </span>
               </el-dialog>
-              <el-button type="text" style="margin-left: 0.5rem" @click="goToSpaceDetail(flat.row.id)">详情</el-button>
+              <el-button type="text" style="margin-left: 0.5rem" @click="goToSpaceDetail(flat.row.id)" v-show="false">详情</el-button>
             </template>
           </el-table-column>
         </el-table-column>
@@ -164,12 +176,13 @@ import {
   taskQuery,
   spaceResult,
   getRolenameById,
+  getcommodityTimeadvise2,
   getcommodityRelationdetails2,
   updateCommodity,
   getrecommendrlatform
 } from "@/api/part1/Multimodal-multigranularity";
 
-import {getToken} from "@/utils/auth"
+import {getToken,getRole} from "@/utils/auth"
 
 export default {
   name: "taskQueryTableView",
@@ -204,7 +217,7 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-
+     admin:false
     }
   },
   methods: {
@@ -278,6 +291,31 @@ export default {
     // 追加空间粒度复选框
     handleFlatChange(val) {
       this.flatsSelection = val;
+    },
+
+    getTimeRecommend() {
+      let com_name = this.commodityName
+      console.log("时间粒度 获得商品：", com_name)
+      let URL = "/getcommodityTimeadvise2/" + com_name;
+      let result;
+      getcommodityTimeadvise2(URL).then((response) => {
+        let arr = [];
+        arr = response.data;
+        result = arr[0].timeadvise;
+        console.log("result----111:", result);
+        // 弹窗提醒
+        this.timeAdvise = result;
+        let message = com_name + "推荐时间粒度为：" + result + "天"
+        this.$message({
+          message: message,
+          type: 'success'
+        });
+        // 自动填充
+        this.setTimeRecommend(result);
+      })
+              .catch(function (error) {
+                console.log(error);
+              });
     },
     // 确认追加该空间粒度
     updateFlat(val) {
@@ -457,12 +495,16 @@ export default {
     goToSpaceDetail(id) {
       this.$router.push(`/trade/acpassTask/viewSpaceGranularity/${id}`);
     },
+
   },
   created() {
     this.getData();
   },
   mounted() {
     this.loading = true;
+    if(getRole()=="admin"||getRole()=="OMS")
+      this.admin=true;
+    else  this.admin=false
   }
 }
 </script>

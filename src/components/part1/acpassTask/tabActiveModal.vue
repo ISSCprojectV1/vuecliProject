@@ -35,9 +35,9 @@
                   </span>
             </template>
           </el-table-column>
-          <el-table-column label="详细信息" fixed="right" min-width="80">
+          <el-table-column label="详细信息" fixed="right" min-width="80" v-if="this.Admin">
             <template slot-scope="scope">
-              <el-button @click="goToDataQuery(scope.row)" type="text" size="small"  v-if="this.Admin">实体统一</el-button>
+              <el-button @click="goToDataQuery(scope.row)" type="text" size="small"   >实体统一</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,18 +90,22 @@ export default {
       // table company detail
       dataTableDetail: [],
       totalTableDetail: 0,
-      Admin:''
+      Admin:false
     }
   },
   created() {
     const id = this.$router.currentRoute.params.id;
     this.queryActiveGroup(id, 1, 8);
-  },
-  mounted() {
-    document.getElementById('tableCompanyDetail').style.display = 'none'
     if(getRole()=="admin")
       this.Admin=true
     else  this.Admin=false
+  console.log("thisadmin"+this.Admin)
+  }
+
+  ,
+  mounted() {
+    document.getElementById('tableCompanyDetail').style.display = 'none'
+
   },
   methods: {
     // table active group

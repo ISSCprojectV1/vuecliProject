@@ -33,9 +33,23 @@
             </el-link>
           </template>
         </el-table-column>
+        <el-table-column label="风险值（按日更新）" prop="name">
+          <template slot-scope="scope">
+            <el-link :disabled="setdis(scope)" type="primary">
+              <div @click="gotoPassive(scope.row.id)">
+                {{ scope.row.content }}
+              </div>
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column label="下次风险值更新时间" prop="name">
+       {{buttonName}}
+        </el-table-column>
+        <el-table-column label="在线/离线" prop="name">
+        </el-table-column>
+        <el-table-column label="主动监管/被动监管" prop="name">
 
-
-
+        </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -94,7 +108,8 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-
+      time: 100,
+      buttonName: "0",
     }
   },
   methods: {
@@ -128,6 +143,22 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    sendMsg() {
+      let me = this;
+      me.isDisabled = true;
+      let interval = window.setInterval(function() {
+        me.buttonName =  me.time;
+        --me.time;
+        if(me.time < 0) {
+          me.buttonName = 0;
+          me.time = 100;
+          me.isDisabled = false;
+          window.clearInterval(interval);
+        }
+      }, 1000);
+
+    },
+
     // 确认追加该粒度
     updateCommodity(val) {
       this.commodityDialogVisible = false;
@@ -266,7 +297,9 @@ export default {
       // 改变默认的页数
       this.currentPage = val
     },
-
+    gotoPassive(id){
+      this.$router.push(`/trade/acpassTask/passivetradeaction/${id}`)
+    },
     getData() {
       var idd = getToken()
       console.log(idd)
@@ -344,6 +377,7 @@ export default {
       this.dormitory = dataConvert;
       this.loading = false;
     },
+
     // 转换时间戳
     timestampToTime(cjsj) {
       const date = new Date(cjsj); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -358,6 +392,7 @@ export default {
   },
   created() {
     this.getData();
+    this.sendMsg()
   },
   mounted() {
     this.loading = true;

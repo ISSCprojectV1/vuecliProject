@@ -1,7 +1,7 @@
 <template>
     <div id="diceng">
         <div> <el-button @click="goback">返回</el-button></div>
-        <h2>数据查询</h2>
+        <h2>数据融合</h2>
         <el-row>
             <el-col :span="8">
                 <el-form>

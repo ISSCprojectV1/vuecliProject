@@ -29,9 +29,6 @@
     </div>
 
     <el-tabs v-model="activeName">
-      <el-tab-pane label="主动模态" name="table">
-        <tab-active-modal></tab-active-modal>
-      </el-tab-pane>
 
       <el-tab-pane label="被动模态" name="passive">
         <el-table :data="Data" border style="width: 100%; margin-top: 1px">
@@ -55,6 +52,9 @@
             :total="total1"
         >
         </el-pagination>
+      </el-tab-pane>
+      <el-tab-pane label="主动模态" name="table">
+        <tab-active-modal></tab-active-modal>
       </el-tab-pane>
 
     </el-tabs>

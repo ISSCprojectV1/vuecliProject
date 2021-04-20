@@ -209,7 +209,7 @@ let routes = [
     path: "/trade/dataFusion/dataquery",
     component: () => import("@/components/part1/dataFusion/dataquery"),
     meta: {
-      title: "数据查询"
+      title: "数据融合"
     }
   },
   {

@@ -50,11 +50,11 @@ export default {
     if (role === 'RS')
       this.steps = [
         {
-          title: '粒度补全',
+          title: '粒度自适应补全',
           num: 0
         },
         {
-          title: '粒度自适应补全',
+          title: '模态动态切换',
           num: 1
         },
         {
