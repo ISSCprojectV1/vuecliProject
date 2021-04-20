@@ -48,7 +48,7 @@
 <script>
   /*
         <el-button @click="drawechart1()" type="text" size="small" v-if="false">任务视图</el-button>
-      <el-button @click="drawechart12()" type="text" size="small" v-if="false">操作员视图</el-button>
+      <el-button @click="drawechart12()" type="text" size="small" v-if="false">操作员列表</el-button>
       <el-button @click="changeform12()" type="text" size="small" v-if="false">表格视图</el-button>
   *           <el-table-column label="人模态分布" prop="humanUse" width="93" v-if="false">
           </el-table-column>

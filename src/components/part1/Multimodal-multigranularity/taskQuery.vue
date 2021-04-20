@@ -127,7 +127,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="交易联盟图" name="flow">
                     <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
-                    <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
+                    <el-button @click="drawechart12()" type="text" size="small">操作员列表</el-button>
                     <div id="echart1" style="width: 1000px;height: 800px"></div>
                 </el-tab-pane>
             </el-tabs>

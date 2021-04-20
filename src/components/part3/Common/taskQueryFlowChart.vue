@@ -27,7 +27,7 @@
       <el-col :span="this.admintrue?6:12">
     <el-button type="primary" class="elbun"  @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>    </el-col>
           <el-col :span="this.admintrue?6:0">
-    <el-button type="primary" class="elbun"  @click="changeform3" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">操作员视图</el-button>    </el-col>
+    <el-button type="primary" class="elbun"  @click="changeform3" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">操作员列表</el-button>    </el-col>
               <el-col :span="this.admintrue?6:0">
     <el-button type="primary" class="elbun"  @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>    </el-col>
   </el-row>
