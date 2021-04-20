@@ -8,7 +8,7 @@
            </el-form-item>
           <el-form-item>
                         <el-button type="primary" @click="onClickQuery">查询表格</el-button>
-                        <el-button type="primary" @click="onClickQuery1">查询操作员视图</el-button>
+                        <el-button type="primary" @click="onClickQuery1">查询操作员列表</el-button>
                         <el-button type="primary" @click="onClickQueryMap">查询地图</el-button>
                         <el-button type="primary" @click="goback">返回</el-button>
           </el-form-item>  
