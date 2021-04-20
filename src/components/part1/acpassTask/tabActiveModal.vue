@@ -37,7 +37,7 @@
           </el-table-column>
           <el-table-column label="详细信息" fixed="right" min-width="80">
             <template slot-scope="scope">
-              <el-button @click="goToDataQuery(scope.row)" type="text" size="small">实体统一</el-button>
+              <el-button @click="goToDataQuery(scope.row)" type="text" size="small"  v-if="this.Admin">实体统一</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -77,7 +77,7 @@
 
 <script>
 import {getActiveCompanyDetail, getActiveGroup} from "@/api/part1/acpassTask";
-
+import {getRole} from "@/utils/auth";
 export default {
   name: "tabActiveModal",
   data() {
@@ -90,6 +90,7 @@ export default {
       // table company detail
       dataTableDetail: [],
       totalTableDetail: 0,
+      Admin:''
     }
   },
   created() {
@@ -98,6 +99,9 @@ export default {
   },
   mounted() {
     document.getElementById('tableCompanyDetail').style.display = 'none'
+    if(getRole()=="admin")
+      this.Admin=true
+    else  this.Admin=false
   },
   methods: {
     // table active group

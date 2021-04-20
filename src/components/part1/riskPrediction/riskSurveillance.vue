@@ -229,7 +229,7 @@ export default {
     if(this.role=="TPS")
     {
       this.dialogVisible=false
-    }else 
+    }else
       this.dialogVisible=true
     this.drawChartRiskFrequency()
   },

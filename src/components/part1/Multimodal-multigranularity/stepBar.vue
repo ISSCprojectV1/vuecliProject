@@ -27,11 +27,11 @@ export default {
           num: 0
         },
         {
-          title: '粒度补全',
+          title: '粒度自适应补全',
           num: 1
         },
         {
-          title: '主动模态',
+          title: '模态动态切换',
           num: 2
         },
         {
@@ -54,7 +54,7 @@ export default {
           num: 0
         },
         {
-          title: '主动模态',
+          title: '粒度自适应补全',
           num: 1
         },
         {
@@ -90,10 +90,10 @@ export default {
         case '任务输入':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
           break
-        case '粒度补全':
+        case '粒度自适应补全':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
           break
-        case '主动模态':
+        case '模态动态切换':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
           break
         case '联盟形成':

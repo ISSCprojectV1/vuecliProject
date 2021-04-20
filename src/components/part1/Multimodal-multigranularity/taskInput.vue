@@ -5,9 +5,6 @@
       <!--输入任务表单-->
       <el-form label-width="130px">
 
-        <el-form-item label="监管任务名称">
-          <el-input v-model="input" placeholder="请输入内容"></el-input>
-        </el-form-item>
 
         <!--选择监管商品类别-->
         <el-form-item label="监管商品种类">
@@ -46,59 +43,9 @@
         </el-form-item>
 
         <!--人机模块部分需要属性-->
-        <!--选定的监管任务优先级-->
-        <el-form-item label="监管任务优先级">
-          <el-col :span="13">
-            <el-select v-model="priority" placeholder="请选择任务优先级" style="width: 100%">
-              <el-option label="级别一" value="1"></el-option>
-              <el-option label="级别二" value="2"></el-option>
-              <el-option label="级别三" value="3"></el-option>
-              <el-option label="级别四" value="4"></el-option>
-            </el-select>
-          </el-col>
-        </el-form-item>
 
-        <el-form-item label="任务周期">
-          <el-col :span="5">
-            <el-button type="primary" @click="getTimeRecommend">推荐时间粒度</el-button>
-          </el-col>
-          <el-col :span="7">
-            <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;"></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="1">-</el-col>
-          <el-col :span="7">
-            <el-date-picker type="date" placeholder="选择结束日期" v-model="dateEnd" style="width: 100%;"></el-date-picker>
-          </el-col>
-        </el-form-item>
 
-        <el-form-item label="是否人工分配">
-          <el-col :span="4">
-            <el-switch v-model="humanUse"
-                       active-text="人工分配"
-            ></el-switch>
-          </el-col>
-        </el-form-item>
 
-        <el-form-item label="是否主动监管">
-          <el-col :span="4">
-            <el-switch v-model="tradeUser"
-                       active-text="主动监管"
-            ></el-switch>
-          </el-col>
-          <el-col :span="4">
-            <el-button type="primary" @click="getActiveList">获取主动监管名单</el-button>
-          </el-col>
-        </el-form-item>
-        <!--监管周期-->
-
-        <el-form-item label="工作时间（小时）">
-          <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
-        </el-form-item>
-
-        <el-form-item label="结束时间">
-          <el-date-picker type="date" placeholder="选择结束日期" v-model="deadLine" style="width: 100%;"></el-date-picker>
-
-        </el-form-item>
 
         <el-button type="success" @click="createTask">立即创建</el-button>
         <el-button type="info" @click="abortForm">取消创建</el-button>
@@ -177,7 +124,65 @@
 </template>
 
 <script>
-  /*     <el-input v-model="deadLine" type="number" placeholder="如非末尾任务请勿输入"></el-input>*/
+  /*
+     <el-form-item label="任务周期">
+          <el-col :span="5">
+            <el-button type="primary" @click="getTimeRecommend">推荐时间粒度</el-button>
+          </el-col>
+          <el-col :span="7">
+            <el-date-picker type="date" placeholder="选择开始日期" v-model="dateStart" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="1">-</el-col>
+          <el-col :span="7">
+            <el-date-picker type="date" placeholder="选择结束日期" v-model="dateEnd" style="width: 100%;"></el-date-picker>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="监管任务名称">
+          <el-input v-model="input" placeholder="请输入内容"></el-input>
+        </el-form-item>
+
+
+        <el-form-item label="是否主动监管">
+          <el-col :span="4">
+            <el-switch v-model="tradeUser"
+                       active-text="主动监管"
+            ></el-switch>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="primary" @click="getActiveList">获取主动监管名单</el-button>
+          </el-col>
+        </el-form-item>
+        <!--监管周期--><el-input v-model="deadLine" type="number" placeholder="如非末尾任务请勿输入">
+          <!--选定的监管任务优先级-->
+        <el-form-item label="监管任务优先级">
+          <el-col :span="13">
+            <el-select v-model="priority" placeholder="请选择任务优先级" style="width: 100%">
+              <el-option label="级别一" value="1"></el-option>
+              <el-option label="级别二" value="2"></el-option>
+              <el-option label="级别三" value="3"></el-option>
+              <el-option label="级别四" value="4"></el-option>
+            </el-select>
+          </el-col>
+        </el-form-item>
+          <el-form-item label="是否人工分配">
+          <el-col :span="4">
+            <el-switch v-model="humanUse"
+                       active-text="人工分配"
+            ></el-switch>
+          </el-col>
+        </el-form-item>
+
+        <el-form-item label="工作时间（小时）">
+          <el-input v-model="workingTime" placeholder="请输入workingTime"></el-input>
+        </el-form-item>
+
+        <el-form-item label="结束时间">
+          <el-date-picker type="date" placeholder="选择结束日期" v-model="deadLine" style="width: 100%;"></el-date-picker>
+
+        </el-form-item>
+
+  </el-input>*/
 import {
   taskInput,
   bourseget,

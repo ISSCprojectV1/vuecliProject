@@ -4,9 +4,7 @@
       <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
     </div>
     <div>
-      <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
-      <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
-      <el-button @click="changeform12()" type="text" size="small">表格视图</el-button>
+
       <div id="echart1" style="width: 1000px; height: 800px"></div>
 
       <div id="form" style="display: none">
@@ -29,25 +27,10 @@
           <el-table-column label="监管平台" prop="content" min-width="180">
           </el-table-column>
 
-          <el-table-column label="人模态分布" prop="humanUse" width="93">
-          </el-table-column>
-          <el-table-column label="机器模态分布数" prop="agentNum" width="120">
+
+          <el-table-column label="监管联盟" prop="workTeam"  @click="queryWarehouseHandle(scope.row.team)" min-width="200">
           </el-table-column>
 
-          <el-table-column label="任务状态" prop="workStatus" width="105">
-          </el-table-column>
-          <!-- 联盟部分 -->
-          <el-table-column label="属于联盟" prop="team" width="77">
-            <!-- 根据team查询联盟信息 -->
-            <template slot-scope="scope">
-              <el-button type="text" @click="queryWarehouseHandle(scope.row.team)">{{ scope.row.team }}</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column label="监管联盟" prop="workTeam" @cell-click="openDetails" min-width="200">
-          </el-table-column>
-          <el-table-column label="联盟演化">
-            <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
-          </el-table-column>
 
         </el-table>
         <el-pagination @size-change="handleSizeChange"
@@ -63,6 +46,32 @@
 </template>
 
 <script>
+  /*
+        <el-button @click="drawechart1()" type="text" size="small" v-if="false">任务视图</el-button>
+      <el-button @click="drawechart12()" type="text" size="small" v-if="false">操作员视图</el-button>
+      <el-button @click="changeform12()" type="text" size="small" v-if="false">表格视图</el-button>
+  *           <el-table-column label="人模态分布" prop="humanUse" width="93" v-if="false">
+          </el-table-column>
+          <el-table-column label="机器模态分布数" prop="agentNum" width="120" v-if="false">
+          </el-table-column>
+
+          <el-table-column label="任务状态" prop="workStatus" width="105" v-if="false">
+          </el-table-column>
+          <!-- 联盟部分 -->
+          <el-table-column label="属于联盟" prop="team" width="77" v-if="false">
+            <!-- 根据team查询联盟信息 -->
+            <template slot-scope="scope">
+              <el-button type="text" @click="queryWarehouseHandle(scope.row.team)">{{ scope.row.team }}</el-button>
+            </template>
+          </el-table-column>
+          *          <el-table-column label="联盟演化" v-if="false">
+            <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
+          </el-table-column>
+  *
+  *
+  * */
+
+
 import echart from "echarts";
 import {taskQuery, teamform, getTeamResult} from "@/api/part1/Multimodal-multigranularity";
 
