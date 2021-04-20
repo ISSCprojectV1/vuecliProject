@@ -5,6 +5,13 @@
       <!--输入任务表单-->
       <el-form label-width="130px">
 
+        <el-form-item label="任务来源">
+            <el-col :span="1">
+          <el-tag>
+           {{radio}}
+          </el-tag>
+            </el-col>
+        </el-form-item>
 
         <!--选择监管商品类别-->
         <el-form-item label="监管商品种类">
@@ -54,6 +61,23 @@
     </div>
 
     <el-dialog
+        title="请选择任务来源"
+        :visible.sync="formTaskVisible"
+        width="60%">
+          <el-radio-group v-model="radio">
+              <el-radio label="主体智能查验">主体智能查验</el-radio>
+              <el-radio label="交易过程监测">交易过程监测</el-radio>
+              <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
+          </el-radio-group>    
+
+
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="formTaskVisible = false">取 消</el-button>
+    <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
+  </span>
+    </el-dialog>
+
+    <el-dialog
         title="确认创建任务"
         :visible.sync="formDialogVisible"
         width="50%">
@@ -68,7 +92,7 @@
         <el-form-item label="监管任务类型">
           {{ taskType }}
         </el-form-item>
-        <el-form-item label="监管任务优先级">
+        <!-- <el-form-item label="监管任务优先级">
           级别{{ priority }}
         </el-form-item>
         <el-form-item label="监管方式">
@@ -84,8 +108,8 @@
           {{ workingTime }}
         </el-form-item>
         <el-form-item label="结束时间">
-          {{ deadLine }}
-        </el-form-item>
+          {{ deadLine }} -->
+        <!-- </el-form-item> -->
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -193,6 +217,7 @@ import {
   updateCommodity
 } from "@/api/part1/Multimodal-multigranularity";
 import {getAct, getRiskVM} from "@/api/part1/acpassTask";
+import { radialLayout } from '@antv/g6/lib/util/graphic';
 
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属', '南京贵重金属交易所'];
 const commodityOptions = ['a', 'b', 'c']
@@ -230,6 +255,10 @@ export default {
 
       // 提交新任务
       formDialogVisible: false,
+      //提交任务来源
+      formTaskVisible: true,
+      radio: "主体智能查验",
+
 
       // 表单显示时间
       showStart: "",
@@ -300,10 +329,14 @@ export default {
         this.cleanForm()
       let butt = document.getElementById("neirong")
       console.log(butt.text)
-    }
+    },
+   
   },
   methods: {
-
+    dealwithradio(radio){
+      console.log(this.radio)
+      if(this.radio == 1) this.radio = 'fdf'
+    },
     // @handleChange---获取当前种类对应平台（输入框更改，绑定@change）
     handleChange(value) {
       this.getFlatList();
@@ -356,7 +389,15 @@ export default {
         type: 'success'
       });
     },
-
+    // @InputTaskSourceTrue---输入任务来源
+    InputTaskSourceTrue() {
+      //this.postData();
+      this.formTaskVisible = false;
+      this.$message({
+        message: '恭喜你，任务来源选择成功',
+        type: 'success'
+      });
+    },
 
     // @handleCloseFlatTag---关闭空间粒度TAG
     handleCloseFlatTag(flatTag) {
