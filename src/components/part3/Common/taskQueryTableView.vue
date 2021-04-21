@@ -47,7 +47,9 @@
           </el-table-column>
 
           <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
-            <el-button type="text" style="margin-left: 0.5rem" @click="getTimeRecommend">补充粒度</el-button>
+            <template slot-scope="commodity">
+            <el-button type="text" style="margin-left: 0.5rem" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
+            </template>
           </el-table-column>
         </el-table-column>
 
@@ -232,7 +234,7 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-
+      timeAdvise:0,
       admin: false
     }
   },
@@ -337,7 +339,7 @@ export default {
           "humanUse": 1,
           "workingTime": 0,
           "deadLine": new Date(this.deadLine).getTime(),
-          "timeadvise": row.timeAdvise,
+          "timeadvise": this.timeAdvise,
           "tradeuser": false,
           "content": row.content,
           "commodityName": row.commodityName
@@ -348,6 +350,7 @@ export default {
        //   this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
        //   console.log(this.$parent)
         //  this.$parent.$children[0].active=1
+
         })
                 .catch(function (error) {
                   console.log(error);
@@ -359,6 +362,7 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
+      this.reload()
     },
     // 确认追加该空间粒度
     updateFlat(val) {

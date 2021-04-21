@@ -18,6 +18,26 @@ export function getriskPredictionData() {
     })
 }
 
+
+
+export function getModeSwitch() {
+  console.log("发送ModeSwitch请求")
+  return request({
+    url: '/getModeSwitch',
+    method: 'get',
+  })
+}
+
+export function getModeSwitchById(id) {
+  return request({
+    method: 'GET',
+    params: {
+      taskid: id
+    },
+    url: '/getModeSwitch',
+  })
+}
+
 export function getVarDiff() {
     return request({
         url: '/VaR/diff',

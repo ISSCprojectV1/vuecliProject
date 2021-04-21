@@ -4,6 +4,8 @@ export function activetask(currentPage, pageSize) {
     return request.get('/activetask?' + "currentPage=" + currentPage + "&pageSize=" + pageSize)
 }
 
+
+
 export function passivetradeaction(id, currentPage, pageSize) {
     return request({
         method: 'GET',

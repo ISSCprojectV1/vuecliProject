@@ -12,10 +12,11 @@
           element-loading-text="加载中"
       >
         <!--任务基本-->
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
+        <el-table-column label="序号" prop="id" min-width="60"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
         <!--人机模态
+
                 <el-table-column label="人机模态" width="80" align = "center">
                 <el-table-column label="人模态分布" prop="humanUse" width="80">
                 </el-table-column>
@@ -24,31 +25,45 @@
                 </el-table-column>
                 -->
         <!--主被动模态-->
-        <el-table-column label="主被动模态" prop="content">
-          <template slot-scope="scope">
-            <el-link :disabled="setdis(scope)" type="primary">
-              <div @click="gotoDetail(scope.row.id)">
-                {{ scope.row.content }}
-              </div>
-            </el-link>
-          </template>
+        <el-table-column label="平台" prop="content">
+
         </el-table-column>
-        <el-table-column label="风险值（按日更新）" prop="name">
-          <template slot-scope="scope">
-            <el-link :disabled="setdis(scope)" type="primary">
-              <div @click="gotoPassive(scope.row.id,1)">
-                {{ scope.row.content }}
-              </div>
-            </el-link>
-          </template>
+        <el-table-column label="风险值（按日更新）" prop="riskValue">
+
         </el-table-column>
         <el-table-column label="下次风险值更新时间" prop="name">
        {{buttonName}}
         </el-table-column>
-        <el-table-column label="在线/离线" prop="name">
+        <el-table-column label="风险等级" min-width="40">
+          <template slot-scope="scope">
+            <span v-if="scope.row.riskMean === '高'" style="color: red">{{ scope.row.riskMean }}</span>
+            <span v-else-if="scope.row.riskMean === '中'" style="color: green">{{ scope.row.riskMean }}</span>
+            <span v-else-if="scope.row.riskMean === '低'" style="color: orange">{{ scope.row.riskMean }}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="主动监管/被动监管" prop="name">
+        <el-table-column label="主动监管/被动监管" prop="activePassive">
+          <template slot-scope="scope">
 
+
+            <el-link type="primary" v-if="scope.row.activePassive === 1" >
+              <div @click="gotoDetail(scope.row.id)">
+                主动监管
+              </div>
+            </el-link>
+            <el-link  type="primary" v-else-if="scope.row.activePassive === 0">
+              <div @click="gotoPassive(scope.row.id,1)">
+              被动监管
+              </div>
+            </el-link>
+            <span v-else >暂无监管</span>
+          </template>
+
+        </el-table-column>
+        <el-table-column label="在线/离线" >
+          <template slot-scope="scope">
+                {{ scope.row.activePassive==0?"离线":"在线" }}
+
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination @size-change="handleSizeChange"
@@ -72,6 +87,10 @@ import {
   updateCommodity,
   getrecommendrlatform
 } from "@/api/part1/Multimodal-multigranularity";
+import {
+  getModeSwitchById,
+  getModeSwitch
+} from "@/api/part1/riskPrediction";
 
 import {getToken} from "@/utils/auth"
 
@@ -327,6 +346,37 @@ export default {
         console.log("getTransactionData fail")
       });
     },
+    getModeSwitchAll(data){
+      getModeSwitch().then((res) => {
+        console.log( res.data)
+this.dealwithRiskData(res.data.data);
+      }).catch(() => {
+        console.log("getModeSwitchAll fail")
+      });
+    },
+
+    AddDorDataWithRisk(res)
+    { console.log(res)
+      console.log(this.dormitory)
+      let dataConvert=this.dormitory
+      if(dataConvert.length<=0||res.length<=0)
+        return
+      for (let i = 0; i < dataConvert.length; i++) {
+          for(let j=0;j<res.length;j++)
+          {
+            if(dataConvert[i].id==res[j].id)
+            {
+
+              dataConvert[i].riskValue=res[j].riskValue
+              dataConvert[i].riskMean=res[j].riskMean
+              dataConvert[i].activePassive=res[j].activePassive
+              break
+            }
+
+          }
+      }
+      console.log(dataConvert)
+    },
     dealwithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
@@ -384,7 +434,14 @@ export default {
       this.dormitory = dataConvert;
       this.loading = false;
     },
+    dealwithRiskData(res){
+      let dataConvert = [];
+      dataConvert = res;
 
+      dataConvert.reverse()
+      this.dormitory = dataConvert;
+      this.loading = false;
+    },
     // 转换时间戳
     timestampToTime(cjsj) {
       const date = new Date(cjsj); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -398,8 +455,11 @@ export default {
     },
   },
   created() {
-    this.getData();
+    //this.getData();
+    this.  getModeSwitchAll()
     this.sendMsg()
+
+
   },
   mounted() {
     this.loading = true;
