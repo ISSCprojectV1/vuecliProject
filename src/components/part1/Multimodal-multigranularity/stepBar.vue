@@ -88,7 +88,7 @@ export default {
     onClickStep(title, numStep) {
       switch (title) {
         case '任务输入':
-          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput3")
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput")
           break
         case '粒度自适应补全':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
