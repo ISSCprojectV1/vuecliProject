@@ -35,6 +35,16 @@
           </template>
         </el-table-column>--主被动模态-->
         <!--时间粒度-->
+        <el-table-column label="时间粒度（天）" width="80" align="center">
+          <el-table-column label="推荐时间粒度" prop="timeadvise" width="80">
+            <template slot-scope="scope">
+              <el-link :disabled="setgoto(scope)">
+                <div @click="goToprice()">
+                  {{ scope.row.timeadvise }}
+                </div>
+              </el-link>
+            </template>
+          </el-table-column>
 
           <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
             <el-button type="text" style="margin-left: 0.5rem" @click="getTimeRecommend">补充粒度</el-button>
