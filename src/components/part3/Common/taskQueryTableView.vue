@@ -320,41 +320,45 @@ export default {
       getcommodityTimeadvise2(URL).then((response) => {
         let arr = [];
         arr = response.data;
-        result = arr[0].timeadvise;
-        console.log("result----111:", result);
-        // 弹窗提醒
-        this.timeAdvise = result;
-        let message = com_name + "推荐时间粒度为：" + result + "天"
-        this.$message({
-          message: message,
-          type: 'success'
-        });
-        console.log(row)
-        let humannn = (this.humanUse == true ? 1 : 0);
-        var inputData = {
-          "name": row.name,
-          "priority": row.priority,
-          "startTime": 1587807522386,
-          "endTime": 1588404415698,
-          "humanUse": 1,
-          "workingTime": 0,
-          "deadLine": new Date(this.deadLine).getTime(),
-          "timeadvise": this.timeAdvise,
-          "tradeuser": false,
-          "content": row.content,
-          "commodityName": row.commodityName
-        };
-        console.log(inputData);
-        taskInput(inputData).then((response) =>{
-          console.log(response)
-       //   this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-       //   console.log(this.$parent)
-        //  this.$parent.$children[0].active=1
+        console.log(arr)
+        if(arr.length>0){
+          result = arr[0].timeadvise;
+          console.log("result----111:", result);
+          // 弹窗提醒
+          this.timeAdvise = result;
+          let message = com_name + "推荐时间粒度为：" + result + "天"
+          this.$message({
+            message: message,
+            type: 'success'
+          });
+          console.log(row)
+          let humannn = (this.humanUse == true ? 1 : 0);
+          var inputData = {
+            "name": row.name,
+            "priority": row.priority,
+            "startTime": 1587807522386,
+            "endTime": 1588404415698,
+            "humanUse": 1,
+            "workingTime": 0,
+            "deadLine": new Date(this.deadLine).getTime(),
+            "timeadvise": this.timeAdvise,
+            "tradeuser": false,
+            "content": row.content,
+            "commodityName": row.commodityName
+          };
+          console.log(inputData);
+          taskInput(inputData).then((response) =>{
+            console.log(response)
+            this.reload()
 
-        })
-                .catch(function (error) {
-                  console.log(error);
-                });
+          })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+        }
+
+
+
         // 自动填充
 
     //    this.setTimeRecommend(result);
@@ -362,7 +366,7 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      this.reload()
+
     },
     // 确认追加该空间粒度
     updateFlat(val) {
@@ -452,17 +456,17 @@ export default {
     },
 
     getData() {
-      var idd = getToken()
-      console.log(idd)
-      var url = '/getTaskById/' + idd
-      console.log(url)
+      //var idd = getToken()
+      //console.log(idd)
+     // var url = '/getTaskById/' + idd
+   //   console.log(url)
       //  console.log(taskQueryById(url))
-      var url2 = '/getroles/' + idd
-      console.log(getRolenameById(url2))
+  //    var url2 = '/getroles/' + idd
+      //console.log(getRolenameById(url2))
       // 获取表格数据
-      console.log("获取表格数据")
-      console.log(this.user)
-      console.log(getToken())
+    //  console.log("获取表格数据")
+      //console.log(this.user)
+      //console.log(getToken())
 
       taskQuery().then((res) => {
         console.log("look----", res.data)
@@ -476,6 +480,7 @@ export default {
       dataConvert = res.data.data;
       this.totalCount = dataConvert.length
       for (let i = 0; i < dataConvert.length; i++) {
+
         let data = this.timestampToTime(dataConvert[i].gmtCreate);
         dataConvert[i].gmtCreate = data
 
@@ -493,7 +498,7 @@ export default {
         else // false
           dataConvert[i].humanUse = "否"
         if (!dataConvert[i].timeadvise) // true
-          dataConvert[i].timeadvise = "否"
+          dataConvert[i].timeadvise = "暂未分配"
         if (!dataConvert[i].commodityName) // true
           dataConvert[i].commodityName = "暂无"
 
