@@ -535,6 +535,7 @@ export default {
       console.log(inputData);
       taskInput(inputData).then((response) =>{
         this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+        console.log(this.$parent)
 this.$parent.$children[0].active=1
       })
           .catch(function (error) {

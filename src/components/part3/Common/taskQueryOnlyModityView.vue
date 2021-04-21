@@ -36,7 +36,7 @@
         <el-table-column label="风险值（按日更新）" prop="name">
           <template slot-scope="scope">
             <el-link :disabled="setdis(scope)" type="primary">
-              <div @click="gotoPassive(scope.row.id)">
+              <div @click="gotoPassive(scope.row.id,1)">
                 {{ scope.row.content }}
               </div>
             </el-link>
@@ -297,8 +297,15 @@ export default {
       // 改变默认的页数
       this.currentPage = val
     },
-    gotoPassive(id){
-      this.$router.push(`/trade/acpassTask/passivetradeaction/${id}`)
+    gotoPassive(id,passive){
+      this.$router.push({
+        path: '/trade/acpassTask/activetask/'+id,
+        query: {
+          data: passive,
+
+        }
+      });
+     // this.$router.push(`/trade/acpassTask/activetask/${id}`)
     },
     getData() {
       var idd = getToken()

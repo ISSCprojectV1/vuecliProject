@@ -86,6 +86,11 @@ export default {
   name: "activetask",
   components: {tabActiveModal},
   created() {
+if(this.$route.query&&this.$route.query.data)
+this.passive=true
+    else this.passive=false
+
+
     taskQuery().then(res => {
       console.log("res")
       console.log(res)
@@ -95,7 +100,10 @@ export default {
       console.log("出现错误")
     })
     const id = this.$router.currentRoute.params.id;
+
+console.log(this.activeOrPassive())
     if (this.activeOrPassive()) {
+      this.activeName="table"
       activetradeaction(id).then(res => {
         this.dataTableActive = res.data.data
         this.handleData();
@@ -104,6 +112,7 @@ export default {
         console.log("出现错误")
       })
     } else {
+      this.activeName="passive"
       this.passivetradeactionList(id, 1, 5)
     }
   },
@@ -125,6 +134,7 @@ export default {
       // tab 1: active table
       dataTableActive: [],
       threshold: '',
+      passive:false,
       // tab gone: 交易事件图
       value_space_granularity: '',
       options: [{
@@ -199,7 +209,9 @@ export default {
       this.Activetaskgraph(id, query_str);
     },
     activeOrPassive() {
-      return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
+      console.log("passive"+this.passive)
+ return !this.passive
+    //  return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
     },
     objectSpanMethod({row, column, rowIndex, columnIndex}) {
       if (column.label === '编号' || column.label === '交易模式') {

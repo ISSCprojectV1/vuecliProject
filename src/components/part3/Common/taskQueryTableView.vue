@@ -45,7 +45,9 @@
           </template>
         </el-table-column>
           <el-table-column label="补充时间粒度"  width="80" v-if="this.admin">
-            <el-button type="text" style="margin-left: 0.5rem"  @click="getTimeRecommend">补充粒度</el-button>
+            <template slot-scope="scope">
+            <el-button type="text" style="margin-left: 0.5rem"  @click="getTimeRecommend(scope.row)">补充粒度</el-button>
+            </template>
           </el-table-column>
         </el-table-column>
         <!--商品粒度-->
@@ -174,6 +176,7 @@
 import {
   changetimeadvise,
   taskQuery,
+  taskInput,
   spaceResult,
   getRolenameById,
   getcommodityTimeadvise2,
@@ -293,8 +296,8 @@ export default {
       this.flatsSelection = val;
     },
 
-    getTimeRecommend() {
-      let com_name = this.commodityName
+    getTimeRecommend(row) {
+      let com_name = row.commodityName
       console.log("时间粒度 获得商品：", com_name)
       let URL = "/getcommodityTimeadvise2/" + com_name;
       let result;
@@ -310,8 +313,33 @@ export default {
           message: message,
           type: 'success'
         });
+        console.log(row)
+        let humannn = (this.humanUse == true ? 1 : 0);
+        var inputData = {
+          "name": row.name,
+          "priority": row.priority,
+          "startTime": 1587807522386,
+          "endTime": 1588404415698,
+          "humanUse": 1,
+          "workingTime": 0,
+          "deadLine": new Date(this.deadLine).getTime(),
+          "timeadvise": row.timeAdvise,
+          "tradeuser": false,
+          "content": row.content,
+          "commodityName": row.commodityName
+        };
+        console.log(inputData);
+        taskInput(inputData).then((response) =>{
+          console.log(response)
+       //   this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+       //   console.log(this.$parent)
+        //  this.$parent.$children[0].active=1
+        })
+                .catch(function (error) {
+                  console.log(error);
+                });
         // 自动填充
-        this.setTimeRecommend(result);
+    //    this.setTimeRecommend(result);
       })
               .catch(function (error) {
                 console.log(error);
@@ -375,6 +403,7 @@ export default {
     },
     gotoDetail(id) {
       this.$router.push(`/trade/acpassTask/activetask/${id}`);
+
       console.log(`/trade/acpassTask/activetask/${id}`)
     },
     changetime(data) {
