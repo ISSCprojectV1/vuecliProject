@@ -11,6 +11,9 @@
            {{radio}}
           </el-tag>
             </el-col>
+          <el-col :span="8">
+            <el-button type="primary" @click="createTaskSource">修改任务来源</el-button>
+          </el-col>
         </el-form-item>
 
         <!--选择监管商品类别-->
@@ -69,10 +72,8 @@
               <el-radio label="交易过程监测">交易过程监测</el-radio>
               <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
           </el-radio-group>    
-
-
       <span slot="footer" class="dialog-footer">
-    <el-button @click="formTaskVisible = false">取 消</el-button>
+    <!-- <el-button @click="formTaskVisible = false">取 消</el-button> -->
     <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
   </span>
     </el-dialog>
@@ -458,6 +459,10 @@ export default {
     // 提交创建的新任务
     createTask() {
       this.formDialogVisible = true;
+    },
+        // 提交创建的新任务
+    createTaskSource() {
+      this.formTaskVisible = true;
     },
     postAddress() {
       this.$confirm('是否确认创建该监管任务', '提示', {
