@@ -59,7 +59,7 @@
         </el-table-column>
         <el-table-column label="在线/离线" >
           <template slot-scope="scope">
-                {{ scope.row.activePassive==0?"离线":"在线" }}
+                {{ scope.row.algoStatus==0?"离线":"在线" }}
 
           </template>
         </el-table-column>

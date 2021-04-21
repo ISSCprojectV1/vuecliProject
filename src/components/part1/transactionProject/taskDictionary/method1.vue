@@ -57,6 +57,8 @@ console.log(input)
           for(let i = 0; i<input.data.length;i++){
      //       console.log(input.data[i])
               var node = {};
+              if(input.data[i].algoStatus==0)
+                continue
               // 找到点的属性
               node.userId = input.data[i].id;
               node.id = input.data[i].name;

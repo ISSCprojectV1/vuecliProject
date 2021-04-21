@@ -80,6 +80,13 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <el-table-column label="在线/离线" >
+          <template slot-scope="scope">
+            {{ scope.row.algoStatus==0?"离线":"在线" }}
+
+          </template>
+        </el-table-column>
         <el-pagination @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="currentPage"
