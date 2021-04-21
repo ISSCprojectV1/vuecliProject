@@ -17,14 +17,14 @@
         </el-form-item>
 
         <!--选择监管商品类别-->
-        <el-form-item label="监管商品种类">
+        <el-form-item label="商品种类">
           <el-col :span="13">
             <el-input v-model="commodityName" placeholder="请输入内容" @change="handleChange"></el-input>
           </el-col>
         </el-form-item>
 
         <!--监管任务空间粒度，根据选定的商品种类获得平台列表-->
-        <el-form-item label="监管交易平台">
+        <el-form-item label="交易平台">
           <el-col :span="13">
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
               <!--动态读取该品类对应的平台-->
@@ -87,10 +87,10 @@
         <el-form-item label="任务来源">
           {{ radio }}
         </el-form-item>
-        <el-form-item label="监管商品类别">
+        <el-form-item label="商品种类">
           {{ commodityName }}
         </el-form-item>
-        <el-form-item label="监管交易平台">
+        <el-form-item label="交易平台">
           {{ flatName }}
         </el-form-item>
         <el-form-item label="监管任务类型">
