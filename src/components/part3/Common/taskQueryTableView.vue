@@ -10,11 +10,12 @@
           border
           v-loading="loading"
           element-loading-text="加载中"
+          header-cell-style="background-color: white"
       >
         <!--任务基本-->
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name">
-        </el-table-column>
+
+        <el-table-column label="序号" prop="id" min-width="30"></el-table-column>
+        <el-table-column label="监管任务名称" prop="name"></el-table-column>
         <!--人机模态
                 <el-table-column label="人机模态" width="80" align = "center">
                 <el-table-column label="人模态分布" prop="humanUse" width="80">
@@ -34,29 +35,22 @@
           </template>
         </el-table-column>--主被动模态-->
         <!--时间粒度-->
-        <el-table-column label="时间粒度（天）" width="80" align="center">
-        <el-table-column label="推荐时间粒度" prop="timeadvise" width="80">
-          <template slot-scope="scope">
-            <el-link :disabled="setgoto(scope)">
-              <div @click="goToprice()">
-                {{ scope.row.timeadvise }}
-              </div>
-            </el-link>
-          </template>
-        </el-table-column>
-          <el-table-column label="补充时间粒度"  width="80" v-if="this.admin">
-            <template slot-scope="scope">
-            <el-button type="text" style="margin-left: 0.5rem"  @click="getTimeRecommend(scope.row)">补充粒度</el-button>
-            </template>
+
+          <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
+            <el-button type="text" style="margin-left: 0.5rem" @click="getTimeRecommend">补充粒度</el-button>
           </el-table-column>
         </el-table-column>
+
         <!--商品粒度-->
-        <el-table-column label="商品粒度" width="80" align="center">
-          <el-table-column label="监管种类" prop="commodityName">
+
+        <el-table-column label="商品粒度" align="center">
+          <el-table-column label="监管种类" min-width="60" prop="commodityName">
           </el-table-column>
-          <el-table-column label="扩展监管种类" prop="subtask">
+
+          <el-table-column label="扩展监管种类" min-width="60" prop="subtask">
           </el-table-column>
-          <el-table-column label="补充商品粒度" v-if="this.admin">
+
+          <el-table-column label="补充商品粒度" min-width="60" v-if="this.admin">
             <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
               <!--推荐的商品粒度-->
@@ -103,13 +97,16 @@
         </el-table-column>
 
         <!--空间粒度-->
-        <el-table-column label="空间粒度" width="80" align="center">
+
+        <el-table-column label="空间粒度" align="center">
           <el-table-column label="监管平台" prop="content">
           </el-table-column>
-          <el-table-column label="扩展监管平台" prop="resourceNeed" >
+
+          <el-table-column label="扩展监管平台" prop="resourceNeed">
             <template slot-scope="flat">
-              <el-link >
-                <div  @click="goToSpaceDetail(flat.row.id)">
+
+              <el-link>
+                <div @click="goToSpaceDetail(flat.row.id)">
                   {{ flat.row.resourceNeed }}
                 </div>
               </el-link>
@@ -155,7 +152,10 @@
     <el-button type="primary" @click="updateFlat()">确 定</el-button>
   </span>
               </el-dialog>
-              <el-button type="text" style="margin-left: 0.5rem" @click="goToSpaceDetail(flat.row.id)" v-show="false">详情</el-button>
+
+              <el-button type="text" style="margin-left: 0.5rem" @click="goToSpaceDetail(flat.row.id)" v-show="false">
+                详情
+              </el-button>
             </template>
           </el-table-column>
         </el-table-column>
@@ -166,7 +166,8 @@
                      :current-page="currentPage"
                      :page-sizes="pageSizes"
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
+                     :total="totalCount"
+                     style="margin-top: 1rem">
       </el-pagination>
     </div>
   </div>
@@ -185,7 +186,8 @@ import {
   getrecommendrlatform
 } from "@/api/part1/Multimodal-multigranularity";
 
-import {getToken,getRole} from "@/utils/auth"
+
+import {getToken, getRole} from "@/utils/auth"
 
 export default {
   name: "taskQueryTableView",
@@ -220,7 +222,8 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-     admin:false
+
+      admin: false
     }
   },
   methods: {
@@ -296,6 +299,7 @@ export default {
       this.flatsSelection = val;
     },
 
+
     getTimeRecommend(row) {
       let com_name = row.commodityName
       console.log("时间粒度 获得商品：", com_name)
@@ -339,11 +343,12 @@ export default {
                   console.log(error);
                 });
         // 自动填充
+
     //    this.setTimeRecommend(result);
       })
-              .catch(function (error) {
-                console.log(error);
-              });
+          .catch(function (error) {
+            console.log(error);
+          });
     },
     // 确认追加该空间粒度
     updateFlat(val) {
@@ -531,9 +536,10 @@ export default {
   },
   mounted() {
     this.loading = true;
-    if(getRole()=="admin"||getRole()=="OMS")
-      this.admin=true;
-    else  this.admin=false
+
+    if (getRole() == "admin" || getRole() == "OMS")
+      this.admin = true;
+    else this.admin = false
   }
 }
 </script>
@@ -541,10 +547,5 @@ export default {
 <style scoped>
 .dormitoryData {
   width: 100%;
-  height: 600px;
-}
-
-.el-table thead {
-  color: black;
 }
 </style>

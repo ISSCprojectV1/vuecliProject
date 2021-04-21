@@ -21,7 +21,7 @@
                     style="width:600px"
             ></el-autocomplete>
 
-            <el-button type="primary" @click="searchTask_btn" style="margin-left:29px;margin-right:14px;">搜索</el-button>
+            <el-button type="primary" @click="searchTask_btn" style="margin-bottom: 0.5rem">搜索</el-button>
 
             <el-dialog title="搜索结果"
                        :visible.sync="searchTableVisible" center :append-to-body='true'
@@ -30,7 +30,7 @@
             >
                 <taskSearch ref="taskSearch" :searchData = this.state1></taskSearch>
             </el-dialog>
-            <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+            <el-button type="primary" @click="teamformation" style="margin-bottom: 1rem">联盟形成</el-button>
             <el-button type="primary" @click="addNewTask" style="margin-left:15px;margin-right:14px">添加新任务</el-button>
             <el-dialog title="添加新任务"
                        :visible.sync="dialogTableVisible" center :append-to-body='true'
@@ -127,7 +127,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="交易联盟图" name="flow">
                     <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
-                    <el-button @click="drawechart12()" type="text" size="small">操作员视图</el-button>
+                    <el-button @click="drawechart12()" type="text" size="small">操作员列表</el-button>
                     <div id="echart1" style="width: 1000px;height: 800px"></div>
                 </el-tab-pane>
             </el-tabs>

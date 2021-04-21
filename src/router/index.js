@@ -53,7 +53,7 @@ export const asyncRoutes = [
         component: () => import("@/components/part1/Multimodal-multigranularity/stepBar"),
         children: [
           {
-            path: 'taskInput3',
+            path: 'taskInput',
             component: () => import("@/components/part1/Multimodal-multigranularity/taskInput")
           },
           {

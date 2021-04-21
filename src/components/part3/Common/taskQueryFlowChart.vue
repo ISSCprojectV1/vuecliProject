@@ -1,103 +1,105 @@
 <template>
-<div>
-  <el-dialog title="任务信息反馈"
-             :visible.sync="dialogTableVisible" center :append-to-body='true'
-             :lock-scroll="false" width="30%"
-             :close-on-click-modal="false">
-    <taskInputFormChange :taskin="taskin"></taskInputFormChange>
-  </el-dialog>
-  <el-dialog title="操作员设置"
-             :visible.sync="dialogTableVisible2" center :append-to-body='true'
-             :lock-scroll="false" width="30%"
-             :close-on-click-modal="false">
-    <operatorChange :taskin="taskin2" :operatorin="operatorin" :modity="modity"></operatorChange>
-  </el-dialog>
+  <div>
+    <el-dialog title="任务信息反馈"
+               :visible.sync="dialogTableVisible" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+      <taskInputFormChange :taskin="taskin"></taskInputFormChange>
+    </el-dialog>
+    <el-dialog title="操作员设置"
+               :visible.sync="dialogTableVisible2" center :append-to-body='true'
+               :lock-scroll="false" width="30%"
+               :close-on-click-modal="false">
+      <operatorChange :taskin="taskin2" :operatorin="operatorin" :modity="modity"></operatorChange>
+    </el-dialog>
     <el-dialog title="任务信息查看"
                :visible.sync="dialogTableVisible3" center :append-to-body='true'
                :lock-scroll="false" width="30%"
                :close-on-click-modal="false">
-        <taskInputFormShow :taskin="taskin3" ></taskInputFormShow>
+      <taskInputFormShow :taskin="taskin3"></taskInputFormShow>
     </el-dialog>
-  <div>     <el-row>
+    <div>
+      <el-row>
+        <el-col :span="this.admintrue?6:12">
+          <el-button class="elbun" @click="changeform12">表格视图</el-button>
+        </el-col>
+        <el-col :span="this.admintrue?6:12">
+          <el-button class="elbun" @click="changeform21">流程图视图</el-button>
+        </el-col>
+        <el-col :span="this.admintrue?6:0">
+          <el-button class="elbun" @click="changeform3" v-if="this.admintrue">操作员列表</el-button>
+        </el-col>
+        <el-col :span="this.admintrue?6:0">
+          <el-button class="elbun" @click="changeOperator('new')" v-if="this.admintrue">新增操作员</el-button>
+        </el-col>
+      </el-row>
 
-      <el-col :span="this.admintrue?6:12">
-
-    <el-button type="primary"  class="elbun" @click="changeform12" style="margin-left:15px;margin-right:14px" >表格视图</el-button>
-      </el-col>
-      <el-col :span="this.admintrue?6:12">
-    <el-button type="primary" class="elbun"  @click="changeform21" style="margin-left:15px;margin-right:14px">流程图视图</el-button>    </el-col>
-          <el-col :span="this.admintrue?6:0">
-    <el-button type="primary" class="elbun"  @click="changeform3" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">操作员视图</el-button>    </el-col>
-              <el-col :span="this.admintrue?6:0">
-    <el-button type="primary" class="elbun"  @click="changeOperator('new')" style="margin-left:15px;margin-right:14px" v-if="this.admintrue">新增操作员</el-button>    </el-col>
-  </el-row>
-
-  </div>
+    </div>
     <p></p>
-<div>
-  <div id="echart1"  >
-<div>
-    * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
-</div>
-      <p></p>
-    <method1 ref="method1_child"  ></method1>
-  </div>
-
-    <div id="form2" >
-      <div>
-        任务等待队列
+    <div>
+      <div id="echart1">
+        <div>
+          * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
+        </div>
+        <p></p>
+        <method1 ref="method1_child"></method1>
       </div>
-      <el-table
-              :header-cell-style="{
+
+      <div id="form2">
+        <div>
+          任务等待队列
+        </div>
+        <el-table
+            :header-cell-style="{
       'background-color': '#dfdfdf',
       'color': 'rgb(96, 97, 98)',
       'font-weight':'bold',
       'font-size':'16px'
       }"
-              ref="dormitoryTable2"
-              :data="dormitory2.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-              tooltip-effect="dark"
-              stripe
-              style="width: 100%"
-              border>
+            ref="dormitoryTable2"
+            :data="dormitory2.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+            tooltip-effect="dark"
+            stripe
+            style="width: 100%"
+            border>
 
-        <el-table-column type="selection"  min-width="60"></el-table-column>
-        <el-table-column label="序号" prop="id"  min-width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name"  min-width="60">
-        </el-table-column>
+          <el-table-column type="selection" min-width="60"></el-table-column>
+          <el-table-column label="序号" prop="id" min-width="60"></el-table-column>
+          <el-table-column label="监管任务名称" prop="name" min-width="60">
+          </el-table-column>
 
-        <el-table-column label="任务优先级" prop="priority"  min-width="60" >
-        </el-table-column>
+          <el-table-column label="任务优先级" prop="priority" min-width="60">
+          </el-table-column>
           <el-table-column label="任务执行时间" min-width="60">
-              <template slot-scope="scope">
+            <template slot-scope="scope">
 
-            <span >
-                    {{scope.row.workingTime /3600000+"小时"}}
+            <span>
+                    {{ scope.row.workingTime / 3600000 + "小时" }}
                   </span>
 
-              </template>
+            </template>
           </el-table-column>
-      </el-table>
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="pageSizes"
-                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount2">
-      </el-pagination>
+        </el-table>
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :total="totalCount2">
+        </el-pagination>
+      </div>
     </div>
-  </div>
-  <div id="form3"  style="display: none" >
+    <div id="form3" style="display: none">
 
       <el-table
-              v-if="this.admintrue"
-              ref="dormitoryTable3"
-              :data="modalitydata.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-              tooltip-effect="dark"
-              stripe
-              style="width: 100%"
-              border
-     >
+          v-if="this.admintrue"
+          ref="dormitoryTable3"
+          :data="modalitydata.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          tooltip-effect="dark"
+          stripe
+          style="width: 100%"
+          border
+      >
 
 
         <el-table-column label="序号" prop="id" width="60">
@@ -107,7 +109,7 @@
 
         <el-table-column label="当前任务编号" prop="taskId">
           <template slot-scope="scope">
-            <el-link  type="primary">
+            <el-link type="primary">
               <div @click="gotoDetail(scope.row)">
                 {{ scope.row.taskId }}
               </div>
@@ -115,11 +117,11 @@
           </template>
         </el-table-column>
         <el-table-column
-                label="操作员设置"
+            label="操作员设置"
 
         >
           <template slot-scope="scope">
-            <el-button @click="   changeOperator(scope.row)" type="text" size="small"  >操作员修改</el-button>
+            <el-button @click="   changeOperator(scope.row)" type="text" size="small">操作员修改</el-button>
           </template>
         </el-table-column>
 
@@ -131,48 +133,48 @@
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
                      :total="totalCount3">
       </el-pagination>
-    <el-table
-            v-if="usertrue"
-            :show-header="false"
-            :data="tabledata3"
+      <el-table
+          v-if="usertrue"
+          :show-header="false"
+          :data="tabledata3"
 
-            border
+          border
 
-            style="width: 60%;margin: auto"
-    >
-      <el-table-column prop="neirong" label="ID" ></el-table-column>
-      <el-table-column prop="shuzhi"></el-table-column>
+          style="width: 60%;margin: auto"
+      >
+        <el-table-column prop="neirong" label="ID"></el-table-column>
+        <el-table-column prop="shuzhi"></el-table-column>
 
-    </el-table>
-  </div>
+      </el-table>
+    </div>
     <div id="form" style="display: none">
       <el-table
-              ref="dormitoryTable"
-              :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-              tooltip-effect="dark"
-              stripe
-              style="width: 100%"
-              border>
+          ref="dormitoryTable"
+          :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          tooltip-effect="dark"
+          stripe
+          style="width: 100%"
+          border>
 
         <el-table-column type="selection" width="45"></el-table-column>
         <el-table-column label="序号" prop="id" width="60"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
 
-        <el-table-column label="任务优先级"   sortable    :sort-orders="['ascending', 'descending',null]"     :sort-by="['priority']" prop="priority" width="60">
+        <el-table-column label="任务优先级" sortable :sort-orders="['ascending', 'descending',null]" :sort-by="['priority']"
+                         prop="priority" width="60">
 
         </el-table-column>
 
         <el-table-column label="任务执行时间" width="60">
           <template slot-scope="scope">
 
-            <span >
-                    {{scope.row.workingTime /3600000+"小时"}}
+            <span>
+                    {{ scope.row.workingTime / 3600000 + "小时" }}
                   </span>
 
           </template>
         </el-table-column>
-
 
 
         <el-table-column label="商品名称" prop="commodityName">
@@ -181,12 +183,12 @@
         </el-table-column>
 
         <el-table-column
-                label="模态粒度补充"
-                fixed="right"
-                min-width="180"
-            >
+            label="模态粒度补充"
+            fixed="right"
+            min-width="180"
+        >
           <template slot-scope="scope">
-            <el-button @click="changetask(scope)" type="text" size="small"  >属性修改</el-button>
+            <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -197,23 +199,29 @@
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
                      :total="totalCount">
       </el-pagination>
+    </div>
   </div>
-
-
-</div>
 </template>
 
 <script>
-    /*
-            <el-table-column label="是否被占用"   prop="allocation" width="60">
+/*
+        <el-table-column label="是否被占用"   prop="allocation" width="60">
 
-        </el-table-column>
-    * */
+    </el-table-column>
+* */
 
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {setToken,getToken,setUserTrue,getUserTrue,setAdminTrue,getAdminTrue} from "@/utils/auth"
-import {taskQuery,teamform,taskAllocation,getReadyQueue,modality,getAllUsers,getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
+import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
+import {
+  taskQuery,
+  teamform,
+  taskAllocation,
+  getReadyQueue,
+  modality,
+  getAllUsers,
+  getModalityByUserId
+} from "@/api/part1/Multimodal-multigranularity";
 import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/taskInputFormChange";
 import taskInputFormShow from "@/components/part1/Multimodal-multigranularity/taskInputFormShow";
 
@@ -242,87 +250,84 @@ export default {
     operatorChange
 
   },
-  mounted () {
+  mounted() {
 
-      //  执行echarts方法
-      this.getData();
+    //  执行echarts方法
+    this.getData();
     this.getData1();
-      this.getData2();
-console.log(getAdminTrue())
-if(getAdminTrue())
+    this.getData2();
+    console.log(getAdminTrue())
+    if (getAdminTrue()) {
 
-{
+      this.admintrue = true
+      this.usertrue = false
+      this.modality()
+    } else {
 
-this.admintrue=true
-  this.usertrue=false
-  this.modality()
-}
-else
-    {
-
-      this.admintrue=false
-      this.usertrue=true
+      this.admintrue = false
+      this.usertrue = true
     }
 
-console.log(this.admintrue)
+    console.log(this.admintrue)
   },
   created() {
 
- getAllUsers().then((res) => {
+    getAllUsers().then((res) => {
       console.log(res.data.data)
-   let data=res.data.data
-   this.allusers=data
-this.operatorin=data
+      let data = res.data.data
+      this.allusers = data
+      this.operatorin = data
 
 
-    }).catch(()=>{
+    }).catch(() => {
       console.log("getallusers fail")
     });
- let data="/getModalityByUserId/"+getToken()
- getModalityByUserId(data).then((res) => {
+    let data = "/getModalityByUserId/" + getToken()
+    getModalityByUserId(data).then((res) => {
       console.log(res)
-if(res.data.data)
-{this.dealwithOperatorData(res.data.data)}
+      if (res.data.data) {
+        this.dealwithOperatorData(res.data.data)
+      }
 
-    }).catch(()=>{
+    }).catch(() => {
       console.log("getallusers fail")
     });
-  //  this.getData1()
+    //  this.getData1()
   },
 
   data() {
     return {
-  tabledata3:[],
-      usertrue:false,
+      tabledata3: [],
+      usertrue: false,
       admintrue: false,
-prioritychoose:[1,2,3],
-      caozuoyuankey:[],
-      caozuoyuanvalue:[],
-      modalitydata:[],
+      prioritychoose: [1, 2, 3],
+      caozuoyuankey: [],
+      caozuoyuanvalue: [],
+      modalitydata: [],
       dormitory: [],
-      modity:[],
+      modity: [],
       dormitory2: [],
       dorshow: [],
-      currentPage:1,
-        totalCount2:10,
-        totalCount3:10,
+      currentPage: 1,
+      totalCount2: 10,
+      totalCount3: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
-      totalCount:100,
+      totalCount: 100,
       // 个数选择器（可修改）
-      pageSizes:[5,10],
+      pageSizes: [5, 10],
       // 默认每页显示的条数（可修改）
-      PageSize:10,
+      PageSize: 10,
       dialogTableVisible: false,
       dialogTableVisible2: false,
-      dialogTableVisible3:false,
+      dialogTableVisible3: false,
       taskin: {
         changeflag:
         Number.NEGATIVE_INFINITY
       },
-      allusers:[],
-      taskin2:[],
-      taskin3:[],
-      operatorin:[]
+      allusers: [],
+      taskin2: [],
+      taskin3: [],
+      operatorin: []
     }
   },
   methods: {
@@ -332,7 +337,7 @@ prioritychoose:[1,2,3],
         this.dealwithData3(res.data.data)
 
 
-      }).catch(()=>{
+      }).catch(() => {
         console.log("getTransactionData fail")
       });
     },
@@ -342,33 +347,31 @@ prioritychoose:[1,2,3],
 
       this.addNewTask1()
     },
-    getData2(){
+    getData2() {
       getReadyQueue().then((res) => {
         console.log(res.data.data)
-        this. dealwithData2(res.data.data)
-      }).catch(()=>{
+        this.dealwithData2(res.data.data)
+      }).catch(() => {
         console.log("getTransactionData fail")
       });
     },
     addNewTask1() {
-console.log(this.taskin)
+      console.log(this.taskin)
       this.dialogTableVisible = true;
 
     },
-    gotoDetail(res){
+    gotoDetail(res) {
       this.dialogTableVisible3 = true;
       console.log(res)
       console.log(res.taskId)
       console.log(this.dorshow)
-      if(res.taskId)
-      {let dor=[]
+      if (res.taskId) {
+        let dor = []
         console.log(this.dormitory)
-        dor=this.dormitory
-        for(let i=0;i<dor.length;i++)
-        {
-          if(dor[i].id==res.taskId)
-          {
-            this.taskin3=dor[i]
+        dor = this.dormitory
+        for (let i = 0; i < dor.length; i++) {
+          if (dor[i].id == res.taskId) {
+            this.taskin3 = dor[i]
             console.log("aaa")
             console.log(this.taskin3)
             break;
@@ -376,94 +379,92 @@ console.log(this.taskin)
         }
       }
     },
-    changeOperator (res) {
-if(res!='new')
-{let data=[]
-  this.modity=res
-  console.log(res)
-  data.name=res.name
-this.taskin2=data
+    changeOperator(res) {
+      if (res != 'new') {
+        let data = []
+        this.modity = res
+        console.log(res)
+        data.name = res.name
+        this.taskin2 = data
 
-  console.log(this.taskin2.name)
-}else{
-  let data=[]
-  data.name=''
-  this.taskin2=data
-  this.modity=null
-  console.log(this.modity)
-  console.log(this.taskin2.name)
-}
+        console.log(this.taskin2.name)
+      } else {
+        let data = []
+        data.name = ''
+        this.taskin2 = data
+        this.modity = null
+        console.log(this.modity)
+        console.log(this.taskin2.name)
+      }
       this.dialogTableVisible2 = true;
 
     },
 
-    getData1(){
+    getData1() {
       // 获取表格数据
       console.log("获取表格数据")
       // var dataConvert = [];
       taskQuery().then((res) => {
         console.log(res.data.data)
-        this. dealwithData(res.data.data)
-      }).catch(()=>{
+        this.dealwithData(res.data.data)
+      }).catch(() => {
         console.log("获取表格数据 fail")
       });
-    } ,
+    },
     handleSizeChange(val) {
       // 改变每页显示的条数
-      this.PageSize=val
+      this.PageSize = val
       // 注意：在改变每页显示的条数时，要将页码显示到第一页
-      this.currentPage=1
+      this.currentPage = 1
     },
     // 显示第几页
     handleCurrentChange(val) {
       // 改变默认的页数
-      this.currentPage=val
+      this.currentPage = val
     },
 
-    getData(){
+    getData() {
       getTaskApi().then((res) => {
         var input = res.data;
         this.dealwithData(input)
         console.log("gettask")
-  console.log(input)
-      }).catch(()=>{
+        console.log(input)
+      }).catch(() => {
         console.log("getTaskApi fail")
       });
     },
-    changeform12()
-    {
-      document.getElementById("echart1").style.display="none";
-      document.getElementById("form").style.display="block";
-      document.getElementById("form2").style.display="none";
-      document.getElementById("form3").style.display="none";
+    changeform12() {
+      document.getElementById("echart1").style.display = "none";
+      document.getElementById("form").style.display = "block";
+      document.getElementById("form2").style.display = "none";
+      document.getElementById("form3").style.display = "none";
 
 
     },
-    changeform21()
-    {
-      document.getElementById("form").style.display="none";
-      document.getElementById("echart1").style.display="block";
-      document.getElementById("form2").style.display="block";
-      document.getElementById("form3").style.display="none";
+    changeform21() {
+      document.getElementById("form").style.display = "none";
+      document.getElementById("echart1").style.display = "block";
+      document.getElementById("form2").style.display = "block";
+      document.getElementById("form3").style.display = "none";
 
     },
-    changeform3(){
-      document.getElementById("form").style.display="none";
-      document.getElementById("form2").style.display="none";
-      document.getElementById("echart1").style.display="none";
-      document.getElementById("form3").style.display="block";
+    changeform3() {
+      document.getElementById("form").style.display = "none";
+      document.getElementById("form2").style.display = "none";
+      document.getElementById("echart1").style.display = "none";
+      document.getElementById("form3").style.display = "block";
     },
     dealwithData(res) {
-     // console.log("aa")
+      // console.log("aa")
       let dataConvert = [];
       dataConvert = res;
       //console.log("aa")
       this.totalCount = dataConvert.length
-     // console.log(dataConvert.length)
+      // console.log(dataConvert.length)
       for (let i = 0; i < dataConvert.length; i++) {
 
-  if(dataConvert[i].priority==0)
-      dataConvert[i].priority="无"
+        if (dataConvert[i].priority == 0)
+          dataConvert[i].priority = "无"
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
         else // false
@@ -493,9 +494,9 @@ this.taskin2=data
       }
       dataConvert.reverse()
       this.dormitory = dataConvert;
-      this.dorshow=dataConvert
-      console.log( this.dormitory)
-      console.log( this.dorshow)
+      this.dorshow = dataConvert
+      console.log(this.dormitory)
+      console.log(this.dorshow)
       //this.loading = false;
     },
     dealwithData2(res) {
@@ -537,92 +538,90 @@ this.taskin2=data
       }
       dataConvert.reverse()
       this.dormitory2 = dataConvert;
-      console.log( this.dormitory2)
+      console.log(this.dormitory2)
       //this.loading = false;
     },
-    dealwithOperatorData(res){
+    dealwithOperatorData(res) {
 
-        console.log(res)
-        let    keys = [];
-        let value=[]
-        let neirong={}
-        for (let property in res)
+      console.log(res)
+      let keys = [];
+      let value = []
+      let neirong = {}
+      for (let property in res) {
+        keys.push(property)
+        value.push(res[property])
+        neirong["neirong"] = property
+        neirong["shuzhi"] = res[property]
+        if (property == "id") {
+          let jsonObj = {"neirong": "序号", "shuzhi": res[property]};
+          this.tabledata3.push(jsonObj)
+
+        }
+        if (property == "name") {
+          let jsonObj = {"neirong": "操作员名称", "shuzhi": res[property]};
+          this.tabledata3.push(jsonObj)
+
+        }
+        if (property == "taskId") {
+          let jsonObj = {"neirong": "当前任务编号", "shuzhi": res[property]};
+          this.tabledata3.push(jsonObj)
+
+        }
+
+        //    let obj1 = JSON.parse(neirong);
+        //  console.log(obj1)
+
+
+        //   console.log(  this.tabledata3)
+        //     console.log(keys.length)
+      }
+    },
+    dealwithData3(res) {
+      this.modalitydata = res
+      this.totalCount3 = this.modalitydata.length
+      for (let i = 0; i < this.modalitydata.length; i++) {
+        if (this.modalitydata[i].allocation) // true
+          this.modalitydata[i].allocation = "是"
+        else // false
         {
-          keys.push(property)
-          value.push(res[property])
-          neirong["neirong"]=property
-          neirong["shuzhi"]=res[property]
-          if(property=="id"){
-            let jsonObj = {"neirong":"序号","shuzhi":res[property]};
-            this.tabledata3.push(jsonObj)
-
-          }
-          if(property=="name"){
-            let jsonObj = {"neirong":"操作员名称","shuzhi":res[property]};
-            this.tabledata3.push(jsonObj)
-
-          }
-          if(property=="taskId"){
-            let jsonObj = {"neirong":"当前任务编号","shuzhi":res[property]};
-            this.tabledata3.push(jsonObj)
-
-          }
-
-          //    let obj1 = JSON.parse(neirong);
-          //  console.log(obj1)
+          this.modalitydata[i].allocation = "否"
+          // this.modalitydata[i].id=null
+          this.modalitydata[i].taskId = "无"
+        }
 
 
+        /*
 
-
-   //   console.log(  this.tabledata3)
- //     console.log(keys.length)
-    }
-},
-dealwithData3(res) {
-  this.modalitydata=res
-    this.totalCount3=this.modalitydata.length
-  for (let i = 0; i < this.modalitydata.length; i++) {
-    if (this.modalitydata[i].allocation) // true
-      this.modalitydata[i].allocation = "是"
-    else // false
-    {  this.modalitydata[i].allocation = "否"
-    // this.modalitydata[i].id=null
-      this.modalitydata[i].taskId = "无"
-    }
-
-
-/*
-
-*/
+        */
 
       }
     },
     // 分配任务
-    allocateTask(){
+    allocateTask() {
       taskAllocation().then(res => {
-   console.log(res)
+        console.log(res)
       }).catch(err => {
         console.log(err)
 
       })
     }
-     /* this.$confirm('是否确认进行任务分配', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.getAllocateDate();
+    /* this.$confirm('是否确认进行任务分配', '提示', {
+       confirmButtonText: '确定',
+       cancelButtonText: '取消',
+       type: 'warning'
+     }).then(() => {
+       this.getAllocateDate();
 
-        this.$message({
-          type: 'success',
-          message: '已执行分配!'
-        });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        });
-      });*/
+       this.$message({
+         type: 'success',
+         message: '已执行分配!'
+       });
+     }).catch(() => {
+       this.$message({
+         type: 'info',
+         message: '已取消'
+       });
+     });*/
 
   }
 }
@@ -630,15 +629,9 @@ dealwithData3(res) {
 </script>
 
 <style scoped>
-    .elbun{
-        width: 136px;
-        height:50px;
-        margin-left: 50px;
-        margin-right: 50px;
-        font-size: 20px;
-        align-items: center;
-        justify-content: center;
-    }
-
-
+.elbun {
+  font-size: 16px;
+  align-items: center;
+  justify-content: center;
+}
 </style>

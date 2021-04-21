@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+      <el-button type="primary" @click="teamformation" style="margin-bottom: 0.5rem">联盟形成</el-button>
     </div>
     <div>
 
@@ -48,7 +48,7 @@
 <script>
   /*
         <el-button @click="drawechart1()" type="text" size="small" v-if="false">任务视图</el-button>
-      <el-button @click="drawechart12()" type="text" size="small" v-if="false">操作员视图</el-button>
+      <el-button @click="drawechart12()" type="text" size="small" v-if="false">操作员列表</el-button>
       <el-button @click="changeform12()" type="text" size="small" v-if="false">表格视图</el-button>
   *           <el-table-column label="人模态分布" prop="humanUse" width="93" v-if="false">
           </el-table-column>
