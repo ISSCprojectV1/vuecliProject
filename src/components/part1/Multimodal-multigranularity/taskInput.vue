@@ -504,8 +504,11 @@ export default {
       console.log("发送请求前")
       var startData = new Date(this.dateStart2).getTime();
       var endData = new Date(this.dateEnd2).getTime();
+      let taskName = this.flatName+this.commodityName+this.taskType+new Date().getTime();
       console.log("elementui 时间形式" + startData + "时间2：" + endData)
       console.log("humanuse:" + this.humanUse)
+      console.log("taskName:"+taskName)
+      console.log(new Date().getTime())
       //this. content=''
       //let cit=this.checkedCities
 //let conttt=''
@@ -519,8 +522,9 @@ export default {
       //  if(i>0)
       //      this.    content+=','+this.checkedCities[i];
       let humannn = (this.humanUse == true ? 1 : 0);
+      
       var inputData = {
-        "name": this.input,
+        "name": taskName,
         "priority": this.priority,
         "startTime": 1587807522386,
         "endTime": 1588404415698,
