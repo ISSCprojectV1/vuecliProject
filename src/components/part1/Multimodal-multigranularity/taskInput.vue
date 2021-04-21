@@ -84,6 +84,9 @@
         width="50%">
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
       <el-form label-position="left" label-width="120px">
+        <el-form-item label="任务来源">
+          {{ radio }}
+        </el-form-item>
         <el-form-item label="监管商品类别">
           {{ commodityName }}
         </el-form-item>
@@ -509,7 +512,7 @@ export default {
       console.log("发送请求前")
       var startData = new Date(this.dateStart2).getTime();
       var endData = new Date(this.dateEnd2).getTime();
-      let taskName = this.flatName+this.commodityName+this.taskType+new Date().getTime();
+      let taskName = this.flatName+'-'+this.commodityName+'-'+this.taskType+'('+new Date().getTime()+')';
       console.log("elementui 时间形式" + startData + "时间2：" + endData)
       console.log("humanuse:" + this.humanUse)
       console.log("taskName:"+taskName)
