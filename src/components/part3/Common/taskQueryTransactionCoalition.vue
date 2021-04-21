@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-button type="primary" @click="teamformation" style="margin-left:29px;margin-right:14px;">联盟形成</el-button>
+      <el-button type="primary" @click="teamformation" style="margin-bottom: 0.5rem">联盟形成</el-button>
     </div>
     <div>
 
