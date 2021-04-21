@@ -3,13 +3,13 @@
     <h2>监管联盟详情</h2>
     <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
         <el-form :inline="true">
-          <el-form-item label="联盟编号：">
+          <!-- <el-form-item label="联盟编号：">
              <el-input v-model="teamId" placeholder="请输入要查询的联盟id"></el-input>
-           </el-form-item>
+           </el-form-item> -->
           <el-form-item>
-                        <el-button type="primary" @click="onClickQuery">查询表格</el-button>
-                        <el-button type="primary" @click="onClickQuery1">查询操作员列表</el-button>
-                        <el-button type="primary" @click="onClickQueryMap">查询地图</el-button>
+                        <el-button type="primary" @click="onClickQuery">表格视图</el-button>
+                        <!-- <el-button type="primary" @click="onClickQuery1">查询操作员列表</el-button> -->
+                        <el-button type="primary" @click="onClickQueryMap">地图视图</el-button>
                         <el-button type="primary" @click="goback">返回</el-button>
           </el-form-item>  
       </el-form>
@@ -26,10 +26,10 @@
           >
                  
 <!--任务基本-->
-       <el-table-column label="任务编号" prop="id" width="80"></el-table-column>
-        <el-table-column label="所属联盟" prop="team" width="80"></el-table-column>
-               <el-table-column label="监管任务名称" prop="name" width="170"></el-table-column>
-        <el-table-column label="监管交易平台" prop="content">
+       <!-- <el-table-column label="任务编号" prop="id" width="80"></el-table-column>
+        <el-table-column label="所属联盟" prop="team" width="80"></el-table-column> -->
+        <el-table-column label="监管任务名称" prop="name" ></el-table-column>
+        <el-table-column label="被监管的交易平台" prop="content">
         </el-table-column>
         <el-table-column label="监管商品" prop="commodityName" >
         </el-table-column>
@@ -654,10 +654,11 @@ function renderMap(map,data){
              this.$router.push(`/trade/Multimodal-multigranularity/stepBar`);
         },
      onClickQuery() {
-            this.GetTeamData(this.teamId);
+        const team = this.$router.currentRoute.params.team;
+        this.GetTeamData(team);
         },
      onClickQueryMap(){
-       this.onClickQuery3(this.teamId);
+       this.onClickQuery3(this.$router.currentRoute.params.team);
      }, 
           
    
@@ -786,7 +787,7 @@ function renderMap(map,data){
   },
   mounted() {
     this.loading = false;
-    this.onClickQuery2();
+    this.onClickQuery();
   }
 }
 </script>
