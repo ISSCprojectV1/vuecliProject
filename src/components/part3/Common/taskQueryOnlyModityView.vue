@@ -31,9 +31,7 @@
         <el-table-column label="风险值（按日更新）" prop="riskValue">
 
         </el-table-column>
-        <el-table-column label="下次风险值更新时间" prop="name">
-       {{buttonName}}
-        </el-table-column>
+
         <el-table-column label="风险等级" min-width="40">
           <template slot-scope="scope">
             <span v-if="scope.row.riskMean === '高'" style="color: red">{{ scope.row.riskMean }}</span>
@@ -93,7 +91,10 @@ import {
 } from "@/api/part1/riskPrediction";
 
 import {getToken} from "@/utils/auth"
-
+/*
+*         <el-table-column label="下次风险值更新时间" prop="name">
+       {{buttonName}}
+        </el-table-column>*/
 export default {
   name: "taskQueryTableView",
   components: {},
