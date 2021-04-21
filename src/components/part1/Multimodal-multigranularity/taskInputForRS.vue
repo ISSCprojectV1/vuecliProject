@@ -5,17 +5,6 @@
       <!--输入任务表单-->
       <el-form label-width="130px">
 
-        <el-form-item label="任务来源">
-            <el-col :span="1">
-          <el-tag>
-           {{radio}}
-          </el-tag>
-            </el-col>
-          <el-col :span="8">
-            <el-button type="primary" @click="createTaskSource">修改任务来源</el-button>
-          </el-col>
-        </el-form-item>
-
         <!--选择监管商品类别-->
         <el-form-item label="商品种类">
           <el-col :span="13">
@@ -63,20 +52,7 @@
 
     </div>
 
-    <el-dialog
-        title="请选择任务来源"
-        :visible.sync="formTaskVisible"
-        width="60%">
-          <el-radio-group v-model="radio">
-              <el-radio label="主体智能查验">主体智能查验</el-radio>
-              <el-radio label="交易过程监测">交易过程监测</el-radio>
-              <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
-          </el-radio-group>    
-      <span slot="footer" class="dialog-footer">
-    <!-- <el-button @click="formTaskVisible = false">取 消</el-button> -->
-    <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
-  </span>
-    </el-dialog>
+
 
     <el-dialog
         title="确认创建任务"
@@ -84,9 +60,6 @@
         width="50%">
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
       <el-form label-position="left" label-width="120px">
-        <el-form-item label="任务来源">
-          {{ radio }}
-        </el-form-item>
         <el-form-item label="商品种类">
           {{ commodityName }}
         </el-form-item>
@@ -259,9 +232,7 @@ export default {
 
       // 提交新任务
       formDialogVisible: false,
-      //提交任务来源
-      formTaskVisible: true,
-      radio: "主体智能查验",
+
 
 
       // 表单显示时间
@@ -337,10 +308,7 @@ export default {
    
   },
   methods: {
-    dealwithradio(radio){
-      console.log(this.radio)
-      if(this.radio == 1) this.radio = 'fdf'
-    },
+
     // @handleChange---获取当前种类对应平台（输入框更改，绑定@change）
     handleChange(value) {
       this.getFlatList();
@@ -393,15 +361,7 @@ export default {
         type: 'success'
       });
     },
-    // @InputTaskSourceTrue---输入任务来源
-    InputTaskSourceTrue() {
-      //this.postData();
-      this.formTaskVisible = false;
-      this.$message({
-        message: '恭喜你，任务来源选择成功',
-        type: 'success'
-      });
-    },
+
 
     // @handleCloseFlatTag---关闭空间粒度TAG
     handleCloseFlatTag(flatTag) {

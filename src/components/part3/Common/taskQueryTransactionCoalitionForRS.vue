@@ -16,15 +16,15 @@
             style="width: 100%"
             border>
           <el-table-column label="序号" prop="id" width="50"></el-table-column>
-          <el-table-column label="监管任务名称" prop="name" width="105">
+          <el-table-column label="监管任务名称" prop="name" min-width="160">
           </el-table-column>
           <!--
           <el-table-column label="任务优先级" prop="priority" width="60">
           </el-table-column>
           !-->
-          <el-table-column label="监管商品" prop="commodityName" width="77">
+          <el-table-column label="监管商品" prop="commodityName" min-width="50">
           </el-table-column>
-          <el-table-column label="监管平台" prop="content" min-width="180">
+          <el-table-column label="被监管的交易平台" prop="content" min-width="180">
           </el-table-column>
 
 
