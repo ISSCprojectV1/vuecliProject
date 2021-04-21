@@ -30,7 +30,7 @@
 
     <el-tabs v-model="activeName">
 
-      <el-tab-pane label="被动模态" name="passive">
+      <el-tab-pane label="被动模态" name="passive"  v-if="passivemode">
         <el-table :data="Data" border style="width: 100%; margin-top: 1px">
           <el-table-column prop="group" label="编号" width="50"></el-table-column>
           <el-table-column prop="buyername" label="买方姓名" min-width="130"></el-table-column>
@@ -53,7 +53,7 @@
         >
         </el-pagination>
       </el-tab-pane>
-      <el-tab-pane label="主动模态" name="table">
+      <el-tab-pane label="主动模态" name="table" v-if="activemode">
         <tab-active-modal></tab-active-modal>
       </el-tab-pane>
 
@@ -135,6 +135,8 @@ console.log(this.activeOrPassive())
       dataTableActive: [],
       threshold: '',
       passive:false,
+      activemode:true,
+      passivemode:true,
       // tab gone: 交易事件图
       value_space_granularity: '',
       options: [{
@@ -210,6 +212,16 @@ console.log(this.activeOrPassive())
     },
     activeOrPassive() {
       console.log("passive"+this.passive)
+      if(this.passive)
+      {
+        this.passivemode=true
+        this.activemode=false
+      }
+      else
+      {
+        this.passivemode=false
+        this.activemode=true
+      }
  return !this.passive
     //  return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
     },
