@@ -11,6 +11,9 @@
            {{radio}}
           </el-tag>
             </el-col>
+          <el-col :span="8">
+            <el-button type="primary" @click="createTaskSource">修改任务来源</el-button>
+          </el-col>
         </el-form-item>
 
         <!--选择监管商品类别-->
@@ -69,10 +72,8 @@
               <el-radio label="交易过程监测">交易过程监测</el-radio>
               <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
           </el-radio-group>    
-
-
       <span slot="footer" class="dialog-footer">
-    <el-button @click="formTaskVisible = false">取 消</el-button>
+    <!-- <el-button @click="formTaskVisible = false">取 消</el-button> -->
     <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
   </span>
     </el-dialog>
@@ -83,6 +84,9 @@
         width="50%">
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
       <el-form label-position="left" label-width="120px">
+        <el-form-item label="任务来源">
+          {{ radio }}
+        </el-form-item>
         <el-form-item label="监管商品类别">
           {{ commodityName }}
         </el-form-item>
@@ -459,6 +463,10 @@ export default {
     createTask() {
       this.formDialogVisible = true;
     },
+        // 提交创建的新任务
+    createTaskSource() {
+      this.formTaskVisible = true;
+    },
     postAddress() {
       this.$confirm('是否确认创建该监管任务', '提示', {
         confirmButtonText: '确定',
@@ -504,8 +512,11 @@ export default {
       console.log("发送请求前")
       var startData = new Date(this.dateStart2).getTime();
       var endData = new Date(this.dateEnd2).getTime();
+      let taskName = this.flatName+'-'+this.commodityName+'-'+this.taskType+'('+new Date().getTime()+')';
       console.log("elementui 时间形式" + startData + "时间2：" + endData)
       console.log("humanuse:" + this.humanUse)
+      console.log("taskName:"+taskName)
+      console.log(new Date().getTime())
       //this. content=''
       //let cit=this.checkedCities
 //let conttt=''
@@ -519,8 +530,9 @@ export default {
       //  if(i>0)
       //      this.    content+=','+this.checkedCities[i];
       let humannn = (this.humanUse == true ? 1 : 0);
+      
       var inputData = {
-        "name": this.input,
+        "name": taskName,
         "priority": this.priority,
         "startTime": 1587807522386,
         "endTime": 1588404415698,
