@@ -39,8 +39,7 @@
           <el-table-column prop="price" label="价格"></el-table-column>
           <el-table-column prop="sellername" label="卖方姓名" min-width="130"></el-table-column>
           <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
-          <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
-          <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
+
         </el-table>
         <el-pagination
             ref="pagination"
@@ -81,7 +80,10 @@ import {
   taskQueryById,
   getRolenameById
 } from "@/api/part1/Multimodal-multigranularity";
-
+/*
+*           <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
+          <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
+* */
 export default {
   name: "activetask",
   components: {tabActiveModal},

@@ -91,3 +91,35 @@ export function getDataRiskChart(name) {
     })
 }
 // risk chart end
+// riskvolumn start
+
+export function getVolumeAll() {
+  return request({
+    method: 'GET',
+    url: '/volume/all'
+  })
+}
+
+export function getVolumeInfoByStatus(status) {
+  return request({
+    method: 'GET',
+    url: '/volume/status/' + status
+  })
+}
+
+export function updateVolumeInfo(data) {
+  return request({
+    method: 'POST',
+    data: data,
+    url: '/volume/update'
+  })
+}
+
+
+export function getVolumeRiskChart(name) {
+  return request({
+    method: 'GET',
+    url: '/volume/name/' + name
+  })
+}
+// riskvolumn end

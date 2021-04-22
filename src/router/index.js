@@ -162,6 +162,16 @@ export const asyncRoutes = [
         path: "/trade/dataFusion/datacluster",
         component: () => import("@/components/part1/dataFusion/datacluster"),
       },
+      {
+        id: 26,
+        path: "/trade/riskPrediction/riskVolumePicture",
+        component: () => import("@/components/part1/riskPrediction/riskVolumePicture"),
+      },
+      {
+        id: 27,
+        path: "/trade/riskPrediction/riskVolumeSurveillance",
+        component: () => import("@/components/part1/riskPrediction/riskVolumeSurveillance"),
+      },
     ]
   },
   {
