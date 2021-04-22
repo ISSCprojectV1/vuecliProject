@@ -222,7 +222,7 @@ import {
 } from "@/api/part1/Multimodal-multigranularity";
 import {getAct, getRiskVM} from "@/api/part1/acpassTask";
 import { radialLayout } from '@antv/g6/lib/util/graphic';
-
+import {getRole} from "@/utils/auth";
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属', '南京贵重金属交易所'];
 const commodityOptions = ['a', 'b', 'c']
 export default {
@@ -278,7 +278,14 @@ export default {
   },
   props: ['taskin'],
   created() {
+    //不是oms端的 
+    if(getRole()!='OMS'){
+      console.log("去rs的任务输入")
+       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
+    }
+    else{
     bourseget().then((res) => {
+      console.log("这是OMS的任务输入")
           let dataConvert = res.data.data;
           console.log(dataConvert)
           let temp = []
@@ -304,6 +311,8 @@ export default {
       /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
   this.cleanForm();*/
     }
+    }
+
   },
   computed: {
     address() {
