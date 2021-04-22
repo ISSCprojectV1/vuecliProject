@@ -86,8 +86,7 @@
                   <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" min-width="80">
-              </el-table-column>
+
             </el-table>
           </el-tab-pane>
 
@@ -107,8 +106,7 @@
                   <span>{{ scope.row.time.split('.')[0].replace('T', ' ') }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" min-width="80">
-              </el-table-column>
+
             </el-table>
           </el-tab-pane>
 
@@ -160,6 +158,10 @@ import * as echarts5 from "echarts5";
 import {getRole} from "@/utils/auth"
 import {getRiskInfoByStatus, updateRiskInfo} from "@/api/part1/riskPrediction";
 /*
+    <el-table-column label="操作" min-width="80">
+              </el-table-column>
+      <el-table-column label="操作" min-width="80">
+              </el-table-column>
 *  <template slot-scope="scope">
                   <el-button type="text" class="el-option-in-table" @click="onClickModify(scope.row)">修改</el-button>
                   <el-popconfirm
@@ -355,7 +357,13 @@ export default {
     },
     goToRiskPage(row) {
       this.$store.commit('setCommodityForMonitoring', row.goods)
-      this.$router.push('/trade/riskPrediction/riskPage')
+      this.$router.push({
+        path: '/trade/riskPrediction/riskPage',
+        query: {
+          data: row,
+
+        }
+      });
     },
     // 绘图
     drawChartRiskFrequency() {

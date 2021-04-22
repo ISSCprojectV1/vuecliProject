@@ -18,6 +18,15 @@
         <el-button type="primary" @click="goBack">返回</el-button>
       </el-form-item>
     </el-form>
+    <el-form :inline="true" v-if="divVisible" >
+      <el-form-item label="" name="pingji" style="text-align: center;">
+        <template>
+          <span v-if="this.row === '高风险'" style="color: red;font-size:20px">{{"明日风险等级："+ this.row }}</span>
+          <span v-else-if="this.row === '低风险'" style="color: green;font-size:20px">{{"明日风险等级："+ this.row }}</span>
+          <span v-else-if="this.row === '中风险'" style="color: orange;font-size:20px">{{ "明日风险等级："+this.row}}</span>
+        </template>
+      </el-form-item>
+    </el-form>
 
     <div id="chart-risk-prediction"
          style="width: 93%; height: 480px; margin-left: auto; margin-right: auto; float: left;display:inline-block;"></div>
@@ -66,13 +75,25 @@ export default {
       formRisk: [],
       formRelation: [],
       commodities: [], // 用于输入框补全建议
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      row:'暂无',
+      divVisible:false
     }
   },
   created() {
 
   },
   mounted() {
+    console.log(this.$route.query)
+    if(this.$route.query&&this.$route.query.data)
+    {
+      this.divVisible=true
+      this.row=this.$route.query.data.info
+ //     this.dealwithData(this.$route.query.data.info)
+//document.getElementsByName("pingji").innerText="明日风险等级："+this.$route.query.data.info
+//console.log(document.getElementsByName("pingji").innerText)
+    }else
+      this.divVisible=false
     this.commodities = this.loadAll();
 
     let commodityFromStore = this.$store.state.commodityForMonitoring;
@@ -95,6 +116,34 @@ export default {
     })
   },
   methods: {
+    dealWithColor(data)
+    {
+      console.log("aaa")
+      console.log(this.$route.query.data.info)
+      if(data=="高风险")
+    {
+      return{
+        color:"#2f2f2f"
+      }
+
+    }
+      if(data=="中风险")
+      {
+        return{
+          color:"#2f2f2f"
+        }
+
+      }
+      if(data=="低风险")
+      {
+        return{
+          color:"#2f2f2f"
+        }
+
+      }
+
+
+    },
     drawLegend() {
       let legend = document.getElementById("legend");
       let context = legend.getContext("2d");
