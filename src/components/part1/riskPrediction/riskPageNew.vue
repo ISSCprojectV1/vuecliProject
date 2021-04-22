@@ -18,7 +18,7 @@
         <el-button type="primary" @click="goBack">返回</el-button>
       </el-form-item>
     </el-form>
-    <el-form :inline="true" v-if="divVisible" >
+    <el-form :inline="true" v-if="false" >
       <el-form-item label="" name="pingji" style="text-align: center;">
         <template>
           <span v-if="this.row === '高风险'" style="color: red;font-size:20px">{{"明日风险等级："+ this.row }}</span>
