@@ -28,7 +28,7 @@
 <!--任务基本-->
        <!-- <el-table-column label="任务编号" prop="id" width="80"></el-table-column>
         <el-table-column label="所属联盟" prop="team" width="80"></el-table-column> -->
-        <el-table-column label="监管任务名称" prop="name" ></el-table-column>
+        <el-table-column label="监管任务名称" prop="name" min-width="120"></el-table-column>
         <el-table-column label="被监管的交易平台" prop="content">
         </el-table-column>
         <el-table-column label="监管商品" prop="commodityName" >

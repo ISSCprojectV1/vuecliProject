@@ -78,7 +78,7 @@
   * */
 import echart from "echarts";
 import {taskQuery, teamform, getTeamResult} from "@/api/part1/Multimodal-multigranularity";
-
+import {getRole} from "@/utils/auth";
 export default {
   name: "taskQueryTransactionCoalition",
   inject: ['reload'],
@@ -113,6 +113,8 @@ export default {
     },
     getData2() {
       //不执行联盟形成，点联盟形成按钮的时候再执行
+      var idd = getRole()
+      console.log(idd)
       console.log("获取初始表格数据")
       taskQuery().then((res) => {
         console.log(res)
@@ -176,8 +178,12 @@ export default {
       this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     queryWarehouseHandle(team) {
-      this.$router.push(`/trade/teamTable/${team}`);
-      console.log(`/trade/teamTable/${team}`)
+      //只有OMS端才能跳转 
+      if(getRole()=='OMS'){
+         this.$router.push(`/trade/teamTable/${team}`);
+         console.log(`/trade/teamTable/${team}`)
+      }
+     
       // this.$router.push(`/trade/transactionProject/map`);
       // console.log("/trade/transactionProject/map");
     },

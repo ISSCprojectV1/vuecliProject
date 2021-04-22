@@ -57,6 +57,10 @@ export const asyncRoutes = [
             component: () => import("@/components/part1/Multimodal-multigranularity/taskInput")
           },
           {
+            path: 'taskInputForRS',
+            component: () => import("@/components/part1/Multimodal-multigranularity/taskInputForRS")
+          },
+          {
             path: 'taskQueryTableView',
             component: () => import("@/components/part3/Common/taskQueryTableView")
           },
