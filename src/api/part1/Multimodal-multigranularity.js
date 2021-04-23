@@ -438,3 +438,19 @@ export function getAllRegulators() {
     method: 'get'
   })
 }
+
+export function getOneTeamResultByRName(URL) {
+  console.log("发送getOneTeamResultByRName请求")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
+
+export function getTeamResultByRName(URL) {
+  console.log("发送getTeamResultByRName请求")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
