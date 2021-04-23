@@ -28,17 +28,24 @@
           </el-table-column>
 
 
-          <el-table-column label="监管联盟" prop="workTeam"  @click="queryWarehouseHandle(scope.row.team)" min-width="200">
+          <el-table-column label="监管联盟" prop="workTeam"  min-width="160">
+            <!-- <template slot-scope="scope">
+              <el-link  type="primary">
+                <div @click="queryWarehouseHandle(scope.row.team)">
+                  {{ scope.row.workTeam }}
+                </div>
+              </el-link>
+            </template> -->
           </el-table-column>
 
-
         </el-table>
-        <el-pagination @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage"
-                       :page-sizes="pageSizes"
-                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                       :total="totalCount">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="pageSizes"
+            :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
         </el-pagination>
       </div>
     </div>
@@ -46,35 +53,32 @@
 </template>
 
 <script>
+
   /*
-        <el-button @click="drawechart1()" type="text" size="small" v-if="false">任务视图</el-button>
-      <el-button @click="drawechart12()" type="text" size="small" v-if="false">操作员列表</el-button>
-      <el-button @click="changeform12()" type="text" size="small" v-if="false">表格视图</el-button>
-  *           <el-table-column label="人模态分布" prop="humanUse" width="93" v-if="false">
+  *       <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
+      <el-button @click="drawechart12()" type="text" size="small">操作员列表</el-button>
+      <el-button @click="changeform12()" type="text" size="small">表格视图</el-button>
+      *      <el-table-column label="人模态分布" prop="humanUse" width="93">
           </el-table-column>
-          <el-table-column label="机器模态分布数" prop="agentNum" width="120" v-if="false">
+          <el-table-column label="机器模态分布数" prop="agentNum" width="120">
           </el-table-column>
 
-          <el-table-column label="任务状态" prop="workStatus" width="105" v-if="false">
+          <el-table-column label="任务状态" prop="workStatus" min-width="50">
           </el-table-column>
           <!-- 联盟部分 -->
-          <el-table-column label="属于联盟" prop="team" width="77" v-if="false">
+          <el-table-column label="属于联盟" prop="team" min-width="50">
             <!-- 根据team查询联盟信息 -->
             <template slot-scope="scope">
               <el-button type="text" @click="queryWarehouseHandle(scope.row.team)">{{ scope.row.team }}</el-button>
-            </template>
-          </el-table-column>
-          *          <el-table-column label="联盟演化" v-if="false">
+              *           <el-table-column label="联盟演化">
             <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
           </el-table-column>
-  *
-  *
+            </template>
+          </el-table-column>
   * */
-
-
 import echart from "echarts";
-import {taskQuery, teamform, getTeamResult} from "@/api/part1/Multimodal-multigranularity";
-
+import {taskQuery, teamform, getTeamResult,getOneTeamResultByRName,getTeamResultByRName} from "@/api/part1/Multimodal-multigranularity";
+import {getRole} from "@/utils/auth";
 export default {
   name: "taskQueryTransactionCoalition",
   inject: ['reload'],
@@ -107,48 +111,53 @@ export default {
       // 改变默认的页数
       this.currentPage = val
     },
-
+    getData2() {
+      //不执行联盟形成，点联盟形成按钮的时候再执行
+      var idd = getRole()
+      console.log(idd)//假设当前监管机构是“江苏清算中心”
+      var role='江苏清算中心'
+      console.log("获取初始表格数据")
+      let urll = '/yu/getTeamResultByRName/'+role;
+      console.log("urll:"+urll);
+      getTeamResultByRName(urll).then((res) => {
+        console.log(res)
+        this.dealwithData(res.data.data);
+        document.getElementById("form").style.display = "block";
+        document.getElementById("echart1").style.display = "none";
+      }).catch(() => {
+        console.log("getTransactionData fail")
+      });
+    },
     getData1() {
       // 获取表格数据
       console.log("获取表格数据")
       // var dataConvert = [];
-      taskQuery().then((res) => {
-        console.log(res)
-        let URL = '/yu/createTeamByCost';
-        getTeamResult(URL).then((resultTeam) => {
-          let result = res.data.data;
+      let URL = '/yu/createTeamByCost';
+      var role='江苏清算中心'
+      let urll = '/yu/getTeamResultByRName/'+role;
+      console.log("urll:"+urll);
+      getTeamResult(URL).then((resultTeam) => {
+        console.log(resultTeam)
+        getTeamResultByRName(urll).then((res) => {
+          let result = res.data.data
           for (let i = 0; i < result.length; i++) {
             let workTeamStr = '';
-            /*
-             for(let j = 0;j<resultTeam.data.data[i].length;j++){
-               if(resultTeam.data.data[i][j] == 0){
-                 resultTeam.data.data[i][j] = "工商局"
-                 workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
-               }
-               else if(resultTeam.data.data[i][j] == 3){
-                 resultTeam.data.data[i][j] = "金融监管局"
-                 workTeamStr = workTeamStr +  resultTeam.data.data[i][j]+",";
-               }
-               else{
-                   workTeamStr = workTeamStr+"监管机构"+resultTeam.data.data[i][j]+",";
-               }
-             }*/
             for (let j = 0; j < resultTeam.data.data[i].length; j++) {
               workTeamStr = workTeamStr + resultTeam.data.data[i][j] + " "
             }
+            result[i].workTeam = workTeamStr
 
-            result[i].workTeam = workTeamStr;
           }
           this.dealwithData(result);
         }).catch(() => {
           console.log("getTransactionData fail")
         });
 
-        document.getElementById("form").style.display = "block";
-        document.getElementById("echart1").style.display = "none";
       }).catch(() => {
         console.log("getTransactionData fail")
       });
+
+
     },
     // 获取联盟形成结果
     teamformation() {
@@ -167,6 +176,7 @@ export default {
       document.getElementById("echart1").style.display = "none";
       document.getElementById("form").style.display = "block";
       this.getData1()
+      this.getData1()
     },
     // 跳转至异常事件分析页面
     teamEvolution() {
@@ -174,8 +184,12 @@ export default {
       this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     queryWarehouseHandle(team) {
-      this.$router.push(`/trade/teamTable/${team}`);
-      console.log(`/trade/teamTable/${team}`)
+      //只有OMS端才能跳转 
+      if(getRole()=='OMS'){
+         this.$router.push(`/trade/teamTable/${team}`);
+         console.log(`/trade/teamTable/${team}`)
+      }
+     
       // this.$router.push(`/trade/transactionProject/map`);
       // console.log("/trade/transactionProject/map");
     },
@@ -575,7 +589,12 @@ export default {
         {
           dataConvert[i].workTeam = "暂时未分配"
         }
-
+        if (dataConvert[i].workTeam == null) {
+          dataConvert[i].workTeam = "暂时未分配"
+        }
+        if (!dataConvert[i].team) {
+          dataConvert[i].team = "无"
+        }
         if (dataConvert[i].workStatus == null) // true
           dataConvert[i].workStatus = "未分配"
         if (dataConvert[i].workStatus === 0) // true
@@ -608,7 +627,10 @@ export default {
     },
   },
   created() {
-    this.getData1();
+    
+      this.getData2();
+    
+    
     //this.reload();
 
   }

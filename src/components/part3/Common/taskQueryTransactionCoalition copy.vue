@@ -621,7 +621,13 @@ export default {
     },
   },
   created() {
-    this.getData2();
+    if(getRole()!='OMS'){
+     console.log("去rs的联盟形成")
+       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalitionForRS")
+    }else{
+      this.getData2();
+    }
+    
     //this.reload();
 
   }

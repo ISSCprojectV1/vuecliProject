@@ -76,6 +76,10 @@ export const asyncRoutes = [
             path: 'taskQueryTransactionCoalition',
             component: () => import("@/components/part3/Common/taskQueryTransactionCoalition copy")
           },
+          {
+            path: 'taskQueryTransactionCoalitionForRS',
+            component: () => import("@/components/part3/Common/taskQueryTransactionCoalitionForRS")
+          },
         ]
       },
       {
