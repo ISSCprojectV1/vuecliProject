@@ -11,8 +11,8 @@
 
             <el-container>
                 <el-main>
-                    <search-bar @addFilter="addFilter"></search-bar>
-                    <filter-bar @changefilter="changefilter" :addTab="addTab"></filter-bar>
+                    <!--search-bar @addFilter="addFilter"></search-bar-->
+                    <!--filter-bar @changefilter="changefilter" :addTab="addTab"></filter-bar-->
                     <main-upload class="main" :filterTab="filterChange" :addTab="addTab"></main-upload>
                 </el-main>
                 <el-aside>
@@ -39,11 +39,11 @@
     export default {
         name: "index",
         components: {
-            mainUpload,
+           mainUpload,
        //     Header,
             //subHeader,
-            searchBar,
-            filterBar,
+           // searchBar,
+          //  filterBar,
             profileBar
         },
       mounted() {
