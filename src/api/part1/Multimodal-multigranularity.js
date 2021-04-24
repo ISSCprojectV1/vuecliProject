@@ -410,6 +410,14 @@ export function getTeamResult(URL) {
     method: 'get'
   })
 }
+//执行联盟形成不返回team结果
+export function getTeamResultForRS(URL) {
+  console.log("发送getTeamResultForRS请求")
+  return request({
+    url: URL,
+    method: 'get'
+  })
+}
 
 // 追加商品粒度
 export function updateCommodity(data) {
