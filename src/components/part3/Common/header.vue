@@ -9,15 +9,9 @@
                  text-color="#FFFFFF"
                  active-text-color="#ffd04b">
           <el-menu-item index="/trade/Dashboard" style="font-size: 18px;padding: 0">
-            <img :src="logoimg" class="userprofile" alt="image" style="width: 45px;height: 45px">
-            大宗商品交易市场监管服务模式与资源调配系统
+            <img :src="logoImg" class="userprofile" alt="image" style="width: 45px;height: 45px">
+            大宗商品交易市场监管服务模式与资源调配系统（{{ this.role }}）
           </el-menu-item>
-
-          <!--                    <el-submenu index="2">-->
-          <!--                        <template slot="title">拍卖中心</template>-->
-          <!--                        <el-menu-item index="/auction">下载数据</el-menu-item>-->
-          <!--                        <el-menu-item index="/console/uploadResources">上传数据</el-menu-item>-->
-          <!--                    </el-submenu>-->
         </el-menu>
 
       </el-col>
@@ -28,36 +22,10 @@
                  background-color="#00659B"
                  text-color="#FFFFFF"
                  active-text-color="#ffd04b">
-          <!--                <el-menu-item >-->
-          <!--                    <el-row class="demo-autocomplete">-->
-          <!--                        <el-col :span="40">-->
-          <!--                            <el-autocomplete-->
-          <!--                                    class="inline-input"-->
-          <!--                                    placeholder="请输入内容"-->
-          <!--                            >-->
-          <!--                                <i class="el-icon-search el-input__icon" slot="suffix"></i>-->
-          <!--                            </el-autocomplete>-->
-          <!--                        </el-col>-->
-          <!--                    </el-row>-->
-          <!--                                </el-menu-item>-->
-
-          <!--                <el-submenu index="">-->
-          <!--                    <template slot="title"><i class="el-icon-bell"></i><el-badge class="mark" is-dot /></template>-->
-          <!--                    <el-menu-item index="2-1">-->
-          <!--                        选项1<el-badge class="mark" :value="1" />-->
-          <!--                    </el-menu-item>-->
-          <!--                    <el-menu-item index="2-2">-->
-          <!--                        选项2<el-badge class="mark" :value="12" :max="10" />-->
-          <!--                    </el-menu-item>-->
-          <!--                    <el-menu-item index="2-3">-->
-          <!--                        选项3<el-badge class="mark" :value="1" />-->
-          <!--                    </el-menu-item>-->
-          <!--                </el-submenu>-->
           <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
           <el-menu-item index="/console/index">个人中心</el-menu-item>
-          <!--                <el-menu-item index="/auction">拍卖中心</el-menu-item>-->
           <el-submenu index="/console/index">
-            <template slot="title"><img :src="userimg" class="img userprofile" alt="image"></template>
+            <template slot="title"><img :src="userImg" class="img userprofile" alt="image"></template>
             <el-menu-item index="/console/index">
               个人中心
             </el-menu-item>
@@ -68,23 +36,25 @@
         </el-menu>
       </el-col>
     </el-row>
-
-
   </div>
 </template>
 
 <script>
-import logoimg from "@/assets/part3/seu.png"
+import logoImg from "@/assets/part3/seu.png"
 import userprofile from "@/assets/part3/userprofile.jpg"
-import {removeAdminTrue, removeRole, removeToken} from "@/utils/auth"
+import {getRole, removeAdminTrue, removeRole, removeToken} from "@/utils/auth"
 
 export default {
   name: "Header",
   data() {
     return {
-      logoimg: logoimg,
-      userimg: userprofile
+      logoImg: logoImg,
+      userImg: userprofile,
+      role: ''
     }
+  },
+  created() {
+    this.role = getRole();
   },
   methods: {
     handleSelect(key, keyPath) {
