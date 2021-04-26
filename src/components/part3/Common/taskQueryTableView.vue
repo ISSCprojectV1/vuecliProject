@@ -35,8 +35,8 @@
           </template>
         </el-table-column>--主被动模态-->
         <!--时间粒度-->
-        <el-table-column label="时间粒度（天）" width="80" align="center">
-          <el-table-column label="推荐时间粒度" prop="timeadvise" width="80">
+        <el-table-column label="时间粒度（天）" min-width="80" align="center">
+          <el-table-column label="推荐时间粒度" prop="timeadvise" min-width="60">
             <template slot-scope="scope">
               <el-link :disabled="setgoto(scope)">
                 <div @click="goToprice()">
