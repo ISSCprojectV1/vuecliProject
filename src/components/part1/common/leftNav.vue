@@ -67,25 +67,25 @@
           <!--          </el-submenu>-->
 
           <el-submenu
-                  v-if="isAvailable('/trade/riskPrediction/riskSurveillance') || isAvailable('/trade/riskPrediction/riskVolumePicture')"
-                  index="/trade/Multimodal-multigranularity" style="text-align: left">
+              v-if="isAvailable('/trade/riskPrediction/riskSurveillance') || isAvailable('/trade/riskPrediction/riskVolumePicture')"
+              index="/trade/riskPrediction" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px">风险预警</span>
             </template>
             <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskSurveillance')"
-                          index="/trade/riskPrediction/riskSurveillance/"             style="text-align: left;padding-left: 80px;font-size: 18px">
+                          index="/trade/riskPrediction/riskSurveillance"
+                          style="text-align: left;padding-left: 80px;font-size: 18px">
 
               <span slot="title">价格风险预警</span>
             </el-menu-item>
-              <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskVolumePicture')"
-                            index="/trade/riskPrediction/riskVolumeSurveillance"             style="text-align: left;padding-left: 80px;font-size: 18px">
+            <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskVolumePicture')"
+                          index="/trade/riskPrediction/riskVolumeSurveillance"
+                          style="text-align: left;padding-left: 80px;font-size: 18px">
 
-                <span slot="title">交易量风险预警</span>
-              </el-menu-item>
+              <span slot="title">交易量风险预警</span>
+            </el-menu-item>
           </el-submenu>
-
-
 
         </el-menu>
       </el-col>
@@ -94,12 +94,6 @@
 </template>
 
 <script>
-/*
-*           <--el-menu-item v-if="isAvailable('/trade/riskPrediction/riskSurveillance')"
-                        index="/trade/riskPrediction/riskVolumePicture" style="text-align: left;font-size: 20px">
-            <i class="el-icon-menu"></i>
-            <span slot="title">交易量画图</span>
-          <--el-menu-item>*/
 export default {
   data() {
     return {

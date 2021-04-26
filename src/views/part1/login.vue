@@ -8,10 +8,10 @@
       <el-form-item label="密码" prop="password">
         <el-input type="password" placeholder="请输入密码" v-model="form.password"/>
       </el-form-item>
-      <el-form-item label="角色" prop="role">
+      <el-form-item label="请选择进入" prop="role">
         <el-radio-group v-model="form.role">
-          <el-radio label="user">普通用户</el-radio>
-          <el-radio label="admin">管理员</el-radio>
+          <el-radio label="user">用户界面</el-radio>
+          <el-radio label="admin">管理员界面</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>

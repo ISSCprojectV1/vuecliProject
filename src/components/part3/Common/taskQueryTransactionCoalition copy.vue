@@ -178,11 +178,19 @@ export default {
       this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     queryWarehouseHandle(team) {
-      //只有OMS端才能跳转 
-      if(getRole()=='OMS'){
-         this.$router.push(`/trade/teamTable/${team}`);
-         console.log(`/trade/teamTable/${team}`)
+      if(team==0){
+        this.$message({
+        message: '请先执行联盟形成',
+        type: 'success'
+      });
+      }else{
+          //只有OMS端才能跳转 
+          if(getRole()=='OMS'){
+            this.$router.push(`/trade/teamTable/${team}`);
+            console.log(`/trade/teamTable/${team}`)
+          }
       }
+ 
      
       // this.$router.push(`/trade/transactionProject/map`);
       // console.log("/trade/transactionProject/map");

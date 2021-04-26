@@ -77,7 +77,7 @@
           </el-table-column>
   * */
 import echart from "echarts";
-import {taskQuery, teamform, getTeamResult,getOneTeamResultByRName,getTeamResultByRName} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery, teamform, getTeamResult,getOneTeamResultByRName,getTeamResultByRName,getTeamResultForRS} from "@/api/part1/Multimodal-multigranularity";
 import {getRole} from "@/utils/auth";
 export default {
   name: "taskQueryTransactionCoalition",
@@ -132,30 +132,33 @@ export default {
       // 获取表格数据
       console.log("获取表格数据")
       // var dataConvert = [];
-      let URL = '/yu/createTeamByCost';
+      let URL = '/yu/createTeamByCostForRS';
       var role='江苏清算中心'
       let urll = '/yu/getTeamResultByRName/'+role;
       console.log("urll:"+urll);
-      getTeamResult(URL).then((resultTeam) => {
-        console.log(resultTeam)
+      getTeamResultForRS(URL).then(() => {
         getTeamResultByRName(urll).then((res) => {
-          let result = res.data.data
-          for (let i = 0; i < result.length; i++) {
-            let workTeamStr = '';
-            for (let j = 0; j < resultTeam.data.data[i].length; j++) {
-              workTeamStr = workTeamStr + resultTeam.data.data[i][j] + " "
-            }
-            result[i].workTeam = workTeamStr
-
-          }
-          this.dealwithData(result);
+          this.dealwithData(res.data.data);
         }).catch(() => {
           console.log("getTransactionData fail")
         });
-
       }).catch(() => {
         console.log("getTransactionData fail")
       });
+
+      // getTeamResult(URL).then(() => {
+      //   //console.log(resultTeam)
+      //   getTeamResultByRName(urll).then((res) => {
+      //     let result = res.data.data
+
+      //     this.dealwithData(result);
+      //   }).catch(() => {
+      //     console.log("getTransactionData fail")
+      //   });
+
+      // }).catch(() => {
+      //   console.log("getTransactionData fail")
+      // });
 
 
     },
