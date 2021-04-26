@@ -31,7 +31,7 @@
     <el-tabs v-model="activeName">
 
       <el-tab-pane label="被动模态" name="passive"  v-if="passivemode">
-        <el-table :data="Data" border style="width: 100%; margin-top: 1px">
+        <el-table :data="Data" border style="width: 100%; margin-top: 1px"           :header-cell-style="headcell">
           <el-table-column prop="group" label="编号" width="50"></el-table-column>
           <el-table-column prop="buyername" label="买方姓名" min-width="130"></el-table-column>
           <el-table-column prop="category" label="商品"></el-table-column>
@@ -159,6 +159,14 @@ console.log(this.activeOrPassive())
     // document.getElementById("echart123").style.display = "none";
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     passivetradeactionList(id, currentPage, pageSize) {
       passivetradeaction(id, currentPage, pageSize).then(res => {
         this.tableData = res.data.data.reslist

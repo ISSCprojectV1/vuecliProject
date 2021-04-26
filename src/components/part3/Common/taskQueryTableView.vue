@@ -10,7 +10,7 @@
           border
           v-loading="loading"
           element-loading-text="加载中"
-          header-cell-style="background-color: white"
+          :header-cell-style="headcell"
       >
         <!--任务基本-->
 
@@ -239,6 +239,14 @@ export default {
     }
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     /*
     * 商品粒度模块Method
     */

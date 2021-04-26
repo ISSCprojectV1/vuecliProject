@@ -9,7 +9,7 @@
                     <h2> 关联商品展示 </h2>
                     <el-input v-model="search2" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
                     <h2></h2>
-                    <el-table  :data="tables2.slice((currentPage2-1)*PageSize2,currentPage2*PageSize2)">
+                    <el-table  :data="tables2.slice((currentPage2-1)*PageSize2,currentPage2*PageSize2)" :header-cell-style="headcell">
                         <el-table-column type="expand">
                             <template slot-scope="props"  >
                                 <el-form label-position="left" inline class="demo-table-expand" >
@@ -89,7 +89,9 @@
                 <div>
                     <h2></h2>
                     <el-table :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-                              :default-sort="{prop: 'id', order: 'ascending'}">
+                              :default-sort="{prop: 'id', order: 'ascending'}"
+                              :header-cell-style="headcell"
+                    >
                         <el-table-column prop="id" label="交易事务ID">
                         </el-table-column>
                         <el-table-column prop="dealerid" label="交易商ID" sortable>
@@ -132,6 +134,14 @@
             }
         },
         methods: {
+          headcell(){
+            return {
+              'background-color': '#dfdfdf',
+              'color': 'rgb(96, 97, 98)',
+              'font-weight':'bold',
+              'font-size':'16px'
+            }
+          },
             onadd(){//添加新的交易事件
                 console.log("发送请求前")
                 var data = this.form;

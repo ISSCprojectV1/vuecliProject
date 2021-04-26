@@ -4,7 +4,7 @@
         <div>
             <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
             <!--<el-button type="primary" @click="getData()" style="margin-left:10px;margin-right:10px">展示</el-button>-->
-            <el-button type="primary" @click="goTotime()" style="margin-left:10px;margin-right:10px">时间粒度优化</el-button>
+            <el-button type="primary" @click="goTotime()" style="margin-left:10px;margin-right:10px" >时间粒度优化</el-button>
             <el-button type="primary" @click="goTogoods_relation()" style="margin-left:10px;margin-right:10px">商品粒度优化</el-button>
             <el-button type="primary" @click="goTogoods_variety()" style="margin-left:10px;margin-right:10px">商品品类维护</el-button>
             <el-button type="primary" @click="dialogFormVisible = true" style="margin-left:10px;margin-right:10px">添加新商品</el-button>
@@ -121,7 +121,10 @@
             <!-- 任务输入表格区 -->
             <el-table
                     :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-                    style="width: 100%; height:100%">
+                    style="width: 100%; height:100%"
+                    :header-cell-style="headcell"
+
+            >
                 <el-table-column type="expand">
                     <template slot-scope="props"  >
                         <el-form label-position="left" inline class="demo-table-expand" >
@@ -224,6 +227,14 @@
             this.getData();
         },
         methods: {
+          headcell(){
+            return {
+              'background-color': '#dfdfdf',
+              'color': 'rgb(96, 97, 98)',
+              'font-weight':'bold',
+              'font-size':'16px'
+            }
+          },
             getData(){
                 // 获取表格数据
                 console.log("获取modalityQuery表格数据 步骤一")

@@ -5,7 +5,9 @@
             <el-input v-model="search" style="width: 300px" placeholder="请输入搜索关键词"></el-input>
             <el-button class="btn1" type="primary"  @click="addTimeadvise" style="margin-left:20px;margin-right:20px">时间粒度计算</el-button>
             <h2></h2>
-            <el-table  :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)">
+            <el-table  :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+            :header-cell-style="headcell"
+            >
                 <el-table-column
                         label="商品ID"
                         prop="id"
@@ -86,6 +88,14 @@
 
         },
         methods: {
+          headcell(){
+            return {
+              'background-color': '#dfdfdf',
+              'color': 'rgb(96, 97, 98)',
+              'font-weight':'bold',
+              'font-size':'16px'
+            }
+          },
             backTo() {
                 //直接跳转
                 this.$router.push('/trade/Multimodal-multigranularity/goodsgranularity');
