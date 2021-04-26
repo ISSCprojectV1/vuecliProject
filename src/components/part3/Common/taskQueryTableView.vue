@@ -384,12 +384,13 @@ export default {
 
       }).catch(function (error) {
         console.log(error);
+    //    this.reload();// 刷新页面
       });
       this.$message({
         message: '扩展监管平台 成功',
         type: 'success'
       });
-      this.reload();// 刷新页面
+   //   this.reload();// 刷新页面
     },
     changeSpaceResult() {
       spaceResult().then((res) => {
