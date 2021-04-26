@@ -95,7 +95,7 @@
 
 
       <el-main>
-        <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)">
+        <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)" :header-cell-style="headcell">
           <el-table-column prop="cateid" label="分类代码">
           </el-table-column>
           <el-table-column prop="catename" label="分类名称">
@@ -138,6 +138,14 @@ export default {
 
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     doerror(){
       this.$message.error('执行出错！');
     },

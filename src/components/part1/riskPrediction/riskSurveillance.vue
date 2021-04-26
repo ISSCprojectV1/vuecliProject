@@ -228,6 +228,7 @@ export default {
   },
   mounted() {
     this.role=getRole()
+    console.log(this.role=="TPS")
     if(this.role=="TPS")
     {
       this.dialogVisible=false

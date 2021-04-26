@@ -14,6 +14,7 @@
             tooltip-effect="dark"
             stripe
             style="width: 100%"
+            :header-cell-style="headcell"
             border>
           <el-table-column label="序号" prop="id" width="50"></el-table-column>
           <el-table-column label="监管任务名称" prop="name" min-width="160">
@@ -77,7 +78,7 @@
           </el-table-column>
   * */
 import echart from "echarts";
-import {taskQuery, teamform, getTeamResult,getOneTeamResultByRName,getTeamResultByRName} from "@/api/part1/Multimodal-multigranularity";
+import {taskQuery, teamform, getTeamResult,getOneTeamResultByRName,getTeamResultByRName,getTeamResultForRS} from "@/api/part1/Multimodal-multigranularity";
 import {getRole} from "@/utils/auth";
 export default {
   name: "taskQueryTransactionCoalition",
@@ -99,6 +100,14 @@ export default {
 
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     // 每页显示的条数
     handleSizeChange(val) {
       // 改变每页显示的条数
@@ -132,30 +141,33 @@ export default {
       // 获取表格数据
       console.log("获取表格数据")
       // var dataConvert = [];
-      let URL = '/yu/createTeamByCost';
+      let URL = '/yu/createTeamByCostForRS';
       var role='江苏清算中心'
       let urll = '/yu/getTeamResultByRName/'+role;
       console.log("urll:"+urll);
-      getTeamResult(URL).then((resultTeam) => {
-        console.log(resultTeam)
+      getTeamResultForRS(URL).then(() => {
         getTeamResultByRName(urll).then((res) => {
-          let result = res.data.data
-          for (let i = 0; i < result.length; i++) {
-            let workTeamStr = '';
-            for (let j = 0; j < resultTeam.data.data[i].length; j++) {
-              workTeamStr = workTeamStr + resultTeam.data.data[i][j] + " "
-            }
-            result[i].workTeam = workTeamStr
-
-          }
-          this.dealwithData(result);
+          this.dealwithData(res.data.data);
         }).catch(() => {
           console.log("getTransactionData fail")
         });
-
       }).catch(() => {
         console.log("getTransactionData fail")
       });
+
+      // getTeamResult(URL).then(() => {
+      //   //console.log(resultTeam)
+      //   getTeamResultByRName(urll).then((res) => {
+      //     let result = res.data.data
+
+      //     this.dealwithData(result);
+      //   }).catch(() => {
+      //     console.log("getTransactionData fail")
+      //   });
+
+      // }).catch(() => {
+      //   console.log("getTransactionData fail")
+      // });
 
 
     },
