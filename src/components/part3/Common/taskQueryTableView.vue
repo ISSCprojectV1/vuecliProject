@@ -10,7 +10,7 @@
           border
           v-loading="loading"
           element-loading-text="加载中"
-          header-cell-style="background-color: white"
+          :header-cell-style="{'background-color': 'white'}"
       >
         <!--任务基本-->
 
