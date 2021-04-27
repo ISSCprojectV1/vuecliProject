@@ -10,11 +10,9 @@ import {getMenusId} from "@/api/part3";
 const whiteList = ['/login', '/register',];
 
 router.beforeEach((to, from, next) => {
-  console.log('请求跳转到路由：', to.path)
   NProgress.start();
 
   if (getToken()) { // 有用户登录
-    console.log('有用户登录')
     if (whiteList.indexOf(to.path) !== -1) { // temporal-fix of login with uncleaned cookies
       next()
       NProgress.done()
@@ -51,7 +49,6 @@ router.beforeEach((to, from, next) => {
 
         try {
           if (store.getters["permission/hasAccessTo"](to.path)) { // 用户有权限
-            console.log("在这里")
             next({...to, replace: true})
             NProgress.done()
           } else { // 用户没有权限
