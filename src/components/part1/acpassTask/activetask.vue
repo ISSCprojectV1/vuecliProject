@@ -31,25 +31,25 @@
     <el-tabs v-model="activeName">
 
       <el-tab-pane label="被动模态" name="passive"  v-if="passivemode">
-        <el-table :data="Data" border style="width: 100%; margin-top: 1px"           :header-cell-style="headcell">
-          <el-table-column prop="group" label="编号" width="50"></el-table-column>
-          <el-table-column prop="buyername" label="买方姓名" min-width="130"></el-table-column>
+        <el-table border style="width: 100%; margin-top: 1px"
+                  :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+                  :header-cell-style="headcell">
+          <el-table-column prop="id" label="编号" width="50"></el-table-column>
+          <el-table-column prop="buyerName" label="买方姓名" min-width="130"></el-table-column>
           <el-table-column prop="category" label="商品"></el-table-column>
           <el-table-column prop="amount" label="数量"></el-table-column>
           <el-table-column prop="price" label="价格"></el-table-column>
-          <el-table-column prop="sellername" label="卖方姓名" min-width="130"></el-table-column>
+          <el-table-column prop="sellerName" label="卖方姓名" min-width="130"></el-table-column>
           <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
 
         </el-table>
-        <el-pagination
-            ref="pagination"
-            style="text-align: center; padding: 0.5rem"
-            background
-            layout="prev, pager, next"
-            :page-size="5"
-            @current-change="pageChange1"
-            :total="total1"
-        >
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :total="total1"
+                       style="margin-top: 1rem">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="主动模态" name="table" v-if="activemode">
@@ -68,7 +68,7 @@ import {
 import {
   activetaskgraph,
   activetradeaction,
-  passivetradeaction,
+  getPassive,
   Louvainresult
 } from "@/api/part1/acpassTask";
 import echart from "echarts";
@@ -80,7 +80,7 @@ import {
   taskQueryById,
   getRolenameById
 } from "@/api/part1/Multimodal-multigranularity";
-/*
+/*          @current-change="pageChange1"
 *           <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
           <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
 * */
@@ -105,14 +105,17 @@ this.passive=true
 
 console.log(this.activeOrPassive())
     if (this.activeOrPassive()) {
-      this.activeName="table"
-      activetradeaction(id).then(res => {
-        this.dataTableActive = res.data.data
-        this.handleData();
-      }).catch(err => {
-        console.log(err);
-        console.log("出现错误")
-      })
+      this.activeName = "table"
+      //   activetradeaction(id).then(res => {
+      //   this.dataTableActive = res.data.data
+      //  this.handleData();
+      //
+      // }
+ //   }
+   // ).catch(err => {
+    //    console.log(err);
+    //    console.log("出现错误")
+    //  })
     } else {
       this.activeName="passive"
       this.passivetradeactionList(id, 1, 5)
@@ -125,11 +128,16 @@ console.log(this.activeOrPassive())
       form: {},
       id: '',
       taskInfo: [],
-      total1: 0,
+      total1: 25,
       loading: false,
       show: false,
       Data: [],
       spanarray: [],
+      currentPage: 1,
+      // 条数选择器（可修改）
+      pageSizes: [5, 10],
+      // 默认每页显示的条数（可修改）
+      PageSize: 5,
       tableData: [],
       tableData3: [],
       total3: 0,
@@ -158,7 +166,21 @@ console.log(this.activeOrPassive())
     // this.Activetaskgraph(id, 15);
     // document.getElementById("echart123").style.display = "none";
   },
+
   methods: {
+    // 分页
+    // 每页显示的条数
+    handleSizeChange(val) {
+      // 改变每页显示的条数
+      this.PageSize = val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage = 1
+    },
+    // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage = val
+    },
     headcell(){
       return {
         'background-color': '#dfdfdf',
@@ -168,10 +190,11 @@ console.log(this.activeOrPassive())
       }
     },
     passivetradeactionList(id, currentPage, pageSize) {
-      passivetradeaction(id, currentPage, pageSize).then(res => {
-        this.tableData = res.data.data.reslist
-        let data = res.data.data.reslist;
-        this.total1 = res.data.data.total
+      getPassive(id, currentPage, pageSize).then(res => {
+        console.log(res)
+        this.tableData = res.data.data//.reslist
+        let data = res.data.data//.reslist;
+        this.total1 = res.data.data.length
         for (let i = 0; i < data.length; i++) {
           data[i].id = i + 1
         }
