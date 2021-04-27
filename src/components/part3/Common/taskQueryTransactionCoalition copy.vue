@@ -14,6 +14,7 @@
             tooltip-effect="dark"
             stripe
             style="width: 100%"
+            :header-cell-style="headcell"
             border>
           <el-table-column label="序号" prop="id" width="50"></el-table-column>
           <el-table-column label="监管任务名称" prop="name" min-width="160">
@@ -99,6 +100,14 @@ export default {
 
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     // 每页显示的条数
     handleSizeChange(val) {
       // 改变每页显示的条数

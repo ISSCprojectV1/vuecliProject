@@ -10,7 +10,7 @@
           border
           v-loading="loading"
           element-loading-text="加载中"
-          :header-cell-style="{'background-color': 'white'}"
+          :header-cell-style="headcell"
       >
         <!--任务基本-->
 
@@ -35,8 +35,8 @@
           </template>
         </el-table-column>--主被动模态-->
         <!--时间粒度-->
-        <el-table-column label="时间粒度（天）" width="80" align="center">
-          <el-table-column label="推荐时间粒度" prop="timeadvise" width="80">
+        <el-table-column label="时间粒度（天）" min-width="80" align="center">
+          <el-table-column label="推荐时间粒度" prop="timeadvise" min-width="60">
             <template slot-scope="scope">
               <el-link :disabled="setgoto(scope)">
                 <div @click="goToprice()">
@@ -239,6 +239,14 @@ export default {
     }
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     /*
     * 商品粒度模块Method
     */
@@ -384,12 +392,13 @@ export default {
 
       }).catch(function (error) {
         console.log(error);
+    //    this.reload();// 刷新页面
       });
       this.$message({
         message: '扩展监管平台 成功',
         type: 'success'
       });
-      this.reload();// 刷新页面
+   //   this.reload();// 刷新页面
     },
     changeSpaceResult() {
       spaceResult().then((res) => {

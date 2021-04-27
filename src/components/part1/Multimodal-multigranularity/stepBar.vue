@@ -50,16 +50,24 @@ export default {
     if (role === 'RS')
       this.steps = [
         {
-          title: '粒度自适应补全',
+          title: '任务输入',
           num: 0
         },
         {
-          title: '模态动态切换',
+          title: '粒度自适应补全',
           num: 1
         },
         {
-          title: '人机器资源调度',
+          title: '模态动态切换',
           num: 2
+        },
+        {
+          title: '联盟形成',
+          num: 3
+        },
+        {
+          title: '人机器资源调度',
+          num: 4
         }
       ]
     if (role === 'OMS')
@@ -67,14 +75,17 @@ export default {
         {
           title: '任务输入',
           num: 0
-        },
-        {
-          title: '联盟形成',
-          num: 1
-        },
+        }, {
+           title: '粒度自适应补全',
+           num: 1
+         },
+      {
+           title: '联盟形成',
+           num: 2
+         },
         {
           title: '人机器资源调度',
-          num: 2
+          num: 3
         }
       ]
 

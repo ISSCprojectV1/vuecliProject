@@ -7,6 +7,7 @@
           tooltip-effect="dark"
           stripe
           style="width: 100%"
+          :header-cell-style="headcell"
           border
           v-loading="loading"
           element-loading-text="加载中"
@@ -133,6 +134,14 @@ export default {
     }
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     /*
     * 商品粒度模块Method
     */

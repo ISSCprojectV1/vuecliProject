@@ -50,12 +50,7 @@
           任务等待队列
         </div>
         <el-table
-            :header-cell-style="{
-      'background-color': '#dfdfdf',
-      'color': 'rgb(96, 97, 98)',
-      'font-weight':'bold',
-      'font-size':'16px'
-      }"
+            :header-cell-style="headcell"
             ref="dormitoryTable2"
             :data="dormitory2.slice((currentPage-1)*PageSize,currentPage*PageSize)"
             tooltip-effect="dark"
@@ -105,6 +100,7 @@
           tooltip-effect="dark"
           stripe
           style="width: 100%"
+          :header-cell-style="headcell"
           border
       >
 
@@ -161,6 +157,7 @@
           tooltip-effect="dark"
           stripe
           style="width: 100%"
+          :header-cell-style="headcell"
           border>
 
         <el-table-column type="selection" width="45"></el-table-column>
@@ -219,7 +216,7 @@
 
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
+import {setToken, getToken, setUserTrue, getUserTrue, getRole, getAdminTrue} from "@/utils/auth"
 import {
   taskQuery,
   teamform,
@@ -264,7 +261,7 @@ export default {
     this.getData1();
     this.getData2();
     console.log(getAdminTrue())
-    if (getAdminTrue()) {
+    if (getAdminTrue()||getRole()=="OMS") {
 
       this.admintrue = true
       this.usertrue = false
@@ -338,6 +335,14 @@ export default {
     }
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     modality(scope) {
       modality().then((res) => {
         console.log(res.data.data)
@@ -640,5 +645,11 @@ export default {
   font-size: 16px;
   align-items: center;
   justify-content: center;
+}
+.headcell{
+background-color: #dfdfdf;
+color: rgb(96, 97, 98);
+font-weight:bold;
+font-size:16px;
 }
 </style>

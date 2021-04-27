@@ -3,7 +3,7 @@
     <el-container style="height: 700px; border: 0.5rem solid #eee">
       <el-aside width="60%" style="border: 0.5rem solid #eee">
         <h2>主动监管名单</h2>
-        <el-table :data="dataTableActive" highlight-current-row @row-click="onClickTableActive">
+        <el-table :data="dataTableActive" highlight-current-row @row-click="onClickTableActive"           :header-cell-style="headcell">
           <el-table-column prop="company" label="交易主体" min-width="280"></el-table-column>
           <el-table-column prop="category" label="商品类型" min-width="80"></el-table-column>
           <el-table-column prop="abnormalValue" label="异常值" min-width="70">
@@ -108,6 +108,14 @@ export default {
 
   },
   methods: {
+    headcell(){
+      return {
+        'background-color': '#dfdfdf',
+        'color': 'rgb(96, 97, 98)',
+        'font-weight':'bold',
+        'font-size':'16px'
+      }
+    },
     // table active group
     queryActiveGroup(taskId, currentPage = 1, pageSize = 8) {
       getActiveGroup(taskId, currentPage, pageSize).then(res => {
