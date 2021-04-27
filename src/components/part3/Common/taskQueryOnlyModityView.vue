@@ -12,7 +12,7 @@
           element-loading-text="加载中"
       >
         <!--任务基本-->
-        <el-table-column label="序号" prop="id" min-width="60"></el-table-column>
+        <el-table-column label="序号" prop="id" min-width="50"></el-table-column>
         <el-table-column label="监管任务名称" prop="name">
         </el-table-column>
         <!--人机模态
@@ -43,23 +43,23 @@
           <template slot-scope="scope">
 
 
-            <el-link type="primary" v-if="scope.row.activePassive === 1" >
+            <el-link type="primary" v-if="scope.row.activePassive === 1">
               <div @click="gotoDetail(scope.row.id)">
                 主动监管
               </div>
             </el-link>
-            <el-link  type="primary" v-else-if="scope.row.activePassive === 0">
+            <el-link type="primary" v-else-if="scope.row.activePassive === 0">
               <div @click="gotoPassive(scope.row.id,1)">
-              被动监管
+                被动监管
               </div>
             </el-link>
-            <span v-else >暂无监管</span>
+            <span v-else>暂无监管</span>
           </template>
 
         </el-table-column>
-        <el-table-column label="在线/离线" >
+        <el-table-column label="在线/离线">
           <template slot-scope="scope">
-                {{ scope.row.algoStatus==0?"离线":"在线" }}
+            {{ scope.row.algoStatus == 0 ? "离线" : "在线" }}
 
           </template>
         </el-table-column>
@@ -166,10 +166,10 @@ export default {
     sendMsg() {
       let me = this;
       me.isDisabled = true;
-      let interval = window.setInterval(function() {
-        me.buttonName =  me.time;
+      let interval = window.setInterval(function () {
+        me.buttonName = me.time;
         --me.time;
-        if(me.time < 0) {
+        if (me.time < 0) {
           me.buttonName = 0;
           me.time = 100;
           me.isDisabled = false;
@@ -264,7 +264,7 @@ export default {
             //console.log(datt[i].id)
             // console.log(this.dormitory[j].id)
             // console.log(datt[i].id==this.dormitory[j].id)
-            if (datt[i].id == this.dormitory[j].id) {
+            if (datt[i].id === this.dormitory[j].id) {
               this.dormitory[j].subtask = datt[i].subtask
               console.log(this.dormitory[j])
               console.log(this.dormitory)
@@ -317,15 +317,15 @@ export default {
       // 改变默认的页数
       this.currentPage = val
     },
-    gotoPassive(id,passive){
+    gotoPassive(id, passive) {
       this.$router.push({
-        path: '/trade/acpassTask/activetask/'+id,
+        path: '/trade/acpassTask/activetask/' + id,
         query: {
           data: passive,
 
         }
       });
-     // this.$router.push(`/trade/acpassTask/activetask/${id}`)
+      // this.$router.push(`/trade/acpassTask/activetask/${id}`)
     },
     getData() {
       var idd = getToken()
@@ -347,34 +347,32 @@ export default {
         console.log("getTransactionData fail")
       });
     },
-    getModeSwitchAll(data){
+    getModeSwitchAll(data) {
       getModeSwitch().then((res) => {
-        console.log( res.data)
-this.dealwithRiskData(res.data.data);
+        console.log('getModeSwitch', res.data)
+        this.dealwithRiskData(res.data.data);
       }).catch(() => {
         console.log("getModeSwitchAll fail")
       });
     },
 
-    AddDorDataWithRisk(res)
-    { console.log(res)
+    AddDorDataWithRisk(res) {
+      console.log(res)
       console.log(this.dormitory)
-      let dataConvert=this.dormitory
-      if(dataConvert.length<=0||res.length<=0)
+      let dataConvert = this.dormitory
+      if (dataConvert.length <= 0 || res.length <= 0)
         return
       for (let i = 0; i < dataConvert.length; i++) {
-          for(let j=0;j<res.length;j++)
-          {
-            if(dataConvert[i].id==res[j].id)
-            {
+        for (let j = 0; j < res.length; j++) {
+          if (dataConvert[i].id === res[j].id) {
 
-              dataConvert[i].riskValue=res[j].riskValue
-              dataConvert[i].riskMean=res[j].riskMean
-              dataConvert[i].activePassive=res[j].activePassive
-              break
-            }
-
+            dataConvert[i].riskValue = res[j].riskValue
+            dataConvert[i].riskMean = res[j].riskMean
+            dataConvert[i].activePassive = res[j].activePassive
+            break
           }
+
+        }
       }
       console.log(dataConvert)
     },
@@ -435,7 +433,7 @@ this.dealwithRiskData(res.data.data);
       this.dormitory = dataConvert;
       this.loading = false;
     },
-    dealwithRiskData(res){
+    dealwithRiskData(res) {
       let dataConvert = [];
       dataConvert = res;
 
@@ -457,10 +455,8 @@ this.dealwithRiskData(res.data.data);
   },
   created() {
     //this.getData();
-    this.  getModeSwitchAll()
+    this.getModeSwitchAll()
     this.sendMsg()
-
-
   },
   mounted() {
     this.loading = true;
