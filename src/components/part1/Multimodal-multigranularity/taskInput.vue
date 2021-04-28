@@ -41,13 +41,13 @@
         </el-form-item>
 
         <!--选定的监管任务类型-->
-        <el-form-item label="监管任务类型">
+        <el-form-item label="交易风险类型">
           <el-col :span="13">
-            <el-select v-model="taskType" placeholder="请选择监管类型" style="width: 100%">
-              <el-option label="主体查验" value="主体查验"></el-option>
-              <el-option label="仓单监管" value="仓单监管"></el-option>
-              <el-option label="融资监管" value="融资监管"></el-option>
-              <el-option label="质押权监管" value="质押权监管"></el-option>
+            <el-select v-model="taskType" placeholder="请选择交易风险类型" style="width: 100%">
+              <el-option label="交易主体异常" value="交易主体异常"></el-option>
+              <el-option label="仓单异常" value="仓单异常"></el-option>
+              <el-option label="融资异常" value="融资异常"></el-option>
+              <el-option label="质押权异常" value="质押权异常"></el-option>
             </el-select>
           </el-col>
         </el-form-item>
@@ -93,7 +93,7 @@
         <el-form-item label="交易平台">
           {{ flatName }}
         </el-form-item>
-        <el-form-item label="监管任务类型">
+        <el-form-item label="交易风险类型">
           {{ taskType }}
         </el-form-item>
         <!-- <el-form-item label="监管任务优先级">
