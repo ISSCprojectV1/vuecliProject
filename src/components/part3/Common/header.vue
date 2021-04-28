@@ -10,7 +10,7 @@
                  active-text-color="#ffd04b">
           <el-menu-item index="/trade/Dashboard" style="font-size: 18px;padding: 0">
             <img :src="logoImg" class="userprofile" alt="image" style="width: 45px;height: 45px">
-            大宗商品交易市场监管服务模式与资源调配系统（{{ this.role }}）
+            大宗商品交易市场监管服务模式与资源调配系统
           </el-menu-item>
         </el-menu>
 
@@ -25,7 +25,10 @@
           <el-menu-item index="/trade/Dashboard">工作台</el-menu-item>
           <el-menu-item index="/console/index">个人中心</el-menu-item>
           <el-submenu index="/console/index">
-            <template slot="title"><img :src="userImg" class="img userprofile" alt="image"></template>
+            <template slot="title">
+              <img :src="userImg" class="img userprofile" alt="image">
+              （{{ this.role }}）
+            </template>
             <el-menu-item index="/console/index">
               个人中心
             </el-menu-item>
@@ -54,7 +57,24 @@ export default {
     }
   },
   created() {
-    this.role = getRole();
+    let role = getRole();
+    switch (role) {
+      case 'admin':
+        this.role = '管理员';
+        break;
+      case 'RS':
+        this.role = '监管机构端';
+        break;
+      case 'TPS':
+        this.role = '交易平台端';
+        break;
+      case 'OMS':
+        this.role = '运营管理端';
+        break;
+      default:
+        this.role = '普通用户';
+        break;
+    }
   },
   methods: {
     handleSelect(key, keyPath) {
