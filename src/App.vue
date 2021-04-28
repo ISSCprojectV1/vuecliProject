@@ -68,4 +68,17 @@ html
 .el-table colgroup.gutter {
   display: table-cell !important;
 }
+
+// 字体调整
+.el-table {
+  font-size: 15px !important;
+}
+
+.el-button {
+  font-size: 15px !important;
+}
+
+.el-link {
+  font-size: 15px !important;
+}
 </style>
