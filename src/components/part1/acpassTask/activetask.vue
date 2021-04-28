@@ -186,7 +186,7 @@ console.log(this.activeOrPassive())
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
         'font-weight':'bold',
-        'font-size':'16px'
+        'font-size':'18px'
       }
     },
     passivetradeactionList(id, currentPage, pageSize) {
