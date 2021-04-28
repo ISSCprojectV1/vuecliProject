@@ -216,7 +216,7 @@
 
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
-import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
+import {setToken, getToken, setUserTrue, getUserTrue, getRole, getAdminTrue} from "@/utils/auth"
 import {
   taskQuery,
   teamform,
@@ -261,7 +261,7 @@ export default {
     this.getData1();
     this.getData2();
     console.log(getAdminTrue())
-    if (getAdminTrue()) {
+    if (getAdminTrue()||getRole()=="OMS") {
 
       this.admintrue = true
       this.usertrue = false

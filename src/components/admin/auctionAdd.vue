@@ -95,11 +95,11 @@ export default {
         });
         this.getAuctions(this.currentPage);
       }).catch(err => {
-        this.$message({
-          showClose: true,
-          message: '结束拍卖失败',
-          type: 'error'
-        });
+       // this.$message({
+        //  showClose: true,
+       //   message: '结束拍卖失败',
+        //  type: 'error'
+      //  });
       })
     },
     getAuctions(currentPage, pageSize = 10) {

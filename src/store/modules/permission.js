@@ -14,7 +14,6 @@ const mutations = {
 
 const getters = {
   hasAccessTo: (state) => (path) => {
-    console.log("store判断当前路由", path, "是否有权限")
     if (path === '/login') { // 登录界面直接进
       return true
     }

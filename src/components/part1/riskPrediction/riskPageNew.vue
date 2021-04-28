@@ -18,12 +18,12 @@
         <el-button type="primary" @click="goBack">返回</el-button>
       </el-form-item>
     </el-form>
-    <el-form :inline="true" v-if="false" >
+    <el-form :inline="true" v-if="false">
       <el-form-item label="" name="pingji" style="text-align: center;">
         <template>
-          <span v-if="this.row === '高风险'" style="color: red;font-size:20px">{{"明日风险等级："+ this.row }}</span>
-          <span v-else-if="this.row === '低风险'" style="color: green;font-size:20px">{{"明日风险等级："+ this.row }}</span>
-          <span v-else-if="this.row === '中风险'" style="color: orange;font-size:20px">{{ "明日风险等级："+this.row}}</span>
+          <span v-if="this.row === '高风险'" style="color: red;font-size:20px">{{ "明日风险等级：" + this.row }}</span>
+          <span v-else-if="this.row === '低风险'" style="color: green;font-size:20px">{{ "明日风险等级：" + this.row }}</span>
+          <span v-else-if="this.row === '中风险'" style="color: orange;font-size:20px">{{ "明日风险等级：" + this.row }}</span>
         </template>
       </el-form-item>
     </el-form>
@@ -76,8 +76,9 @@ export default {
       formRelation: [],
       commodities: [], // 用于输入框补全建议
       dialogFormVisible: false,
-      row:'暂无',
-      divVisible:false
+      row: '暂无',
+      divVisible: false,
+      chart: {},
     }
   },
   created() {
@@ -85,15 +86,14 @@ export default {
   },
   mounted() {
     console.log(this.$route.query)
-    if(this.$route.query&&this.$route.query.data)
-    {
-      this.divVisible=true
-      this.row=this.$route.query.data.info
- //     this.dealwithData(this.$route.query.data.info)
-//document.getElementsByName("pingji").innerText="明日风险等级："+this.$route.query.data.info
-//console.log(document.getElementsByName("pingji").innerText)
-    }else
-      this.divVisible=false
+    if (this.$route.query && this.$route.query.data) {
+      this.divVisible = true
+      this.row = this.$route.query.data.info
+      // this.dealwithData(this.$route.query.data.info)
+      // document.getElementsByName("pingji").innerText="明日风险等级："+this.$route.query.data.info
+      // console.log(document.getElementsByName("pingji").innerText)
+    } else
+      this.divVisible = false
     this.commodities = this.loadAll();
 
     let commodityFromStore = this.$store.state.commodityForMonitoring;
@@ -109,6 +109,7 @@ export default {
           risk: item.risk
         }
       })
+      this.chart = echarts5.init(document.getElementById('chart-risk-prediction'))
       this.drawChartRiskPrediction()
       this.drawLegend()
     }).catch(err => {
@@ -116,33 +117,32 @@ export default {
     })
   },
   methods: {
-    dealWithColor(data)
-    {
-      console.log("aaa")
-      console.log(this.$route.query.data.info)
-      if(data=="高风险")
-    {
-      return{
-        color:"#2f2f2f"
+    // 判断商品是否有数据（是否在data.commodities内）
+    isAvailable(commodity) {
+      for (let index in this.commodities) {
+        if (this.commodities[index].value === commodity)
+          return true
       }
-
-    }
-      if(data=="中风险")
-      {
-        return{
-          color:"#2f2f2f"
+      return false
+    },
+    dealWithColor(data) {
+      if (data === "高风险") {
+        return {
+          color: "#2f2f2f"
         }
 
       }
-      if(data=="低风险")
-      {
-        return{
-          color:"#2f2f2f"
+      if (data === "中风险") {
+        return {
+          color: "#2f2f2f"
         }
 
       }
-
-
+      if (data === "低风险") {
+        return {
+          color: "#2f2f2f"
+        }
+      }
     },
     drawLegend() {
       let legend = document.getElementById("legend");
@@ -172,27 +172,11 @@ export default {
     handleSelect() {
       this.onClickQuery()
     },
-    onClickQuery() {
-      getDataRiskChart(this.value).then(res => {
-        this.formRisk = res.data.map(item => {
-          return {
-            id: item.id,
-            day: item.day.split('T')[0],
-            code: item.code,
-            closeprice: item.closeprice,
-            risk: item.risk
-          }
-        })
-        this.drawChartRiskPrediction()
-      }).catch(err => {
-        console.log(err)
-      })
-    },
     goBack() {
       history.back();
     },
     drawChartRiskPrediction() {
-      let chart = echarts5.init(document.getElementById('chart-risk-prediction'))
+      // let chart = echarts5.init(document.getElementById('chart-risk-prediction'))
       let pieces = []
       for (let i = 0; i < this.formRisk.length;) {
         let j = i + 1;
@@ -263,17 +247,35 @@ export default {
         ]
       };
 
-      chart.setOption(options);
+      this.chart.setOption(options);
 
+    },
+    onClickQuery() {
+      getDataRiskChart(this.value).then(res => {
+        this.formRisk = res.data.map(item => {
+          return {
+            id: item.id,
+            day: item.day.split('T')[0],
+            code: item.code,
+            closeprice: item.closeprice,
+            risk: item.risk
+          }
+        })
+        this.drawChartRiskPrediction()
+      }).catch(err => {
+        console.log(err)
+      })
     },
     onClickQueryRelation() {
       let URL = "/getcommodityRelationdetails/" + this.value;
+      this.formRelation = [];
       getcommodityRelationdetails2(URL).then(res => {
-        this.formRelation = res.data.map(item => {
-          return {
-            name: item.name2,
-            similarity: item.similarity
-          }
+        res.data.map(item => {
+          if (this.isAvailable(item.name2))
+            this.formRelation.push({
+              name: item.name2,
+              similarity: item.similarity
+            })
         })
         this.dialogFormVisible = true;
       }).catch(err => {
@@ -283,43 +285,45 @@ export default {
     onClickRelatedCommodity(name) {
       this.value = name
       this.dialogFormVisible = false
-      this.drawChartRiskPrediction()
+      this.onClickQuery()
     },
     loadAll() {
-      return [{"value": '锡'},
-        {"value": '锌'},
-        {"value": '铜'},
-        {"value": '铅'},
-        {"value": '镍'},
-        {"value": '铝'},
-        {"value": '白银99.99'},
-        {"value": '黄金99.99'},
+      return [
+        // {"value": '锡'},
+        // {"value": '锌'},
+        // {"value": '铜'},
+        // {"value": '铅'},
+        // {"value": '镍'},
+        // {"value": '铝'},
+        // {"value": '白银99.99'},
+        // {"value": '黄金99.99'},
         {"value": '螺纹钢'},
-        {"value": '原油（中）'},
-        {"value": '聚乙烯'},
+        // {"value": '原油（中）'},
+        // {"value": '聚乙烯'},
         {"value": '天然橡胶（TSR20）'},
-        {"value": '尿素硝酸铵'},
-        {"value": '甲醇'},
-        {"value": '天然气'},
-        {"value": '动力煤'},
-        {"value": '焦煤'},
+        // {"value": '尿素硝酸铵'},
+        // {"value": '甲醇'},
+        // {"value": '天然气'},
+        // {"value": '动力煤'},
+        // {"value": '焦煤'},
         {"value": '铁矿石'},
-        {"value": '焦炭'},
-        {"value": '可可'},
-        {"value": '鸡蛋'},
-        {"value": '活猪'},
-        {"value": '豆粕'},
-        {"value": '豆油'},
-        {"value": '早籼稻'},
-        {"value": '油菜籽'},
+        // {"value": '焦炭'},
+        // {"value": '可可'},
+        // {"value": '鸡蛋'},
+        // {"value": '活猪'},
+        // {"value": '豆粕'},
+        // {"value": '豆油'},
+        // {"value": '早籼稻'},
+        // {"value": '油菜籽'},
         {"value": '棉花一号'},
         {"value": '菜籽油'},
         {"value": '菜籽粕'},
         {"value": '白糖'},
-        {"value": '大豆'},
+        // {"value": '大豆'},
         {"value": '玉米'},
         {"value": '小麦'},
-        {"value": '强筋小麦'}]
+        // {"value": '强筋小麦'}
+      ]
     }
   }
 }

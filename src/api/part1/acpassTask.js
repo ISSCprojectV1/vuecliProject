@@ -4,7 +4,17 @@ export function activetask(currentPage, pageSize) {
     return request.get('/activetask?' + "currentPage=" + currentPage + "&pageSize=" + pageSize)
 }
 
-
+export function getPassive(id, currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            taskid: id,
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getPassive',
+    })
+}
 
 export function passivetradeaction(id, currentPage, pageSize) {
     return request({

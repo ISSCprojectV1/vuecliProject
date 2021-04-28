@@ -62,8 +62,12 @@ export default {
           num: 2
         },
         {
-          title: '人机器资源调度',
+          title: '联盟形成',
           num: 3
+        },
+        {
+          title: '人机器资源调度',
+          num: 4
         }
       ]
     if (role === 'OMS')
