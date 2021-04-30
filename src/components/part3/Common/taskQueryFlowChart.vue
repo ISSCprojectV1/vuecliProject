@@ -254,6 +254,7 @@ export default {
     operatorChange
 
   },
+  inject: ['reload'],
   mounted() {
 
     //  执行echarts方法

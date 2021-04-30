@@ -284,16 +284,17 @@ export default {
         "subtask": seletCommodity.join(',')
       }
       console.log("newCommodity", newCommodity)
-      updateCommodity(newCommodity).then(function (response) {
+      updateCommodity(newCommodity).then(res=>{
+        this.reload();
       })
           .catch(function (error) {
             console.log(error);
           });
-      this.$message({
+    /*  this.$message({
         message: '扩展监管种类 成功',
         type: 'success'
-      });
-      this.reload();// 刷新页面
+      });*/
+     // 刷新页面
 
     },
     /* 空间粒度模块Method */
@@ -388,17 +389,18 @@ export default {
         "id": this.temp,
         "resourceNeed": seletFlats.join(',')
       }
-      updateCommodity(newFlats).then(function (response) {
-
+      updateCommodity(newFlats).then(res=> {
+        this.reload();
       }).catch(function (error) {
         console.log(error);
+
     //    this.reload();// 刷新页面
       });
-      this.$message({
+    /*  this.$message({
         message: '扩展监管平台 成功',
         type: 'success'
-      });
-   //   this.reload();// 刷新页面
+      });*/
+// 刷新页面
     },
     changeSpaceResult() {
       spaceResult().then((res) => {
