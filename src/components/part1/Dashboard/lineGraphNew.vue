@@ -20,9 +20,9 @@
          style="width: 93%; height: 480px; margin-left: auto; margin-right: auto; float: left"></div>
     <!--  图例 begin  -->
     <div style="margin-left: auto; margin-right: auto; padding-top: 10px">
-      <p style="text-align: center; width: 50px; float: left; font-size: 14px">高风险</p>
+      <p style="text-align: center; width: 50px; float: left; font-size: 14px">高</p>
       <canvas id="legend" width="50" height="380" style="float: left; margin-left: auto; margin-right: auto;"></canvas>
-      <p style="text-align: center; width: 50px; float: left; font-size: 14px">低风险</p>
+      <p style="text-align: center; width: 50px; float: left; font-size: 14px">低</p>
     </div>
     <!--  图例 end  -->
 
@@ -119,7 +119,7 @@ export default {
 
       let options = {
         title: {
-          text: '价格波动风险演化图',
+          text: '价格波动态势演化图',
           left: 0
         },
         tooltip: {

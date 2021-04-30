@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>大宗商品价格风险预警监控平台</h2>
+    <h2>大宗商品价格波动预警监控平台</h2>
     <el-container style="height: 650px; border: 10px solid #eee">
       <el-aside width="370px" style="border: 10px solid #eee; background-color: white;">
         <div id="chart-risk-frequency" style="margin-top: 1rem; width: 350px; height: 500px"></div>
@@ -19,9 +19,9 @@
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                  <span v-if="scope.row.info === '高'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中'" style="color: orange">{{ scope.row.info }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="time" label="发布时间" min-width="70">
@@ -43,9 +43,9 @@
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                  <span v-if="scope.row.info === '高'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中'" style="color: orange">{{ scope.row.info }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="time" label="发布时间" min-width="70">
@@ -76,9 +76,9 @@
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                  <span v-if="scope.row.info === '高'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中'" style="color: orange">{{ scope.row.info }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="time" label="发布时间" min-width="70">
@@ -96,9 +96,9 @@
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                  <span v-if="scope.row.info === '高'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中'" style="color: orange">{{ scope.row.info }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="time" label="发布时间" min-width="70">
@@ -127,9 +127,9 @@
           </el-form-item>
           <el-form-item label="预警信息" label-width="80px">
             <el-select v-model="formRowSelected.info" placeholder="请选择">
-              <el-option key="1" label="高风险" value="高风险"></el-option>
-              <el-option key="2" label="中风险" value="中风险"></el-option>
-              <el-option key="3" label="低风险" value="低风险"></el-option>
+              <el-option key="1" label="高" value="高"></el-option>
+              <el-option key="2" label="中" value="中"></el-option>
+              <el-option key="3" label="低" value="低"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="状态" label-width="80px">
@@ -186,9 +186,9 @@ import {getRiskInfoByStatus, updateRiskInfo} from "@/api/part1/riskPrediction";
               <el-table-column prop="goods" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="info" label="预警信息" min-width="40">
                 <template slot-scope="scope">
-                  <span v-if="scope.row.info === '高风险'" style="color: red">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '低风险'" style="color: green">{{ scope.row.info }}</span>
-                  <span v-else-if="scope.row.info === '中风险'" style="color: orange">{{ scope.row.info }}</span>
+                  <span v-if="scope.row.info === '高'" style="color: red">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '低'" style="color: green">{{ scope.row.info }}</span>
+                  <span v-else-if="scope.row.info === '中'" style="color: orange">{{ scope.row.info }}</span>
                 </template>
               </el-table-column>
               <el-table-column prop="time" label="发布时间" min-width="70">
@@ -279,7 +279,15 @@ export default {
         let y = b.id;
         return (x > y) ? 1 : x < y ? -1 : 0;
       })
-
+  for(let i=0;i<data.length;i++)
+  {
+    if(data[i].info==='高风险')
+      data[i].info='高'
+    if(data[i].info==='中风险')
+      data[i].info='中'
+    if(data[i].info==='低风险')
+      data[i].info='低'
+  }
       return data
     },
     // 操作
@@ -408,7 +416,7 @@ export default {
           left: 'center',
           min: 0,
           max: 15,
-          text: ['高风险', '低风险'],
+          text: ['高', '低'],
           dimension: 0,
           inRange: {
             color: ['#008000', '#FFD700', '#FF0000']
