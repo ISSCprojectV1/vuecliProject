@@ -6,14 +6,14 @@
       <el-form label-width="130px">
 
         <!--选择监管商品类别-->
-        <el-form-item label="商品种类">
+        <el-form-item label="商品种类" style="margin-left:300px;margin-top:50px">
           <el-col :span="13">
             <el-input v-model="commodityName" placeholder="请输入内容" @change="handleChange"></el-input>
           </el-col>
         </el-form-item>
 
         <!--监管任务空间粒度，根据选定的商品种类获得平台列表-->
-        <el-form-item label="交易平台">
+        <el-form-item label="交易平台" style="margin-left:300px">
           <el-col :span="13">
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
               <!--动态读取该品类对应的平台-->
@@ -30,7 +30,7 @@
         </el-form-item>
 
         <!--选定的监管任务类型-->
-        <el-form-item label="交易风险类型">
+        <el-form-item label="交易风险类型" style="margin-left:300px">
           <el-col :span="13">
             <el-select v-model="taskType" placeholder="请选择交易风险类型" style="width: 100%">
               <el-option label="交易主体异常" value="交易主体异常"></el-option>
@@ -61,13 +61,25 @@
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
       <el-form label-position="left" label-width="120px">
         <el-form-item label="商品种类">
-          {{ commodityName }}
+           <el-col >
+            <el-tag style="font-size:18px">
+             {{commodityName}}
+            </el-tag>
+          </el-col>
         </el-form-item>
         <el-form-item label="交易平台">
-          {{ flatName }}
+          <el-col >
+           <el-tag style="font-size:18px">
+              {{flatName}}
+           </el-tag>
+          </el-col>
         </el-form-item>
         <el-form-item label="交易风险类型">
-          {{ taskType }}
+           <el-col >
+            <el-tag style="font-size:18px">
+              {{taskType}}
+            </el-tag>
+          </el-col>
         </el-form-item>
         <!-- <el-form-item label="监管任务优先级">
           级别{{ priority }}
@@ -562,7 +574,13 @@ this.$parent.$children[0].active=1
   width: 100%;
   height: 100%;
 }
-
+.el-form-item{
+  margin-bottom: 50px;
+}
+ /deep/.el-form-item { 
+  label {font-size: 18px; } 
+  //margin-left: 400px;
+  }
 .popbut {
   mulitline: true;
   white-space: normal;

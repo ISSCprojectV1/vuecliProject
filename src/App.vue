@@ -81,4 +81,12 @@ html
 .el-link {
   font-size: 18px !important;
 }
+.el-form {
+  font-size: 18px !important;
+}
+.el-input{
+  font-size: 18px !important;
+}
+
+
 </style>

@@ -1,30 +1,30 @@
 <template>
-  <div>
-    <div class="task-input-box">
-
+  <div >
+    <div>
+      <el-button type="primary" @click="createTaskSource" style="margin-bottom:20px;margin-top:20px">修改任务来源</el-button>
+    </div>
+    <div class="task-input-box"  >
       <!--输入任务表单-->
-      <el-form label-width="130px">
+      <el-form label-width="130px" id="selectForm" >
 
-        <el-form-item label="任务来源">
+        <el-form-item label="任务来源" style="margin-left:300px">
             <el-col :span="1">
-          <el-tag>
+          <el-tag style="font-size:18px">
            {{radio}}
           </el-tag>
             </el-col>
-          <el-col :span="8">
-            <el-button type="primary" @click="createTaskSource">修改任务来源</el-button>
-          </el-col>
+          
         </el-form-item>
 
         <!--选择监管商品类别-->
-        <el-form-item label="商品种类">
+        <el-form-item label="商品种类" style="margin-left:300px">
           <el-col :span="13">
             <el-input v-model="commodityName" placeholder="请输入内容" @change="handleChange"></el-input>
           </el-col>
         </el-form-item>
 
         <!--监管任务空间粒度，根据选定的商品种类获得平台列表-->
-        <el-form-item label="交易平台">
+        <el-form-item label="交易平台" style="margin-left:300px">
           <el-col :span="13">
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
               <!--动态读取该品类对应的平台-->
@@ -41,7 +41,7 @@
         </el-form-item>
 
         <!--选定的监管任务类型-->
-        <el-form-item label="交易风险类型">
+        <el-form-item label="交易风险类型" style="margin-left:300px">
           <el-col :span="13">
             <el-select v-model="taskType" placeholder="请选择交易风险类型" style="width: 100%">
               <el-option label="交易主体异常" value="交易主体异常"></el-option>
@@ -57,8 +57,9 @@
 
 
 
-        <el-button type="success" @click="createTask">立即创建</el-button>
-        <el-button type="info" @click="abortForm">取消创建</el-button>
+        <el-button type="success" @click="createTask" >立即创建</el-button>
+        <el-button type="info" @click="abortForm" >取消创建</el-button>
+        <!-- <el-button type="info" @click="abortForm" style="margin-right:20em">取消创建</el-button> -->
       </el-form>
 
     </div>
@@ -68,10 +69,11 @@
         :visible.sync="formTaskVisible"
         width="60%">
           <el-radio-group v-model="radio">
-              <el-radio label="主体智能查验">主体智能查验</el-radio>
+              <el-radio label="主体智能查验" >主体智能查验</el-radio>
               <el-radio label="交易过程监测">交易过程监测</el-radio>
               <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
-          </el-radio-group>    
+          </el-radio-group>
+              
       <span slot="footer" class="dialog-footer">
     <!-- <el-button @click="formTaskVisible = false">取 消</el-button> -->
     <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
@@ -83,18 +85,35 @@
         :visible.sync="formDialogVisible"
         width="50%">
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
-      <el-form label-position="left" label-width="120px">
+      <el-form label-position="left" label-width="120px" >
         <el-form-item label="任务来源">
-          {{ radio }}
+          <el-col >
+            <el-tag style="font-size:18px">
+              {{radio}}
+            </el-tag>
+          </el-col>
         </el-form-item>
         <el-form-item label="商品种类">
-          {{ commodityName }}
+          <el-col >
+            <el-tag style="font-size:18px">
+             {{commodityName}}
+            </el-tag>
+          </el-col>
         </el-form-item>
         <el-form-item label="交易平台">
-          {{ flatName }}
+          <el-col >
+           <el-tag style="font-size:18px">
+              {{flatName}}
+           </el-tag>
+          </el-col>
         </el-form-item>
         <el-form-item label="交易风险类型">
-          {{ taskType }}
+          <el-col >
+            <el-tag style="font-size:18px">
+              {{taskType}}
+            </el-tag>
+          </el-col>
+          
         </el-form-item>
         <!-- <el-form-item label="监管任务优先级">
           级别{{ priority }}
@@ -346,10 +365,10 @@ export default {
    
   },
   methods: {
-    dealwithradio(radio){
-      console.log(this.radio)
-      if(this.radio == 1) this.radio = 'fdf'
-    },
+    // dealwithradio(radio){
+    //   console.log(this.radio)
+    //   if(this.radio == 1) this.radio = 'fdf'
+    // },
     // @handleChange---获取当前种类对应平台（输入框更改，绑定@change）
     handleChange(value) {
       this.getFlatList();
@@ -606,14 +625,60 @@ this.$parent.$children[0].active=1
 </script>
 
 <style lang="scss" scoped>
-.task-input-box {
-  font-size: 0;
-  width: 100%;
-  height: 100%;
+/deep/.el-form{
+  //display: inline-block;//居中 太短了 效果不行
+  // margin-left: 20em;//影响了立即创建里的el-form
+  //text-align:center //没效果
+}
+.el-form-item{
+  margin-bottom: 50px;
+}
+ /deep/.el-form-item { 
+  label {font-size: 18px; } 
+  //margin-left: 400px;
+  }
+// .el-radio{
+//   label {font-size: 18px; } 
+// }
+// .radio{
+//   label {font-size: 18px; }  
+// }
+// .el-radio /deep/ .el-radio__label{
+// font-size:18px !important;
+// }
+.radio {
+  /deep/ .el-radio-group {
+    height: 20px;
+    width: 60px;
+    /deep/ .el-radio {
+      margin: 0;
+      height: 20px;
+    }
+  }
+}
+/deep/ .el-radio__inner {
+  width: 20px;
+  height: 20px;
+  background: transparent !important;
+  box-sizing: border-box;
+  border: 2px solid #4f9efd;
+}
+/deep/.el-radio__inner::after {
+  background: #4f9efd;
+  width: 10px;
+  height: 10px;
+}
+/deep/.el-radio__label {
+  font-size: 20px;
+  color: #a0b2d3;
+  font-weight: bolder;
+}
+/deep/.el-radio__input.is-checked + .el-radio__label {
+  color: #4f9efd;
 }
 
-.popbut {
-  mulitline: true;
-  white-space: normal;
-}
+// .popbut {
+//   mulitline: true;
+//   white-space: normal;
+// }
 </style>
