@@ -107,6 +107,7 @@
                 humanUse: '',
                 dateStart: '',
                 dateStart2: '',
+              deadlinetemp:'',
                 dateEnd: '',
                 dateEnd2: '',
                 workingTime:'',
@@ -142,6 +143,7 @@
             this.humanUse=((this.taskin.humanUse=='是')||(this.taskin.humanUse=='人工监管参与'))?1:0
             this.workingTime=this.taskin.workingTime/3600000
             this.deadLine=this.taskin.deadLine
+          this.deadlinetemp=this.taskin.deadLine
             //  if(this.taskin.content)
             // this.content=this.taskin.content+"\r\n"+"aaa"
             this.content=this.taskin.content
@@ -170,6 +172,7 @@
                 this.workingTime=this.taskin.workingTime/3600000
                 this.deadLine=(Number.isNaN(this.taskin.deadLine))?this.taskin.deadLine:
                     (timestampToTime(this.taskin.deadLine))
+              this.deadlinetemp=this.taskin.deadLine
                 this.humanUse=this.taskin.humanUse
                 this.content=this.taskin.content
                 this.operatorName=this.taskin.operatorName
@@ -285,7 +288,7 @@ let wortstatue=null
                     "startTime":startData,//
                     "endTime":endData,//
                     "workingTime":this.workingTime*3600000,//
-                    "deadLine":this.deadLine,
+                    "deadLine":this.deadlinetemp,
                     "timeadvise":this.timeadvise,
                     "content":this.content,
                     "tradeuser":this.tradeuser,
@@ -294,9 +297,11 @@ let wortstatue=null
                     "workStatus":wortstatue
                 };
                 console.log(data);
-                taskInput(data).then(function (response) {
-                    console.log(response)
+                taskInput(data).then(res=> {
+                    console.log(res)
                   console.log(this)
+
+                  this.$parent.$parent.$parent.reload();
                //   console.log(this.$parent)
              //     console.log(this.$parent.$parent)
                 })
@@ -308,6 +313,8 @@ let wortstatue=null
                 console.log("zhioiiiiiii")
                 this.cleanForm();
                 this.$parent.$parent.dialogTableVisible = false
+
+
             },
             cleanForm(){
                 console.log("到这里了吗")

@@ -62,6 +62,10 @@ console.log(input)
               // 找到点的属性
               node.userId = input.data[i].id;
               node.id = input.data[i].name;
+              console.log(input.data[i].name)
+let arr=   input.data[i].name.split('-')
+          console.log( input.data[i].name-arr[0])
+           // console.log(arr)
               node.label = input.data[i].name;
               node.priority = input.data[i].priority;
               node.startTime = input.data[i].startTime;
@@ -311,7 +315,7 @@ const graph = new G6.Graph({
     },
       defaultNode: {
     type: 'modelRect',
-    size: [350, 100],
+    size: [350, 120],
     style: {
       radius: 2,
       stroke: '#69c0ff',

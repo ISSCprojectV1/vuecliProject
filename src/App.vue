@@ -71,14 +71,14 @@ html
 
 // 字体调整
 .el-table {
-  font-size: 15px !important;
+  font-size: 18px !important;
 }
 
 .el-button {
-  font-size: 15px !important;
+  font-size: 18px !important;
 }
 
 .el-link {
-  font-size: 15px !important;
+  font-size: 18px !important;
 }
 </style>
