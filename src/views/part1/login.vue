@@ -101,9 +101,7 @@ export default {
 
         // 设置cookies
         let roleList = res.data.roleList
-        console.log('后端返回的当前登录用户角色为: ', roleList[0])
         setRole(roleList[0].roleName)
-        console.log(getRole())
         for (let i = 0; i < roleList.length; i++) {
           if (roleList[i].roleName === 'admin') { // 登录角色为admin
             setAdminTrue("true")
