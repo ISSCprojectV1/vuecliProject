@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <!--lg: laptop at 150%-->
-      <el-col :xs="14" :sm="15" :md="16" :lg="18" :xl="18">
+      <el-col :xs="14" :sm="15" :md="16" :lg="16" :xl="14">
         <el-menu :router="true" class="el-menu" mode="horizontal"
                  @select="handleSelect"
                  background-color="#00659B"
@@ -15,7 +15,7 @@
         </el-menu>
 
       </el-col>
-      <el-col :xs="10" :sm="9" :md="8" :lg="6" :xl="6">
+      <el-col :xs="10" :sm="9" :md="8" :lg="8" :xl="10">
         <el-menu :router="true"
                  class="el-menu"
                  mode="horizontal"
@@ -62,7 +62,7 @@ export default {
       case 'admin':
         this.role = '管理员';
         break;
-      case 'RS':
+      case 'RSS':
         this.role = '监管机构端';
         break;
       case 'TPS':

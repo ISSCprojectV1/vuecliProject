@@ -71,19 +71,19 @@
               index="/trade/riskPrediction" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span style="font-size: 20px">风险预警</span>
+              <span style="font-size: 20px">价格预警</span>
             </template>
             <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskSurveillance')"
                           index="/trade/riskPrediction/riskSurveillance"
                           style="text-align: left;padding-left: 80px;font-size: 18px">
 
-              <span slot="title">价格风险预警</span>
+              <span slot="title">价格波动预警</span>
             </el-menu-item>
             <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskVolumePicture')"
                           index="/trade/riskPrediction/riskVolumeSurveillance"
                           style="text-align: left;padding-left: 80px;font-size: 18px">
 
-              <span slot="title">交易量风险预警</span>
+              <span slot="title">交易量波动预警</span>
             </el-menu-item>
           </el-submenu>
 

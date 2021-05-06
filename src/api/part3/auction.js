@@ -104,5 +104,8 @@ export function changeUploadFileStatus(UploadFileId,Status) {
     return request.get('/admin/changeUploadFileStatus/'+UploadFileId+'/'+Status)
 }
 
+export function downloadAuctionFile(id) {
+    return request.get('/downloadAuctionFile/' + id)
+}
 
 

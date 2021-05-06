@@ -29,11 +29,11 @@
         <el-table-column label="平台" prop="content">
 
         </el-table-column>
-        <el-table-column label="风险值（按日更新）" prop="riskValue">
+        <el-table-column label="价格波动频率\n（按日更新）" prop="riskValue">
 
         </el-table-column>
 
-        <el-table-column label="风险等级" min-width="40">
+        <el-table-column label="价格波动等级" min-width="40">
           <template slot-scope="scope">
             <span v-if="scope.row.riskMean === '高'" style="color: red">{{ scope.row.riskMean }}</span>
             <span v-else-if="scope.row.riskMean === '中'" style="color: green">{{ scope.row.riskMean }}</span>
