@@ -17,14 +17,16 @@
           <el-col :span="13">
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
               <!--动态读取该品类对应的平台-->
-              <el-option
+              <!-- <el-option
                   v-for="(flat, index) in flatList"
                   :key="index"
                   :label="flat.flatName"
                   :value="flat.flatName"
                   @change="handleChange"
               >
-              </el-option>
+              </el-option> -->
+              <el-option label="江苏省大圆银泰贵金属" value="江苏省大圆银泰贵金属"></el-option>
+              <el-option label="无锡贵金属交易所" value="无锡贵金属交易所"></el-option>
             </el-select>
           </el-col>
         </el-form-item>
