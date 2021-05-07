@@ -194,7 +194,7 @@ export default {
       });
       }else{
           //只有OMS端才能跳转 
-          if(getRole()=='OMS'){
+          if(getRole()=='OMS'||getRole()=='admin'){
             this.$router.push(`/trade/teamTable/${team}`);
             console.log(`/trade/teamTable/${team}`)
           }
