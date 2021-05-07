@@ -35,7 +35,7 @@
                   </span>
             </template>
           </el-table-column>
-          <el-table-column label="详细信息" fixed="right" min-width="80" v-if="this.Admin">
+          <el-table-column label="详细信息" fixed="right" min-width="80" v-if="false">
             <template slot-scope="scope">
               <el-button @click="goToDataQuery(scope.row)" type="text" size="small"   >实体统一</el-button>
             </template>
