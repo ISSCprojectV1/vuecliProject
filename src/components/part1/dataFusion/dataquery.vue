@@ -9,10 +9,10 @@
                         <el-input v-model="queryform.company"></el-input>
                         <el-button @click="lookupcompany(queryform.company)">查找</el-button>
                     </el-form-item>
-                    <el-form-item label="交易商社会统一信用代码检索">
+                    <!--el-form-item label="交易商社会统一信用代码检索">
                         <el-input v-model="queryform.taxnum"></el-input>
                         <el-button @click="lookuptaxnum(queryform.taxnum)">查找</el-button>
-                    </el-form-item>
+                    </el-form-item-->
                     <el-form-item label="" name="pingji" style="text-align: left">
 
 
