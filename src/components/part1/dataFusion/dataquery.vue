@@ -159,7 +159,7 @@ console.log(this.$router.currentRoute)
                     multibyname(this.companyData.name).then(res=>{
                      //   this.tableData = res.data.data
                         console.log( document.getElementsByName("pingfen")[0].innerText)
-                        document.getElementsByName("pingfen")[0].innerText="信用评分："+this.xinyongpingren
+                     //   document.getElementsByName("pingfen")[0].innerText="信用评分："+this.xinyongpingren
 
                         console.log( document.getElementsByName("pingji")[0].innerText)
                         console.log("阿拉善盟成大矿业有限责任公司")
