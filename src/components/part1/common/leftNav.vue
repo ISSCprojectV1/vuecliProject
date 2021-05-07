@@ -227,7 +227,7 @@ export default {//isAvailable('/trade/Multimodal-multigranularity/goodsgranulari
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
           break
         case '联盟形成':
-          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalitionForRS")
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalition")
           break
         case '人机器资源调度':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
