@@ -115,7 +115,7 @@
             <el-menu-item
                     index="/trade/riskPrediction/riskSurveillance"
                     style="text-align: left;padding-left: 80px;font-size: 18px">
-              <span slot="title">价格演化分析设计模块</span>
+              <span slot="title">价格演化分析模块</span>
             </el-menu-item>
 
             <el-menu-item v-if="false"
