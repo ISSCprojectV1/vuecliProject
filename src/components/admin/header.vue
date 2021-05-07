@@ -22,7 +22,7 @@ export default {
         "role": "角色管理",
         "menu": "菜单管理",
         "auctionNew": "拍卖管理",
-        "auctionAdd": "新增拍卖",
+    //    "auctionAdd": "新增拍卖",
         "score": "积分管理",
         "data": "数据管理"
       }

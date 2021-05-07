@@ -17,38 +17,112 @@
             <span slot="title">首页</span>
           </el-menu-item>
 
-          <el-submenu v-if="isAvailable('/trade/auction') || isAvailable('/trade/uploadResource')"
-                      index="/trade/auction" style="text-align: left;">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span style="font-size: 20px">数据共享</span>
-            </template>
-            <el-menu-item v-if="isAvailable('/trade/auction')" index="/trade/auction"
-                          style="text-align: left;padding-left: 80px;font-size: 18px">
-              <span slot="title">拍卖中心</span>
-            </el-menu-item>
-            <el-menu-item v-if="isAvailable('/trade/uploadResource')" index="/trade/uploadResource"
-                          style="text-align: left;padding-left: 80px;font-size: 18px">
-              <span slot="title">上传数据</span>
-            </el-menu-item>
-          </el-submenu>
+
+
 
           <el-submenu
               v-if="isAvailable('/trade/Multimodal-multigranularity/stepBar') || isAvailable('/trade/Multimodal-multigranularity/goodsgranularity')"
               index="/trade/Multimodal-multigranularity" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span style="font-size: 20px">模态粒度与建议</span>
+              <span style="font-size: 20px">监管模态粒度决策子系统</span>
             </template>
-            <el-menu-item v-if="isAvailable('/trade/Multimodal-multigranularity/stepBar')"
-                          index="/trade/Multimodal-multigranularity/stepBar"
+
+            <el-menu-item v-if="isAvailable('/trade/Multimodal-multigranularity/stepBar/taskInput')"
+                          index="/trade/Multimodal-multigranularity/stepBar/taskInput"
                           style="text-align: left;padding-left: 80px;font-size: 18px">
-              <span slot="title">模态与粒度步骤</span>
+              <span slot="title">监管模态粒度决策整体流程</span>
             </el-menu-item>
-            <el-menu-item v-if="isAvailable('/trade/Multimodal-multigranularity/goodsgranularity')"
+            <el-menu-item
+                          index="/trade/Multimodal-multigranularity/goodsgranularity"
+                          style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">时间商品范围智能化推荐模块</span>
+            </el-menu-item>
+
+            <el-menu-item
+
+                    @click="goto('粒度自适应补全',1)"
+                    style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">商品对象监管范围推荐模块</span>
+            </el-menu-item>
+            <el-menu-item v-if="false"
                           index="/trade/Multimodal-multigranularity/goodsgranularity"
                           style="text-align: left;padding-left: 80px;font-size: 18px">
               <span slot="title">时间与商品粒度</span>
+            </el-menu-item>
+          </el-submenu>
+          <el-submenu
+                  v-if="true"
+                  index="/trade/auctionNew"    style="text-align: left">
+
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px">监管主体资源联盟策略子系统</span>
+            </template>
+            <el-menu-item
+                    index="/trade/exceptionAnalysis/page"
+                    style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">异常交易事件关联预警模块</span>
+            </el-menu-item>
+            <el-menu-item
+                    @click="goto('联盟形成',3)"
+                    style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">监管任务联盟形成模块</span>
+            </el-menu-item>
+            <el-menu-item
+                    @click="goto('人机器资源调度',4)"
+                    style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">动态任务在线资源调度模块</span>
+            </el-menu-item>
+          </el-submenu>
+          <el-submenu v-if="isAvailable('/trade/auction') || isAvailable('/trade/uploadResource')"
+                      index="/trade/auction" style="text-align: left;">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px">数据共享融合子系统</span>
+            </template>
+            <el-submenu    style="text-align: left;padding-left: 40px;  font-size: 18px">
+
+              <template slot="title">
+
+                <span style="font-size: 18px">跨平台数据共享激励模块</span>
+              </template>
+
+                <el-menu-item v-if="isAvailable('/trade/auction')" index="/trade/auction"
+                              style="text-align: left;padding-left: 80px;font-size: 18px">
+                  <span slot="title">拍卖中心</span>
+                </el-menu-item>
+                <el-menu-item v-if="isAvailable('/trade/uploadResource')" index="/trade/uploadResource"
+                              style="text-align: left;padding-left: 80px;font-size: 18px">
+                  <span slot="title">上传数据</span>
+                </el-menu-item>
+                <el-menu-item index="/trade/auctionNew/auctionNew"          style="text-align: left;padding-left: 80px;font-size: 18px">
+                  拍卖管理
+                </el-menu-item>
+                <el-menu-item index="/trade/auctionNew/score"          style="text-align: left;padding-left: 80px;font-size: 18px">
+                  积分管理
+                </el-menu-item>
+                <el-menu-item index="/trade/auctionNew/data"          style="text-align: left;padding-left: 80px;font-size: 18px">
+                  数据管理
+                </el-menu-item>
+            </el-submenu>
+
+            <el-menu-item
+                    index="/trade/dataFusion/dataquery"
+                    style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">相似交易主体检测模块</span>
+            </el-menu-item>
+            <el-menu-item
+                    index="/trade/riskPrediction/riskSurveillance"
+                    style="text-align: left;padding-left: 80px;font-size: 18px">
+              <span slot="title">价格演化分析设计模块</span>
+            </el-menu-item>
+
+            <el-menu-item v-if="false"
+                          index="/trade/riskPrediction/riskSurveillance"
+                          style="text-align: left;padding-left: 80px;font-size: 18px">
+
+              <span slot="title">价格波动态势演化</span>
             </el-menu-item>
           </el-submenu>
           <!--          <el-submenu-->
@@ -67,17 +141,17 @@
           <!--          </el-submenu>-->
 
           <el-submenu
-              v-if="isAvailable('/trade/riskPrediction/riskSurveillance') || isAvailable('/trade/riskPrediction/riskVolumePicture')"
+              v-if="false"
               index="/trade/riskPrediction" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span style="font-size: 20px">价格预警</span>
+              <span style="font-size: 20px">价格态势演化</span>
             </template>
-            <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskSurveillance')"
+            <el-menu-item
                           index="/trade/riskPrediction/riskSurveillance"
                           style="text-align: left;padding-left: 80px;font-size: 18px">
 
-              <span slot="title">价格波动预警</span>
+              <span slot="title">价格波动态势演化</span>
             </el-menu-item>
             <el-menu-item v-if="isAvailable('/trade/riskPrediction/riskVolumePicture')"
                           index="/trade/riskPrediction/riskVolumeSurveillance"
@@ -87,17 +161,20 @@
             </el-menu-item>
           </el-submenu>
 
+
         </el-menu>
       </el-col>
     </el-row>
   </div>
 </template>
 
-<script>
-export default {
+<script>import {getRole, removeAdminTrue, removeRole, removeToken} from "@/utils/auth"
+export default {//isAvailable('/trade/Multimodal-multigranularity/goodsgranularity') isAvailable('/trade/riskPrediction/riskSurveillance') || isAvailable('/trade/riskPrediction/riskVolumePicture')
+ //isAvailable('/trade/riskPrediction/riskSurveillance')
   data() {
     return {
       defaultActive: "",
+      auctionshow:false,
       accessRoutes: [
         {
           title: "模态粒度与建议",
@@ -122,6 +199,10 @@ export default {
     }
   },
   mounted() {
+    console.log(getRole())
+    if(getRole()=="admin"||getRole()=="OMS")
+      this.auctionshow=true
+    else    this.auctionshow=false
     this.defaultActive = this.$router.currentRoute.path
     let rootDiv = document.getElementById("diceng");
     rootDiv.style.height = (window.innerHeight > document.body.scrollHeight ?
@@ -130,6 +211,33 @@ export default {
   created() {
   },
   methods: {
+
+
+    goto(page,numStep)
+    {
+      this.$router.push("/trade/Multimodal-multigranularity/stepBar")
+      switch (page) {
+        case '任务输入':
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInput")
+          break
+        case '粒度自适应补全':
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
+          break
+        case '模态动态切换':
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryOnlyModityView")
+          break
+        case '联盟形成':
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalitionForRS")
+          break
+        case '人机器资源调度':
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+          break
+
+        }
+      this.$store.commit('setStepbarPosition', numStep);
+      console.log(this)
+   //   this.stepActive = numStep;
+    },
     // 判断当前用户是否有权限访问菜单对应界面，从而确定是否显示菜单
     isAvailable(path) {
       return this.$store.getters["permission/hasAccessTo"](path)
