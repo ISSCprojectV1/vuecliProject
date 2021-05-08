@@ -1,5 +1,6 @@
 <template>
     <div>
+      <h2 style="text-align: center">数据共享激励</h2>
         <el-table
                 :data="tableData"
                 highlight-current-row

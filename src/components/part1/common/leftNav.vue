@@ -90,14 +90,14 @@
 
                 <el-menu-item v-if="isAvailable('/trade/auction')" index="/trade/auction"
                               style="text-align: left;padding-left: 80px;font-size: 18px">
-                  <span slot="title">拍卖中心</span>
+                  <span slot="title">数据共享中心</span>
                 </el-menu-item>
                 <el-menu-item v-if="isAvailable('/trade/uploadResource')" index="/trade/uploadResource"
                               style="text-align: left;padding-left: 80px;font-size: 18px">
                   <span slot="title">上传数据</span>
                 </el-menu-item>
                 <el-menu-item index="/trade/auctionNew/auctionNew"          style="text-align: left;padding-left: 80px;font-size: 18px">
-                  拍卖管理
+                  数据共享管理
                 </el-menu-item>
                 <el-menu-item index="/trade/auctionNew/score"          style="text-align: left;padding-left: 80px;font-size: 18px">
                   积分管理
