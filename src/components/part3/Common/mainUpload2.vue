@@ -20,6 +20,7 @@
             </span>
             <br/>
             <span>开始时间： {{ item.startTime }}</span>
+            <br/>
             <span>结束时间： {{ item.endTime }}</span>
           </div>
         </el-col>
@@ -29,7 +30,7 @@
           <span v-if="item.status === 1" class="statusOngoing">正在进行</span>
           <span v-else class="statusUpcoming">未开始</span>
           <br/>
-          <el-button type="primary" @click="openDialog(item.id)" style="margin-top: 1rem" v-if="item.status === 1">竞拍</el-button>
+          <el-button type="primary" @click="openDialog(item.id)" style="margin-top: 1rem" v-if="item.status === 1">点击共享</el-button>
         </el-col>
       </el-row>
     </div>
