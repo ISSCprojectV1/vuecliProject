@@ -79,7 +79,7 @@
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px">数据共享融合子系统</span>
             </template>
-            <el-submenu style="text-align: left;padding-left: 40px;  font-size: 18px">
+            <el-submenu style="text-align: left;padding-left: 30px;  font-size: 18px">
 
               <template slot="title">
 
@@ -233,8 +233,8 @@ export default {//isAvailable('/trade/Multimodal-multigranularity/goodsgranulari
 
       }
       this.$store.commit('setStepbarPosition', numStep);
-      console.log(this)
-      //   this.stepActive = numStep;
+      console.log(this.$parent.$parent)
+   //   this.stepActive = numStep;
     },
     // 判断当前用户是否有权限访问菜单对应界面，从而确定是否显示菜单
     isAvailable(path) {
