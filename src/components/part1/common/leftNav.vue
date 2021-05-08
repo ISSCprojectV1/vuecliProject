@@ -235,7 +235,7 @@ export default {//isAvailable('/trade/Multimodal-multigranularity/goodsgranulari
 
         }
       this.$store.commit('setStepbarPosition', numStep);
-      console.log(this)
+      console.log(this.$parent.$parent)
    //   this.stepActive = numStep;
     },
     // 判断当前用户是否有权限访问菜单对应界面，从而确定是否显示菜单
