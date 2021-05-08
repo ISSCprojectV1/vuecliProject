@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 style="text-align: center">数据共享激励</h2>
     <el-button type="primary" @click="dialogFormAddInit" style="margin-bottom: 10px">新增</el-button>
     <el-table
         :data="tableData"

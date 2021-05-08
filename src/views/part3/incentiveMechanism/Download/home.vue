@@ -1,6 +1,6 @@
 <template>
     <div id="main">
-      <h2 style="text-align: center;">数据共享中心</h2>
+      <h2 style="text-align: center;">数据共享激励</h2>
         <el-container>
 
 <!--            <el-divider class="el-divider"></el-divider>-->
