@@ -1,6 +1,7 @@
 <template>
     <div id="diceng">
         <div> <el-button @click="goback">返回</el-button></div>
+        <div> <el-button @click="CarculateData">计算数据</el-button></div>
         <h2>数据融合</h2>
         <el-row>
             <el-col :span="8">
@@ -46,17 +47,17 @@
                 :data="tableData"
                 style="width: 100%">
             <el-table-column
-                    prop="id"
+                    prop="taxnumer"
                     label="社会统一信用代码"
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="relevantBuyerName"
                     label="交易主体名称"
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="number"
+                    prop="relevance"
                     label="与主体相似度"
                     min-width="180">
             </el-table-column>
@@ -73,7 +74,7 @@
 
 <script>
     import echart from "echarts";
-    import {companydataname, multibyname, multidatagraph} from "@/api/part1/dataFusion";
+    import {companydataname, multibyname, multidatagraph,getRelevantEntity,getRelevantArray} from "@/api/part1/dataFusion";
 
 
 
@@ -105,13 +106,30 @@ console.log(this.$router.currentRoute)
                 this.$router.go(-1)
             }
             ,
+          CarculateData()
+          {
+            getRelevantArray()
+          },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
                 this.currentPage = 1;
+
                 this.pageSize = val;
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
+              getRelevantEntity(this.name,val,5).then(res=>{
+                console.log(res.data.data)
+                this.tableData=res.data.data.reslist
+                this.currentPage=res.data.data.currentPage
+
+                this.total=res.data.data.total
+                this.yeshu=res.data.data.total
+                console.log(this.tableData)
+                console.log(res)
+              }).catch(err=>{
+                console.log(err)
+              })
                 this.currentPage = val;
             },
 
@@ -158,18 +176,30 @@ console.log(this.$router.currentRoute)
                     this.companyData = res.data.data
                     multibyname(this.companyData.name).then(res=>{
                      //   this.tableData = res.data.data
-                        console.log( document.getElementsByName("pingfen")[0].innerText)
+                       // console.log( document.getElementsByName("pingfen")[0].innerText)
                      //   document.getElementsByName("pingfen")[0].innerText="信用评分："+this.xinyongpingren
 
                         console.log( document.getElementsByName("pingji")[0].innerText)
                         console.log("阿拉善盟成大矿业有限责任公司")
-                      let self = this;
-
+  //                    let self = this;
+//
                       let b_temp = new Array;
+                        this.name=name
 
-                      Object.assign(b_temp , self.tableData)
+                 //     Object.assign(b_temp , self.tableData)
+                      getRelevantEntity(name,1,5).then(res=>{
+                        console.log(res.data.data)
+                        this.tableData=res.data.data.reslist
+                        this.currentPage=res.data.data.currentPage
 
-                      if(name=="南京荣鑫科技"){
+                        this.total=res.data.data.total
+                        this.yeshu=res.data.data.total
+                        console.log(this.tableData)
+                        console.log(res)
+                      }).catch(err=>{
+                        console.log(err)
+                      })
+                    /*  if(name=="南京荣鑫科技"){
 
                       let json=  [{"id":'1917476207545647800',
                         "name":"广西威日矿业有限责任公司",
@@ -212,7 +242,7 @@ else{
                           }]
                         b_temp=json
                         self.tableData=b_temp
-                      }
+                      }*/
                       console.log(this.tableData)
                      //   document.getElementsByName("pingji")[0].innerText="信用评级：正常"
                     //    this.total=this.tableData.length
@@ -260,8 +290,9 @@ else{
                 tableData:[],
                 currentPage: 1, // 当前页码
                 total:0,
-                pageSize: 3, // 每页的数据条
-                yeshu:0
+                pageSize: 5, // 每页的数据条
+                yeshu:0,
+              name:''
 
             }
         }
