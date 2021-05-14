@@ -1,7 +1,7 @@
 <template>
     <div id="diceng">
         <div> <el-button @click="goback">返回</el-button></div>
-        <div> <el-button @click="CarculateData">计算数据</el-button></div>
+        <div> <el-button @click="CarculateData">启动检测</el-button></div>
         <h2>数据融合</h2>
         <el-row>
             <el-col :span="8">
@@ -57,9 +57,12 @@
                     min-width="180">
             </el-table-column>
             <el-table-column
-                    prop="relevance"
+
                     label="与主体相似度"
                     min-width="180">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.relevance.toFixed(4)}}</span>
+                </template>
             </el-table-column>
 
 
