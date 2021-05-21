@@ -41,6 +41,10 @@ export default {
         {
           title: '人机器资源调度',
           num: 4
+        },
+        {
+          title: '模态粒度指标优化',
+          num: 5
         }]
     }
   },
@@ -68,26 +72,32 @@ export default {
         {
           title: '人机器资源调度',
           num: 4
-        }
-      ]
+        },
+        {
+          title: '模态粒度指标优化',
+          num: 5
+        }]
     if (role === 'OMS')
       this.steps = [
         {
           title: '任务输入',
           num: 0
         }, {
-           title: '粒度自适应补全',
-           num: 1
-         },
-      {
-           title: '联盟形成',
-           num: 2
-         },
+          title: '粒度自适应补全',
+          num: 1
+        },
+        {
+          title: '联盟形成',
+          num: 2
+        },
         {
           title: '人机器资源调度',
           num: 3
-        }
-      ]
+        },
+        {
+          title: '模态粒度指标优化',
+          num: 5
+        }]
 
     // 判断返回上一个step的界面
     if (!this.$store.state.stepbarposition) {
@@ -112,6 +122,9 @@ export default {
           break
         case '人机器资源调度':
           this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryFlowChart")
+          break
+        case '模态粒度指标优化':
+          this.$router.push("/trade/Multimodal-multigranularity/stepBar/algorithmAnalysisTable")
           break
         default:
           break

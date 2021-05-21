@@ -80,6 +80,10 @@ export const asyncRoutes = [
             path: 'taskQueryTransactionCoalitionForRS',
             component: () => import("@/components/part3/Common/taskQueryTransactionCoalitionForRS")
           },
+          {
+            path: 'algorithmAnalysisTable',
+            component: () => import("@/components/part1/Multimodal-multigranularity/algorithmAnalysisTable")
+          },
         ]
       },
       {
