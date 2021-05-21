@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-button id="button-refresh" type="primary" @click="getTableData">指标计算</el-button>
     <el-container>
       <el-aside id="container-table-time-analysis">
         <el-table :data="dataTableTime" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}">
@@ -14,7 +15,7 @@
           <el-table-column label="模块名称" prop="name"></el-table-column>
           <el-table-column label="对比算法成功率" prop="comparedAlgoSuccessRate"></el-table-column>
           <el-table-column label="系统算法成功率" prop="proposedAlgoSuccessRate"></el-table-column>
-          <el-table-column label="自适应协同成功率提升"  prop="improvedAlgoSuccessRate" min-width="100px"></el-table-column>
+          <el-table-column label="自适应协同成功率提升" prop="improvedAlgoSuccessRate" min-width="100px"></el-table-column>
         </el-table>
       </el-container>
     </el-container>
@@ -33,30 +34,40 @@ export default {
     }
   },
   created() {
-    getComparisonResults().then(res => {
-      res.data.data.map(item => {
-        console.log(item)
-        this.dataTableTime.push({
-          name: item.name,
-          comparedAlgoRunningTime: item.comparedAlgoRunningTime,
-          proposedAlgoRunningTime: item.proposedAlgoRunningTime,
-          improvedAlgoRunningTime: item.improvedAlgoRunningTime
+    this.getTableData()
+  },
+  methods: {
+    getTableData() {
+      getComparisonResults().then(res => {
+        this.dataTableTime = [];
+        this.dataTableSuccess = [];
+        res.data.data.map(item => {
+          this.dataTableTime.push({
+            name: item.name,
+            comparedAlgoRunningTime: item.comparedAlgoRunningTime,
+            proposedAlgoRunningTime: item.proposedAlgoRunningTime,
+            improvedAlgoRunningTime: item.improvedAlgoRunningTime
+          })
+          this.dataTableSuccess.push({
+            name: item.name,
+            comparedAlgoSuccessRate: item.comparedAlgoSuccessRate,
+            proposedAlgoSuccessRate: item.proposedAlgoSuccessRate,
+            improvedAlgoSuccessRate: item.improvedAlgoSuccessRate
+          })
         })
-        this.dataTableSuccess.push({
-          name: item.name,
-          comparedAlgoSuccessRate: item.comparedAlgoSuccessRate,
-          proposedAlgoSuccessRate: item.proposedAlgoSuccessRate,
-          improvedAlgoSuccessRate: item.improvedAlgoSuccessRate
-        })
+      }).catch(err => {
+        console.log(err)
       })
-    }).catch(err => {
-      console.log(err)
-    })
+    }
   }
 }
 </script>
 
 <style scoped>
+#button-refresh {
+  margin-bottom: 0.5rem;
+}
+
 #container-table-time-analysis {
   min-width: 50%;
   border: 0.5rem solid #f5f6f7;
