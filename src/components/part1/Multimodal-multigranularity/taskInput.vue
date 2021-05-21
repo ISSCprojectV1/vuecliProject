@@ -297,12 +297,9 @@ export default {
   },
   props: ['taskin'],
   created() {
-    //不是oms端的 
-    if(getRole()!='OMS'){
-      console.log("去rs的任务输入")
-       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
-    }
-    else{
+
+    if(getRole()=='OMS' || getRole()=='admin'){
+        
     bourseget().then((res) => {
       console.log("这是OMS的任务输入")
           let dataConvert = res.data.data;
@@ -330,7 +327,14 @@ export default {
       /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
   this.cleanForm();*/
     }
+    
+    }else{
+    //不是oms端的 
+     console.log("去rs的任务输入")
+       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
     }
+  
+
 
   },
   computed: {
