@@ -1,5 +1,6 @@
 <template>
     <div class="all" id="diceng">
+      <h2 style="text-align: center">数据共享激励</h2>
         <div style="margin: 0 auto;">
           <div>
             <el-upload

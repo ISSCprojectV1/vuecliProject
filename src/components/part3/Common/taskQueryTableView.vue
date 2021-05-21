@@ -46,9 +46,9 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充时间粒度" min-width="70px" v-if="this.admin">
             <template slot-scope="commodity">
-            <el-button type="text" style="margin-left: 0.5rem" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
+            <el-button type="text" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
             </template>
           </el-table-column>
         </el-table-column>
@@ -62,7 +62,7 @@
           <el-table-column label="扩展监管种类" min-width="60" prop="subtask">
           </el-table-column>
 
-          <el-table-column label="补充商品粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充商品粒度" min-width="70" v-if="this.admin">
             <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
               <!--推荐的商品粒度-->
@@ -124,7 +124,7 @@
               </el-link>
             </template>
           </el-table-column>
-          <el-table-column label="补充空间粒度" v-if="this.admin">
+          <el-table-column label="补充空间粒度" min-width="70" v-if="this.admin">
             <template slot-scope="flat">
               <el-button type="text" @click="getFlats(flat.row)">补充粒度</el-button>
               <!--推荐的空间粒度-->

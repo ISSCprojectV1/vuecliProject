@@ -187,7 +187,7 @@
                 });
                 setTimeout(() => {
                     loading.close();
-                }, 10000);
+                }, 250000);
             },
 
             getData(){

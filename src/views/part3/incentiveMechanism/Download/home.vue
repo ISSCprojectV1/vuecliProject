@@ -1,5 +1,6 @@
 <template>
     <div id="main">
+      <h2 style="text-align: center;">数据共享激励</h2>
         <el-container>
 
 <!--            <el-divider class="el-divider"></el-divider>-->
@@ -11,6 +12,7 @@
 
             <el-container>
                 <el-main>
+
                     <!--search-bar @addFilter="addFilter"></search-bar-->
                     <!--filter-bar @changefilter="changefilter" :addTab="addTab"></filter-bar-->
                     <main-upload class="main" :filterTab="filterChange" :addTab="addTab"></main-upload>

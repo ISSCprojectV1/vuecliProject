@@ -298,10 +298,10 @@ function renderMap(map,data){
                 chart.hideLoading();
 
                 for(var i = 0; i < res.data.data.length;i++){
-                    console.log(res.data.data[i].content)
+                    console.log(res.data.data[i].regulatorName)
                     Management.push(
                         {
-                            "name":res.data.data[i].content,
+                            "name":res.data.data[i].regulatorName,
                             "value":[res.data.data[i].x,res.data.data[i].y]
                             })                
                             }
@@ -432,24 +432,30 @@ function renderMap(map,data){
 
             label: {
                         normal: {
-                         show: false,
+                         show: true,
                          position: 'left',
                     textStyle: {
-                        color:'white',
-                        //fontSize:15,
-                    },
-                    formatter (Management){
-                        return Management.name
-                    }
-                },
-                        emphasis: {
-                            show: false,
+                        // color:'red',
+                        // fontSize:15,
                             fontSize: 15,
                             color:'#000000',
                             backgroundColor:'#FFFFFF',
                             position: 'right',
                             formatter: '{b}'
-                        }
+
+                    },
+                    formatter (Management){
+                        return Management.name
+                    }
+                },
+                        // emphasis: {
+                        //     show: false,
+                        //     fontSize: 15,
+                        //     color:'#000000',
+                        //     backgroundColor:'#FFFFFF',
+                        //     position: 'right',
+                        //     formatter: '{b}'
+                        // }
                     },
                         itemStyle: {
                         normal: {

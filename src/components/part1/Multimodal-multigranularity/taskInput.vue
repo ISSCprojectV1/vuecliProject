@@ -297,12 +297,9 @@ export default {
   },
   props: ['taskin'],
   created() {
-    //不是oms端的 
-    if(getRole()!='OMS'){
-      console.log("去rs的任务输入")
-       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
-    }
-    else{
+
+    if(getRole()=='OMS' || getRole()=='admin'){
+        
     bourseget().then((res) => {
       console.log("这是OMS的任务输入")
           let dataConvert = res.data.data;
@@ -330,7 +327,14 @@ export default {
       /*  if(this.taskin.changeflag==Number.POSITIVE_INFINITY)
   this.cleanForm();*/
     }
+    
+    }else{
+    //不是oms端的 
+     console.log("去rs的任务输入")
+       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
     }
+  
+
 
   },
   computed: {
@@ -582,13 +586,30 @@ export default {
       };
       console.log(inputData);
       taskInput(inputData).then((response) =>{
-        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView")
-        console.log(this.$parent)
-this.$parent.$children[0].active=1
+        this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTableView").then(
+
+                ()=> {
+                  console.log("aaa")
+                  this.$parent.$children[0].active=1
+                  this.$store.commit('setStepbarPosition', 1);
+                  console.log("ccc")
+                }
+
+        )
+
+
+        //    console.log(this.$parent)
+
       })
           .catch(function (error) {
             console.log(error);
           });
+    },
+ goto(routerr)
+    {return new Promise(function (resolve, reject)
+    {
+      this.$router.push(routerr);
+    })
     },
     abortForm() {
       console.log("zhioiiiiiii")
