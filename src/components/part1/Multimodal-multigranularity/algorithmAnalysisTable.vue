@@ -3,19 +3,33 @@
     <el-button id="button-refresh" type="primary" @click="getTableData">指标计算</el-button>
     <el-container>
       <el-aside id="container-table-time-analysis">
-        <el-table :data="dataTableTime" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}">
+        <el-table :data="dataTableTime" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}"
+                  :cell-style="changeCellStyle">
           <el-table-column label="模块名称" prop="name"></el-table-column>
           <el-table-column label="对比算法运行时间" prop="comparedAlgoRunningTime"></el-table-column>
           <el-table-column label="系统算法运行时间" prop="proposedAlgoRunningTime"></el-table-column>
-          <el-table-column label="响应时间提升" prop="improvedAlgoRunningTime"></el-table-column>
+          <el-table-column label="响应时间提升" prop="improvedAlgoRunningTime" fixed="right" min-width="80px">
+            <template slot-scope="scope">
+              {{
+                isNaN(scope.row.improvedAlgoRunningTime) ? NaN : ((scope.row.improvedAlgoRunningTime * 100).toFixed(2) + '%')
+              }}
+            </template>
+          </el-table-column>
         </el-table>
       </el-aside>
       <el-container id="container-table-success-rate-analysis">
-        <el-table :data="dataTableSuccess" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}">
+        <el-table :data="dataTableSuccess" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}"
+                  :cell-style="changeCellStyle">
           <el-table-column label="模块名称" prop="name"></el-table-column>
           <el-table-column label="对比算法成功率" prop="comparedAlgoSuccessRate"></el-table-column>
           <el-table-column label="系统算法成功率" prop="proposedAlgoSuccessRate"></el-table-column>
-          <el-table-column label="自适应协同成功率提升" prop="improvedAlgoSuccessRate" min-width="100px"></el-table-column>
+          <el-table-column label="自适应协同成功率提升" prop="improvedAlgoSuccessRate" fixed="right" min-width="100px">
+            <template slot-scope="scope">
+              {{
+                isNaN(scope.row.improvedAlgoSuccessRate) ? NaN : ((scope.row.improvedAlgoSuccessRate * 100).toFixed(2) + '%')
+              }}
+            </template>
+          </el-table-column>
         </el-table>
       </el-container>
     </el-container>
@@ -44,20 +58,26 @@ export default {
         res.data.data.map(item => {
           this.dataTableTime.push({
             name: item.name,
-            comparedAlgoRunningTime: item.comparedAlgoRunningTime,
-            proposedAlgoRunningTime: item.proposedAlgoRunningTime,
+            comparedAlgoRunningTime: item.comparedAlgoRunningTime.toFixed(2),
+            proposedAlgoRunningTime: item.proposedAlgoRunningTime.toFixed(2),
             improvedAlgoRunningTime: item.improvedAlgoRunningTime
           })
           this.dataTableSuccess.push({
             name: item.name,
-            comparedAlgoSuccessRate: item.comparedAlgoSuccessRate,
-            proposedAlgoSuccessRate: item.proposedAlgoSuccessRate,
+            comparedAlgoSuccessRate: item.comparedAlgoSuccessRate.toFixed(2),
+            proposedAlgoSuccessRate: item.proposedAlgoSuccessRate.toFixed(2),
             improvedAlgoSuccessRate: item.improvedAlgoSuccessRate
           })
         })
       }).catch(err => {
         console.log(err)
       })
+    },
+    changeCellStyle(row) {
+      if (row.column.label === '响应时间提升' || row.column.label === '自适应协同成功率提升')
+        return 'background-color: #e3eff3; color: #469b4c; font-weight: 900'
+      else
+        return ''
     }
   }
 }
