@@ -8,7 +8,7 @@
           <el-table-column label="模块名称" prop="name"></el-table-column>
           <el-table-column label="对比算法运行时间" prop="comparedAlgoRunningTime"></el-table-column>
           <el-table-column label="系统算法运行时间" prop="proposedAlgoRunningTime"></el-table-column>
-          <el-table-column label="响应时间提升" prop="improvedAlgoRunningTime" fixed="right" min-width="80px">
+          <el-table-column label="响应时间减少" prop="improvedAlgoRunningTime" fixed="right" min-width="80px">
             <template slot-scope="scope">
               {{
                 isNaN(scope.row.improvedAlgoRunningTime) ? NaN : ((scope.row.improvedAlgoRunningTime * 100).toFixed(2) + '%')
@@ -74,7 +74,7 @@ export default {
       })
     },
     changeCellStyle(row) {
-      if (row.column.label === '响应时间提升' || row.column.label === '自适应协同成功率提升')
+      if (row.column.label === '响应时间减少' || row.column.label === '自适应协同成功率提升')
         return 'background-color: #e3eff3; color: #469b4c; font-weight: 900'
       else
         return ''
