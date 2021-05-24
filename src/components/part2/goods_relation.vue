@@ -175,7 +175,7 @@
             },
             getrelation2(){//计算关联商品
                 addcommodityRelationdetails2().then((res) => {
-                    this.getok();
+                    //this.getok();
                 }).catch(()=>{
                     console.log("taskExecution fail")
                 });
@@ -187,8 +187,23 @@
                 });
                 setTimeout(() => {
                     loading.close();
-                }, 10000);
+                }, 120000);
             },
+
+            //Loading加载
+            openFullScreen() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                return loading;
+            },
+            closeFullScreen(loading){
+                loading.close();
+            },
+
 
             getData(){
                 // 获取交易事件表格数据

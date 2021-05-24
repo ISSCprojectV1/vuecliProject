@@ -1,7 +1,7 @@
 <template>
     <div id="diceng">
         <div> <el-button @click="goback">返回</el-button></div>
-        <div> <el-button @click="CarculateData">启动检测</el-button></div>
+        <div> <el-button @click="CarculateData">启动数据融合</el-button></div>
         <h2>数据融合</h2>
         <el-row>
             <el-col :span="8">

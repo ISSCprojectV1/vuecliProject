@@ -462,3 +462,12 @@ export function getTeamResultByRName(URL) {
     method: 'get'
   })
 }
+
+// 算法评估step相关
+export function getComparisonResults() {
+  console.log('发送getComparisonResults请求')
+  return request({
+    url: '/getComparisonResults',
+    method: 'get'
+  })
+}
