@@ -16,7 +16,7 @@
             style="width: 100%"
             :header-cell-style="headcell"
             border>
-          <el-table-column label="序号" prop="id" width="50"></el-table-column>
+          <el-table-column label="序号" prop="id" min-width="30"></el-table-column>
           <el-table-column label="监管任务名称" prop="name" min-width="160">
           </el-table-column>
           <!--
@@ -29,9 +29,9 @@
           </el-table-column>
 
 
-          <el-table-column label="监管联盟" prop="workTeam"  min-width="160">
+          <el-table-column label="监管联盟" prop="workTeam" min-width="160">
             <template slot-scope="scope">
-              <el-link  type="primary">
+              <el-link type="primary">
                 <div @click="queryWarehouseHandle(scope.row.team)">
                   {{ scope.row.workTeam }}
                 </div>
@@ -54,32 +54,10 @@
 </template>
 
 <script>
-
-  /*
-  *       <el-button @click="drawechart1()" type="text" size="small">任务视图</el-button>
-      <el-button @click="drawechart12()" type="text" size="small">操作员列表</el-button>
-      <el-button @click="changeform12()" type="text" size="small">表格视图</el-button>
-      *      <el-table-column label="人模态分布" prop="humanUse" width="93">
-          </el-table-column>
-          <el-table-column label="机器模态分布数" prop="agentNum" width="120">
-          </el-table-column>
-
-          <el-table-column label="任务状态" prop="workStatus" min-width="50">
-          </el-table-column>
-          <!-- 联盟部分 -->
-          <el-table-column label="属于联盟" prop="team" min-width="50">
-            <!-- 根据team查询联盟信息 -->
-            <template slot-scope="scope">
-              <el-button type="text" @click="queryWarehouseHandle(scope.row.team)">{{ scope.row.team }}</el-button>
-              *           <el-table-column label="联盟演化">
-            <el-link type="primary" @click="teamEvolution">异常事件分析</el-link>
-          </el-table-column>
-            </template>
-          </el-table-column>
-  * */
 import echart from "echarts";
 import {taskQuery, teamform, getTeamResult} from "@/api/part1/Multimodal-multigranularity";
 import {getRole} from "@/utils/auth";
+
 export default {
   name: "taskQueryTransactionCoalition",
   inject: ['reload'],
@@ -100,12 +78,12 @@ export default {
 
   },
   methods: {
-    headcell(){
+    headcell() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
-        'font-weight':'bold',
-        'font-size':'18px'
+        'font-weight': 'bold',
+        'font-size': '18px'
       }
     },
     // 每页显示的条数
@@ -164,18 +142,6 @@ export default {
     },
     // 获取联盟形成结果
     teamformation() {
-      //  console.log("点击")
-      //  let URL = '/yu/createTeamByCost';
-      //  let teamResult = [];
-      //   getTeamResult(URL).then((res) => {
-      //     console.log("获取联盟形成结果",res.data.data[1]);
-      //     this.dealwithData(res);
-
-      //     //this.dormitory
-      //   }).catch(()=>{
-      //     console.log("getTeamResult fail")
-      //   });
-      //   return teamResult;
       document.getElementById("echart1").style.display = "none";
       document.getElementById("form").style.display = "block";
       this.getData1()
@@ -187,22 +153,18 @@ export default {
       this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     queryWarehouseHandle(team) {
-      if(team==0){
+      if (team == 0) {
         this.$message({
-        message: '请先执行联盟形成',
-        type: 'success'
-      });
-      }else{
-          //只有OMS端才能跳转 
-          if(getRole()=='OMS'||getRole()=='admin'){
-            this.$router.push(`/trade/teamTable/${team}`);
-            console.log(`/trade/teamTable/${team}`)
-          }
+          message: '请先执行联盟形成',
+          type: 'success'
+        });
+      } else {
+        //只有OMS端才能跳转
+        if (getRole() == 'OMS' || getRole() == 'admin') {
+          this.$router.push(`/trade/teamTable/${team}`);
+          console.log(`/trade/teamTable/${team}`)
+        }
       }
- 
-     
-      // this.$router.push(`/trade/transactionProject/map`);
-      // console.log("/trade/transactionProject/map");
     },
     changeform12() {
       document.getElementById("echart1").style.display = "none";
@@ -639,15 +601,11 @@ export default {
   },
   created() {
 
-    if(getRole()!='OMS'&&getRole()!='admin'){
-     console.log("去rs的联盟形成")
-       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalitionForRS")
-    }else{
+    if (getRole() != 'OMS' && getRole() != 'admin') {
+      this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalitionForRS")
+    } else {
       this.getData2();
     }
-    
-    //this.reload();
-
   }
 }
 </script>
