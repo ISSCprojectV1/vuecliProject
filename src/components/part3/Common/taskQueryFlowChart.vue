@@ -18,23 +18,25 @@
                :close-on-click-modal="false">
       <taskInputFormShow :taskin="taskin3"></taskInputFormShow>
     </el-dialog>
+
+    <!--顶部一排按钮-->
     <div>
       <el-row>
         <el-col :span="this.admintrue?6:12">
-          <el-button class="elbun" @click="changeform12">表格视图</el-button>
+          <el-button class="button" @click="changeform12">表格视图</el-button>
         </el-col>
         <el-col :span="this.admintrue?6:12">
-          <el-button class="elbun" @click="changeform21">流程图视图</el-button>
+          <el-button class="button" @click="changeform21">流程图视图</el-button>
         </el-col>
         <el-col :span="this.admintrue?6:0">
-          <el-button class="elbun" @click="changeform3" v-if="this.admintrue">操作员列表</el-button>
+          <el-button class="button" @click="changeform3" v-if="this.admintrue">操作员列表</el-button>
         </el-col>
         <el-col :span="this.admintrue?6:0">
-          <el-button class="elbun" @click="changeOperator('new')" v-if="this.admintrue">新增操作员</el-button>
+          <el-button class="button" @click="changeOperator('new')" v-if="this.admintrue">新增操作员</el-button>
         </el-col>
       </el-row>
-
     </div>
+
     <p></p>
     <div>
       <div id="echart1">
@@ -150,6 +152,8 @@
 
       </el-table>
     </div>
+
+    <!--表格视图-->
     <div id="form" style="display: none">
       <el-table
           ref="dormitoryTable"
@@ -159,38 +163,25 @@
           style="width: 100%"
           :header-cell-style="headcell"
           border>
-
-        <el-table-column type="selection" width="45"></el-table-column>
-        <el-table-column label="序号" prop="id" width="60"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name">
-        </el-table-column>
+        <el-table-column type="selection" min-width="20"></el-table-column>
+        <el-table-column label="序号" min-width="25" prop="id"></el-table-column>
+        <el-table-column label="监管任务名称" min-width="80" prop="name"></el-table-column>
 
         <el-table-column label="任务优先级" sortable :sort-orders="['ascending', 'descending',null]" :sort-by="['priority']"
-                         prop="priority" width="60">
-
+                         prop="priority" min-width="60">
         </el-table-column>
 
-        <el-table-column label="任务执行时间" width="60">
+        <el-table-column label="任务执行时间" min-width="60">
           <template slot-scope="scope">
-
             <span>
-                    {{ scope.row.workingTime / 3600000 + "小时" }}
-                  </span>
-
+              {{ scope.row.workingTime / 3600000 + "小时" }}
+            </span>
           </template>
         </el-table-column>
 
-
-        <el-table-column label="商品名称" prop="commodityName">
-        </el-table-column>
-        <el-table-column label="任务状态" prop="workStatus">
-        </el-table-column>
-
-        <el-table-column
-            label="模态粒度补充"
-            fixed="right"
-            min-width="180"
-        >
+        <el-table-column label="商品名称" min-width="45" prop="commodityName"></el-table-column>
+        <el-table-column label="任务状态" min-width="45" prop="workStatus"></el-table-column>
+        <el-table-column label="模态粒度补充" fixed="right" min-width="60">
           <template slot-scope="scope">
             <el-button @click="changetask(scope)" type="text" size="small">属性修改</el-button>
           </template>
@@ -208,12 +199,6 @@
 </template>
 
 <script>
-/*
-        <el-table-column label="是否被占用"   prop="allocation" width="60">
-
-    </el-table-column>
-* */
-
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
 import {getTaskApi} from "@/api/part1/transactionProject";
 import {setToken, getToken, setUserTrue, getUserTrue, getRole, getAdminTrue} from "@/utils/auth"
@@ -230,21 +215,7 @@ import taskInputFormChange from "@/components/part1/Multimodal-multigranularity/
 import taskInputFormShow from "@/components/part1/Multimodal-multigranularity/taskInputFormShow";
 
 import operatorChange from "@/components/part1/Multimodal-multigranularity/operatorChange";
-/*
-*         <el-table-column
-                label="推荐主被动模态"
-                fixed="right"
-                min-width="180" porp="model">
 
-        </el-table-column>
-        <el-table-column label="属于联盟" prop="team" width="60">
-        </el-table-column>        <el-table-column label="人模态分布" prop="humanUse" width="80">
-        </el-table-column>
-        <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-        </el-table-column>
-
-*
-* */
 export default {
   name: "taskQueryFlowChart",
   components: {
@@ -438,10 +409,8 @@ export default {
 
     getData() {
       getTaskApi().then((res) => {
-        var input = res.data;
-        this.dealwithData(input)
-        console.log("gettask")
-        console.log(input)
+        let input = res.data;
+        this.dealwithData(input);
       }).catch(() => {
         console.log("getTaskApi fail")
       });
@@ -451,15 +420,12 @@ export default {
       document.getElementById("form").style.display = "block";
       document.getElementById("form2").style.display = "none";
       document.getElementById("form3").style.display = "none";
-
-
     },
     changeform21() {
       document.getElementById("form").style.display = "none";
       document.getElementById("echart1").style.display = "block";
       document.getElementById("form2").style.display = "block";
       document.getElementById("form3").style.display = "none";
-
     },
     changeform3() {
       document.getElementById("form").style.display = "none";
@@ -468,14 +434,10 @@ export default {
       document.getElementById("form3").style.display = "block";
     },
     dealwithData(res) {
-      // console.log("aa")
       let dataConvert = [];
       dataConvert = res;
-      //console.log("aa")
-      this.totalCount = dataConvert.length
-      // console.log(dataConvert.length)
+      this.totalCount = dataConvert.length;
       for (let i = 0; i < dataConvert.length; i++) {
-
         if (dataConvert[i].priority == 0)
           dataConvert[i].priority = "无"
         if (dataConvert[i].humanUse) // true
@@ -507,21 +469,13 @@ export default {
       }
       dataConvert.reverse()
       this.dormitory = dataConvert;
-      this.dorshow = dataConvert
-      console.log(this.dormitory)
-      console.log(this.dorshow)
-      //this.loading = false;
+      this.dorshow = dataConvert;
     },
     dealwithData2(res) {
-      // console.log("aa")
       let dataConvert = [];
       dataConvert = res;
-      //console.log("aa")
-      this.totalCount2 = dataConvert.length
-      // console.log(dataConvert.length)
+      this.totalCount2 = dataConvert.length;
       for (let i = 0; i < dataConvert.length; i++) {
-
-
         if (dataConvert[i].humanUse) // true
           dataConvert[i].humanUse = "是"
         else // false
@@ -551,12 +505,8 @@ export default {
       }
       dataConvert.reverse()
       this.dormitory2 = dataConvert;
-      console.log(this.dormitory2)
-      //this.loading = false;
     },
     dealwithOperatorData(res) {
-
-      console.log(res)
       let keys = [];
       let value = []
       let neirong = {}
@@ -568,25 +518,15 @@ export default {
         if (property == "id") {
           let jsonObj = {"neirong": "序号", "shuzhi": res[property]};
           this.tabledata3.push(jsonObj)
-
         }
         if (property == "name") {
           let jsonObj = {"neirong": "操作员名称", "shuzhi": res[property]};
           this.tabledata3.push(jsonObj)
-
         }
         if (property == "taskId") {
           let jsonObj = {"neirong": "当前任务编号", "shuzhi": res[property]};
           this.tabledata3.push(jsonObj)
-
         }
-
-        //    let obj1 = JSON.parse(neirong);
-        //  console.log(obj1)
-
-
-        //   console.log(  this.tabledata3)
-        //     console.log(keys.length)
       }
     },
     dealwithData3(res) {
@@ -598,15 +538,8 @@ export default {
         else // false
         {
           this.modalitydata[i].allocation = "否"
-          // this.modalitydata[i].id=null
           this.modalitydata[i].taskId = "无"
         }
-
-
-        /*
-
-        */
-
       }
     },
     // 分配任务
@@ -615,34 +548,15 @@ export default {
         console.log(res)
       }).catch(err => {
         console.log(err)
-
       })
     }
-    /* this.$confirm('是否确认进行任务分配', '提示', {
-       confirmButtonText: '确定',
-       cancelButtonText: '取消',
-       type: 'warning'
-     }).then(() => {
-       this.getAllocateDate();
-
-       this.$message({
-         type: 'success',
-         message: '已执行分配!'
-       });
-     }).catch(() => {
-       this.$message({
-         type: 'info',
-         message: '已取消'
-       });
-     });*/
-
   }
 }
 
 </script>
 
 <style scoped>
-.elbun {
+.button {
   font-size: 16px;
   align-items: center;
   justify-content: center;
