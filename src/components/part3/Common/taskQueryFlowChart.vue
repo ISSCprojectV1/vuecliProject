@@ -76,9 +76,9 @@
           </el-table-column>
         </el-table>
 
-        <el-table-column label="在线/离线" >
+        <el-table-column label="在线/离线">
           <template slot-scope="scope">
-            {{ scope.row.algoStatus==0?"离线":"在线" }}
+            {{ scope.row.algoStatus == 0 ? "离线" : "在线" }}
 
           </template>
         </el-table-column>
@@ -262,7 +262,7 @@ export default {
     this.getData1();
     this.getData2();
     console.log(getAdminTrue())
-    if (getAdminTrue()||getRole()=="OMS") {
+    if (getAdminTrue() || getRole() == "OMS") {
 
       this.admintrue = true
       this.usertrue = false
@@ -336,12 +336,12 @@ export default {
     }
   },
   methods: {
-    headcell(){
+    headcell() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
-        'font-weight':'bold',
-        'font-size':'18px'
+        'font-weight': 'bold',
+        'font-size': '18px'
       }
     },
     modality(scope) {
@@ -647,10 +647,11 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.headcell{
-background-color: #dfdfdf;
-color: rgb(96, 97, 98);
-font-weight:bold;
-font-size:16px;
+
+.headcell {
+  background-color: #dfdfdf;
+  color: rgb(96, 97, 98);
+  font-weight: bold;
+  font-size: 16px;
 }
 </style>
