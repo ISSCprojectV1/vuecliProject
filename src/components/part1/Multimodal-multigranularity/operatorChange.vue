@@ -174,7 +174,7 @@ export default {
     },
     abortForm() {
       this.cleanForm();
-      this.$parent.$parent.dialogTableVisible = false
+      this.$parent.$parent.dialogTableVisible2 = false
     },
     cleanForm() {
       this.input = '';
