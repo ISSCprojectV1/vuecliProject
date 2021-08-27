@@ -10,20 +10,16 @@
           :header-cell-style="headcell"
           border
           v-loading="loading"
-          element-loading-text="加载中"
-      >
+          element-loading-text="加载中">
         <!--任务基本-->
         <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
-        <el-table-column label="监管任务名称" min-width="80" prop="name">
-        </el-table-column>
+
+        <el-table-column label="监管任务名称" min-width="80" prop="name"></el-table-column>
 
         <!--主被动模态-->
-        <el-table-column label="平台" min-width="60" prop="content">
+        <el-table-column label="平台" min-width="60" prop="content"></el-table-column>
 
-        </el-table-column>
-        <el-table-column :label="'价格波动频率（按日更新）'" min-width="85" prop="riskValue">
-
-        </el-table-column>
+        <el-table-column label="价格波动频率（按日更新）" min-width="85" prop="riskValue"></el-table-column>
 
         <el-table-column label="价格波动等级" min-width="45">
           <template slot-scope="scope">
@@ -56,12 +52,15 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="pageSizes"
-                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="pageSizes"
+          :page-size="PageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount"
+          style="margin-top: 0.5rem">
       </el-pagination>
     </div>
   </div>
@@ -95,7 +94,7 @@ export default {
       // 默认显示第几页
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
@@ -301,27 +300,19 @@ export default {
       });
     },
     getData() {
-      var idd = getToken()
-      console.log(idd)
-      var url = '/getTaskById/' + idd
-      console.log(url)
-      //  console.log(taskQueryById(url))
-      var url2 = '/getroles/' + idd
+      let idd = getToken()
+      let url = '/getTaskById/' + idd
+      let url2 = '/getroles/' + idd
       console.log(getRolenameById(url2))
       // 获取表格数据
-      console.log("获取表格数据")
-      console.log(this.user)
-      console.log(getToken())
-
       taskQuery().then((res) => {
-                this.dealwithData(res)
+        this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
     },
     getModeSwitchAll(data) {
       getModeSwitch().then((res) => {
-        console.log('getModeSwitch', res.data)
         this.dealwithRiskData(res.data.data);
       }).catch(() => {
         console.log("getModeSwitchAll fail")
@@ -348,7 +339,7 @@ export default {
     dealwithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
-      this.totalCount = dataConvert.length
+      this.totalCount = dataConvert.length;
       for (let i = 0; i < dataConvert.length; i++) {
         let data = this.timestampToTime(dataConvert[i].gmtCreate);
         dataConvert[i].gmtCreate = data
@@ -402,11 +393,11 @@ export default {
       this.dormitory = dataConvert;
       this.loading = false;
     },
-    dealwithRiskData(res) {
+    dealwithRiskData(data) {
       let dataConvert = [];
-      dataConvert = res;
-
-      dataConvert.reverse()
+      dataConvert = data;
+      this.totalCount=data.length;
+      dataConvert.reverse();
       this.dormitory = dataConvert;
       this.loading = false;
     },

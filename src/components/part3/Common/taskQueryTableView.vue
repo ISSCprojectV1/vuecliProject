@@ -159,7 +159,7 @@
                      :page-sizes="pageSizes"
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
                      :total="totalCount"
-                     style="margin-top: 1rem">
+                     style="margin-top: 0.5rem">
       </el-pagination>
     </div>
   </div>
@@ -192,7 +192,7 @@ export default {
       // 默认显示第几页
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
