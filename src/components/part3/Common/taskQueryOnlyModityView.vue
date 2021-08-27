@@ -314,8 +314,7 @@ export default {
       console.log(getToken())
 
       taskQuery().then((res) => {
-        console.log("look----", res.data)
-        this.dealwithData(res)
+                this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
