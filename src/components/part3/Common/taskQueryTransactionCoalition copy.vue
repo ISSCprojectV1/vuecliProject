@@ -16,20 +16,19 @@
             style="width: 100%"
             :header-cell-style="headcell"
             border>
-          <el-table-column label="序号" prop="id" min-width="30"></el-table-column>
+
+          <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
+
           <el-table-column label="监管任务名称" prop="name" min-width="160">
           </el-table-column>
-          <!--
-          <el-table-column label="任务优先级" prop="priority" width="60">
-          </el-table-column>
-          !-->
-          <el-table-column label="监管商品" prop="commodityName" min-width="50">
-          </el-table-column>
-          <el-table-column label="被监管的交易平台" prop="content" min-width="180">
+
+          <el-table-column label="监管商品" prop="commodityName" min-width="45">
           </el-table-column>
 
+          <el-table-column label="被监管的交易平台" prop="content" min-width="100">
+          </el-table-column>
 
-          <el-table-column label="监管联盟" prop="workTeam" min-width="160">
+          <el-table-column label="监管联盟" prop="workTeam" min-width="100">
             <template slot-scope="scope">
               <el-link type="primary">
                 <div @click="queryWarehouseHandle(scope.row.team)">
@@ -40,6 +39,7 @@
           </el-table-column>
 
         </el-table>
+
         <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
