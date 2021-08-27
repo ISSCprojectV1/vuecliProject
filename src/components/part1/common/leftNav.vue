@@ -210,7 +210,6 @@ export default {
     }
   },
   mounted() {
-    console.log(getRole())
     if (getRole() == "admin" || getRole() == "OMS")
       this.auctionshow = true
     else this.auctionshow = false
@@ -222,8 +221,6 @@ export default {
   created() {
   },
   methods: {
-
-
     goto(page, numStep) {
       this.$router.push("/trade/Multimodal-multigranularity/stepBar")
       switch (page) {

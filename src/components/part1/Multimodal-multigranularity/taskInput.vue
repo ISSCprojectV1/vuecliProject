@@ -240,34 +240,27 @@ export default {
     if (getRole() == 'OMS' || getRole() == 'admin') {
       bourseget().then((res) => {
             let dataConvert = res.data.data;
-            console.log(dataConvert)
             let temp = []
             for (let i = 0; i < dataConvert.length; i++)
               temp.push(dataConvert[i].bourse)
             this.cities = temp
-            console.log(temp)
           }
       ).catch(() => {
         console.log("taskQuery fail")
       });
       if (this.taskin) {
-        if (Object.prototype.hasOwnProperty.call(this.taskin, 'changeflag'))
-          console.log(this.taskin.changeflag)
-        console.log(this.taskin.name)
         this.input = this.taskin.name
         this.priority = this.taskin.priority
         this.humanUse = this.taskin.humanUse
         this.content = this.taskin.content
       }
     } else {
-      //不是oms端的
-      console.log("去rs的任务输入")
+      // 不是OMS端的
       this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
     }
   },
   computed: {
     address() {
-      console.log(this.taskin)
       return ""
     }
   },
@@ -289,7 +282,6 @@ export default {
       if (this.taskin.changeflag == Number.POSITIVE_INFINITY)
         this.cleanForm()
       let butt = document.getElementById("neirong")
-      console.log(butt.text)
     },
 
   },
@@ -437,11 +429,11 @@ export default {
       this.$parent.$parent.dialogTableVisible = false
     },
     postData() {
-      var startData = new Date(this.dateStart2).getTime();
-      var endData = new Date(this.dateEnd2).getTime();
-      var timestamp = parseInt(new Date().getTime() / 1000);
-      var d = new Date(timestamp * 1000);    //根据时间戳生成的时间对象
-      var date = (d.getFullYear()) + "-" +
+      let startData = new Date(this.dateStart2).getTime();
+      let endData = new Date(this.dateEnd2).getTime();
+      let timestamp = parseInt(new Date().getTime() / 1000);
+      let d = new Date(timestamp * 1000);    //根据时间戳生成的时间对象
+      let date = (d.getFullYear()) + "-" +
           (d.getMonth() + 1) + "-" +
           (d.getDate()) + " " +
           (d.getHours()) + ":" +
@@ -451,7 +443,7 @@ export default {
 
       let humannn = (this.humanUse == true ? 1 : 0);
 
-      var inputData = {
+      let inputData = {
         "name": taskName,
         "priority": this.priority,
         "startTime": 1587807522386,
@@ -485,19 +477,17 @@ export default {
       this.$parent.$parent.dialogTableVisible = false
     },
     cleanForm() {
-
-      this.input = '',
-          this.priority = '',
-          this.humanUse = false,
-          this.tradeUser = false,
-          this.dateStart = '',
-          this.dateStart2 = '',
-          this.dateEnd = '',
-          this.dateEnd2 = '',
-          this.workingTime = ''
+      this.input = ''
+      this.priority = ''
+      this.humanUse = false
+      this.tradeUser = false
+      this.dateStart = ''
+      this.dateStart2 = ''
+      this.dateEnd = ''
+      this.dateEnd2 = ''
+      this.workingTime = ''
       this.deadLine = ''
     },
-
     // 主动监管名单部分
     getActiveList() {
       getAct(this.commodityName, this.flatName).then(res => {
@@ -509,13 +499,12 @@ export default {
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
 /deep/ .el-form {
-  //display: inline-block;//居中 太短了 效果不行
-  // margin-left: 20em;//影响了立即创建里的el-form
+  //display: inline-block;// 居中 太短了 效果不行
+  // margin-left: 20em; // 影响了立即创建里的el-form
   //text-align:center //没效果
 }
 
