@@ -5,10 +5,10 @@
         <h2>交易平台监管粒度推荐表</h2>
         <el-table :data="dataTableSpaceGranularity" highlight-current-row @row-click="onClickTableSpace">
           <el-table-column label="平台名称" fixed="left" prop="platform" min-width="180"></el-table-column>
-          <el-table-column label="省份" prop="province" min-width="60"></el-table-column>
-          <el-table-column label="城市" prop="city" min-width="60"></el-table-column>
+          <el-table-column label="省份" prop="province" min-width="40"></el-table-column>
+          <el-table-column label="城市" prop="city" min-width="40"></el-table-column>
           <el-table-column label="商品类型" prop="category" min-width="80"></el-table-column>
-          <el-table-column label="关联度（取值范围：0-1）" prop="associate" min-width="100">
+          <el-table-column label="关联度" prop="associate" min-width="60">
             <template slot-scope="scope">
               {{ scope.row.associate.toFixed(3) }}
             </template>
