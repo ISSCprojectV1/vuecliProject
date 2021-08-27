@@ -47,9 +47,10 @@
                        @current-change="handleCurrentChange"
                        :current-page="currentPage"
                        :page-sizes="pageSizes"
-                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :page-size="PageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
                        :total="total1"
-                       style="margin-top: 1rem">
+                       style="margin-top: 0.5rem">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="主动模态" name="table" v-if="activemode">
@@ -80,47 +81,10 @@ import {
   taskQueryById,
   getRolenameById
 } from "@/api/part1/Multimodal-multigranularity";
-/*          @current-change="pageChange1"
-*           <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
-          <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
-* */
+
 export default {
   name: "activetask",
   components: {tabActiveModal},
-  created() {
-    if (this.$route.query && this.$route.query.data)
-      this.passive = true
-    else this.passive = false
-
-
-    taskQuery().then(res => {
-      console.log("res")
-      console.log(res)
-      this.taskInfo = res.data.data
-    }).catch(err => {
-      console.log(err);
-      console.log("出现错误")
-    })
-    const id = this.$router.currentRoute.params.id;
-
-    console.log(this.activeOrPassive())
-    if (this.activeOrPassive()) {
-      this.activeName = "table"
-      //   activetradeaction(id).then(res => {
-      //   this.dataTableActive = res.data.data
-      //  this.handleData();
-      //
-      // }
-      //   }
-      // ).catch(err => {
-      //    console.log(err);
-      //    console.log("出现错误")
-      //  })
-    } else {
-      this.activeName = "passive"
-      this.passivetradeactionList(id, 1, 5)
-    }
-  },
   data() {
     return {
       activeName: "table",
@@ -135,7 +99,7 @@ export default {
       spanarray: [],
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 5,
       tableData: [],
@@ -161,12 +125,30 @@ export default {
       }]
     }
   },
+  created() {
+    if (this.$route.query && this.$route.query.data)
+      this.passive = true
+    else
+      this.passive = false
+    taskQuery().then(res => {
+      this.taskInfo = res.data.data
+    }).catch(err => {
+      console.log(err);
+      console.log("出现错误")
+    })
+    const id = this.$router.currentRoute.params.id;
+    if (this.activeOrPassive()) {
+      this.activeName = "table"
+    } else {
+      this.activeName = "passive"
+      this.passivetradeactionList(id, 1, 5)
+    }
+  },
   mounted() {
     // const id = this.$router.currentRoute.params.id;
     // this.Activetaskgraph(id, 15);
     // document.getElementById("echart123").style.display = "none";
   },
-
   methods: {
     // 分页
     // 每页显示的条数
@@ -244,7 +226,6 @@ export default {
       this.Activetaskgraph(id, query_str);
     },
     activeOrPassive() {
-      console.log("passive" + this.passive)
       if (this.passive) {
         this.passivemode = true
         this.activemode = false
@@ -253,7 +234,6 @@ export default {
         this.activemode = true
       }
       return !this.passive
-      //  return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
     },
     objectSpanMethod({row, column, rowIndex, columnIndex}) {
       if (column.label === '编号' || column.label === '交易模式') {

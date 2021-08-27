@@ -3,8 +3,9 @@
     <el-container style="height: 700px; border: 0.5rem solid #eee">
       <el-aside width="60%" style="border: 0.5rem solid #eee">
         <h2>主动监管名单</h2>
+
         <el-table :data="dataTableActive" highlight-current-row @row-click="onClickTableActive"
-                  :header-cell-style="headcell">
+                  :header-cell-style="getHeaderStylesheet">
           <el-table-column prop="company" label="交易主体" min-width="200"></el-table-column>
           <el-table-column prop="category" label="商品类型" min-width="70"></el-table-column>
           <el-table-column prop="abnormalValue" label="异常值" min-width="70">
@@ -42,30 +43,40 @@
             </template>
           </el-table-column>
         </el-table>
+
         <el-pagination
             ref="pagination"
             style="text-align: center; margin-top: 0.5rem"
             background
-            layout="prev, pager, next"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="onSizeChangeActive"
             @current-change="onPageChangeActive"
-            :page-size="8"
+            :page-sizes="pageSizes"
+            :page-size="pageSizeActive"
+            :current-page="currentPageActive"
             :total="totalTableActive">
         </el-pagination>
+
       </el-aside>
       <el-container style="border: 0.5rem solid #eee">
         <div id="tableCompanyDetail" style="width: 100%; height: 100%">
           <h2>主体交易详情</h2>
+
           <el-table :data="dataTableDetail" style="width: 100%">
             <el-table-column prop="seller" label="主要交易卖方" fixed="left" min-width="60"></el-table-column>
             <el-table-column prop="buyer" label="主要交易买方" min-width="60"></el-table-column>
             <el-table-column prop="amount" label="交易数" min-width="40"></el-table-column>
           </el-table>
+
           <el-pagination
               ref="pagination"
               style="text-align: center; margin-top: 0.5rem"
               background
-              layout="prev, pager, next"
+              layout="total, sizes, prev, pager, next"
+              :page-sizes="pageSizes"
               :page-size="8"
+              :current-page="currentPageDetail"
+              @size-change="onSizeChangeDetail"
               @current-change="onPageChangeDetail"
               :total="totalTableDetail"
           >
@@ -84,14 +95,19 @@ export default {
   name: "tabActiveModal",
   data() {
     return {
+      pageSizes: [5, 10, 20, 50],
       // table active group
       dataTableActive: [],
       threshold: 0,
       totalTableActive: 0,
+      pageSizeActive: 10,
+      currentPageActive: 1,
       companySelected: '',
       // table company detail
       dataTableDetail: [],
       totalTableDetail: 0,
+      pageSizeDetail: 10,
+      currentPageDetail: 1,
       Admin: false
     }
   },
@@ -100,17 +116,14 @@ export default {
     this.queryActiveGroup(id, 1, 8);
     if (getRole() == "admin")
       this.Admin = true
-    else this.Admin = false
-    console.log("thisadmin" + this.Admin)
-  }
-
-  ,
+    else
+      this.Admin = false
+  },
   mounted() {
     document.getElementById('tableCompanyDetail').style.display = 'none'
-
   },
   methods: {
-    headcell() {
+    getHeaderStylesheet() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
@@ -132,9 +145,16 @@ export default {
         console.log(err)
       })
     },
-    onPageChangeActive(page) {
+    onSizeChangeActive(val) {
+      this.pageSizeActive = val;
+      this.currentPageActive = 1;
       const id = this.$router.currentRoute.params.id;
-      this.queryActiveGroup(id, page, 8);
+      this.queryActiveGroup(id, this.currentPageActive, this.pageSizeActive);
+    },
+    onPageChangeActive(page) {
+      this.currentPageActive = page;
+      const id = this.$router.currentRoute.params.id;
+      this.queryActiveGroup(id, page, this.pageSizeActive);
     },
     // 用于active table, 比较异常值与阈值并返回是否异常
     isAbnormal(abnormalValue) {
@@ -145,7 +165,6 @@ export default {
         path: '/trade/dataFusion/dataquery',
         query: {
           data: company,
-
         }
       });
     },
@@ -163,8 +182,14 @@ export default {
         console.log(err)
       })
     },
+    onSizeChangeDetail(val) {
+      this.pageSizeDetail = val;
+      this.currentPageDetail = 1;
+      this.queryCompanyDetail(this.companySelected, this.currentPageDetail, this.pageSizeDetail);
+    },
     onPageChangeDetail(page) {
-      this.queryCompanyDetail(this.companySelected, page, 6);
+      this.currentPageDetail = page;
+      this.queryCompanyDetail(this.companySelected, this.currentPageDetail, this.pageSizeDetail);
     }
   }
 }
