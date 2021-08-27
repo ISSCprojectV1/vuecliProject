@@ -15,7 +15,7 @@
 
         <!--任务基本-->
         <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name"></el-table-column>
+        <el-table-column label="监管任务名称" min-width="60" prop="name"></el-table-column>
 
         <!--时间粒度-->
         <el-table-column label="时间粒度（天）" align="center">
