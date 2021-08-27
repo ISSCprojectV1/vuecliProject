@@ -29,7 +29,7 @@
           <el-button class="button" @click="changeform21">流程图视图</el-button>
         </el-col>
         <el-col :span="this.admintrue?6:0">
-          <el-button class="button" @click="changeform3" v-if="this.admintrue">操作员列表</el-button>
+          <el-button class="button" @click="showFormOperator" v-if="this.admintrue">操作员列表</el-button>
         </el-col>
         <el-col :span="this.admintrue?6:0">
           <el-button class="button" @click="changeOperator('new')" v-if="this.admintrue">新增操作员</el-button>
@@ -93,8 +93,8 @@
         </el-pagination>
       </div>
     </div>
-    <div id="form3" style="display: none">
 
+    <div id="formOperator" style="display: none">
       <el-table
           v-if="this.admintrue"
           ref="dormitoryTable3"
@@ -103,16 +103,13 @@
           stripe
           style="width: 100%"
           :header-cell-style="headcell"
-          border
-      >
+          border>
 
+        <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 
-        <el-table-column label="序号" prop="id" width="60">
-        </el-table-column>
-        <el-table-column label="操作员名称" prop="name">
-        </el-table-column>
+        <el-table-column label="操作员名称" min-width="45" prop="name"></el-table-column>
 
-        <el-table-column label="当前任务编号" prop="taskId">
+        <el-table-column label="当前任务编号" min-width="60" prop="taskId">
           <template slot-scope="scope">
             <el-link type="primary">
               <div @click="gotoDetail(scope.row)">
@@ -121,35 +118,34 @@
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column
-            label="操作员设置"
 
-        >
+        <el-table-column label="操作员设置" min-width="45">
           <template slot-scope="scope">
-            <el-button @click="   changeOperator(scope.row)" type="text" size="small">操作员修改</el-button>
+            <el-button @click="changeOperator(scope.row)" type="text" size="small">操作员修改</el-button>
           </template>
         </el-table-column>
 
       </el-table>
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="pageSizes"
-                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount3">
+
+      <el-pagination
+          style="margin-top: 0.5rem"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="pageSizes"
+          :page-size="PageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCountFormOperator">
       </el-pagination>
+
       <el-table
           v-if="usertrue"
           :show-header="false"
           :data="tabledata3"
-
           border
-
-          style="width: 60%;margin: auto"
-      >
+          style="width: 60%;margin: auto">
         <el-table-column prop="neirong" label="ID"></el-table-column>
         <el-table-column prop="shuzhi"></el-table-column>
-
       </el-table>
     </div>
 
@@ -286,7 +282,7 @@ export default {
       dorshow: [],
       currentPage: 1,
       totalCount2: 10,
-      totalCount3: 10,
+      totalCountFormOperator: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
       totalCount: 100,
       // 个数选择器（可修改）
@@ -419,19 +415,19 @@ export default {
       document.getElementById("echart1").style.display = "none";
       document.getElementById("form").style.display = "block";
       document.getElementById("form2").style.display = "none";
-      document.getElementById("form3").style.display = "none";
+      document.getElementById("formOperator").style.display = "none";
     },
     changeform21() {
       document.getElementById("form").style.display = "none";
       document.getElementById("echart1").style.display = "block";
       document.getElementById("form2").style.display = "block";
-      document.getElementById("form3").style.display = "none";
+      document.getElementById("formOperator").style.display = "none";
     },
-    changeform3() {
+    showFormOperator() {
       document.getElementById("form").style.display = "none";
       document.getElementById("form2").style.display = "none";
       document.getElementById("echart1").style.display = "none";
-      document.getElementById("form3").style.display = "block";
+      document.getElementById("formOperator").style.display = "block";
     },
     dealwithData(res) {
       let dataConvert = [];
@@ -531,7 +527,7 @@ export default {
     },
     dealwithData3(res) {
       this.modalitydata = res
-      this.totalCount3 = this.modalitydata.length
+      this.totalCountFormOperator = this.modalitydata.length
       for (let i = 0; i < this.modalitydata.length; i++) {
         if (this.modalitydata[i].allocation) // true
           this.modalitydata[i].allocation = "是"
