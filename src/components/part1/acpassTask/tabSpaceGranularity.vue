@@ -105,10 +105,10 @@ export default {
     onClickTableSpace(row) {
       this.platform = row.platform;
       this.category = row.category;
-      this.getResultSpaceDetail(row.platform, row.category, 1, 8)
+      this.getResultSpaceDetail(row.platform, row.category, 1, this.pageSizeDetail);
     },
     // table detail
-    getResultSpaceDetail(platform, category, currentPage = 1, pageSize = 8) {
+    getResultSpaceDetail(platform, category, currentPage = 1, pageSize) {
       getSpaceDetail(platform, category, currentPage, pageSize).then(res => {
         this.dataTableSpaceDetail = res.data.data.reslist
         this.totalTableDetail = res.data.data.total
