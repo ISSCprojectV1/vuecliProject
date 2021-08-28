@@ -18,9 +18,13 @@
             ref="pagination"
             style="text-align: center; margin-top: 0.5rem"
             background
-            layout="prev, pager, next"
+            layout="total, sizes, prev, pager, next"
+            @size-change="onSizeChangeSpace"
             @current-change="onPageChangeSpace"
-            :total="totalTableSpace">
+            :total="totalTableSpace"
+            :page-sizes="pageSizes"
+            :page-size="pageSizeSpace"
+            :current-page="currentPageSpace">
         </el-pagination>
       </el-aside>
       <el-container style="border: 0.5rem solid #eee">
@@ -35,9 +39,13 @@
               ref="pagination"
               style="text-align: center; margin-top: 0.5rem"
               background
-              layout="prev, pager, next"
+              layout="total, sizes, prev, pager, next"
+              @size-change="onSizeChangeDetail"
               @current-change="onPageChangeDetail"
-              :total="totalTableDetail">
+              :total="totalTableDetail"
+              :page-sizes="pageSizes"
+              :page-size="pageSizeDetail"
+              :current-page="currentPageDetail">
           </el-pagination>
         </div>
       </el-container>
@@ -52,15 +60,20 @@ export default {
   name: "tabSpaceGranularity",
   data() {
     return {
+      pageSizes: [5, 10, 20, 50],
       // table space
       dataTableSpaceGranularity: [],
       totalTableSpace: 0,
+      pageSizeSpace: 10,
+      currentPageSpace: 1,
       // 用于onClickTableSpace
       platform: '',
       category: '',
       // table detail
       dataTableSpaceDetail: [],
-      totalTableDetail: 0
+      totalTableDetail: 0,
+      pageSizeDetail: 10,
+      currentPageDetail: 1
     }
   },
   created() {
@@ -80,9 +93,14 @@ export default {
         console.log(err)
       })
     },
+    onSizeChangeSpace(val) {
+      this.pageSizeSpace = val;
+      this.onPageChangeSpace(1);
+    },
     onPageChangeSpace(page) {
+      this.currentPageSpace = page;
       const id = this.$router.currentRoute.params.id;
-      this.getResultSpaceGranularity(id, page, 10);
+      this.getResultSpaceGranularity(id, this.currentPageSpace, this.pageSizeSpace);
     },
     onClickTableSpace(row) {
       this.platform = row.platform;
@@ -99,8 +117,13 @@ export default {
         console.log(err)
       })
     },
+    onSizeChangeDetail(val) {
+      this.pageSizeDetail = val;
+      this.onPageChangeDetail(1);
+    },
     onPageChangeDetail(page) {
-      this.getResultSpaceDetail(this.platform, this.category, page, 8);
+      this.currentPageDetail = page;
+      this.getResultSpaceDetail(this.platform, this.category, this.currentPageDetail, this.pageSizeDetail);
     }
   }
 }
