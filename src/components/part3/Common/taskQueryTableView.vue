@@ -12,30 +12,13 @@
           element-loading-text="加载中"
           :header-cell-style="headcell"
       >
-        <!--任务基本-->
 
-        <el-table-column label="序号" prop="id" min-width="30"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name"></el-table-column>
-        <!--人机模态
-                <el-table-column label="人机模态" width="80" align = "center">
-                <el-table-column label="人模态分布" prop="humanUse" width="80">
-                </el-table-column>
-                <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-                </el-table-column>
-                </el-table-column>
-                -->
-        <!--
-        <el-table-column label="主被动模态" prop="content">
-          <template slot-scope="scope">
-            <el-link :disabled="setdis(scope)" type="primary">
-              <div @click="gotoDetail(scope.row.id)">
-                {{ scope.row.content }}
-              </div>
-            </el-link>
-          </template>
-        </el-table-column>--主被动模态-->
+        <!--任务基本-->
+        <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
+        <el-table-column label="监管任务名称" min-width="60" prop="name"></el-table-column>
+
         <!--时间粒度-->
-        <el-table-column label="时间粒度（天）" min-width="80" align="center">
+        <el-table-column label="时间粒度（天）" align="center">
           <el-table-column label="推荐时间粒度" prop="timeadvise" min-width="60">
             <template slot-scope="scope">
               <el-link :disabled="setgoto(scope)">
@@ -46,23 +29,22 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="补充时间粒度" min-width="70px" v-if="this.admin">
+          <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
             <template slot-scope="commodity">
-            <el-button type="text" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
+              <el-button type="text" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
             </template>
           </el-table-column>
         </el-table-column>
 
         <!--商品粒度-->
-
         <el-table-column label="商品粒度" align="center">
-          <el-table-column label="监管种类" min-width="60" prop="commodityName">
+          <el-table-column label="监管种类" min-width="45" prop="commodityName">
           </el-table-column>
 
           <el-table-column label="扩展监管种类" min-width="60" prop="subtask">
           </el-table-column>
 
-          <el-table-column label="补充商品粒度" min-width="70" v-if="this.admin">
+          <el-table-column label="补充商品粒度" min-width="60" v-if="this.admin">
             <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
               <!--推荐的商品粒度-->
@@ -109,14 +91,12 @@
         </el-table-column>
 
         <!--空间粒度-->
-
         <el-table-column label="空间粒度" align="center">
-          <el-table-column label="监管平台" prop="content">
+          <el-table-column label="监管平台" min-width="45" prop="content">
           </el-table-column>
 
-          <el-table-column label="扩展监管平台" prop="resourceNeed">
+          <el-table-column label="扩展监管平台" min-width="60" prop="resourceNeed">
             <template slot-scope="flat">
-
               <el-link>
                 <div @click="goToSpaceDetail(flat.row.id)">
                   {{ flat.row.resourceNeed }}
@@ -124,7 +104,7 @@
               </el-link>
             </template>
           </el-table-column>
-          <el-table-column label="补充空间粒度" min-width="70" v-if="this.admin">
+          <el-table-column label="补充空间粒度" min-width="60" v-if="this.admin">
             <template slot-scope="flat">
               <el-button type="text" @click="getFlats(flat.row)">补充粒度</el-button>
               <!--推荐的空间粒度-->
@@ -179,7 +159,7 @@
                      :page-sizes="pageSizes"
                      :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
                      :total="totalCount"
-                     style="margin-top: 1rem">
+                     style="margin-top: 0.5rem">
       </el-pagination>
     </div>
   </div>
@@ -212,7 +192,7 @@ export default {
       // 默认显示第几页
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
@@ -234,17 +214,17 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-      timeAdvise:0,
+      timeAdvise: 0,
       admin: false
     }
   },
   methods: {
-    headcell(){
+    headcell() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
-        'font-weight':'bold',
-        'font-size':'18px'
+        'font-weight': 'bold',
+        'font-size': '18px'
       }
     },
     /*
@@ -284,17 +264,17 @@ export default {
         "subtask": seletCommodity.join(',')
       }
       console.log("newCommodity", newCommodity)
-      updateCommodity(newCommodity).then(res=>{
+      updateCommodity(newCommodity).then(res => {
         this.reload();
       })
           .catch(function (error) {
             console.log(error);
           });
-    /*  this.$message({
-        message: '扩展监管种类 成功',
-        type: 'success'
-      });*/
-     // 刷新页面
+      /*  this.$message({
+          message: '扩展监管种类 成功',
+          type: 'success'
+        });*/
+      // 刷新页面
 
     },
     /* 空间粒度模块Method */
@@ -330,7 +310,7 @@ export default {
         let arr = [];
         arr = response.data;
         console.log(arr)
-        if(arr.length>0){
+        if (arr.length > 0) {
           result = arr[0].timeadvise;
           console.log("result----111:", result);
           // 弹窗提醒
@@ -356,21 +336,20 @@ export default {
             "commodityName": row.commodityName
           };
           console.log(inputData);
-          taskInput(inputData).then((response) =>{
+          taskInput(inputData).then((response) => {
             console.log(response)
             this.reload()
 
           })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
+              .catch(function (error) {
+                console.log(error);
+              });
         }
-
 
 
         // 自动填充
 
-    //    this.setTimeRecommend(result);
+        //    this.setTimeRecommend(result);
       })
           .catch(function (error) {
             console.log(error);
@@ -389,17 +368,17 @@ export default {
         "id": this.temp,
         "resourceNeed": seletFlats.join(',')
       }
-      updateCommodity(newFlats).then(res=> {
+      updateCommodity(newFlats).then(res => {
         this.reload();
       }).catch(function (error) {
         console.log(error);
 
-    //    this.reload();// 刷新页面
+        //    this.reload();// 刷新页面
       });
-    /*  this.$message({
-        message: '扩展监管平台 成功',
-        type: 'success'
-      });*/
+      /*  this.$message({
+          message: '扩展监管平台 成功',
+          type: 'success'
+        });*/
 // 刷新页面
     },
     changeSpaceResult() {
@@ -469,19 +448,18 @@ export default {
     getData() {
       //var idd = getToken()
       //console.log(idd)
-     // var url = '/getTaskById/' + idd
-   //   console.log(url)
+      // var url = '/getTaskById/' + idd
+      //   console.log(url)
       //  console.log(taskQueryById(url))
-  //    var url2 = '/getroles/' + idd
+      //    var url2 = '/getroles/' + idd
       //console.log(getRolenameById(url2))
       // 获取表格数据
-    //  console.log("获取表格数据")
+      //  console.log("获取表格数据")
       //console.log(this.user)
       //console.log(getToken())
 
       taskQuery().then((res) => {
-        console.log("look----", res.data)
-        this.dealwithData(res)
+                this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });

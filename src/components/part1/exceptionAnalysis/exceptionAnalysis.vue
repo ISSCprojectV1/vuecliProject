@@ -101,7 +101,22 @@ export default {
         goback(){
             this.$router.go(-1)
         },
+        Isvalid(){
+            if(isNaN(Number(this.threshold_f))||isNaN(Number(this.threshold_fp)))
+              return false;
+            if(isNaN(parseFloat(this.threshold_f))||isNaN(parseFloat(this.threshold_fp)))
+                return false;
+            if(0>parseFloat(this.threshold_f)||parseFloat(this.threshold_f)>1)
+              return false;
+            if(0>parseFloat(this.threshold_fp)||parseFloat(this.threshold_fp)>1)
+                return false;
+          return true;
+          },
         onClickQuery() {
+            if(!this.Isvalid()) {
+              this.$message.error('输入数字有误');
+              return;
+            }
             exceptionRelationAnalysis(this.dateTimeRangeFormatted[0], this.dateTimeRangeFormatted[1], this.threshold_f, this.threshold_fp).then(res => {
                 this.resultQuery.links = res.data.links
                 this.resultQuery.names = res.data.names
@@ -109,7 +124,10 @@ export default {
                 console.log(this.resultQuery.links)
                 console.log(this.resultQuery.names)
                 console.log(this.resultQuery.weights)
-                this.drawChartExceptionRelation()
+                if(this.resultQuery.links.length==0)
+                  this.$message.error('无数据');
+                else
+                  this.drawChartExceptionRelation()
             }).catch(err => {
                 console.log(err)
             })

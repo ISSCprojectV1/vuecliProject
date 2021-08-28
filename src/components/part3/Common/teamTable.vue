@@ -98,8 +98,7 @@ inject:['reload'],
       const team = this.$router.currentRoute.params.team;
         var url='/yu/getOneTeamResult/'+team
         getOneTeamResult(url).then((res) => {
-        console.log("look----",res.data)
-        //this.dealwithData(res)
+                //this.dealwithData(res)
         //document.getElementById("form").style.display="block";
         //document.getElementById("map").style.display="none";
                 chart.hideLoading();
@@ -291,8 +290,7 @@ function renderMap(map,data){
       var mapdata = [];
         var url='/yu/getOneTeamResult/'+team
         getOneTeamResult(url).then((res) => {
-        console.log("look----",res.data)
-        //this.dealwithData(res)
+                //this.dealwithData(res)
         //document.getElementById("form").style.display="block";
         //document.getElementById("map").style.display="none";
                 chart.hideLoading();
@@ -705,8 +703,7 @@ function renderMap(map,data){
       // 获取表格数据
       console.log("获取表格数据")
       taskQuery().then((res) => {
-        console.log("look----",res.data)
-        this.dealwithData(res)
+                this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
@@ -774,8 +771,7 @@ function renderMap(map,data){
     GetTeamData(team){
         var url='/yu/getOneTeamResult/'+team
         getOneTeamResult(url).then((res) => {
-        console.log("look----",res.data)
-        this.dealwithData(res)
+                this.dealwithData(res)
         document.getElementById("form").style.display="block";
         document.getElementById("map").style.display="none";
         document.getElementById("caozuoyuan").style.display="none";

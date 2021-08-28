@@ -84,8 +84,7 @@ abortForm(){
   this.$parent.$parent.getData()
 },
 cleanForm(){
-  console.log("到这里了吗")
-      this.input = '',
+        this.input = '',
       this.priority = '',
       this.humanUse= false,
       this.targetId = '',

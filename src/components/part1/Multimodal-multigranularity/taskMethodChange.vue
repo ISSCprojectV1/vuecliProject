@@ -310,15 +310,13 @@ let wortstatue=null
                     });
             },
             abortForm(){
-                console.log("zhioiiiiiii")
-                this.cleanForm();
+                                this.cleanForm();
                 this.$parent.$parent.dialogTableVisible = false
 
 
             },
             cleanForm(){
-                console.log("到这里了吗")
-                this.input = '',
+                                this.input = '',
                     this.priority = '',
                     this.humanUse= false,
                     this.tradeuser= false,

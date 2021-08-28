@@ -10,40 +10,27 @@
           :header-cell-style="headcell"
           border
           v-loading="loading"
-          element-loading-text="加载中"
-      >
+          element-loading-text="加载中">
         <!--任务基本-->
-        <el-table-column label="序号" prop="id" min-width="50"></el-table-column>
-        <el-table-column label="监管任务名称" prop="name">
-        </el-table-column>
-        <!--人机模态
+        <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 
-                <el-table-column label="人机模态" width="80" align = "center">
-                <el-table-column label="人模态分布" prop="humanUse" width="80">
-                </el-table-column>
-                <el-table-column label="机器模态分布数" prop="agentNum" width="80">
-                </el-table-column>
-                </el-table-column>
-                -->
+        <el-table-column label="监管任务名称" min-width="80" prop="name"></el-table-column>
+
         <!--主被动模态-->
-        <el-table-column label="平台" prop="content">
+        <el-table-column label="平台" min-width="60" prop="content"></el-table-column>
 
-        </el-table-column>
-        <el-table-column :label="'价格波动频率\n（按日更新）'"  min-width="120" prop="riskValue">
+        <el-table-column label="价格波动频率（按日更新）" min-width="85" prop="riskValue"></el-table-column>
 
-        </el-table-column>
-
-        <el-table-column label="价格波动等级" min-width="60">
+        <el-table-column label="价格波动等级" min-width="45">
           <template slot-scope="scope">
             <span v-if="scope.row.riskMean === '高'" style="color: red">{{ scope.row.riskMean }}</span>
             <span v-else-if="scope.row.riskMean === '中'" style="color: green">{{ scope.row.riskMean }}</span>
             <span v-else-if="scope.row.riskMean === '低'" style="color: orange">{{ scope.row.riskMean }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="主动监管/被动监管" prop="activePassive">
+
+        <el-table-column label="主/被动监管" prop="activePassive" min-width="45">
           <template slot-scope="scope">
-
-
             <el-link type="primary" v-if="scope.row.activePassive === 1">
               <div @click="gotoDetail(scope.row.id)">
                 主动监管
@@ -56,21 +43,24 @@
             </el-link>
             <span v-else>暂无监管</span>
           </template>
-
         </el-table-column>
-        <el-table-column label="在线/离线">
+
+        <el-table-column label="在线/离线" min-width="45">
           <template slot-scope="scope">
             {{ scope.row.algoStatus == 0 ? "离线" : "在线" }}
-
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="pageSizes"
-                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
+
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="pageSizes"
+          :page-size="PageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount"
+          style="margin-top: 0.5rem">
       </el-pagination>
     </div>
   </div>
@@ -92,10 +82,7 @@ import {
 } from "@/api/part1/riskPrediction";
 
 import {getToken} from "@/utils/auth"
-/*
-*         <el-table-column label="下次风险值更新时间" prop="name">
-       {{buttonName}}
-        </el-table-column>*/
+
 export default {
   name: "taskQueryTableView",
   components: {},
@@ -107,7 +94,7 @@ export default {
       // 默认显示第几页
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
@@ -134,12 +121,12 @@ export default {
     }
   },
   methods: {
-    headcell(){
+    headcell() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
-        'font-weight':'bold',
-        'font-size':'18px'
+        'font-weight': 'bold',
+        'font-size': '18px'
       }
     },
     /*
@@ -148,25 +135,20 @@ export default {
     // 补全商品粒度，获得商品粒度推荐名单
     getCommodity(val) {
       this.temp = val.id;
-      console.log("getCommodity:", this.temp)
       this.commodityDialogVisible = true;
       let URL = '/getcommodityRelationdetails/' + val.commodityName;
       getcommodityRelationdetails2(URL).then((response) => {
         console.log("result------", response.data)
         for (let i = 0; i < response.data.length; i++) {
           let temp = {};
-          console.log("result:", response.data[i])
           temp.commodityDialog_id = response.data[i].id2;
           temp.commodityDialog_name = response.data[i].name2;
           temp.commodityDialog_num = response.data[i].similarity;
           this.tableData.push(temp);
         }
-
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
-
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     // 追加商品粒度复选框
     handleSelectionChange(val) {
@@ -185,44 +167,37 @@ export default {
           window.clearInterval(interval);
         }
       }, 1000);
-
     },
-
     // 确认追加该粒度
     updateCommodity(val) {
       this.commodityDialogVisible = false;
-      let seletCommodity = [];
+      let selectedCommodity = [];
       for (let i = 0; i < this.multipleSelection.length; i++) {
-        seletCommodity.push(this.multipleSelection[i].commodityDialog_name)
+        selectedCommodity.push(this.multipleSelection[i].commodityDialog_name)
       }
-      var newCommodity = {
+      let newCommodity = {
         "id": this.temp,
-        "subtask": seletCommodity.join(',')
+        "subtask": selectedCommodity.join(',')
       }
-      console.log("newCommodity", newCommodity)
       updateCommodity(newCommodity).then(function (response) {
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
+      }).catch(function (error) {
+        console.log(error);
+      });
       this.$message({
         message: '扩展监管种类 成功',
         type: 'success'
       });
       this.reload();// 刷新页面
-
     },
     /*
  * 空间粒度模块Method
  */
     // 获得空间粒度推荐名单
     getFlats(val) {
-      console.log("怎么还是不对", val)
       this.temp = val.id;
       this.flatDialogVisible = true;
       let URL = '/getrecommendrlatform' + '?commodity=' + encodeURIComponent(val.commodityName) + '&platform=' + val.content;
       getrecommendrlatform(URL).then((response) => {
-        console.log("result------", response.data.data)
         for (let i = 0; i < response.data.data.length; i++) {
           let temp = {};
           console.log("result:", response.data.data[i])
@@ -230,12 +205,9 @@ export default {
           temp.association = response.data.data[i].association;
           this.flatData.push(temp);
         }
-        console.log("flatData:", this.flatData)
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
-
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
     // 追加空间粒度复选框
     handleFlatChange(val) {
@@ -244,21 +216,19 @@ export default {
     // 确认追加该空间粒度
     updateFlat(val) {
       this.flatDialogVisible = false;
-      console.log("选中的新商品：", this.temp);
-      let seletFlats = [];
+      let selectedFlats = [];
       for (let i = 0; i < this.flatsSelection.length; i++) {
-        seletFlats.push(this.flatsSelection[i].platform)
+        selectedFlats.push(this.flatsSelection[i].platform)
       }
-      var newFlats = {
+      let newFlats = {
         "id": this.temp,
-        "resourceNeed": seletFlats.join(',')
+        "resourceNeed": selectedFlats.join(',')
       }
       updateCommodity(newFlats).then(function (response) {
 
-      })
-          .catch(function (error) {
-            console.log(error);
-          });
+      }).catch(function (error) {
+        console.log(error);
+      });
       this.$message({
         message: '扩展监管平台 成功',
         type: 'success'
@@ -270,9 +240,6 @@ export default {
         let datt = res.data.data
         for (var i = 0; i < datt.length; i++) {
           for (var j = 0; j < this.dormitory.length; j++) {
-            //console.log(datt[i].id)
-            // console.log(this.dormitory[j].id)
-            // console.log(datt[i].id==this.dormitory[j].id)
             if (datt[i].id === this.dormitory[j].id) {
               this.dormitory[j].subtask = datt[i].subtask
               console.log(this.dormitory[j])
@@ -281,9 +248,6 @@ export default {
             }
           }
         }
-        console.log(this.dormitory)
-
-        console.log(res.data.data)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
@@ -334,23 +298,14 @@ export default {
 
         }
       });
-      // this.$router.push(`/trade/acpassTask/activetask/${id}`)
     },
     getData() {
-      var idd = getToken()
-      console.log(idd)
-      var url = '/getTaskById/' + idd
-      console.log(url)
-      //  console.log(taskQueryById(url))
-      var url2 = '/getroles/' + idd
+      let idd = getToken()
+      let url = '/getTaskById/' + idd
+      let url2 = '/getroles/' + idd
       console.log(getRolenameById(url2))
       // 获取表格数据
-      console.log("获取表格数据")
-      console.log(this.user)
-      console.log(getToken())
-
       taskQuery().then((res) => {
-        console.log("look----", res.data)
         this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
@@ -358,13 +313,11 @@ export default {
     },
     getModeSwitchAll(data) {
       getModeSwitch().then((res) => {
-        console.log('getModeSwitch', res.data)
         this.dealwithRiskData(res.data.data);
       }).catch(() => {
         console.log("getModeSwitchAll fail")
       });
     },
-
     AddDorDataWithRisk(res) {
       console.log(res)
       console.log(this.dormitory)
@@ -374,13 +327,11 @@ export default {
       for (let i = 0; i < dataConvert.length; i++) {
         for (let j = 0; j < res.length; j++) {
           if (dataConvert[i].id === res[j].id) {
-
             dataConvert[i].riskValue = res[j].riskValue
             dataConvert[i].riskMean = res[j].riskMean
             dataConvert[i].activePassive = res[j].activePassive
             break
           }
-
         }
       }
       console.log(dataConvert)
@@ -388,7 +339,7 @@ export default {
     dealwithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
-      this.totalCount = dataConvert.length
+      this.totalCount = dataConvert.length;
       for (let i = 0; i < dataConvert.length; i++) {
         let data = this.timestampToTime(dataConvert[i].gmtCreate);
         dataConvert[i].gmtCreate = data
@@ -442,11 +393,11 @@ export default {
       this.dormitory = dataConvert;
       this.loading = false;
     },
-    dealwithRiskData(res) {
+    dealwithRiskData(data) {
       let dataConvert = [];
-      dataConvert = res;
-
-      dataConvert.reverse()
+      dataConvert = data;
+      this.totalCount=data.length;
+      dataConvert.reverse();
       this.dormitory = dataConvert;
       this.loading = false;
     },

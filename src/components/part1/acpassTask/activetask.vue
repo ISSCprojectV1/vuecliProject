@@ -30,15 +30,15 @@
 
     <el-tabs v-model="activeName">
 
-      <el-tab-pane label="被动模态" name="passive"  v-if="passivemode">
+      <el-tab-pane label="被动模态" name="passive" v-if="passivemode">
         <el-table border style="width: 100%; margin-top: 1px"
                   :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
                   :header-cell-style="headcell">
-          <el-table-column prop="id" label="编号" width="50"></el-table-column>
+          <el-table-column prop="id" label="编号" min-width="30"></el-table-column>
           <el-table-column prop="buyerName" label="买方姓名" min-width="130"></el-table-column>
-          <el-table-column prop="category" label="商品"></el-table-column>
-          <el-table-column prop="amount" label="数量"></el-table-column>
-          <el-table-column prop="price" label="价格"></el-table-column>
+          <el-table-column prop="category" label="商品" min-width="40"></el-table-column>
+          <el-table-column prop="amount" label="数量" min-width="30"></el-table-column>
+          <el-table-column prop="price" label="价格" min-width="30"></el-table-column>
           <el-table-column prop="sellerName" label="卖方姓名" min-width="130"></el-table-column>
           <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
 
@@ -47,9 +47,10 @@
                        @current-change="handleCurrentChange"
                        :current-page="currentPage"
                        :page-sizes="pageSizes"
-                       :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :page-size="PageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
                        :total="total1"
-                       style="margin-top: 1rem">
+                       style="margin-top: 0.5rem">
         </el-pagination>
       </el-tab-pane>
       <el-tab-pane label="主动模态" name="table" v-if="activemode">
@@ -80,47 +81,10 @@ import {
   taskQueryById,
   getRolenameById
 } from "@/api/part1/Multimodal-multigranularity";
-/*          @current-change="pageChange1"
-*           <el-table-column prop="tasksize" label="空间粒度"></el-table-column>
-          <el-table-column prop="original" label="原生任务" v-if="activeOrPassive()"></el-table-column>
-* */
+
 export default {
   name: "activetask",
   components: {tabActiveModal},
-  created() {
-if(this.$route.query&&this.$route.query.data)
-this.passive=true
-    else this.passive=false
-
-
-    taskQuery().then(res => {
-      console.log("res")
-      console.log(res)
-      this.taskInfo = res.data.data
-    }).catch(err => {
-      console.log(err);
-      console.log("出现错误")
-    })
-    const id = this.$router.currentRoute.params.id;
-
-console.log(this.activeOrPassive())
-    if (this.activeOrPassive()) {
-      this.activeName = "table"
-      //   activetradeaction(id).then(res => {
-      //   this.dataTableActive = res.data.data
-      //  this.handleData();
-      //
-      // }
- //   }
-   // ).catch(err => {
-    //    console.log(err);
-    //    console.log("出现错误")
-    //  })
-    } else {
-      this.activeName="passive"
-      this.passivetradeactionList(id, 1, 5)
-    }
-  },
   data() {
     return {
       activeName: "table",
@@ -135,7 +99,7 @@ console.log(this.activeOrPassive())
       spanarray: [],
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 5,
       tableData: [],
@@ -144,9 +108,9 @@ console.log(this.activeOrPassive())
       // tab 1: active table
       dataTableActive: [],
       threshold: '',
-      passive:false,
-      activemode:true,
-      passivemode:true,
+      passive: false,
+      activemode: true,
+      passivemode: true,
       // tab gone: 交易事件图
       value_space_granularity: '',
       options: [{
@@ -161,12 +125,30 @@ console.log(this.activeOrPassive())
       }]
     }
   },
+  created() {
+    if (this.$route.query && this.$route.query.data)
+      this.passive = true
+    else
+      this.passive = false
+    taskQuery().then(res => {
+      this.taskInfo = res.data.data
+    }).catch(err => {
+      console.log(err);
+      console.log("出现错误")
+    })
+    const id = this.$router.currentRoute.params.id;
+    if (this.activeOrPassive()) {
+      this.activeName = "table"
+    } else {
+      this.activeName = "passive"
+      this.passivetradeactionList(id, 1, 5)
+    }
+  },
   mounted() {
     // const id = this.$router.currentRoute.params.id;
     // this.Activetaskgraph(id, 15);
     // document.getElementById("echart123").style.display = "none";
   },
-
   methods: {
     // 分页
     // 每页显示的条数
@@ -181,12 +163,12 @@ console.log(this.activeOrPassive())
       // 改变默认的页数
       this.currentPage = val
     },
-    headcell(){
+    headcell() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
-        'font-weight':'bold',
-        'font-size':'18px'
+        'font-weight': 'bold',
+        'font-size': '18px'
       }
     },
     passivetradeactionList(id, currentPage, pageSize) {
@@ -244,19 +226,14 @@ console.log(this.activeOrPassive())
       this.Activetaskgraph(id, query_str);
     },
     activeOrPassive() {
-      console.log("passive"+this.passive)
-      if(this.passive)
-      {
-        this.passivemode=true
-        this.activemode=false
+      if (this.passive) {
+        this.passivemode = true
+        this.activemode = false
+      } else {
+        this.passivemode = false
+        this.activemode = true
       }
-      else
-      {
-        this.passivemode=false
-        this.activemode=true
-      }
- return !this.passive
-    //  return this.$router.currentRoute.path.startsWith('/trade/acpassTask/activetradeaction')
+      return !this.passive
     },
     objectSpanMethod({row, column, rowIndex, columnIndex}) {
       if (column.label === '编号' || column.label === '交易模式') {

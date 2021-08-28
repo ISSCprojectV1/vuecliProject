@@ -124,20 +124,36 @@
             },
 
             addTimeadvise() {
+                this.openFullScreen();
                 addcommodityTimeadvise().then((res) => {
-                    this.getok();
+                    this.closeFullScreen(this.openFullScreen());
                 }).catch(()=>{
-                    console.log("taskExecution fail")
+                    console.log("taskExecution fail");
+                    this.closeFullScreen(this.openFullScreen());
                 });
+                /* const loading = this.$loading({
+                     lock: true,
+                     text: '正在计算时间粒度',
+                     spinner: 'el-icon-loading',
+                     background: 'rgba(0, 0, 0, 0.7)'
+                 });
+              /* setTimeout(() => {
+                     loading.close();
+                 }, 3000);*/
+            },
+
+            //Loading加载
+            openFullScreen() {
                 const loading = this.$loading({
                     lock: true,
-                    text: '正在计算时间粒度',
+                    text: 'Loading',
                     spinner: 'el-icon-loading',
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
-                setTimeout(() => {
-                    loading.close();
-                }, 3000);
+                return loading;
+            },
+            closeFullScreen(loading){
+                loading.close();
             },
 
         }

@@ -118,10 +118,24 @@ console.log(this.$router.currentRoute)
                 this.currentPage = 1;
 
                 this.pageSize = val;
+              console.log(`当前页: ${val}`);
+              getRelevantEntity(this.name,1,this.pageSize).then(res=>{
+                console.log(res.data.data)
+                this.tableData=res.data.data.reslist
+                this.currentPage=res.data.data.currentPage
+
+                this.total=res.data.data.total
+                this.yeshu=res.data.data.total
+                console.log(this.tableData)
+                console.log(res)
+              }).catch(err=>{
+                console.log(err)
+              })
+              this.currentPage = val;
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
-              getRelevantEntity(this.name,val,5).then(res=>{
+              getRelevantEntity(this.name,val,this.pageSize).then(res=>{
                 console.log(res.data.data)
                 this.tableData=res.data.data.reslist
                 this.currentPage=res.data.data.currentPage
