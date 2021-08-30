@@ -25,9 +25,9 @@
 
           <el-table-column label="监管商品" prop="commodityName" min-width="45"></el-table-column>
 
-          <el-table-column label="被监管的交易平台" prop="content" min-width="100"></el-table-column>
+          <el-table-column label="被监管的交易平台" prop="content" min-width="90"></el-table-column>
 
-          <el-table-column label="监管联盟" prop="workTeam" min-width="100">
+          <el-table-column label="监管联盟" prop="workTeam" min-width="110">
             <template slot-scope="scope">
               <el-link type="primary">
                 <div @click="queryWarehouseHandle(scope.row.team)">
