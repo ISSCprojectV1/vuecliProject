@@ -3,7 +3,7 @@
     <div style="margin-bottom: 0.5rem">
       <el-steps :active="stepActive" finish-status="success" align-center simple>
         <el-step v-for="item in steps" :key="item.num" :title="item.title"
-                 :class="stepActive === item.num ? 'step-active' : 'step-active'"
+                 :class="stepActive === item.num ? 'step-active' : ''"
                  @click.native="onClickStep(item.title, item.num)"></el-step>
       </el-steps>
     </div>
@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import {getRole} from "@/utils/auth";
-
 export default {
   name: "stepBar",
   data() {
@@ -49,56 +47,6 @@ export default {
     }
   },
   created() {
-    // 根据role设置steps
-    let role = getRole();
-    if (role === 'RS')
-      this.steps = [
-        {
-          title: '任务输入',
-          num: 0
-        },
-        {
-          title: '粒度自适应补全',
-          num: 1
-        },
-        {
-          title: '模态动态切换',
-          num: 2
-        },
-        {
-          title: '联盟形成',
-          num: 3
-        },
-        {
-          title: '人机器资源调度',
-          num: 4
-        },
-        {
-          title: '模态粒度指标优化',
-          num: 5
-        }]
-    if (role === 'OMS')
-      this.steps = [
-        {
-          title: '任务输入',
-          num: 0
-        }, {
-          title: '粒度自适应补全',
-          num: 1
-        },
-        {
-          title: '联盟形成',
-          num: 2
-        },
-        {
-          title: '人机器资源调度',
-          num: 3
-        },
-        {
-          title: '模态粒度指标优化',
-          num: 5
-        }]
-
     // 判断返回上一个step的界面
     if (!this.$store.state.stepbarposition) {
       this.onClickStep(this.steps[0].title, 0)

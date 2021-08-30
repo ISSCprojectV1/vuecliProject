@@ -22,29 +22,27 @@
     <!--顶部一排按钮-->
     <div>
       <el-row>
-        <el-col :span="this.admintrue?6:12">
+        <el-col :span="6">
           <el-button class="button" @click="showTableView">表格视图</el-button>
         </el-col>
-        <el-col :span="this.admintrue?6:12">
+        <el-col :span="6">
           <el-button class="button" @click="showEchartsView">流程图视图</el-button>
         </el-col>
-        <el-col :span="this.admintrue?6:0">
-          <el-button class="button" @click="showFormOperator" v-if="this.admintrue">操作员列表</el-button>
+        <el-col :span="6">
+          <el-button class="button" @click="showFormOperator">操作员列表</el-button>
         </el-col>
-        <el-col :span="this.admintrue?6:0">
-          <el-button class="button" @click="changeOperator('new')" v-if="this.admintrue">新增操作员</el-button>
+        <el-col :span="6">
+          <el-button class="button" @click="changeOperator('new')">新增操作员</el-button>
         </el-col>
       </el-row>
     </div>
 
-    <p></p>
     <!--流程图视图：包括echarts和一个表格-->
     <div>
       <div id="echartsView">
-        <div>
-          * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
-        </div>
-        <p></p>
+        <p>
+          * 1. 将鼠标悬空在任务节点上方，可显示详细任务信息 2. 可拖动节点方便查看
+        </p>
         <method1 ref="method1_child"></method1>
       </div>
 
@@ -58,13 +56,10 @@
             style="width: 100%"
             border>
 
-          <el-table-column type="selection" min-width="60"></el-table-column>
-          <el-table-column label="序号" prop="id" min-width="60"></el-table-column>
-          <el-table-column label="监管任务名称" prop="name" min-width="60">
-          </el-table-column>
-
-          <el-table-column label="任务优先级" prop="priority" min-width="60">
-          </el-table-column>
+          <el-table-column type="selection" min-width="25"></el-table-column>
+          <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
+          <el-table-column label="监管任务名称" prop="name" min-width="150"></el-table-column>
+          <el-table-column label="任务优先级" prop="priority" min-width="50"></el-table-column>
           <el-table-column label="任务执行时间" min-width="60">
             <template slot-scope="scope">
             <span>
@@ -96,7 +91,6 @@
     <!--操作员列表-->
     <div id="operatorList" style="display: none">
       <el-table
-          v-if="this.admintrue"
           :data="operatorListData.slice((currentPageOperatorList-1)*PageSize,currentPageOperatorList*PageSize)"
           tooltip-effect="dark"
           stripe
@@ -137,15 +131,15 @@
           style="margin-top: 0.5rem">
       </el-pagination>
 
-      <el-table
-          v-if="usertrue"
-          :show-header="false"
-          :data="tabledata3"
-          border
-          style="width: 60%;margin: auto">
-        <el-table-column prop="neirong" label="ID"></el-table-column>
-        <el-table-column prop="shuzhi"></el-table-column>
-      </el-table>
+      <!--      <el-table-->
+      <!--          v-if="usertrue"-->
+      <!--          :show-header="false"-->
+      <!--          :data="tabledata3"-->
+      <!--          border-->
+      <!--          style="width: 60%;margin: auto">-->
+      <!--        <el-table-column prop="neirong" label="ID"></el-table-column>-->
+      <!--        <el-table-column prop="shuzhi"></el-table-column>-->
+      <!--      </el-table>-->
     </div>
 
     <!--表格视图-->
@@ -224,8 +218,6 @@ export default {
   data() {
     return {
       tabledata3: [],
-      usertrue: false,
-      admintrue: false,
       prioritychoose: [1, 2, 3],
       caozuoyuankey: [],
       caozuoyuanvalue: [],
@@ -265,14 +257,7 @@ export default {
     // 执行echarts方法
     this.getTableViewData();
     this.getTaskTableData();
-    if (getAdminTrue() || getRole() == "OMS") {
-      this.admintrue = true
-      this.usertrue = false
-      this.getOperatorListData()
-    } else {
-      this.admintrue = false
-      this.usertrue = true
-    }
+    this.getOperatorListData();
   },
   created() {
     getAllUsers().then((res) => {

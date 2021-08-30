@@ -10,7 +10,7 @@
           border
           v-loading="loading"
           element-loading-text="加载中"
-          :header-cell-style="headcell"
+          :header-cell-style="getHeaderStylesheet"
       >
 
         <!--任务基本-->
@@ -29,7 +29,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充时间粒度" min-width="60">
             <template slot-scope="commodity">
               <el-button type="text" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
             </template>
@@ -44,7 +44,7 @@
           <el-table-column label="扩展监管种类" min-width="60" prop="subtask">
           </el-table-column>
 
-          <el-table-column label="补充商品粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充商品粒度" min-width="60">
             <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
               <!--推荐的商品粒度-->
@@ -104,7 +104,7 @@
               </el-link>
             </template>
           </el-table-column>
-          <el-table-column label="补充空间粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充空间粒度" min-width="60">
             <template slot-scope="flat">
               <el-button type="text" @click="getFlats(flat.row)">补充粒度</el-button>
               <!--推荐的空间粒度-->
@@ -177,8 +177,6 @@ import {
   updateCommodity,
   getrecommendrlatform
 } from "@/api/part1/Multimodal-multigranularity";
-
-
 import {getToken, getRole} from "@/utils/auth"
 
 export default {
@@ -214,12 +212,11 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-      timeAdvise: 0,
-      admin: false
+      timeAdvise: 0
     }
   },
   methods: {
-    headcell() {
+    getHeaderStylesheet() {
       return {
         'background-color': '#dfdfdf',
         'color': 'rgb(96, 97, 98)',
@@ -459,7 +456,7 @@ export default {
       //console.log(getToken())
 
       taskQuery().then((res) => {
-                this.dealwithData(res)
+        this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
@@ -544,10 +541,6 @@ export default {
   },
   mounted() {
     this.loading = true;
-
-    if (getRole() == "admin" || getRole() == "OMS")
-      this.admin = true;
-    else this.admin = false
   }
 }
 </script>

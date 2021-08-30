@@ -113,24 +113,6 @@
           </el-col>
 
         </el-form-item>
-        <!-- <el-form-item label="监管任务优先级">
-          级别{{ priority }}
-        </el-form-item>
-        <el-form-item label="监管方式">
-          {{ humanUse ? "人工分配" : "机器分配" }}，{{ tradeUser ? "主动监管" : "被动监管" }}
-        </el-form-item>
-        <el-form-item label="监管周期开始">
-          {{ dateStart }}
-        </el-form-item>
-        <el-form-item label="监管周期结束">
-          {{ dateEnd }}
-        </el-form-item>
-        <el-form-item label="工作时间（小时）">
-          {{ workingTime }}
-        </el-form-item>
-        <el-form-item label="结束时间">
-          {{ deadLine }} -->
-        <!-- </el-form-item> -->
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -237,31 +219,21 @@ export default {
   },
   props: ['taskin'],
   created() {
-    if (getRole() == 'OMS' || getRole() == 'admin') {
-      bourseget().then((res) => {
-            let dataConvert = res.data.data;
-            let temp = []
-            for (let i = 0; i < dataConvert.length; i++)
-              temp.push(dataConvert[i].bourse)
-            this.cities = temp
-          }
-      ).catch(() => {
-        console.log("taskQuery fail")
-      });
-      if (this.taskin) {
-        this.input = this.taskin.name
-        this.priority = this.taskin.priority
-        this.humanUse = this.taskin.humanUse
-        this.content = this.taskin.content
-      }
-    } else {
-      // 不是OMS端的
-      this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskInputForRS")
-    }
-  },
-  computed: {
-    address() {
-      return ""
+    bourseget().then((res) => {
+          let dataConvert = res.data.data;
+          let temp = []
+          for (let i = 0; i < dataConvert.length; i++)
+            temp.push(dataConvert[i].bourse)
+          this.cities = temp
+        }
+    ).catch(() => {
+      console.log("taskQuery fail")
+    });
+    if (this.taskin) {
+      this.input = this.taskin.name
+      this.priority = this.taskin.priority
+      this.humanUse = this.taskin.humanUse
+      this.content = this.taskin.content
     }
   },
   watch: {
@@ -387,11 +359,9 @@ export default {
       });
     },
     having() {
-      console.log(this.taskin)
       if (this.taskin.id == "")
         return false
       return true
-
     },
     // 提交创建的新任务
     createTask() {
