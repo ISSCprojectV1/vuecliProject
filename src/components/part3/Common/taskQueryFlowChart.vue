@@ -20,7 +20,7 @@
     </el-dialog>
 
     <!--顶部一排按钮-->
-    <div>
+    <div style="margin-bottom: 1rem">
       <el-row>
         <el-col :span="6">
           <el-button class="button" @click="showTableView">表格视图</el-button>
