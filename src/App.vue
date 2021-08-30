@@ -52,7 +52,7 @@ export default {
   border: 1px solid #dcdfe6;
   text-align: center;
   color: #2c3e50;
-  background-color: #f5f6f7;
+  background-color: #ffffff;
   position: relative;
 
 html
