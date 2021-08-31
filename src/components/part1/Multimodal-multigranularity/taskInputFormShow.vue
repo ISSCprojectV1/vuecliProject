@@ -51,7 +51,6 @@ export default {
       content: '',
       tradeuser: false,
       commodityName: '',
-      admintrue: false,
       operatorName: '',
       workStatus: ''
     }

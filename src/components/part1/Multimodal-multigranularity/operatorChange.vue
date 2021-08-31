@@ -26,7 +26,6 @@
 
 <script>
 import {taskInput, bourseget, changemodality, getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
-import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
 
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属', '南京贵重金属交易所'];
 export default {
@@ -46,7 +45,6 @@ export default {
       content: '',
       tradeuser: false,
       commodityName: '',
-      admintrue: false,
       operatorName: '',
       workStatus: '',
       operatorinput: []

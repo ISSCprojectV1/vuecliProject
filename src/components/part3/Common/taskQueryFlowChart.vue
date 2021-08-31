@@ -189,8 +189,7 @@
 
 <script>
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
-import {getTaskApi} from "@/api/part1/transactionProject";
-import {setToken, getToken, setUserTrue, getUserTrue, getRole, getAdminTrue} from "@/utils/auth"
+import {getToken} from "@/utils/auth"
 import {
   taskQuery,
   teamform,
