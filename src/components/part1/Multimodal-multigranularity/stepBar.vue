@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div style="margin-bottom: 0.5rem">
+    <div style="margin-bottom: 0.5rem;">
       <el-steps :active="stepActive" finish-status="success" align-center simple>
         <el-step v-for="item in steps" :key="item.num" :title="item.title"
-                 :class="stepActive === item.num ? 'step-active' : ''"
+                 :class="'step-active'"
                  @click.native="onClickStep(item.title, item.num)"></el-step>
       </el-steps>
     </div>
-    <div>
+    <div style="margin: 1rem 1rem;">
       <router-view></router-view>
     </div>
   </div>
@@ -92,15 +92,21 @@ export default {
     border: 0.1px solid #409eff;
     background-color: #409eff;
     border-radius: 0.3rem;
-    padding: 0.2rem 1rem;
+    padding: 0.2rem 0.7rem;
+    text-align: center;
+    font-size: 14px;
   }
 
   /deep/ .el-step__title.is-wait {
-    padding: 0.2rem 1rem;
+    padding: 0.2rem 0.7rem;
+    text-align: center;
+    font-size: 14px;
   }
 
   /deep/ .el-step__title.is-success {
-    padding: 0.2rem 1rem;
+    padding: 0.2rem 0.7rem;
+    text-align: center;
+    font-size: 14px;
   }
 }
 </style>

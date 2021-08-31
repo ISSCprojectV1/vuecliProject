@@ -52,9 +52,9 @@
             :header-cell-style="getHeaderStylesheet"
             :data="dormitoryTaskTable.slice((currentPageTaskTable-1)*PageSize,currentPageTaskTable*PageSize)"
             tooltip-effect="dark"
-            stripe
             style="width: 100%"
-            border>
+            :row-style="{height: '40px'}"
+            :cell-style="{padding:'0px'}">
 
           <el-table-column type="selection" min-width="25"></el-table-column>
           <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
@@ -93,10 +93,10 @@
       <el-table
           :data="operatorListData.slice((currentPageOperatorList-1)*PageSize,currentPageOperatorList*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
           :header-cell-style="getHeaderStylesheet"
-          border>
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}">
 
         <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 
@@ -147,10 +147,10 @@
       <el-table
           :data="dormitoryTableView.slice((currentPageTableView-1)*PageSize,currentPageTableView*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
           :header-cell-style="getHeaderStylesheet"
-          border>
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'2px'}">
         <el-table-column type="selection" min-width="20"></el-table-column>
         <el-table-column label="序号" min-width="25" prop="id"></el-table-column>
         <el-table-column label="监管任务名称" min-width="80" prop="name"></el-table-column>
@@ -279,10 +279,11 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
     changeTask(scope) {

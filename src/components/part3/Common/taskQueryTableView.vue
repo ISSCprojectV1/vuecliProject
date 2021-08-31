@@ -5,17 +5,15 @@
           ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
-          border
           v-loading="loading"
           element-loading-text="加载中"
           :header-cell-style="getHeaderStylesheet"
       >
 
         <!--任务基本-->
-        <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
-        <el-table-column label="监管任务名称" min-width="60" prop="name"></el-table-column>
+        <el-table-column label="序号" prop="id" min-width="20"></el-table-column>
+        <el-table-column label="监管任务名称" min-width="120" prop="name"></el-table-column>
 
         <!--时间粒度-->
         <el-table-column label="时间粒度（天）" align="center">
@@ -218,10 +216,9 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
-        'font-weight': 'bold',
-        'font-size': '18px'
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold'
       }
     },
     /*

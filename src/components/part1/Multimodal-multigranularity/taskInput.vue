@@ -9,7 +9,7 @@
 
         <el-form-item label="任务来源" style="margin-left:300px">
           <el-col :span="1">
-            <el-tag style="font-size:18px">
+            <el-tag style="font-size: 14px">
               {{ radio }}
             </el-tag>
           </el-col>
@@ -17,14 +17,14 @@
         </el-form-item>
 
         <!--选择监管商品类别-->
-        <el-form-item label="商品种类" style="margin-left:300px">
+        <el-form-item label="商品种类" style="margin-left: 300px">
           <el-col :span="13">
             <el-input v-model="commodityName" placeholder="请输入内容" @change="handleChange"></el-input>
           </el-col>
         </el-form-item>
 
         <!--监管任务空间粒度，根据选定的商品种类获得平台列表-->
-        <el-form-item label="交易平台" style="margin-left:300px">
+        <el-form-item label="交易平台" style="margin-left: 300px">
           <el-col :span="13">
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
               <!--动态读取该品类对应的平台-->
@@ -57,7 +57,6 @@
 
         <el-button type="success" @click="createTask">立即创建</el-button>
         <el-button type="info" @click="abortForm">取消创建</el-button>
-        <!-- <el-button type="info" @click="abortForm" style="margin-right:20em">取消创建</el-button> -->
       </el-form>
 
     </div>
@@ -65,7 +64,7 @@
     <el-dialog
         title="请选择任务来源"
         :visible.sync="formTaskVisible"
-        width="60%">
+        width="50%">
       <el-radio-group v-model="radio">
         <el-radio label="主体智能查验">主体智能查验</el-radio>
         <el-radio label="交易过程监测">交易过程监测</el-radio>
@@ -73,7 +72,6 @@
       </el-radio-group>
 
       <span slot="footer" class="dialog-footer">
-    <!-- <el-button @click="formTaskVisible = false">取 消</el-button> -->
     <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
   </span>
     </el-dialog>
@@ -86,28 +84,28 @@
       <el-form label-position="left" label-width="120px">
         <el-form-item label="任务来源">
           <el-col>
-            <el-tag style="font-size:18px">
+            <el-tag style="font-size:14px">
               {{ radio }}
             </el-tag>
           </el-col>
         </el-form-item>
         <el-form-item label="商品种类">
           <el-col>
-            <el-tag style="font-size:18px">
+            <el-tag style="font-size:14px">
               {{ commodityName }}
             </el-tag>
           </el-col>
         </el-form-item>
         <el-form-item label="交易平台">
           <el-col>
-            <el-tag style="font-size:18px">
+            <el-tag style="font-size:14px">
               {{ flatName }}
             </el-tag>
           </el-col>
         </el-form-item>
         <el-form-item label="交易风险类型">
           <el-col>
-            <el-tag style="font-size:18px">
+            <el-tag style="font-size:14px">
               {{ taskType }}
             </el-tag>
           </el-col>
@@ -472,33 +470,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-form {
-  //display: inline-block;// 居中 太短了 效果不行
-  // margin-left: 20em; // 影响了立即创建里的el-form
-  //text-align:center //没效果
-}
+//.el-form-item {
+//  margin-bottom: 50px;
+//}
 
-.el-form-item {
-  margin-bottom: 50px;
-}
+///deep/ .el-form-item {
+//  label {
+//    font-size: 18px;
+//  }
+//}
 
-/deep/ .el-form-item {
-  label {
-    font-size: 18px;
-  }
-
-  //margin-left: 400px;
-}
-
-// .el-radio{
-//   label {font-size: 18px; } 
-// }
-// .radio{
-//   label {font-size: 18px; }  
-// }
-// .el-radio /deep/ .el-radio__label{
-// font-size:18px !important;
-// }
 .radio {
   /deep/ .el-radio-group {
     height: 20px;
@@ -526,17 +507,11 @@ export default {
 }
 
 /deep/ .el-radio__label {
-  font-size: 20px;
-  color: #a0b2d3;
+  font-size: 18px;
   font-weight: bolder;
 }
 
 /deep/ .el-radio__input.is-checked + .el-radio__label {
   color: #4f9efd;
 }
-
-// .popbut {
-//   mulitline: true;
-//   white-space: normal;
-// }
 </style>

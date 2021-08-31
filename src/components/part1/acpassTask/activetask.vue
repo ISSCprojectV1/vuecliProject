@@ -28,38 +28,37 @@
       </el-form>
     </div>
 
-    <el-tabs v-model="activeName">
+    <!--被动模态-->
+    <div v-if="isPassiveMode">
+      <el-table
+          style="width: 100%"
+          :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          :header-cell-style="getHeaderStylesheet"
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}">
+        <el-table-column prop="id" label="编号" min-width="30"></el-table-column>
+        <el-table-column prop="buyerName" label="买方姓名" min-width="130"></el-table-column>
+        <el-table-column prop="category" label="商品" min-width="40"></el-table-column>
+        <el-table-column prop="amount" label="数量" min-width="30"></el-table-column>
+        <el-table-column prop="price" label="价格" min-width="30"></el-table-column>
+        <el-table-column prop="sellerName" label="卖方姓名" min-width="130"></el-table-column>
+        <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
+      </el-table>
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="pageSizes"
+                     :page-size="PageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="total1"
+                     style="margin-top: 0.5rem">
+      </el-pagination>
+    </div>
 
-      <el-tab-pane label="被动模态" name="passive" v-if="isPassiveMode">
-        <el-table border style="width: 100%; margin-top: 1px"
-                  :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-                  :header-cell-style="getHeaderStylesheet">
-          <el-table-column prop="id" label="编号" min-width="30"></el-table-column>
-          <el-table-column prop="buyerName" label="买方姓名" min-width="130"></el-table-column>
-          <el-table-column prop="category" label="商品" min-width="40"></el-table-column>
-          <el-table-column prop="amount" label="数量" min-width="30"></el-table-column>
-          <el-table-column prop="price" label="价格" min-width="30"></el-table-column>
-          <el-table-column prop="sellerName" label="卖方姓名" min-width="130"></el-table-column>
-          <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
-        </el-table>
-
-        <el-pagination @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage"
-                       :page-sizes="pageSizes"
-                       :page-size="PageSize"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="total1"
-                       style="margin-top: 0.5rem">
-        </el-pagination>
-      </el-tab-pane>
-
-      <el-tab-pane label="主动模态" name="table" v-if="isActiveMode">
-        <tab-active-modal></tab-active-modal>
-      </el-tab-pane>
-
-    </el-tabs>
-
+    <!--主动模态-->
+    <div v-if="isActiveMode">
+      <tab-active-modal></tab-active-modal>
+    </div>
   </div>
 </template>
 
@@ -148,6 +147,15 @@ export default {
     // document.getElementById("echart123").style.display = "none";
   },
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     // 分页
     // 每页显示的条数
     handleSizeChange(val) {
@@ -160,14 +168,6 @@ export default {
     handleCurrentChange(val) {
       // 改变默认的页数
       this.currentPage = val
-    },
-    getHeaderStylesheet() {
-      return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
-        'font-weight': 'bold',
-        'font-size': '18px'
-      }
     },
     passiveTradeActionList(id, currentPage, pageSize) {
       getPassive(id, currentPage, pageSize).then(res => {

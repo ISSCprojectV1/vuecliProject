@@ -5,10 +5,8 @@
           ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
           :header-cell-style="getHeaderStylesheet"
-          border
           v-loading="loading"
           element-loading-text="加载中">
         <!--任务基本-->
@@ -19,7 +17,7 @@
         <!--主被动模态-->
         <el-table-column label="平台" min-width="60" prop="content"></el-table-column>
 
-        <el-table-column label="价格波动频率（按日更新）" min-width="85" prop="riskValue"></el-table-column>
+        <el-table-column label="价格波动频率（按日更新）" min-width="70" prop="riskValue"></el-table-column>
 
         <el-table-column label="价格波动等级" min-width="45">
           <template slot-scope="scope">
@@ -130,10 +128,11 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
     // 商品粒度模块Method
@@ -243,8 +242,6 @@ export default {
           for (var j = 0; j < this.dormitory.length; j++) {
             if (datt[i].id === this.dormitory[j].id) {
               this.dormitory[j].subtask = datt[i].subtask
-              console.log(this.dormitory[j])
-              console.log(this.dormitory)
               break;
             }
           }
@@ -417,10 +414,5 @@ export default {
 <style scoped>
 .dormitoryData {
   width: 100%;
-  height: 600px;
-}
-
-.el-table thead {
-  color: black;
 }
 </style>

@@ -17,7 +17,7 @@
       </el-form>
 
       <!--地图视图-->
-      <div id="map" style=" height: 1000px"></div>
+      <div id="map" style="height: 100%"></div>
 
       <!--操作员视图-->
       <!--      <div id="caozuoyuan" style=" height: 1000px"></div>-->
@@ -28,9 +28,10 @@
             ref="dormitoryTable"
             :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
             tooltip-effect="dark"
-            stripe
             style="width: 100%"
-            border>
+            :header-cell-style="getHeaderStylesheet"
+            :row-style="{height: '40px'}"
+            :cell-style="{padding:'0px'}">
           <el-table-column label="监管任务名称" prop="name" min-width="160"></el-table-column>
           <el-table-column label="被监管的交易平台" prop="content" min-width="80"></el-table-column>
           <el-table-column label="监管商品" prop="commodityName" min-width="40"></el-table-column>
@@ -92,6 +93,15 @@ export default {
     this.onClickQuery();
   },
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     onClickQuery1() {
       document.getElementById("form").style.display = "none";
       document.getElementById("caozuoyuan").style.display = "block";

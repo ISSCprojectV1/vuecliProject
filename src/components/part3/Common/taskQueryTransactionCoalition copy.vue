@@ -14,10 +14,8 @@
             ref="dormitoryTable"
             :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
             tooltip-effect="dark"
-            stripe
             style="width: 100%"
-            :header-cell-style="getHeaderStylesheet"
-            border>
+            :header-cell-style="getHeaderStylesheet">
 
           <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 
@@ -78,10 +76,11 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
     // 每页显示的条数
