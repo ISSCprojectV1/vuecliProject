@@ -27,6 +27,7 @@
 
     <!--被动模态-->
     <div v-if="isPassiveMode">
+      <div class="title">被动监管名单</div>
       <el-table
           style="width: 100%"
           :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
@@ -550,5 +551,12 @@ export default {
 </script>
 
 <style scoped>
-
+.title {
+  height: 40px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 40px;
+  padding-left: 16px;
+  font-weight: bold;
+}
 </style>
