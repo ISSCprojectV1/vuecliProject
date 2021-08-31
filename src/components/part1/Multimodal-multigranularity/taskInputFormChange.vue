@@ -58,14 +58,14 @@
               <el-checkbox v-for="city in cities" :label="city" :key="city">{{ city }}</el-checkbox>
             </el-checkbox-group>
 
-            <el-button class="popbut" id="neirong" slot="reference">{{ content }}</el-button>
+            <el-button slot="reference">{{ content }}</el-button>
           </el-popover>
         </el-form-item>
 
-
-        <el-button type="success" @click="postAddress">立即创建</el-button>
-        <el-button type="info" @click="abortForm">取消创建</el-button>
-
+        <div style="text-align: right">
+          <el-button size="small" @click="abortForm">取消</el-button>
+          <el-button size="small" type="primary" @click="postAddress">确定</el-button>
+        </div>
       </el-form>
     </div>
 
@@ -282,10 +282,5 @@ export default {
   font-size: 0;
   width: 100%;
   height: 100%;
-}
-
-.popbut {
-  mulitline: true;
-  white-space: normal;
 }
 </style>

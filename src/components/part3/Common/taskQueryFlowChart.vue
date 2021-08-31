@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-dialog title="任务信息反馈"
+    <el-dialog title="任务属性修改"
                :visible.sync="dialogTableVisible"
                :append-to-body='true'
                :lock-scroll="false"
-               width="30%"
+               width="35%"
                :close-on-click-modal="false">
       <taskInputFormChange :taskin="taskin"></taskInputFormChange>
     </el-dialog>
@@ -27,20 +27,12 @@
 
     <!--顶部一排按钮-->
     <div style="margin-bottom: 1rem">
-      <el-row>
-        <el-col :span="6">
-          <el-button  @click="showTableView">表格视图</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button @click="showEchartsView">流程图视图</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button @click="showFormOperator">操作员列表</el-button>
-        </el-col>
-        <el-col :span="6">
-          <el-button @click="changeOperator('new')">新增操作员</el-button>
-        </el-col>
-      </el-row>
+      <el-button-group>
+        <el-button @click="showTableView">表格视图</el-button>
+        <el-button @click="showEchartsView">流程图视图</el-button>
+        <el-button @click="showFormOperator">操作员列表</el-button>
+        <el-button @click="changeOperator('new')">新增操作员</el-button>
+      </el-button-group>
     </div>
 
     <!--流程图视图：包括echarts和一个表格-->
@@ -53,7 +45,7 @@
       </div>
 
       <div id="taskTable">
-        <p>任务等待队列</p>
+        <div class="title">任务等待队列</div>
         <el-table
             :header-cell-style="getHeaderStylesheet"
             :data="dormitoryTaskTable.slice((currentPageTaskTable-1)*PageSize,currentPageTaskTable*PageSize)"
@@ -120,7 +112,7 @@
 
         <el-table-column label="操作员设置" min-width="45">
           <template slot-scope="scope">
-            <el-button @click="changeOperator(scope.row)" type="text" size="small">操作员修改</el-button>
+            <el-button @click="changeOperator(scope.row)" type="text">操作员修改</el-button>
           </template>
         </el-table-column>
 
@@ -177,7 +169,7 @@
         <el-table-column label="任务状态" min-width="45" prop="workStatus"></el-table-column>
         <el-table-column label="模态粒度补充" fixed="right" min-width="60">
           <template slot-scope="scope">
-            <el-button @click="changeTask(scope)" type="text" size="small">属性修改</el-button>
+            <el-button @click="changeTask(scope)" type="text">属性修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -507,5 +499,12 @@ export default {
 </script>
 
 <style scoped>
-
+.title {
+  height: 40px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 40px;
+  padding-left: 16px;
+  font-weight: bold;
+}
 </style>

@@ -65,7 +65,7 @@
         <el-radio label="交易过程监测">交易过程监测</el-radio>
         <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
       </el-radio-group>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer">
         <el-button size="small" type="primary" @click="InputTaskSourceTrue">确定</el-button>
       </span>
     </el-dialog>
@@ -73,6 +73,7 @@
     <el-dialog
         title="确认创建任务"
         :visible.sync="formDialogVisible"
+        :append-to-body='true'
         width="30%">
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
       <el-form label-position="left" label-width="100px">
@@ -106,10 +107,10 @@
         </el-form-item>
       </el-form>
 
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="formDialogVisible = false">取消</el-button>
-    <el-button type="primary" @click="formDialogTrue">确 定</el-button>
-  </span>
+      <span slot="footer">
+        <el-button size="small" @click="formDialogVisible = false">取消</el-button>
+        <el-button size="small" type="primary" @click="formDialogTrue">确 定</el-button>
+      </span>
     </el-dialog>
 
     <el-dialog :visible.sync="dialogActiveVisible" title="主动监管名单" width="40%" center>
