@@ -1,29 +1,26 @@
 <template>
   <div>
     <div>
-      <el-button type="primary" @click="createTaskSource" style="margin-bottom:20px;margin-top:20px">修改任务来源</el-button>
-    </div>
-    <div class="task-input-box">
       <!--输入任务表单-->
-      <el-form label-width="130px" id="selectForm">
+      <el-form label-width="130px">
 
+        <!--1 任务来源-->
         <el-form-item label="任务来源" style="margin-left:300px">
           <el-col :span="1">
             <el-tag style="font-size: 14px">
               {{ radio }}
             </el-tag>
           </el-col>
-
         </el-form-item>
 
-        <!--选择监管商品类别-->
+        <!--2 商品种类 选择监管商品类别-->
         <el-form-item label="商品种类" style="margin-left: 300px">
           <el-col :span="13">
             <el-input v-model="commodityName" placeholder="请输入内容" @change="handleChange"></el-input>
           </el-col>
         </el-form-item>
 
-        <!--监管任务空间粒度，根据选定的商品种类获得平台列表-->
+        <!--3 交易平台 监管任务空间粒度，根据选定的商品种类获得平台列表-->
         <el-form-item label="交易平台" style="margin-left: 300px">
           <el-col :span="13">
             <el-select v-model="flatName" placeholder="请选择平台名称" style="width: 100%">
@@ -33,14 +30,13 @@
                   :key="index"
                   :label="flat.flatName"
                   :value="flat.flatName"
-                  @change="handleChange"
-              >
+                  @change="handleChange">
               </el-option>
             </el-select>
           </el-col>
         </el-form-item>
 
-        <!--选定的监管任务类型-->
+        <!--4 交易风险类型 选定的监管任务类型-->
         <el-form-item label="交易风险类型" style="margin-left:300px">
           <el-col :span="13">
             <el-select v-model="taskType" placeholder="请选择交易风险类型" style="width: 100%">
@@ -52,11 +48,9 @@
           </el-col>
         </el-form-item>
 
-        <!--人机模块部分需要属性-->
-
-
-        <el-button type="success" @click="createTask">立即创建</el-button>
-        <el-button type="info" @click="abortForm">取消创建</el-button>
+        <el-button @click="createTaskSource">修改任务来源</el-button>
+        <el-button type="primary" @click="createTask">立即创建</el-button>
+        <!--        <el-button type="info" @click="abortForm">取消创建</el-button>-->
       </el-form>
 
     </div>
@@ -64,24 +58,24 @@
     <el-dialog
         title="请选择任务来源"
         :visible.sync="formTaskVisible"
-        width="50%">
+        :append-to-body='true'
+        width="40%">
       <el-radio-group v-model="radio">
         <el-radio label="主体智能查验">主体智能查验</el-radio>
         <el-radio label="交易过程监测">交易过程监测</el-radio>
         <el-radio label="交易风险智能分析与预警">交易风险智能分析与预警</el-radio>
       </el-radio-group>
-
       <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="InputTaskSourceTrue">确 定</el-button>
-  </span>
+        <el-button size="small" type="primary" @click="InputTaskSourceTrue">确定</el-button>
+      </span>
     </el-dialog>
 
     <el-dialog
         title="确认创建任务"
         :visible.sync="formDialogVisible"
-        width="50%">
+        width="30%">
       <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
-      <el-form label-position="left" label-width="120px">
+      <el-form label-position="left" label-width="100px">
         <el-form-item label="任务来源">
           <el-col>
             <el-tag style="font-size:14px">
@@ -109,12 +103,11 @@
               {{ taskType }}
             </el-tag>
           </el-col>
-
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-    <el-button @click="formDialogVisible = false">取 消</el-button>
+    <el-button @click="formDialogVisible = false">取消</el-button>
     <el-button type="primary" @click="formDialogTrue">确 定</el-button>
   </span>
     </el-dialog>
@@ -152,15 +145,10 @@
 import {
   taskInput,
   bourseget,
-  getcommodityRelationdetails2,
   getcommodityTimeadvise2,
   getplatform,
-  getrecommendrlatform,
-  updateCommodity
 } from "@/api/part1/Multimodal-multigranularity";
-import {getAct, getRiskVM} from "@/api/part1/acpassTask";
-import {radialLayout} from '@antv/g6/lib/util/graphic';
-import {getRole} from "@/utils/auth";
+import {getAct} from "@/api/part1/acpassTask";
 
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属', '南京贵重金属交易所'];
 const commodityOptions = ['a', 'b', 'c']
@@ -199,9 +187,8 @@ export default {
       // 提交新任务
       formDialogVisible: false,
       //提交任务来源
-      formTaskVisible: true,
+      formTaskVisible: false,
       radio: "主体智能查验",
-
 
       // 表单显示时间
       showStart: "",
@@ -213,7 +200,6 @@ export default {
       valueMean: '',
       formActiveList: [],
     }
-
   },
   props: ['taskin'],
   created() {
@@ -245,15 +231,13 @@ export default {
       this.content = this.taskin.content
       if (!this.content)
         this.content = '暂时未分配'
-      if (this.taskin.humanUse == '是')
+      if (this.taskin.humanUse === '是')
         this.humanUse = 1
-      if (this.taskin.humanUse == '否')
+      if (this.taskin.humanUse === '否')
         this.humanUse = 0
-      if (this.taskin.changeflag == Number.POSITIVE_INFINITY)
+      if (this.taskin.changeflag === Number.POSITIVE_INFINITY)
         this.cleanForm()
-      let butt = document.getElementById("neirong")
     },
-
   },
   methods: {
     // @handleChange---获取当前种类对应平台（输入框更改，绑定@change）
@@ -264,9 +248,7 @@ export default {
     handleCloseCommodityTag(commodityTag) {
       this.commodityTags.splice(this.commodityTags.indexOf(commodityTag), 1);
     },
-    /*
-    空间粒度部分
-    */
+    /* 空间粒度部分 */
     // @setFlatList---将获得的可选平台放入选项中；
     setFlatList(result) {
       for (let i = 0; i < result.length; i++) {
@@ -357,9 +339,7 @@ export default {
       });
     },
     having() {
-      if (this.taskin.id == "")
-        return false
-      return true
+      return this.taskin.id !== "";
     },
     // 提交创建的新任务
     createTask() {
@@ -377,7 +357,7 @@ export default {
       }).then(() => {
         let contt = ''
         for (var i = 0; i < this.checkedCities.length; i++) {
-          if (i == 0)
+          if (i === 0)
             contt += this.checkedCities[i];
           if (i > 0)
             contt += ',' + this.checkedCities[i];
@@ -388,7 +368,7 @@ export default {
       }).catch(() => {
         let contt = ''
         for (var i = 0; i < this.checkedCities.length; i++) {
-          if (i == 0)
+          if (i === 0)
             contt += this.checkedCities[i];
           if (i > 0)
             contt += ',' + this.checkedCities[i];
@@ -409,7 +389,7 @@ export default {
           (d.getSeconds());
       let taskName = this.flatName + '-' + this.commodityName + '-' + this.taskType + '(' + date + ')';
 
-      let humannn = (this.humanUse == true ? 1 : 0);
+      let humannn = (this.humanUse === true ? 1 : 0);
 
       let inputData = {
         "name": taskName,
@@ -435,9 +415,9 @@ export default {
         console.log(error);
       });
     },
-    goto(routerr) {
-      return new Promise(function (resolve, reject) {
-        this.$router.push(routerr);
+    goto(route) {
+      return new Promise(function () {
+        this.$router.push(route);
       })
     },
     abortForm() {

@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <el-dialog title="任务信息反馈"
-               :visible.sync="dialogTableVisible" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
-               :close-on-click-modal="false">
+    <el-dialog
+        title="任务信息反馈"
+        :visible.sync="dialogTableVisible"
+        :append-to-body='true'
+        :lock-scroll="false"
+        width="35%">
       <taskMethodChange :taskin="taskin"></taskMethodChange>
     </el-dialog>
-    <div id="rule" style="width:1000px; height:30px"></div>
-    <div id="container" style="width:1200px; height:600px">
-    </div>
+    <div id="rule"></div>
+    <div id="container"></div>
   </div>
 </template>
 
@@ -24,7 +25,6 @@ export default {
       dialogTableVisible: false,
       taskin: [],
     };
-
   },
   components: {
     taskMethodChange,
@@ -103,9 +103,8 @@ export default {
         console.log("getTaskApi fail")
       });
     },
-
     getChart(nodes_new, edges_new) {
-      var color = ['#40E0D0', '#1E90FF'];
+      let color = ['#40E0D0', '#1E90FF'];
       const data = {
         nodes: nodes_new,
         edges: edges_new

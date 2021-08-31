@@ -9,10 +9,10 @@
            <el-input v-model="teamId" placeholder="请输入要查询的联盟id"></el-input>
          </el-form-item> -->
         <el-form-item>
-          <el-button type="primary" @click="onClickQuery">表格视图</el-button>
+          <el-button size="small" @click="onClickQuery">表格视图</el-button>
           <!-- <el-button type="primary" @click="onClickQuery1">查询操作员列表</el-button> -->
-          <el-button type="primary" @click="onClickQueryMap">地图视图</el-button>
-          <el-button type="primary" @click="goBack">返回</el-button>
+          <el-button size="small" @click="onClickQueryMap">地图视图</el-button>
+          <el-button size="small" @click="goBack">返回</el-button>
         </el-form-item>
       </el-form>
 

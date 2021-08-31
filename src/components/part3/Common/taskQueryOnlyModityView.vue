@@ -2,13 +2,13 @@
   <div>
     <div class="dormitoryData">
       <el-table
-          ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           tooltip-effect="dark"
           style="width: 100%"
           :header-cell-style="getHeaderStylesheet"
           v-loading="loading"
-          element-loading-text="加载中">
+          element-loading-text="加载中"
+          :cell-style="{padding:'3px'}">
         <!--任务基本-->
         <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 

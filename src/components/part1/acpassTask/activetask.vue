@@ -1,32 +1,29 @@
 <template>
   <div>
+    <h2>主被动模态详情</h2>
 
-    <div class="title">
-      <div style="display: inline-block; margin-bottom:20px; font-size: 40px;">主被动模态详情</div>
-    </div>
-
-    <div>
-      <el-form :inline="true">
-        <el-form-item>
-          <el-select v-model="id" placeholder="请选择任务名称">
-            <!--动态读取该品类对应的平台-->
-            <el-option
-                v-for="flat in taskInfo"
-                :key="flat.id"
-                :label="flat.id+'.'+flat.name"
-                :value="flat.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="lookForAllTasks" class="button">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="goBack">返回</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-button size="small" style="margin-bottom: 0.5rem" @click="goBack">返回</el-button>
+    <!--    <div>-->
+    <!--      <el-form :inline="true">-->
+    <!--        <el-form-item>-->
+    <!--          <el-select v-model="id" placeholder="请选择任务名称">-->
+    <!--            &lt;!&ndash;动态读取该品类对应的平台&ndash;&gt;-->
+    <!--            <el-option-->
+    <!--                v-for="flat in taskInfo"-->
+    <!--                :key="flat.id"-->
+    <!--                :label="flat.id+'.'+flat.name"-->
+    <!--                :value="flat.id">-->
+    <!--            </el-option>-->
+    <!--          </el-select>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item>-->
+    <!--          <el-button type="primary" @click="lookForAllTasks" class="button">查询</el-button>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item>-->
+    <!--          <el-button size="small" @click="goBack">返回</el-button>-->
+    <!--        </el-form-item>-->
+    <!--      </el-form>-->
+    <!--    </div>-->
 
     <!--被动模态-->
     <div v-if="isPassiveMode">

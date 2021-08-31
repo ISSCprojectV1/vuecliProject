@@ -1,20 +1,26 @@
 <template>
   <div>
     <el-dialog title="任务信息反馈"
-               :visible.sync="dialogTableVisible" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
+               :visible.sync="dialogTableVisible"
+               :append-to-body='true'
+               :lock-scroll="false"
+               width="30%"
                :close-on-click-modal="false">
       <taskInputFormChange :taskin="taskin"></taskInputFormChange>
     </el-dialog>
-    <el-dialog title="操作员设置"
-               :visible.sync="dialogTableVisible2" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
+    <el-dialog title="操作员增改"
+               :visible.sync="dialogTableVisible2"
+               :append-to-body='true'
+               :lock-scroll="false"
+               width="30%"
                :close-on-click-modal="false">
       <operatorChange :taskin="taskin2" :operatorin="operatorin" :modity="modity"></operatorChange>
     </el-dialog>
     <el-dialog title="任务信息查看"
-               :visible.sync="dialogTableVisible3" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
+               :visible.sync="dialogTableVisible3"
+               :append-to-body='true'
+               :lock-scroll="false"
+               width="30%"
                :close-on-click-modal="false">
       <taskInputFormShow :taskin="taskin3"></taskInputFormShow>
     </el-dialog>
@@ -23,16 +29,16 @@
     <div style="margin-bottom: 1rem">
       <el-row>
         <el-col :span="6">
-          <el-button class="button" @click="showTableView">表格视图</el-button>
+          <el-button  @click="showTableView">表格视图</el-button>
         </el-col>
         <el-col :span="6">
-          <el-button class="button" @click="showEchartsView">流程图视图</el-button>
+          <el-button @click="showEchartsView">流程图视图</el-button>
         </el-col>
         <el-col :span="6">
-          <el-button class="button" @click="showFormOperator">操作员列表</el-button>
+          <el-button @click="showFormOperator">操作员列表</el-button>
         </el-col>
         <el-col :span="6">
-          <el-button class="button" @click="changeOperator('new')">新增操作员</el-button>
+          <el-button @click="changeOperator('new')">新增操作员</el-button>
         </el-col>
       </el-row>
     </div>
@@ -311,7 +317,6 @@ export default {
       if (res != 'new') {
         let data = []
         this.modity = res
-        console.log(res)
         data.name = res.name
         this.taskin2 = data
       } else {
@@ -502,9 +507,5 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  font-size: 16px;
-  align-items: center;
-  justify-content: center;
-}
+
 </style>

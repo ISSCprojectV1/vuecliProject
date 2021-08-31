@@ -2,7 +2,7 @@
   <div>
 
     <div>
-      <el-button type="primary" @click="teamFormation" style="margin-bottom: 0.5rem">联盟形成</el-button>
+      <el-button size="small" @click="teamFormation" style="margin-bottom: 0.5rem">联盟形成</el-button>
     </div>
 
     <div>
@@ -17,15 +17,15 @@
             style="width: 100%"
             :header-cell-style="getHeaderStylesheet">
 
-          <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
+          <el-table-column label="序号" prop="id" min-width="20"></el-table-column>
 
           <el-table-column label="监管任务名称" prop="name" min-width="160"></el-table-column>
 
           <el-table-column label="监管商品" prop="commodityName" min-width="45"></el-table-column>
 
-          <el-table-column label="被监管的交易平台" prop="content" min-width="90"></el-table-column>
+          <el-table-column label="被监管的交易平台" prop="content" min-width="80"></el-table-column>
 
-          <el-table-column label="监管联盟" prop="workTeam" min-width="110">
+          <el-table-column label="监管联盟" prop="workTeam" min-width="120">
             <template slot-scope="scope">
               <el-link type="primary">
                 <div @click="queryWarehouseHandle(scope.row.team)">

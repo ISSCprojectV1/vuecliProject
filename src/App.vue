@@ -74,9 +74,9 @@ html
   font-size: 14px !important;
 }
 
-.el-button {
-  font-size: 14px !important;
-}
+//.el-button {
+//  font-size: 14px !important;
+//}
 
 .el-link {
   font-size: 14px !important;
