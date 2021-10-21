@@ -134,7 +134,6 @@ export default {
     },
     // 跳转至异常事件分析页面
     teamEvolution() {
-      console.log("/trade/exceptionAnalysis/page")
       this.$router.push(`/trade/exceptionAnalysis/page`);
     },
     queryWarehouseHandle(team) {
@@ -147,7 +146,6 @@ export default {
         //只有OMS端才能跳转
         if (getRole() == 'OMS' || getRole() == 'admin') {
           this.$router.push(`/trade/teamTable/${team}`);
-          console.log(`/trade/teamTable/${team}`)
         }
       }
     },
@@ -399,9 +397,6 @@ export default {
         renwhhetask.push(this.dormitory[i])
 
       }
-      for (let i = 0; i < this.dormitory.length; i++) {
-        //   console.log(renwhhetask[i])
-      }
       const getdata = function getData() {
         let data = {
           name: "TEAM1",
@@ -428,9 +423,7 @@ export default {
         }
         let arr = []
         arr.push(data)
-        //
         arr = handle(arr, 0)
-        //    console.log(arr);
         return arr;
       };
 
@@ -492,7 +485,6 @@ export default {
       echart1.setOption(option);
     },
     dealwithData(res) {
-      console.log("dataconvert:" + res)
       let dataConvert = [];
       dataConvert = res;
       let result = [];

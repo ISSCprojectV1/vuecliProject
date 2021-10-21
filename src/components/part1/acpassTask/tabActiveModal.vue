@@ -113,7 +113,7 @@ export default {
   },
   created() {
     const id = this.$router.currentRoute.params.id;
-    this.queryActiveGroup(id, 1, 8);
+    this.queryActiveGroup(id, 1, this.pageSizeActive);
     if (getRole() == "admin")
       this.Admin = true
     else
@@ -132,7 +132,7 @@ export default {
       }
     },
     // table active group
-    queryActiveGroup(taskId, currentPage = 1, pageSize = 8) {
+    queryActiveGroup(taskId, currentPage = 1, pageSize) {
       getActiveGroup(taskId, currentPage, pageSize).then(res => {
         this.dataTableActive = res.data.data.reslist;
         let counter = 1;
