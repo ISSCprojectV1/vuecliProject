@@ -172,6 +172,29 @@
             </el-menu-item>
           </el-submenu>
 
+          <!--内幕交易检测-->
+          <el-submenu
+              index="/trade/insiderTrading"
+              style="text-align: left;">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px">内幕交易检测子系统</span>
+            </template>
+            <el-menu-item
+                index="/trade/insiderTrading/tradingDetection"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+
+              <span slot="title">异常交易检测</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/insiderTrading/relationDetection"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+
+              <span slot="title">异常关系检测</span>
+            </el-menu-item>
+          </el-submenu>
+
+
         </el-menu>
       </el-col>
     </el-row>

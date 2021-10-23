@@ -195,6 +195,16 @@ export const asyncRoutes = [
         id:30,
         path: '/trade/auctionNew/score',
         component: () => import("@/components/admin/score"),
+      },
+      {
+        id:31,
+        path: "/trade/insiderTrading/tradingDetection",
+        component: () => import("@/components/part4/tradingDetection"),
+      },
+      {
+        id:32,
+        path: "/trade/insiderTrading/relationDetection",
+        component: () => import("@/components/part4/relationDetection"),
       }
     ]
   },
