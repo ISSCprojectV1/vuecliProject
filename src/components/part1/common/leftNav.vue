@@ -172,6 +172,7 @@
             </el-menu-item>
           </el-submenu>
 
+<<<<<<< Updated upstream
           <!--内幕交易检测-->
           <el-submenu
               index="/trade/insiderTrading"
@@ -195,6 +196,37 @@
           </el-submenu>
 
 
+=======
+>>>>>>> Stashed changes
+          <el-submenu
+              v-if="isAvailable('/trade/PolicyRisk/event_calendar') || isAvailable('/trade/PolicyRisk/event_calendar')"
+              index="/trade/PolicyRisk" style="text-align: left">
+            <template slot="title">
+                            <i class="el-icon-menu"></i>
+              <span style="font-size: 20px; white-space: normal;">政策风险</span>
+            </template>
+
+            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/event_calendar')"
+                          index="/trade/PolicyRisk/event_calendar"
+                          style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">政策-事件日历</span>
+            </el-menu-item>
+            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/viewIndustryPolicy')"
+                          index="/trade/PolicyRisk/viewIndustryPolicy"
+                          style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">业内政策1</span>
+            </el-menu-item>
+            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/viewIndustryPolicyco')"
+                          index="/trade/PolicyRisk/viewIndustryPolicyco"
+                          style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">业内政策2</span>
+            </el-menu-item>
+            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/viewAssociatedPolicy')"
+                          index="/trade/PolicyRisk/viewAssociatedPolicy"
+                          style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">关联政策</span>
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-col>
     </el-row>
