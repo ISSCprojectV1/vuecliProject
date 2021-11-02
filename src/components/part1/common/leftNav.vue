@@ -172,7 +172,6 @@
             </el-menu-item>
           </el-submenu>
 
-<<<<<<< Updated upstream
           <!--内幕交易检测-->
           <el-submenu
               index="/trade/insiderTrading"
@@ -196,8 +195,6 @@
           </el-submenu>
 
 
-=======
->>>>>>> Stashed changes
           <el-submenu
               v-if="isAvailable('/trade/PolicyRisk/event_calendar') || isAvailable('/trade/PolicyRisk/event_calendar')"
               index="/trade/PolicyRisk" style="text-align: left">
