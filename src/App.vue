@@ -51,8 +51,8 @@ export default {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   border: 1px solid #dcdfe6;
   text-align: center;
-  color: #2c3e50;
-  background-color: #f5f6f7;
+  //color: #2c3e50;
+  background-color: #ffffff;
   position: relative;
 
 html
@@ -71,21 +71,21 @@ html
 
 // 字体调整
 .el-table {
-  font-size: 18px !important;
+  font-size: 14px !important;
 }
 
-.el-button {
-  font-size: 18px !important;
-}
+//.el-button {
+//  font-size: 14px !important;
+//}
 
 .el-link {
-  font-size: 18px !important;
+  font-size: 14px !important;
 }
 .el-form {
-  font-size: 18px !important;
+  font-size: 14px !important;
 }
 .el-input{
-  font-size: 18px !important;
+  font-size: 14px !important;
 }
 
 

@@ -1,70 +1,63 @@
 <template>
   <div>
-    <el-dialog title="任务信息反馈"
-               :visible.sync="dialogTableVisible" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
+    <el-dialog title="任务属性修改"
+               :visible.sync="dialogTableVisible"
+               :append-to-body='true'
+               :lock-scroll="false"
+               width="35%"
                :close-on-click-modal="false">
       <taskInputFormChange :taskin="taskin"></taskInputFormChange>
     </el-dialog>
-    <el-dialog title="操作员设置"
-               :visible.sync="dialogTableVisible2" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
+    <el-dialog title="操作员增改"
+               :visible.sync="dialogTableVisible2"
+               :append-to-body='true'
+               :lock-scroll="false"
+               width="30%"
                :close-on-click-modal="false">
       <operatorChange :taskin="taskin2" :operatorin="operatorin" :modity="modity"></operatorChange>
     </el-dialog>
     <el-dialog title="任务信息查看"
-               :visible.sync="dialogTableVisible3" center :append-to-body='true'
-               :lock-scroll="false" width="30%"
+               :visible.sync="dialogTableVisible3"
+               :append-to-body='true'
+               :lock-scroll="false"
+               width="30%"
                :close-on-click-modal="false">
       <taskInputFormShow :taskin="taskin3"></taskInputFormShow>
     </el-dialog>
 
     <!--顶部一排按钮-->
-    <div>
-      <el-row>
-        <el-col :span="this.admintrue?6:12">
-          <el-button class="button" @click="showTableView">表格视图</el-button>
-        </el-col>
-        <el-col :span="this.admintrue?6:12">
-          <el-button class="button" @click="showEchartsView">流程图视图</el-button>
-        </el-col>
-        <el-col :span="this.admintrue?6:0">
-          <el-button class="button" @click="showFormOperator" v-if="this.admintrue">操作员列表</el-button>
-        </el-col>
-        <el-col :span="this.admintrue?6:0">
-          <el-button class="button" @click="changeOperator('new')" v-if="this.admintrue">新增操作员</el-button>
-        </el-col>
-      </el-row>
+    <div style="margin-bottom: 1rem">
+      <el-button-group>
+        <el-button @click="showTableView">表格视图</el-button>
+        <el-button @click="showEchartsView">流程图视图</el-button>
+        <el-button @click="showFormOperator">操作员列表</el-button>
+        <el-button @click="changeOperator('new')">新增操作员</el-button>
+      </el-button-group>
     </div>
 
-    <p></p>
     <!--流程图视图：包括echarts和一个表格-->
     <div>
       <div id="echartsView">
-        <div>
-          * 1.将鼠标悬空在任务节点上方，可显示详细任务信息 2.可拖动节点方便查看
-        </div>
-        <p></p>
+        <p>
+          * 1. 将鼠标悬空在任务节点上方，可显示详细任务信息 2. 可拖动节点方便查看
+        </p>
         <method1 ref="method1_child"></method1>
       </div>
 
       <div id="taskTable">
-        <p>任务等待队列</p>
+        <div class="title">任务等待队列</div>
         <el-table
             :header-cell-style="getHeaderStylesheet"
             :data="dormitoryTaskTable.slice((currentPageTaskTable-1)*PageSize,currentPageTaskTable*PageSize)"
             tooltip-effect="dark"
-            stripe
             style="width: 100%"
-            border>
+            :row-style="{height: '40px'}"
+            :cell-style="{padding:'0px'}">
 
-          <el-table-column type="selection" min-width="60"></el-table-column>
-          <el-table-column label="序号" prop="id" min-width="60"></el-table-column>
-          <el-table-column label="监管任务名称" prop="name" min-width="60">
-          </el-table-column>
-
-          <el-table-column label="任务优先级" prop="priority" min-width="60">
-          </el-table-column>
+          <el-table-column type="selection" min-width="25"></el-table-column>
+          <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
+          <el-table-column label="监管任务名称" prop="name" min-width="150"></el-table-column>
+          <el-table-column label="任务优先级" prop="priority" min-width="50"></el-table-column>
           <el-table-column label="任务执行时间" min-width="60">
             <template slot-scope="scope">
             <span>
@@ -96,13 +89,12 @@
     <!--操作员列表-->
     <div id="operatorList" style="display: none">
       <el-table
-          v-if="this.admintrue"
           :data="operatorListData.slice((currentPageOperatorList-1)*PageSize,currentPageOperatorList*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
           :header-cell-style="getHeaderStylesheet"
-          border>
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}">
 
         <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 
@@ -120,7 +112,7 @@
 
         <el-table-column label="操作员设置" min-width="45">
           <template slot-scope="scope">
-            <el-button @click="changeOperator(scope.row)" type="text" size="small">操作员修改</el-button>
+            <el-button @click="changeOperator(scope.row)" type="text">操作员修改</el-button>
           </template>
         </el-table-column>
 
@@ -137,15 +129,15 @@
           style="margin-top: 0.5rem">
       </el-pagination>
 
-      <el-table
-          v-if="usertrue"
-          :show-header="false"
-          :data="tabledata3"
-          border
-          style="width: 60%;margin: auto">
-        <el-table-column prop="neirong" label="ID"></el-table-column>
-        <el-table-column prop="shuzhi"></el-table-column>
-      </el-table>
+      <!--      <el-table-->
+      <!--          v-if="usertrue"-->
+      <!--          :show-header="false"-->
+      <!--          :data="tabledata3"-->
+      <!--          border-->
+      <!--          style="width: 60%;margin: auto">-->
+      <!--        <el-table-column prop="neirong" label="ID"></el-table-column>-->
+      <!--        <el-table-column prop="shuzhi"></el-table-column>-->
+      <!--      </el-table>-->
     </div>
 
     <!--表格视图-->
@@ -153,10 +145,10 @@
       <el-table
           :data="dormitoryTableView.slice((currentPageTableView-1)*PageSize,currentPageTableView*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
           :header-cell-style="getHeaderStylesheet"
-          border>
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'2px'}">
         <el-table-column type="selection" min-width="20"></el-table-column>
         <el-table-column label="序号" min-width="25" prop="id"></el-table-column>
         <el-table-column label="监管任务名称" min-width="80" prop="name"></el-table-column>
@@ -177,7 +169,7 @@
         <el-table-column label="任务状态" min-width="45" prop="workStatus"></el-table-column>
         <el-table-column label="模态粒度补充" fixed="right" min-width="60">
           <template slot-scope="scope">
-            <el-button @click="changeTask(scope)" type="text" size="small">属性修改</el-button>
+            <el-button @click="changeTask(scope)" type="text">属性修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -197,8 +189,7 @@
 
 <script>
 import method1 from "@/components/part1/transactionProject/taskDictionary/method1";
-import {getTaskApi} from "@/api/part1/transactionProject";
-import {setToken, getToken, setUserTrue, getUserTrue, getRole, getAdminTrue} from "@/utils/auth"
+import {getToken} from "@/utils/auth"
 import {
   taskQuery,
   teamform,
@@ -224,8 +215,6 @@ export default {
   data() {
     return {
       tabledata3: [],
-      usertrue: false,
-      admintrue: false,
       prioritychoose: [1, 2, 3],
       caozuoyuankey: [],
       caozuoyuanvalue: [],
@@ -265,14 +254,7 @@ export default {
     // 执行echarts方法
     this.getTableViewData();
     this.getTaskTableData();
-    if (getAdminTrue() || getRole() == "OMS") {
-      this.admintrue = true
-      this.usertrue = false
-      this.getOperatorListData()
-    } else {
-      this.admintrue = false
-      this.usertrue = true
-    }
+    this.getOperatorListData();
   },
   created() {
     getAllUsers().then((res) => {
@@ -294,10 +276,11 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
     changeTask(scope) {
@@ -325,7 +308,6 @@ export default {
       if (res != 'new') {
         let data = []
         this.modity = res
-        console.log(res)
         data.name = res.name
         this.taskin2 = data
       } else {
@@ -516,9 +498,12 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  font-size: 16px;
-  align-items: center;
-  justify-content: center;
+.title {
+  height: 40px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 40px;
+  padding-left: 16px;
+  font-weight: bold;
 }
 </style>

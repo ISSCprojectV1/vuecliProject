@@ -5,21 +5,19 @@
           ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
-          border
           v-loading="loading"
           element-loading-text="加载中"
-          :header-cell-style="headcell"
-      >
+          :header-cell-style="getHeaderStylesheet"
+          :cell-style="{padding:'3px'}">
 
         <!--任务基本-->
-        <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
-        <el-table-column label="监管任务名称" min-width="60" prop="name"></el-table-column>
+        <el-table-column label="序号" prop="id" min-width="20"></el-table-column>
+        <el-table-column label="监管任务名称" min-width="120" prop="name"></el-table-column>
 
         <!--时间粒度-->
         <el-table-column label="时间粒度（天）" align="center">
-          <el-table-column label="推荐时间粒度" prop="timeadvise" min-width="60">
+          <el-table-column label="推荐时间粒度" prop="timeadvise" min-width="55">
             <template slot-scope="scope">
               <el-link :disabled="setgoto(scope)">
                 <div @click="goToprice()">
@@ -29,7 +27,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="补充时间粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充时间粒度" min-width="55">
             <template slot-scope="commodity">
               <el-button type="text" @click="getTimeRecommend(commodity.row)">补充粒度</el-button>
             </template>
@@ -38,61 +36,22 @@
 
         <!--商品粒度-->
         <el-table-column label="商品粒度" align="center">
-          <el-table-column label="监管种类" min-width="45" prop="commodityName">
+          <el-table-column label="监管种类" min-width="40" prop="commodityName">
           </el-table-column>
 
           <el-table-column label="扩展监管种类" min-width="60" prop="subtask">
           </el-table-column>
 
-          <el-table-column label="补充商品粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充商品粒度" min-width="55">
             <template slot-scope="commodity">
               <el-button type="text" @click="getCommodity(commodity.row)">补充粒度</el-button>
-              <!--推荐的商品粒度-->
-              <el-dialog
-                  title="推荐商品粒度名单"
-                  :visible.sync="commodityDialogVisible"
-                  width="40%"
-                  :append-to-body="true">
-                <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
-                <el-table
-                    ref="multipleTable"
-                    :data="tableData"
-                    tooltip-effect="dark"
-                    @selection-change="handleSelectionChange"
-                    :default-sort="{prop: 'commodityDialog_num', order: 'descending'}" stripe>
-                  <el-table-column
-                      type="selection"
-                      min-width="55">
-                  </el-table-column>
-                  <el-table-column
-                      prop="commodityDialog_id"
-                      label="商品代号"
-                      min-width="120">
-                  </el-table-column>
-                  <el-table-column
-                      prop="commodityDialog_name"
-                      label="商品类别名称"
-                      min-width="120">
-                  </el-table-column>
-                  <el-table-column
-                      prop="commodityDialog_num"
-                      label="关联度"
-                      min-width="100"
-                      sortable>
-                  </el-table-column>
-                </el-table>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="commodityDialogVisible = false">取 消</el-button>
-                  <el-button type="primary" @click="updateCommodity()">确 定</el-button>
-                 </span>
-              </el-dialog>
             </template>
           </el-table-column>
         </el-table-column>
 
         <!--空间粒度-->
         <el-table-column label="空间粒度" align="center">
-          <el-table-column label="监管平台" min-width="45" prop="content">
+          <el-table-column label="监管平台" min-width="50" prop="content">
           </el-table-column>
 
           <el-table-column label="扩展监管平台" min-width="60" prop="resourceNeed">
@@ -104,47 +63,9 @@
               </el-link>
             </template>
           </el-table-column>
-          <el-table-column label="补充空间粒度" min-width="60" v-if="this.admin">
+          <el-table-column label="补充空间粒度" min-width="55">
             <template slot-scope="flat">
               <el-button type="text" @click="getFlats(flat.row)">补充粒度</el-button>
-              <!--推荐的空间粒度-->
-              <el-dialog
-                  title="推荐空间粒度名单"
-                  :visible.sync="flatDialogVisible"
-                  width="40%"
-                  :append-to-body="true"
-              >
-                <!-- 获取到的空间粒度推荐表，可通过首列的复选框决定要加入的监管空间-->
-                <el-table
-                    ref="flatTable"
-                    :data="flatData"
-                    tooltip-effect="dark"
-                    @selection-change="handleFlatChange"
-                    :default-sort="{prop: 'association', order: 'descending'}" stripe>
-                  <el-table-column
-                      type="selection"
-                      min-width="55">
-                  </el-table-column>
-                  <el-table-column
-                      prop="platform"
-                      label="平台名称"
-                      min-width="120">
-                  </el-table-column>
-                  <el-table-column
-                      prop="association"
-                      label="关联度"
-                      min-width="100" sortable>
-                    <template slot-scope="scope">
-                      {{ scope.row.association.toFixed(4) }}
-                    </template>
-                  </el-table-column>
-                </el-table>
-                <span slot="footer" class="dialog-footer">
-    <el-button @click="flatDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="updateFlat()">确 定</el-button>
-  </span>
-              </el-dialog>
-
               <el-button type="text" style="margin-left: 0.5rem" @click="goToSpaceDetail(flat.row.id)" v-show="false">
                 详情
               </el-button>
@@ -162,6 +83,87 @@
                      style="margin-top: 0.5rem">
       </el-pagination>
     </div>
+
+    <!--推荐的商品粒度-->
+    <el-dialog
+        title="推荐商品粒度名单"
+        :visible.sync="commodityDialogVisible"
+        width="40%"
+        :append-to-body="true">
+      <!-- 获取到的商品粒度推荐表，可通过首列的复选框决定要加入监管的相关商品品类-->
+      <el-table
+          :data="tableData"
+          tooltip-effect="dark"
+          @selection-change="handleSelectionChange"
+          :default-sort="{prop: 'commodityDialog_num', order: 'descending'}"
+          :header-cell-style="getHeaderStylesheet"
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}">
+        <el-table-column
+            type="selection"
+            min-width="55">
+        </el-table-column>
+        <el-table-column
+            prop="commodityDialog_id"
+            label="商品代号"
+            min-width="120">
+        </el-table-column>
+        <el-table-column
+            prop="commodityDialog_name"
+            label="商品类别名称"
+            min-width="120">
+        </el-table-column>
+        <el-table-column
+            prop="commodityDialog_num"
+            label="关联度"
+            min-width="100"
+            sortable>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="commodityDialogVisible = false">取消</el-button>
+        <el-button size="small" type="primary" @click="updateCommodity()">确定</el-button>
+       </span>
+    </el-dialog>
+
+    <!--推荐的空间粒度-->
+    <el-dialog
+        title="推荐空间粒度名单"
+        :visible.sync="flatDialogVisible"
+        width="40%"
+        :append-to-body="true">
+      <!-- 获取到的空间粒度推荐表，可通过首列的复选框决定要加入的监管空间-->
+      <el-table
+          :data="flatData"
+          tooltip-effect="dark"
+          @selection-change="handleFlatChange"
+          :default-sort="{prop: 'association', order: 'descending'}"
+          :header-cell-style="getHeaderStylesheet"
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}">
+        <el-table-column
+            type="selection"
+            min-width="55">
+        </el-table-column>
+        <el-table-column
+            prop="platform"
+            label="平台名称"
+            min-width="120">
+        </el-table-column>
+        <el-table-column
+            prop="association"
+            label="关联度"
+            min-width="100" sortable>
+          <template slot-scope="scope">
+            {{ scope.row.association.toFixed(4) }}
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+    <el-button size="small" @click="flatDialogVisible = false">取消</el-button>
+    <el-button size="small" type="primary" @click="updateFlat()">确定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -177,8 +179,6 @@ import {
   updateCommodity,
   getrecommendrlatform
 } from "@/api/part1/Multimodal-multigranularity";
-
-
 import {getToken, getRole} from "@/utils/auth"
 
 export default {
@@ -214,17 +214,15 @@ export default {
       flatData: [],
       // 空间粒度复选框
       flatsSelection: [],
-      timeAdvise: 0,
-      admin: false
+      timeAdvise: 0
     }
   },
   methods: {
-    headcell() {
+    getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
-        'font-weight': 'bold',
-        'font-size': '18px'
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold'
       }
     },
     /*
@@ -459,7 +457,7 @@ export default {
       //console.log(getToken())
 
       taskQuery().then((res) => {
-                this.dealwithData(res)
+        this.dealwithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
@@ -544,10 +542,6 @@ export default {
   },
   mounted() {
     this.loading = true;
-
-    if (getRole() == "admin" || getRole() == "OMS")
-      this.admin = true;
-    else this.admin = false
   }
 }
 </script>

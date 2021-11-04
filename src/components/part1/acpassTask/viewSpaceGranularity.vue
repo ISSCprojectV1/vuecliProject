@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div style="display: inline-block; font-size: 40px;">空间粒度详情</div>
+    <h2>空间粒度详情</h2>
+<!--    <div style="display: inline-block; font-size: 24px;">空间粒度详情</div>-->
 
     <div>
-      <el-button size="small" style="margin: 0.5rem 0" @click="goBack">返回</el-button>
+      <el-button size="small" @click="goBack">返回</el-button>
     </div>
 
     <tab-space-granularity></tab-space-granularity>

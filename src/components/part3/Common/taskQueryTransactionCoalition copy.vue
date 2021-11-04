@@ -1,8 +1,10 @@
 <template>
   <div>
+
     <div>
-      <el-button type="primary" @click="teamFormation" style="margin-bottom: 0.5rem">联盟形成</el-button>
+      <el-button size="small" @click="teamFormation" style="margin-bottom: 0.5rem">联盟形成</el-button>
     </div>
+
     <div>
 
       <div id="echart1" style="width: 1000px; height: 800px"></div>
@@ -12,20 +14,18 @@
             ref="dormitoryTable"
             :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
             tooltip-effect="dark"
-            stripe
             style="width: 100%"
-            :header-cell-style="getHeaderStylesheet"
-            border>
+            :header-cell-style="getHeaderStylesheet">
 
-          <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
+          <el-table-column label="序号" prop="id" min-width="20"></el-table-column>
 
           <el-table-column label="监管任务名称" prop="name" min-width="160"></el-table-column>
 
           <el-table-column label="监管商品" prop="commodityName" min-width="45"></el-table-column>
 
-          <el-table-column label="被监管的交易平台" prop="content" min-width="100"></el-table-column>
+          <el-table-column label="被监管的交易平台" prop="content" min-width="80"></el-table-column>
 
-          <el-table-column label="监管联盟" prop="workTeam" min-width="100">
+          <el-table-column label="监管联盟" prop="workTeam" min-width="120">
             <template slot-scope="scope">
               <el-link type="primary">
                 <div @click="queryWarehouseHandle(scope.row.team)">
@@ -47,6 +47,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="totalCount">
         </el-pagination>
+
       </div>
     </div>
   </div>
@@ -75,10 +76,11 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
     // 每页显示的条数
@@ -95,9 +97,8 @@ export default {
     },
     getData2() {
       //不执行联盟形成，点联盟形成按钮的时候再执行
-      let idd = getRole()
       taskQuery().then((res) => {
-        this.dealwithData(res.data.data);
+        this.dealWithData(res.data.data);
         document.getElementById("form").style.display = "block";
         document.getElementById("echart1").style.display = "none";
       }).catch(() => {
@@ -117,7 +118,7 @@ export default {
             }
             result[i].workTeam = workTeamStr
           }
-          this.dealwithData(result);
+          this.dealWithData(result);
         }).catch(() => {
           console.log("getTransactionData fail")
         });
@@ -144,17 +145,15 @@ export default {
         });
       } else {
         //只有OMS端才能跳转
-        if (getRole() == 'OMS' || getRole() == 'admin') {
-          this.$router.push(`/trade/teamTable/${team}`);
-        }
+        this.$router.push(`/trade/teamTable/${team}`);
       }
     },
-    changeform12() {
+    changeForm12() {
       document.getElementById("echart1").style.display = "none";
       document.getElementById("form").style.display = "block";
       this.getData1()
     },
-    drawechart1() {
+    drawChart1() {
       document.getElementById("form").style.display = "none";
       document.getElementById("echart1").style.display = "block";
       const handle = function handleData(data, index, color = '#00f6ff') {
@@ -319,7 +318,7 @@ export default {
       };
       echart1.setOption(option);
     },
-    drawechart12() {
+    drawChart2() {
       document.getElementById("form").style.display = "none";
       document.getElementById("echart1").style.display = "block";
       const handle = function handleData(data, index, color = '#00f6ff') {
@@ -484,10 +483,9 @@ export default {
       };
       echart1.setOption(option);
     },
-    dealwithData(res) {
+    dealWithData(res) {
       let dataConvert = [];
       dataConvert = res;
-      let result = [];
 
       this.totalCount = dataConvert.length
       for (let i = 0; i < dataConvert.length; i++) {
@@ -557,11 +555,7 @@ export default {
     },
   },
   created() {
-    if (getRole() != 'OMS' && getRole() != 'admin') {
-      this.$router.push("/trade/Multimodal-multigranularity/stepBar/taskQueryTransactionCoalitionForRS")
-    } else {
-      this.getData2();
-    }
+    this.getData2();
   }
 }
 </script>

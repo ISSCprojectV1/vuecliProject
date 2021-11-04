@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="task-input-box">
-      <el-form ref="form" :model="form" label-width="130px">
+      <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="用户名称">
           <el-select v-model="id">
             <el-option
@@ -15,8 +15,10 @@
         <el-form-item label="操作员名称">
           <el-input v-model="name" placeholder="请输入内容"></el-input>
         </el-form-item>
-        <el-button type="success" @click="postAddress">确认设置</el-button>
-        <el-button type="info" @click="abortForm">取消</el-button>
+        <div style="text-align: right;">
+          <el-button size="small" @click="abortForm">取消</el-button>
+          <el-button size="small" type="primary" @click="postAddress">确定</el-button>
+        </div>
       </el-form>
     </div>
   </div>
@@ -24,7 +26,6 @@
 
 <script>
 import {taskInput, bourseget, changemodality, getModalityByUserId} from "@/api/part1/Multimodal-multigranularity";
-import {setToken, getToken, setUserTrue, getUserTrue, setAdminTrue, getAdminTrue} from "@/utils/auth"
 
 const cityOptions = ['南方稀贵金属交易所', '上海黄金交易所', '中国金融期货商品交易所', '江苏省大圆银泰贵金属', '南京贵重金属交易所'];
 export default {
@@ -44,7 +45,6 @@ export default {
       content: '',
       tradeuser: false,
       commodityName: '',
-      admintrue: false,
       operatorName: '',
       workStatus: '',
       operatorinput: []
@@ -197,10 +197,5 @@ export default {
   font-size: 0;
   width: 100%;
   height: 100%;
-}
-
-.popbut {
-  mulitline: true;
-  white-space: normal;
 }
 </style>

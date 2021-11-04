@@ -1,64 +1,62 @@
 <template>
   <div>
+    <h2>主被动模态详情</h2>
 
-    <div class="title">
-      <div style="display: inline-block; margin-bottom:20px; font-size: 40px;">主被动模态详情</div>
+    <el-button size="small" style="margin-bottom: 0.5rem" @click="goBack">返回</el-button>
+    <!--    <div>-->
+    <!--      <el-form :inline="true">-->
+    <!--        <el-form-item>-->
+    <!--          <el-select v-model="id" placeholder="请选择任务名称">-->
+    <!--            &lt;!&ndash;动态读取该品类对应的平台&ndash;&gt;-->
+    <!--            <el-option-->
+    <!--                v-for="flat in taskInfo"-->
+    <!--                :key="flat.id"-->
+    <!--                :label="flat.id+'.'+flat.name"-->
+    <!--                :value="flat.id">-->
+    <!--            </el-option>-->
+    <!--          </el-select>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item>-->
+    <!--          <el-button type="primary" @click="lookForAllTasks" class="button">查询</el-button>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item>-->
+    <!--          <el-button size="small" @click="goBack">返回</el-button>-->
+    <!--        </el-form-item>-->
+    <!--      </el-form>-->
+    <!--    </div>-->
+
+    <!--被动模态-->
+    <div v-if="isPassiveMode">
+      <div class="title">被动监管名单</div>
+      <el-table
+          style="width: 100%"
+          :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          :header-cell-style="getHeaderStylesheet"
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}">
+        <el-table-column prop="id" label="编号" min-width="30"></el-table-column>
+        <el-table-column prop="buyerName" label="买方姓名" min-width="130"></el-table-column>
+        <el-table-column prop="category" label="商品" min-width="40"></el-table-column>
+        <el-table-column prop="amount" label="数量" min-width="30"></el-table-column>
+        <el-table-column prop="price" label="价格" min-width="30"></el-table-column>
+        <el-table-column prop="sellerName" label="卖方姓名" min-width="130"></el-table-column>
+        <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
+      </el-table>
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="pageSizes"
+                     :page-size="PageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="total1"
+                     style="margin-top: 0.5rem">
+      </el-pagination>
     </div>
 
-    <div>
-      <el-form :inline="true">
-        <el-form-item>
-          <el-select v-model="id" placeholder="请选择任务名称">
-            <!--动态读取该品类对应的平台-->
-            <el-option
-                v-for="flat in taskInfo"
-                :key="flat.id"
-                :label="flat.id+'.'+flat.name"
-                :value="flat.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="lookForAllTasks" class="button">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="goBack">返回</el-button>
-        </el-form-item>
-      </el-form>
+    <!--主动模态-->
+    <div v-if="isActiveMode">
+      <tab-active-modal></tab-active-modal>
     </div>
-
-    <el-tabs v-model="activeName">
-
-      <el-tab-pane label="被动模态" name="passive" v-if="passivemode">
-        <el-table border style="width: 100%; margin-top: 1px"
-                  :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-                  :header-cell-style="headcell">
-          <el-table-column prop="id" label="编号" min-width="30"></el-table-column>
-          <el-table-column prop="buyerName" label="买方姓名" min-width="130"></el-table-column>
-          <el-table-column prop="category" label="商品" min-width="40"></el-table-column>
-          <el-table-column prop="amount" label="数量" min-width="30"></el-table-column>
-          <el-table-column prop="price" label="价格" min-width="30"></el-table-column>
-          <el-table-column prop="sellerName" label="卖方姓名" min-width="130"></el-table-column>
-          <el-table-column prop="belong" label="归属" min-width="100"></el-table-column>
-
-        </el-table>
-        <el-pagination @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage"
-                       :page-sizes="pageSizes"
-                       :page-size="PageSize"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="total1"
-                       style="margin-top: 0.5rem">
-        </el-pagination>
-      </el-tab-pane>
-      <el-tab-pane label="主动模态" name="table" v-if="activemode">
-        <tab-active-modal></tab-active-modal>
-      </el-tab-pane>
-
-    </el-tabs>
-
   </div>
 </template>
 
@@ -109,8 +107,8 @@ export default {
       dataTableActive: [],
       threshold: '',
       passive: false,
-      activemode: true,
-      passivemode: true,
+      isActiveMode: true,
+      isPassiveMode: true,
       // tab gone: 交易事件图
       value_space_granularity: '',
       options: [{
@@ -126,10 +124,7 @@ export default {
     }
   },
   created() {
-    if (this.$route.query && this.$route.query.data)
-      this.passive = true
-    else
-      this.passive = false
+    this.passive = !!(this.$route.query && this.$route.query.data);
     taskQuery().then(res => {
       this.taskInfo = res.data.data
     }).catch(err => {
@@ -141,7 +136,7 @@ export default {
       this.activeName = "table"
     } else {
       this.activeName = "passive"
-      this.passivetradeactionList(id, 1, 5)
+      this.passiveTradeActionList(id, 1, 5)
     }
   },
   mounted() {
@@ -150,6 +145,15 @@ export default {
     // document.getElementById("echart123").style.display = "none";
   },
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     // 分页
     // 每页显示的条数
     handleSizeChange(val) {
@@ -163,19 +167,11 @@ export default {
       // 改变默认的页数
       this.currentPage = val
     },
-    headcell() {
-      return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
-        'font-weight': 'bold',
-        'font-size': '18px'
-      }
-    },
-    passivetradeactionList(id, currentPage, pageSize) {
+    passiveTradeActionList(id, currentPage, pageSize) {
       getPassive(id, currentPage, pageSize).then(res => {
         console.log(res)
-        this.tableData = res.data.data//.reslist
-        let data = res.data.data//.reslist;
+        this.tableData = res.data.data
+        let data = res.data.data
         this.total1 = res.data.data.length
         for (let i = 0; i < data.length; i++) {
           data[i].id = i + 1
@@ -203,14 +199,14 @@ export default {
         }
       }
     },
-    Activetaskgraph(id, limit) {
+    activeTaskGraph(id, limit) {
       Louvainresult(id, limit).then(res => {
-        this.drawechart(res.data.data)
+        this.drawChart(res.data.data)
       }).catch(err => {
         console.log(err)
       })
       activetaskgraph(id, limit).then(res => {
-        this.drawechart2(res.data.data)
+        this.drawChart2(res.data.data)
       }).catch(err => {
         console.log(err)
       })
@@ -218,20 +214,20 @@ export default {
     pageChange1(page) {
       const id = this.$router.currentRoute.params.id;
       this.currentPage = page;
-      this.passivetradeactionList(id, page, 5)
+      this.passiveTradeActionList(id, page, 5)
     },
     onSubmit(limit) {
       const id = this.$router.currentRoute.params.id;
       const query_str = this.value_space_granularity + this.form.limit
-      this.Activetaskgraph(id, query_str);
+      this.activeTaskGraph(id, query_str);
     },
     activeOrPassive() {
       if (this.passive) {
-        this.passivemode = true
-        this.activemode = false
+        this.isPassiveMode = true
+        this.isActiveMode = false
       } else {
-        this.passivemode = false
-        this.activemode = true
+        this.isPassiveMode = false
+        this.isActiveMode = true
       }
       return !this.passive
     },
@@ -329,9 +325,11 @@ export default {
         myChart.setOption(option)
       })
     },
+    goBack() {
+      this.$router.go(-1);
+    },
     // 绘图
-    drawechart2(data) {
-      //  console.log(data)
+    drawChart2(data) {
       let echart1 = echart.init(document.querySelector("#echart12"));
       let option = {
         //backgroundColor: '#000F1F',
@@ -457,7 +455,7 @@ export default {
       };
       echart1.setOption(option);
     },
-    drawechart(data) {
+    drawChart(data) {
       let linkss = data[2]
       let nodees = data[1]
       //  console.log(linkss)
@@ -547,14 +545,18 @@ export default {
       };
 
       echart1.setOption(option);
-    },
-    goBack() {
-      this.$router.go(-1);
     }
   }
 }
 </script>
 
 <style scoped>
-
+.title {
+  height: 40px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 40px;
+  padding-left: 16px;
+  font-weight: bold;
+}
 </style>

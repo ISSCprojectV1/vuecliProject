@@ -5,7 +5,7 @@
     </el-header>
 
     <el-container>
-      <el-aside style="width:250px;height: 100%" ref="changdu">
+      <el-aside style="width:250px;height: 100%">
         <leftNav></leftNav>
       </el-aside>
       <el-main>
@@ -42,4 +42,8 @@ export default {
   //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
   padding 0;
   margin-bottom 1px
+
+.el-main
+  padding 0;
+  background-color #ffffff;
 </style>
