@@ -219,6 +219,34 @@ let routes = [
       title: "关联交易主体发现"
     }
   },
+  // 政策风险
+  {
+    path: "/trade",
+    component: () => import("@/components/part1/common/full"),
+    children: [
+      {
+        path:"/trade/PolicyRisk/event_calendar",
+        component: () => import("@/components/part1/PolicyRisk/event_calendar"),
+        meta: {
+          title: "政策-事件日历"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
+        meta: {
+          title: "业内政策"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewAssociatedPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
+        meta: {
+          title: "关联政策"
+        }
+      }
+    ]
+  },
 
   // deprecated
   // {
