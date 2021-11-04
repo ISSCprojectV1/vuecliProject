@@ -47,11 +47,44 @@ export default {
     }
   },
   created() {
+    let arr = this.$route.path.split('/');
+    let page_name = arr[arr.length - 1];
+    let title = '';
+    let numStep = 0;
+    switch (page_name) {
+      case 'taskInput':
+        title = '任务输入'
+        numStep = 0
+        break
+      case 'taskQueryTableView':
+        title = '粒度自适应补全'
+        numStep = 1
+        break
+      case 'taskQueryOnlyModityView':
+        title = '模态动态切换'
+        numStep = 2
+        break
+      case 'taskQueryTransactionCoalition':
+        title = '联盟形成'
+        numStep = 3
+        break
+      case 'taskQueryFlowChart':
+        title = '人机器资源调度'
+        numStep = 4
+        break
+      case 'algorithmAnalysisTable':
+        title = '模态粒度指标优化'
+        numStep = 5
+        break
+      default:
+        break;
+    }
+    this.onClickStep(page_name, numStep)
     // 判断返回上一个step的界面
-    if (!this.$store.state.stepbarposition) {
-      this.onClickStep(this.steps[0].title, 0)
-    } else
-      this.onClickStep(this.steps[this.$store.state.stepbarposition].title, this.$store.state.stepbarposition)
+    // if (!this.$store.state.stepbarposition) {
+    //   this.onClickStep(this.steps[0].title, 0)
+    // } else
+    //   this.onClickStep(this.steps[this.$store.state.stepbarposition].title, this.$store.state.stepbarposition)
   },
   methods: {
     onClickStep(title, numStep) {
