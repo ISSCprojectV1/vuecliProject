@@ -13,7 +13,6 @@
 
           <!--     首页     -->
           <el-menu-item
-              v-if="isAvailable('/trade/Dashboard')"
               index="/trade/Dashboard"
               style="text-align: left;font-size: 20px">
             <i class="el-icon-house"></i>
@@ -22,7 +21,6 @@
 
           <!--监管模态粒度决策子系统-->
           <el-submenu
-              v-if="isAvailable('/trade/Multimodal-multigranularity/stepBar') || isAvailable('/trade/Multimodal-multigranularity/goodsgranularity')"
               index="/trade/Multimodal-multigranularity"
               style="text-align: left">
             <template slot="title">
@@ -60,7 +58,6 @@
 
           <!--监管主体资源联盟策略子系统-->
           <el-submenu
-              v-if="true"
               index="/trade/auctionNew"
               style="text-align: left">
             <template slot="title">
@@ -91,7 +88,6 @@
 
           <!--数据共享融合子系统-->
           <el-submenu
-              v-if="isAvailable('/trade/auction') || isAvailable('/trade/uploadResource')"
               index="/trade/auction"
               style="text-align: left;">
             <template slot="title">
@@ -194,34 +190,46 @@
             </el-menu-item>
           </el-submenu>
 
-
           <el-submenu
-              v-if="isAvailable('/trade/PolicyRisk/event_calendar') || isAvailable('/trade/PolicyRisk/event_calendar')"
               index="/trade/PolicyRisk" style="text-align: left">
             <template slot="title">
                             <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal;">政策风险</span>
             </template>
 
-            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/event_calendar')"
+            <el-menu-item
                           index="/trade/PolicyRisk/event_calendar"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
-            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/viewIndustryPolicy')"
+            <el-menu-item
                           index="/trade/PolicyRisk/viewIndustryPolicy"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">业内政策1</span>
             </el-menu-item>
-            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/viewIndustryPolicyco')"
+            <el-menu-item
                           index="/trade/PolicyRisk/viewIndustryPolicyco"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">业内政策2</span>
             </el-menu-item>
-            <el-menu-item v-if="isAvailable('/trade/PolicyRisk/viewAssociatedPolicy')"
+            <el-menu-item
                           index="/trade/PolicyRisk/viewAssociatedPolicy"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">关联政策</span>
+            </el-menu-item>
+          </el-submenu>
+
+          <!--违约风险评估预警-->
+          <el-submenu index="/trade/DefaultRisk">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px; white-space: normal;">违约风险评估预警</span>
+            </template>
+
+            <el-menu-item
+            index="/trade/DefaultRisk/firmEvaluation"
+            style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">用户评估</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
