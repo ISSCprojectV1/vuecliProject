@@ -176,22 +176,54 @@ export const asyncRoutes = [
       },
 
       {
-        id:28,
+        id: 28,
         path: '/trade/auctionNew/auctionNew',
         component: () => import("@/components/admin/auctionNew"),
       },
       {
-        id:29,
+        id: 29,
         path: '/trade/auctionNew/data',
         component: () => import("@/components/admin/data"),
       },
       {
-        id:30,
+        id: 30,
         path: '/trade/auctionNew/score',
         component: () => import("@/components/admin/score"),
+      },
+      {
+        id: 31,
+        path: "/trade/insiderTrading/tradingDetection",
+        component: () => import("@/components/part4/tradingDetection"),
+      },
+      {
+        id: 32,
+        path: "/trade/insiderTrading/relationDetection",
+        component: () => import("@/components/part4/relationDetection"),
+      },
+      {
+        id: 33,
+        path: "/trade/PolicyRisk/event_calendar",
+        component: () => import("@/components/part1/PolicyRisk/event_calendar"),
+      },
+      {
+        id: 34,
+        path: "/trade/PolicyRisk/viewIndustryPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
+      },
+      {
+        id: 35,
+        path: "/trade/PolicyRisk/viewIndustryPolicyco",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
+      },
+      {
+        id: 36,
+        path: "/trade/PolicyRisk/viewAssociatedPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
       }
     ]
   },
+
+
   {
     path: '/console',
     component: () => import("@/views/part3/incentiveMechanism/Console/home"),
