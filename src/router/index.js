@@ -27,12 +27,6 @@ export const constantRoutes = [
   },
 ]
 
-// 实例化vue时候只挂载constantRoutes
-export default new VueRouter({
-  mode: "history",
-  routes: constantRoutes.concat(adminRoutes)
-})
-
 // 异步挂载路由，根据权限加载路由表
 export const asyncRoutes = [
   {
@@ -230,4 +224,10 @@ export const asyncRoutes = [
     ]
   }
 ]
+
+// 实例化vue时候只挂载constantRoutes
+export default new VueRouter({
+  mode: "history",
+  routes: constantRoutes.concat(adminRoutes).concat(asyncRoutes)
+})
 
