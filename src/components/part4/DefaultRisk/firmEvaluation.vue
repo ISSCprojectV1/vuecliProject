@@ -1,44 +1,50 @@
 <template>
   <div>
     <!--用户情况统计-->
-    <el-card class="box-card">
+    <el-card shadow="hover" class="box-card">
       <div slot="header" class="box-card-header">
         <span>用户情况统计</span>
       </div>
 
       <el-row style="margin-left: 5rem; margin-right: 5rem">
         <el-col :span="8">
-          <el-progress type="circle" :percentage="10" :stroke-width="10" stroke-linecap="square"
-                       color="orange" :width="90"></el-progress>
-          <p class="progress-text">风险评级I<br/>用户数</p>
+          <button class="transparent-button" @click="onClickRiskI">
+            <el-progress type="circle" :percentage="10" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgress" color="orange" :width="90" class="orange-progress"></el-progress>
+            <p class="progress-text">风险评级I<br/>用户数</p>
+          </button>
         </el-col>
         <el-col :span="8">
-          <el-progress type="circle" :percentage="15" :stroke-width="10" stroke-linecap="square"
-                       color="gold" :width="90"></el-progress>
-          <p class="progress-text">风险评级II<br/>用户数</p>
+          <button class="transparent-button" @click="onClickRiskII">
+            <el-progress type="circle" :percentage="15" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgress" color="gold" :width="90" class="gold-progress"></el-progress>
+            <p class="progress-text">风险评级II<br/>用户数</p>
+          </button>
         </el-col>
         <el-col :span="8">
-          <el-progress type="circle" :percentage="75" :stroke-width="10" stroke-linecap="square"
-                       color="lightgreen" :width="90"></el-progress>
-          <p class="progress-text">风险评级III<br/>用户数</p>
+          <button class="transparent-button" @click="onClickRiskIII">
+            <el-progress type="circle" :percentage="75" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgress" color="lightgreen" :width="90" class="green-progress"></el-progress>
+            <p class="progress-text">风险评级III<br/>用户数</p>
+          </button>
         </el-col>
       </el-row>
     </el-card>
 
     <!--用户查询-->
-    <el-card class="box-card">
+    <el-card shadow="hover" class="box-card">
       <div slot="header" class="box-card-header">
         <span>用户查询</span>
       </div>
 
       <el-input placeholder="请输入用户UID" maxlength="50">
         <template slot="prepend">用户UID</template>
-        <el-button slot="append">查询</el-button>
+        <el-button slot="append" @click="onQueryFirmInfo">查询</el-button>
       </el-input>
     </el-card>
 
     <!--用户信息表格-->
-    <el-card class="box-card box-card-no-padding">
+    <el-card v-show="noQuery" shadow="hover" class="box-card box-card-no-padding">
       <el-table
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
@@ -51,12 +57,64 @@
         <el-table-column prop="company" label="主要问题" min-width="100"></el-table-column>
       </el-table>
     </el-card>
+
+    <!--用户查询结果-->
+    <el-card v-show="!noQuery" shadow="hover" class="box-card" style="height: 460px">
+      <div slot="header" class="box-card-header">
+        <span>用户评估信息</span>
+      </div>
+
+      <el-row :gutter="2">
+        <el-col :span="5" style="padding-top: 1rem">
+          <div style="margin-top: auto; margin-bottom: auto">
+            <el-progress type="circle" :percentage="100" :stroke-width="10" color="lightgreen" stroke-linecap="square"
+                         :format="formatScore" :width="150" class="green-score"></el-progress>
+            <p class="progress-text">守约分</p>
+          </div>
+        </el-col>
+        <el-col :span="12" style="padding-left: 3rem">
+          <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
+            <el-form-item label="用户UID">
+              XXXXXX
+            </el-form-item>
+            <el-form-item label="用户名称">
+              XXXX交易所
+            </el-form-item>
+            <el-form-item label="相关交易信息">
+              XXXX<br/>
+              XXXX
+            </el-form-item>
+            <el-form-item label="主营品类信息">
+              XXXX<br/>
+              XXXX
+            </el-form-item>
+            <el-form-item label="主要问题">
+              XXXXXXX<br/>
+              XXXXXXX
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :span="7">
+          <div id="chart"></div>
+          <p class="progress-text">违约风险级联关系图</p>
+        </el-col>
+      </el-row>
+
+    </el-card>
   </div>
 </template>
 
 <script>
+import G6 from '@antv/g6';
+
 export default {
   name: "firmEvaluation.vue",
+  data() {
+    return {
+      noQuery: true,
+      score: 91,
+    }
+  },
   methods: {
     getHeaderStylesheet() {
       return {
@@ -67,6 +125,146 @@ export default {
         'padding-bottom': '20px',
       }
     },
+    // 情况统计圆环点击事件
+    onClickRiskI() {
+      this.noQuery = true;
+    },
+    onClickRiskII() {
+      this.noQuery = true;
+    },
+    onClickRiskIII() {
+      this.noQuery = true;
+    },
+    // 查询用户信息
+    onQueryFirmInfo() {
+      this.noQuery = false;
+      this.drawChart();
+    },
+    // 绘制G6关系图
+    drawChart() {
+      // 绘制前先清除
+      document.getElementById("chart").innerHTML = '';
+
+      const data = {
+        nodes: [
+          {id: 'node1', size: 30},
+          {id: 'node2', size: 30},
+          {id: 'node3', size: 30},
+          {id: 'node6', size: 15, isLeaf: true},
+          {id: 'node7', size: 15, isLeaf: true},
+          {id: 'node8', size: 15, isLeaf: true},
+          {id: 'node9', size: 15, isLeaf: true},
+          {id: 'node10', size: 15, isLeaf: true},
+          {id: 'node11', size: 15, isLeaf: true},
+          {id: 'node12', size: 15, isLeaf: true},
+          {id: 'node13', size: 15, isLeaf: true},
+          {id: 'node14', size: 15, isLeaf: true},
+          {id: 'node15', size: 15, isLeaf: true},
+          {id: 'node16', size: 15, isLeaf: true},
+        ],
+        edges: [
+          {source: 'node1', target: 'node6'},
+          {source: 'node1', target: 'node7'},
+          {source: 'node2', target: 'node8'},
+          {source: 'node2', target: 'node9'},
+          {source: 'node2', target: 'node10'},
+          {source: 'node2', target: 'node11'},
+          {source: 'node2', target: 'node12'},
+          {source: 'node2', target: 'node13'},
+          {source: 'node3', target: 'node14'},
+          {source: 'node3', target: 'node15'},
+          {source: 'node3', target: 'node16'},
+        ],
+      };
+      const nodes = data.nodes;
+
+      const graph = new G6.Graph({
+        container: 'chart',
+        width: 300,
+        height: 300,
+        modes: {
+          default: ['drag-canvas', 'zoom-canvas', 'drag-node', 'lasso-select'],
+        },
+        layout: {
+          type: 'force',
+          preventOverlap: true,
+          linkDistance: (d) => {
+            if (d.source.id === 'node0') {
+              return 300;
+            }
+            return 60;
+          },
+          nodeStrength: (d) => {
+            if (d.isLeaf) {
+              return -50;
+            }
+            return -10;
+          },
+          edgeStrength: (d) => {
+            if (d.source.id === 'node1' || d.source.id === 'node2' || d.source.id === 'node3') {
+              return 0.7;
+            }
+            return 0.1;
+          },
+        },
+      });
+
+      graph.data({
+        nodes,
+        edges: data.edges.map(function (edge, i) {
+          edge['id'] = 'edge' + i;
+          return Object.assign({}, edge);
+        }),
+      });
+
+      graph.render();
+
+      // 添加轮廓
+      let centerNodes = graph.getNodes().filter((node) => !node.getModel().isLeaf);
+
+      graph.on('afterlayout', () => {
+        const hull1 = graph.createHull({
+          id: 'centerNode-hull',
+          type: 'bubble',
+          members: centerNodes,
+          padding: 10,
+        });
+
+        const hull2 = graph.createHull({
+          id: 'leafNode-hull1',
+          members: ['node6', 'node7'],
+          padding: 10,
+          style: {
+            fill: 'lightgreen',
+            stroke: 'green',
+          },
+        });
+
+        const hull3 = graph.createHull({
+          id: 'leafNode-hull2',
+          members: ['node8', 'node9', 'node10', 'node11', 'node12', 'node13'],
+          padding: 10,
+          style: {
+            fill: 'lightgreen',
+            stroke: 'green',
+          },
+        });
+
+        graph.on('afterupdateitem', (e) => {
+          hull1.updateData(hull1.members);
+          hull2.updateData(hull2.members);
+          hull3.updateData(hull3.members);
+        });
+      });
+    },
+    // 格式化情况统计圆环文本
+    formatProgress(percentage) {
+      return `${percentage}`;
+    },
+    // 格式化用户信息得分文本
+    formatScore() {
+      return this.score;
+    }
   }
 }
 </script>
@@ -88,7 +286,49 @@ export default {
   font-weight: bold;
 }
 
-/deep/.box-card-no-padding .el-card__body {
+/deep/ .box-card-no-padding .el-card__body {
   padding: 0
+}
+
+/* 透明按钮，用于圆环 */
+button.transparent-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* 用户情况统计圆环内部样式 */
+/deep/ .orange-progress .el-progress__text {
+  font-weight: bold;
+  font-size: x-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: orange;
+}
+
+/deep/ .gold-progress .el-progress__text {
+  font-weight: bold;
+  font-size: x-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: gold;
+}
+
+/deep/ .green-progress .el-progress__text {
+  font-weight: bold;
+  font-size: x-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: lightgreen;
+}
+
+/* 用户评估信息圆环内部样式 */
+/deep/ .green-score .el-progress__text {
+  font-weight: bold;
+  font-size: xxx-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: lightgreen;
+}
+
+/* 用户信息表单样式 */
+.firm-info-form .el-form-item {
+  text-align: left;
 }
 </style>
