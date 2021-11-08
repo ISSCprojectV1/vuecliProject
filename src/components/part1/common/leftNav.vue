@@ -227,6 +227,12 @@
             </template>
 
             <el-menu-item
+                index="/trade/DefaultRisk/transactionEvaluation"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">交易评估</span>
+            </el-menu-item>
+
+            <el-menu-item
                 index="/trade/DefaultRisk/firmEvaluation"
                 style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">用户评估</span>
