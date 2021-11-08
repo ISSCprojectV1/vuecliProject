@@ -193,28 +193,28 @@
           <el-submenu
               index="/trade/PolicyRisk" style="text-align: left">
             <template slot="title">
-                            <i class="el-icon-menu"></i>
+              <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal;">政策风险</span>
             </template>
 
             <el-menu-item
-                          index="/trade/PolicyRisk/event_calendar"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
+                index="/trade/PolicyRisk/event_calendar"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
-                          index="/trade/PolicyRisk/viewIndustryPolicy"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
+                index="/trade/PolicyRisk/viewIndustryPolicy"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">业内政策1</span>
             </el-menu-item>
             <el-menu-item
-                          index="/trade/PolicyRisk/viewIndustryPolicyco"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
+                index="/trade/PolicyRisk/viewIndustryPolicyco"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">业内政策2</span>
             </el-menu-item>
             <el-menu-item
-                          index="/trade/PolicyRisk/viewAssociatedPolicy"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
+                index="/trade/PolicyRisk/viewAssociatedPolicy"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">关联政策</span>
             </el-menu-item>
           </el-submenu>
@@ -227,9 +227,15 @@
             </template>
 
             <el-menu-item
-            index="/trade/DefaultRisk/firmEvaluation"
-            style="text-align: left;padding-left: 70px;font-size: 18px">
+                index="/trade/DefaultRisk/firmEvaluation"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">用户评估</span>
+            </el-menu-item>
+
+            <el-menu-item
+                index="/trade/DefaultRisk/categoryEvaluation"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">品类评估</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!--用户情况统计-->
+    <!--品类情况统计-->
     <el-card shadow="hover" class="box-card">
       <div slot="header" class="box-card-header">
-        <span>用户情况统计</span>
+        <span>品类情况统计</span>
       </div>
 
       <el-row style="margin-left: 5rem; margin-right: 5rem">
@@ -11,57 +11,57 @@
           <button class="transparent-button" @click="onClickRiskI">
             <el-progress type="circle" :percentage="10" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgress" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I<br/>用户数</p>
+            <p class="progress-text">风险评级I<br/>品类数</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskII">
             <el-progress type="circle" :percentage="15" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgress" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II<br/>用户数</p>
+            <p class="progress-text">风险评级II<br/>品类数</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskIII">
             <el-progress type="circle" :percentage="75" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgress" color="lightgreen" :width="90" class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III<br/>用户数</p>
+            <p class="progress-text">风险评级III<br/>品类数</p>
           </button>
         </el-col>
       </el-row>
     </el-card>
 
-    <!--用户查询-->
+    <!--品类查询-->
     <el-card shadow="hover" class="box-card">
       <div slot="header" class="box-card-header">
-        <span>用户查询</span>
+        <span>品类查询</span>
       </div>
 
-      <el-input placeholder="请输入用户UID" maxlength="50">
-        <template slot="prepend">用户UID</template>
+      <el-input placeholder="请输入品类UID" maxlength="50">
+        <template slot="prepend">品类UID</template>
         <el-button slot="append" @click="onQueryFirmInfo">查询</el-button>
       </el-input>
     </el-card>
 
-    <!--用户信息表格-->
+    <!--品类信息表格-->
     <el-card v-show="noQuery" shadow="hover" class="box-card box-card-no-padding">
       <el-table
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}">
-        <el-table-column prop="company" label="用户UID" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="用户名称" min-width="100"></el-table-column>
+        <el-table-column prop="company" label="品类UID" min-width="100"></el-table-column>
+        <el-table-column prop="company" label="品类名称" min-width="100"></el-table-column>
         <el-table-column prop="company" label="风险评级" min-width="100"></el-table-column>
         <el-table-column prop="company" label="风险评分" min-width="100"></el-table-column>
         <el-table-column prop="company" label="主要问题" min-width="100"></el-table-column>
       </el-table>
     </el-card>
 
-    <!--用户查询结果-->
+    <!--品类查询结果-->
     <el-card v-show="!noQuery" shadow="hover" class="box-card" style="height: 460px">
       <div slot="header" class="box-card-header">
-        <span>用户评估信息</span>
+        <span>品类评估信息</span>
       </div>
 
       <el-row :gutter="2">
@@ -74,17 +74,17 @@
         </el-col>
         <el-col :span="12" style="padding-left: 3rem">
           <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
-            <el-form-item label="用户UID">
+            <el-form-item label="品类UID">
               XXXXXX
             </el-form-item>
-            <el-form-item label="用户名称">
-              XXXX交易所
+            <el-form-item label="品类名称">
+              XXXX
             </el-form-item>
             <el-form-item label="相关交易信息">
               XXXX<br/>
               XXXX
             </el-form-item>
-            <el-form-item label="主营品类信息">
+            <el-form-item label="相关用户信息">
               XXXX<br/>
               XXXX
             </el-form-item>
@@ -108,7 +108,7 @@
 import G6 from '@antv/g6';
 
 export default {
-  name: "firmEvaluation.vue",
+  name: "categoryEvaluation.vue",
   data() {
     return {
       noQuery: true,
@@ -135,7 +135,7 @@ export default {
     onClickRiskIII() {
       this.noQuery = true;
     },
-    // 查询用户信息
+    // 查询品类信息
     onQueryFirmInfo() {
       this.noQuery = false;
       this.drawChart();
@@ -261,7 +261,7 @@ export default {
     formatProgress(percentage) {
       return `${percentage}`;
     },
-    // 格式化用户信息得分文本
+    // 格式化品类信息得分文本
     formatScore() {
       return this.score;
     }
@@ -297,7 +297,7 @@ button.transparent-button {
   cursor: pointer;
 }
 
-/* 用户情况统计圆环内部样式 */
+/* 品类情况统计圆环内部样式 */
 /deep/ .orange-progress .el-progress__text {
   font-weight: bold;
   font-size: x-large !important;
@@ -319,7 +319,7 @@ button.transparent-button {
   color: lightgreen;
 }
 
-/* 用户评估信息圆环内部样式 */
+/* 品类评估信息圆环内部样式 */
 /deep/ .green-score .el-progress__text {
   font-weight: bold;
   font-size: xxx-large !important;
@@ -327,7 +327,7 @@ button.transparent-button {
   color: lightgreen;
 }
 
-/* 用户信息表单样式 */
+/* 品类信息表单样式 */
 .firm-info-form .el-form-item {
   text-align: left;
 }
