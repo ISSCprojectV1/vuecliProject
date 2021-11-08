@@ -197,7 +197,7 @@ export const asyncRoutes = [
       },
       {
         id: 32,
-        path: "/trade/insiderTrading/relationDetection",
+        path: "/trade/insiderTrading/relationDetection/:id",
         component: () => import("@/components/part4/relationDetection"),
       },
       {
