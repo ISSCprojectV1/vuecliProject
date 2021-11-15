@@ -246,28 +246,24 @@
             </template>
 
             <el-menu-item
-              v-if="isAvailable('/trade/PolicyRisk/event_calendar')"
               index="/trade/PolicyRisk/event_calendar"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
-              v-if="isAvailable('/trade/PolicyRisk/viewIndustryPolicy')"
               index="/trade/PolicyRisk/viewIndustryPolicy"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">业内政策1</span>
             </el-menu-item>
             <el-menu-item
-              v-if="isAvailable('/trade/PolicyRisk/viewIndustryPolicyco')"
               index="/trade/PolicyRisk/viewIndustryPolicyco"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">业内政策2</span>
             </el-menu-item>
             <el-menu-item
-              v-if="isAvailable('/trade/PolicyRisk/viewAssociatedPolicy')"
               index="/trade/PolicyRisk/viewAssociatedPolicy"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
@@ -285,10 +281,24 @@
             </template>
 
             <el-menu-item
+              index="/trade/DefaultRisk/transactionEvaluation"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">交易评估</span>
+            </el-menu-item>
+
+            <el-menu-item
               index="/trade/DefaultRisk/firmEvaluation"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">用户评估</span>
+            </el-menu-item>
+
+            <el-menu-item
+              index="/trade/DefaultRisk/categoryEvaluation"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">品类评估</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
