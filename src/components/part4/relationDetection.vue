@@ -27,50 +27,71 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="accountTable">
-      <el-col :span="12" style="margin-right: 10px">
-        <p class="title"><b>关联内幕人员</b></p>
-        <el-table
-          ref="domitoryTable"
-          :data="
-            accountTable.dormitory.slice(
-              (accountTable.currentPage - 1) * accountTable.PageSize,
-              accountTable.currentPage * accountTable.PageSize
-            )
-          "
-          tooltip-effect="dark"
-          stripe
-          style="width: 100%"
-          :header-cell-style="headcell"
-          border
-          v-loading="accountTable.loading"
-          element-loading-text="加载中"
-          @row-click="handleRowClick"
-        >
-          <el-table-column prop="id" label="关联内幕人员id"></el-table-column>
-          <el-table-column
-            prop="name"
-            label="关联内幕人员名称"
-          ></el-table-column>
-          <el-table-column prop="level" label="关联等级"></el-table-column>
-        </el-table>
-        <el-pagination
-          @size-change="handleAccountTableSizeChange"
-          @current-change="handleAccountTableCurrentChange"
-          :current-page="accountTable.currentPage"
-          :page-sizes="accountTable.pageSizes"
-          :page-size="accountTable.PageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="accountTable.totalCount"
-          style="margin-top: 0.5rem"
-        >
-        </el-pagination>
+
+    <el-row>
+      <el-col :span="12">
+        <div>
+          <p class="title"><b>关联内幕人员</b></p>
+          <el-table
+            ref="domitoryTable"
+            :data="
+              accountTable.dormitory.slice(
+                (accountTable.currentPage - 1) * accountTable.PageSize,
+                accountTable.currentPage * accountTable.PageSize
+              )
+            "
+            tooltip-effect="dark"
+            stripe
+            style="width: 100%"
+            :header-cell-style="headcell"
+            border
+            v-loading="accountTable.loading"
+            element-loading-text="加载中"
+            @row-click="handleRowClick"
+          >
+            <el-table-column prop="id" label="关联内幕人员id"></el-table-column>
+            <el-table-column
+              prop="name"
+              label="关联内幕人员名称"
+            ></el-table-column>
+            <el-table-column prop="level" label="关联等级"></el-table-column>
+          </el-table>
+          <el-pagination
+            @size-change="handleAccountTableSizeChange"
+            @current-change="handleAccountTableCurrentChange"
+            :current-page="accountTable.currentPage"
+            :page-sizes="accountTable.pageSizes"
+            :page-size="accountTable.PageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="accountTable.totalCount"
+            style="margin-top: 0.5rem"
+          >
+          </el-pagination>
+        </div>
       </el-col>
-    </div>
+      <el-col :span="12">
+        <div>
+          <div style="margin: 10px">
+            <el-radio-group v-model="radio">
+              <el-radio-button label="指标一"></el-radio-button>
+              <el-radio-button label="指标二"></el-radio-button>
+              <el-radio-button label="指标三"></el-radio-button>
+              <el-radio-button label="指标四"></el-radio-button>
+            </el-radio-group>
+          </div>
+          <div
+            id="container"
+            style="width: 700px; height: 500px; margin: 10px"
+            ref="graph"
+          ></div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import echarts from "echarts";
 export default {
   name: "reationDetection",
   data() {
@@ -108,10 +129,51 @@ export default {
         totalCount: 100,
         loading: false,
       },
+      graph: {
+        nodes: [
+          {
+            id: "0",
+            name: "0",
+            category: 0,
+          },
+          {
+            id: "1",
+            name: "1",
+            category: 1,
+          },
+        ],
+        links: [
+          {
+            source: "0",
+            target: "1",
+          },
+        ],
+        categories: [
+          {
+            name: "A",
+            itemStyle: {
+              color: "#FF8000",
+            },
+          },
+          {
+            name: "B",
+            itemStyle: {
+              color: "#01DF01",
+            },
+          },
+          {
+            name: "C",
+            itemStyle: {
+              color: "#DF0101",
+            },
+          },
+        ],
+      },
     };
   },
   mounted() {
     this.accountTable.dormitory = this.getAccountTableData();
+    this.initGraph();
   },
   computed: {
     hasNoId: function () {
@@ -119,6 +181,46 @@ export default {
     },
   },
   methods: {
+    initGraph() {
+      var dom = this.$refs.graph;
+      var graph = echarts.init(dom);
+      let option = {
+        title: {
+          left: "center",
+          text: "Les Miserables",
+        },
+        tooltip: {},
+        legend: [
+          {
+            right: "20%",
+            // selectedMode: 'single',
+            data: this.graph.categories.map(function (a) {
+              return a.name;
+            }),
+          },
+        ],
+        series: [
+          {
+            name: "Les Miserables",
+            type: "graph",
+            layout: "force",
+            data: this.graph.nodes,
+            links: this.graph.links,
+            categories: this.graph.categories,
+            animation: false,
+            roam: true,
+            label: {
+              position: "right",
+              formatter: "{b}",
+            },
+            force: {
+              repulsion: 100,
+            },
+          },
+        ],
+      };
+      graph.setOption(option);
+    },
     headcell() {
       return {
         "background-color": "#dfdfdf",

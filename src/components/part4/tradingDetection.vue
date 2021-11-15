@@ -175,10 +175,9 @@
         </el-pagination>
         <div style="margin: 10px">
           <el-radio-group v-model="radio">
-            <el-radio-button label="指标一"></el-radio-button>
-            <el-radio-button label="指标二"></el-radio-button>
-            <el-radio-button label="指标三"></el-radio-button>
-            <el-radio-button label="指标四"></el-radio-button>
+            <el-radio-button label="关系一"></el-radio-button>
+            <el-radio-button label="关系二"></el-radio-button>
+            <el-radio-button label="关系三"></el-radio-button>
           </el-radio-group>
         </div>
 
