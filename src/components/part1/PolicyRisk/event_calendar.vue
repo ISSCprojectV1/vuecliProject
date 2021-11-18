@@ -7,11 +7,11 @@
             <div class="reuse-head">
                 <div class="reuse-title">{{index+1}}. {{event.title}}</div>
                 <div class="reuse-date">{{event.date}}</div>
-                <el-button @click="showDelete(event)" type="warning" round>查看</el-button>
+                <!--el-button @click="showDelete(event)" type="warning" round>查看</el-button-->
             </div>
-            <div class="reuse-foot">
-                {{event.desc}}             
-            </div>
+            <el-link :href ="event.linkplace" class="reuse-foot" target="_blank">
+                <i class="el-icon-view el-icon--left"></i>{{event.desc}}             
+            </el-link>
         </div>
     </template>
     </vue-event-calendar>
@@ -19,24 +19,35 @@
 </template>
 
 <script>
+import {getEventCalendar} from "@/api/part1/policyRisk";
 let today = new Date()
 export default {
   name: 'app',
   data () {
     return {
-      demoEvents: [{
-        date: `${today.getFullYear()}/${today.getMonth() + 1}/15`,
-        title: 'Title-1',
-        desc: 'longlonglong description'
-      },{
-        date: `${today.getFullYear()}/${today.getMonth() + 1}/24`,
-        title: 'Title-2'
-      },{
-        date: `${today.getFullYear()}/${today.getMonth() === 11 ? 1 : today.getMonth() - 2}/06`,
-        title: 'Title-3',
-        desc: 'description'
-      }]
+      demoData: [],
+      demoEvents: []
     }
+  },
+  created(){
+    getEventCalendar().then(res=>{
+      console.log(res.data.data)
+      this.demoEvents=[];
+      this.demoData = res.data.data
+      for (let i = 0; i < this.demoData.length; i++){
+        let nowday = new Date(Date.parse(this.demoData[i].date));
+        let day=`${nowday.getFullYear()}/${nowday.getMonth()+1}/${nowday.getDate()}`;
+        this.demoEvents.push({
+          date:day,
+          title:this.demoData[i].title,
+          desc:this.demoData[i].description,
+          linkplace:this.demoData[i].linkplace
+        })
+      }
+    }).catch(err=>{
+      console.log(err);
+      console.log("出现错误")
+    })
   },
   methods: {
     handleDayChanged (data) {
@@ -109,16 +120,18 @@ h1{
   justify-content: space-between;
 }
 .reuse-title {
-    font-weight: 500;
+    font-weight: bolder;
 }
 .reuse-date {
-    color: #999;
-}
-.reuse-foot {
   font-size: 18px;
   color: #999;
+  margin-top: 10px
+}
+.reuse-foot {
+  font-size: 20px;
   padding-top: 8px;
   margin-bottom: 8px;
+  color: black;
   border-top: 1px solid #ddd;
 }
 </style>

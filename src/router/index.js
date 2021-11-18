@@ -246,7 +246,7 @@ export const asyncRoutes = [
       },
       {
         id: 35,
-        path: "/trade/PolicyRisk/viewIndustryPolicyco",
+        path: "/trade/PolicyRisk/viewIndustryPolicyco/:platform",
         component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
       },
       {

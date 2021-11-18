@@ -2,10 +2,10 @@
   <div style="width: 100%">
     <el-container style="height: 700px; border: 0.5rem solid #eee">
       <el-aside width="50%" style="border: 0.5rem solid #eee">
-        <h2>{{platName}}</h2>
+        <h2>异常交易模式风险传播</h2>
         <el-table :data="dataIndustryPolicy" highlight-current-row @row-click="onClickTableSpace">
-          <el-table-column label="发布日期" fixed="left" prop="releaseDate" min-width="100" sortable></el-table-column>
-          <el-table-column label="政策名称" prop="policyName" min-width="140"></el-table-column>
+          <el-table-column label="平台名称" fixed="left" prop="releaseDate" min-width="100" ></el-table-column>
+          <el-table-column label="主要交易商品" prop="policyName" min-width="140"></el-table-column>
           <el-table-column label="政策风险等级" min-width="70" >
             <template slot="header">
               <span>政策风险等级<el-button class = "buttonclick" type="warning" icon="iconfont icon-icon-test" size="mini" circle @click="dialogVisible = true"></el-button></span>
@@ -14,7 +14,6 @@
               <span v-if="scope.row.policyRiskMean === '一级风险'" class = "first">{{ scope.row.policyRiskMean }}</span>
               <span v-else-if="scope.row.policyRiskMean === '二级风险'" class = "second">{{ scope.row.policyRiskMean }}</span>
               <span v-else-if="scope.row.policyRiskMean === '三级风险'" class = "third">{{ scope.row.policyRiskMean }}</span>
-              <span v-else-if="scope.row.policyRiskMean === '四级风险'" class = "fourth">{{ scope.row.policyRiskMean }}</span>
             </template>
         </el-table-column> 
         </el-table>
@@ -25,8 +24,7 @@
           :before-close="handleClose">
           <div class = "first">—级预警:交易平台受政策不利因素直接影响</div>
           <div class = "second">二级预警:与其相关性高的交易平台受政策不利因素直接影响（跳数范围)</div>
-          <div class = "third">二级预警:与其相关性中的交易平台受政策不利因素直接影响（跳数范围)</div>
-          <div class = "fourth">二级预警:与其相关性低的交易平台受政策不利因素直接影响（跳数范围)</div>
+          <div class = "third">三级预警:与其相关性中的交易平台受政策不利因素直接影响（跳数范围)</div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -54,10 +52,10 @@
                 <el-button class="inborderB" circle></el-button>
                 <div class="other">交易平台</div>
               </div> 
-              <div class="inC">
+              <!--div class="inC">
                 <el-button class="inborderC" circle></el-button>
                 <div class="policy">政策</div>
-              </div>          
+              </div-->          
             </div>
             <svg width="700" height="500" class="container-border"></svg>
           </div>
@@ -72,19 +70,19 @@ import * as d3 from 'd3'
 export default {
   data () {
     return {
-      platName: "南方稀贵金属交易所",
+      //platName: "南方稀贵金属交易所",
       dialogVisible: false,
       dataIndustryPolicy: [{
-        releaseDate: '2020-02-06',
-        policyName: '《山东省交易场所监督管理办法》',
+        releaseDate: '南方稀贵金属交易所',
+        policyName: '铁矿石、螺纹钢、动力煤',
         policyRiskMean: '一级风险'
       },{
-        releaseDate: '2020-02-06',
-        policyName: 'XXXXXXXX',
+        releaseDate: '海西商品交易所',
+        policyName: '铁矿石、甲醇、动力煤',
         policyRiskMean: '二级风险'
       },{
-        releaseDate: '2020-02-06',
-        policyName: 'XXXXXXXX',
+        releaseDate: '无锡贵金属交易所',
+        policyName: '铁矿石、焦炭、甲醇',
         policyRiskMean: '三级风险'
       }]
     }
@@ -97,22 +95,14 @@ export default {
     let radius = 20
     let nodesData = [
       { name: '南方稀贵金属交易所', type: '0' },
-      { name: '交易平台B', type: '1' },
-      { name: '交易平台C', type: '1' },
-      { name: '交易平台D', type: '1' },
-      { name: '《山东省交易场所监督管理办法》', type: '2' },
-      { name: '政策2', type: '2' },
-      { name: '政策3', type: '2' },
+      { name: '海西商品交易所', type: '1' },
+      { name: '无锡贵金属交易所', type: '1' },
     ]
     // Sample links data
     // type: A for Ally, E for Enemy
     let linksData = [
-      { source: 4, target: 0,  typeid: '1' },
-      { source: 5, target: 2,  typeid: '1' },
-      { source: 2, target: 3,  typeid: '1' },
-      { source: 3, target: 1,  typeid: '1' },
-      { source: 1, target: 0,  typeid: '1' },
-      { source: 6, target: 1,  typeid: '1' },
+      { source: 0, target: 1,  typeid: '1' },
+      { source: 1, target: 2,  typeid: '1' },
     ]
     // set up the simulation and add forces
     let simulation = d3.forceSimulation()
@@ -249,18 +239,14 @@ export default {
   font-size: 18px;
   color: 	#FFD700;
 }
-.fourth{
-  font-size: 18px;
-  color: #0489DF;
-}
 .outborder{
   margin:5px 0px 5px 600px;
   width: 170px;    
-  height: 100px;    
+  height: 80px;    
   border:1px solid #8EA7B8
 }
 .inA{
-  margin:5px 150px 5px 13px;
+  margin:10px 150px 5px 13px;
 }
 .inborderA{
   background-color: #C22D3B;
