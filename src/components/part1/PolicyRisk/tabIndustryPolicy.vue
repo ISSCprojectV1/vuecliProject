@@ -6,9 +6,9 @@
         <el-table :data="dataIndustryPolicy" highlight-current-row @row-click="onClickTableSpace">
           <el-table-column label="平台名称" fixed="left" prop="platform" min-width="100"></el-table-column>
           <el-table-column label="涉及禁止交易模式" prop="transaction_mode" min-width="160"></el-table-column>
-          <el-table-column label="详情" min-width="80">
-            <template slot-scope="flat">
-              <el-button type="text" @click="getFlats(flat.row)">查看详情</el-button>
+          <el-table-column label="影响详情" min-width="80">
+            <template slot-scope="scope">
+              <el-button type="text" @click="gotoSpread(scope.row.platform)">查看详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -27,12 +27,14 @@
           <div class="force-base-ii">
             <div class="outborder">
               <div class="inA">
-                <div class="inborderA"></div>
-                <div class="tracom">交易商品</div>
+                <el-button class="inborderA"  circle></el-button>
+                <div class="user">交易账户</div>
+                <!--div class="inborderA"></div>
+                <div class="tracom">交易商品</div-->
               </div>
               <div class="inB">
                 <div class="inborderB"></div>
-                <div class="finan">融资手段</div>
+                <div class="finan">交易过程</div>
               </div>           
             </div>
             <svg width="700" height="500" class="container-border"></svg>
@@ -51,16 +53,29 @@ export default {
     return {
       dataIndustryPolicy: [{
         platform: '南方稀贵金属交易所',
-        transaction_mode: '小麦'
+        transaction_mode: '星形/囤积现货'
       },{
         platform: '天地红辣椒电子交易市场',
-        transaction_mode: '融资手段'
+        transaction_mode: '集合竞价'
       }]
     }
   },
   mounted () {
     let marge = { top: 0, bottom: 0, left: 60, right: 60 }
     let svg = d3.select('svg')
+    let marker =
+        svg.append("marker")
+            .attr("id", "arrow")
+            .attr("markerUnits","strokeWidth")//设置为strokeWidth箭头会随着线的粗细发生变化
+            .attr("viewBox", "0 0 12 12")//坐标系的区域
+            .attr("refX", 16)//箭头坐标
+            .attr("refY", 6)
+            .attr("markerWidth", 12)
+            .attr("markerHeight", 12)
+            .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+            .append("path")
+            .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")//箭头的路径
+            .attr('fill', '#999');//箭头颜色
     let width = svg.attr('width')
     let height = svg.attr('height')
     let g = svg.append('g')
@@ -68,28 +83,22 @@ export default {
     // Node Dataset
     // 节点集
     let nodes = [
-      { name: '交易平台A', type: '1' },
-      { name: '交易平台B', type: '1' },
-      { name: '交易平台C', type: '1' },
-      { name: '交易平台D', type: '1' },
-      { name: '交易账户1', type: '2' },
-      { name: '交易账户2', type: '2' },
-      { name: '交易账户3', type: '2' },
-      { name: '银行a', type: '3' },
-      { name: '银行b', type: '3' }
+      { name: '南京荣鑫科技', type: '2' },
+      { name: '广西威日矿业有限责任公司', type: '2' },
+      { name: '广西有色金属集团汇元锰业有限公司', type: '2' },
+      { name: '福建省华庆矿业有限公司', type: '2' },
+      { name: '福建省将乐县光明鑫源矿业有限公司', type: '2' },
+      { name: '福建省美鑫垚矿业开发有限公司', type: '2' },
+      
     ]
     // Side Dataset
     // 边集
     let edges = [
-      { source: 4, target: 0,  value: 1, typeid: '1' },
-      { source: 4, target: 2,  value: 1, typeid: '1' },
-      { source: 4, target: 3,  value: 1, typeid: '1' },
-      { source: 5, target: 1,  value: 2, typeid: '1' },
-      { source: 5, target: 3,  value: 0.9, typeid: '1' },
-      { source: 6, target: 0,  value: 1, typeid: '1' },
-      { source: 6, target: 2,  value: 1.6, typeid: '1' },
-      { source: 7, target: 2,  value: 0.7, typeid: '2' },
-      { source: 8, target: 3,  value: 2, typeid: '2' }
+      { source: 3, target: 0,  value: 1.5, typeid: '2' },
+      { source: 3, target: 2,  value: 1.5, typeid: '2' },
+      { source: 3, target: 1,  value: 1.5, typeid: '2' },
+      { source: 3, target: 4,  value: 1.5, typeid: '2' },
+      { source: 3, target: 5,  value: 1.5, typeid: '2' },
     ]
     // Set a color scale
     // 设置一个颜色比例尺
@@ -117,7 +126,7 @@ export default {
     // 设置图形中心位置
     forceSimulation.force('center')
       .x(width / 2)
-      .y(height / 4)
+      .y(height / 6)
     // Draw side
     // 绘制边
     let links = g.append('g')
@@ -127,6 +136,7 @@ export default {
       .append('line')
       .attr('stroke', this.linkColor)
       .attr('stroke-width', 1.5)
+      .attr("marker-end","url(#arrow)");
     // Text on side
     // 边上的文字
     let linksText = g.append('g')
@@ -160,6 +170,9 @@ export default {
       .attr('fill', this.circleColor)
     // Draw text
     // 绘制文字
+    gs.append('title')
+      .text(function (d) { return d.name })
+    /*
     gs.append('text')
       .attr('x', -10)
       .attr('y', -20)
@@ -167,6 +180,7 @@ export default {
       .text(function (d) {
         return d.name
       })
+    */
     // ticked
     function ticked () {
       links
@@ -216,6 +230,9 @@ export default {
       } else {
         return '#A86F67'
       }
+    },
+    gotoSpread(platform){
+      this.$router.push(`/trade/PolicyRisk/viewIndustryPolicyco/${platform}`);
     }
   }
 }
@@ -227,6 +244,7 @@ export default {
   height: 100px;    
   border:1px solid #8EA7B8
 }
+/*
 .inA{
   height: 30px;
   width: 180px;
@@ -236,6 +254,17 @@ export default {
   width: 90px;
   height: 1px;
   background:black;
+}
+*/
+.inA{
+  margin:20px 100px 5px 13px;
+}
+.inborderA{
+  background-color: #F1D672;
+}
+.user{
+  width: 90px;
+  margin: -23px 0px 0px 97px;
 }
 .tracom{
   width: 90px;

@@ -239,6 +239,13 @@ let routes = [
         }
       },
       {
+        path:"/trade/PolicyRisk/viewIndustryPolicyco/:platform",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
+        meta: {
+          title: "业内政策2"
+        }
+      },
+      {
         path:"/trade/PolicyRisk/viewAssociatedPolicy",
         component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
         meta: {

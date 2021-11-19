@@ -25,6 +25,40 @@ export const constantRoutes = [
     name: "Register",
     component: () => import("@/views/part1/register")
   },
+  {
+    path: "/trade",
+    component: () => import("@/components/part1/common/full"),
+    children: [
+      {
+        path:"/trade/PolicyRisk/event_calendar",
+        component: () => import("@/components/part1/PolicyRisk/event_calendar"),
+        meta: {
+          title: "政策-事件日历"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
+        meta: {
+          title: "业内政策1"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicyco",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
+        meta: {
+          title: "业内政策1"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewAssociatedPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
+        meta: {
+          title: "关联政策"
+        }
+      }
+    ]
+  },
 ]
 
 // 异步挂载路由，根据权限加载路由表
@@ -212,7 +246,7 @@ export const asyncRoutes = [
       },
       {
         id: 35,
-        path: "/trade/PolicyRisk/viewIndustryPolicyco",
+        path: "/trade/PolicyRisk/viewIndustryPolicyco/:platform",
         component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
       },
       {
