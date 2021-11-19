@@ -44,7 +44,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="商品id" style="margin-left: 300px">
+        <el-form-item label="商品种类" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.goodValue"
@@ -110,7 +110,7 @@
         >
           <el-table-column prop="id" label="账户id"></el-table-column>
           <el-table-column prop="name" label="账户姓名"> </el-table-column>
-          <el-table-column prop="productId" label="账户id"></el-table-column>
+          <el-table-column prop="productId" label="商品种类"></el-table-column>
           <el-table-column prop="level" label="风险等价"></el-table-column>
           <el-table-column label="查看关联内幕人员" align="center">
             <template slot-scope="scope">
@@ -193,6 +193,10 @@
 
 <script>
 import echarts from "echarts";
+import {
+  getDetectionOptions,
+  getAnomolyList,
+} from "@/api/part4/tradingDetection";
 var option;
 let accountTableData = [];
 let tradeTableData = [];
@@ -309,75 +313,12 @@ export default {
   data() {
     return {
       form: {
-        nameOptions: [
-          {
-            value: "选项1",
-            label: "无锡贵金属交易所",
-          },
-          {
-            value: "选项2",
-            label: "海西商品交易所",
-          },
-          {
-            value: "选项3",
-            label: "上海黄金交易所",
-          },
-          {
-            value: "选项4",
-            label: "恒大金属交易中心",
-          },
-          {
-            value: "选项5",
-            label: "青岛国际商品交易所",
-          },
-        ],
+        nameOptions: [],
         nameValue: [],
-        accountOptions: [
-          {
-            value: "选项1",
-            label: "0001",
-          },
-          {
-            value: "选项2",
-            label: "0002",
-          },
-          {
-            value: "选项3",
-            label: "0003",
-          },
-          {
-            value: "选项4",
-            label: "0004",
-          },
-          {
-            value: "选项5",
-            label: "0005",
-          },
-        ],
+        accountOptions: [],
 
         accoutnValue: [],
-        goodOptions: [
-          {
-            value: "选项1",
-            label: "0001",
-          },
-          {
-            value: "选项2",
-            label: "0002",
-          },
-          {
-            value: "选项3",
-            label: "0003",
-          },
-          {
-            value: "选项4",
-            label: "0004",
-          },
-          {
-            value: "选项5",
-            label: "0005",
-          },
-        ],
+        goodOptions: [],
         goodValue: [],
         date1: "",
         data2: "",
@@ -407,8 +348,30 @@ export default {
       radio: "指标二",
     };
   },
-  mounted() {
+  created() {
     init();
+    getDetectionOptions().then((response) => {
+      console.log(response);
+      for (var i = 0; i < response.data.nameOptions.length; i++) {
+        this.form.nameOptions.push({
+          value: i + 1,
+          label: response.data.nameOptions[i],
+        });
+      }
+      for (i = 0; i < response.data.accountOptions.length; i++) {
+        this.form.accountOptions.push({
+          value: i + 1,
+          label: response.data.accountOptions[i],
+        });
+      }
+      for (i = 0; i < response.data.goodOptions.length; i++) {
+        this.form.goodOptions.push({
+          value: i + 1,
+          label: response.data.goodOptions[i],
+        });
+      }
+    });
+    console.log(this.form);
   },
   methods: {
     headcell() {
@@ -421,6 +384,7 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
+      console.log(this.form);
       var dom = this.$refs.chart;
       var myChart = echarts.init(dom);
       if (option && typeof option === "object") {

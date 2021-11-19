@@ -169,6 +169,7 @@ export default {
           },
         ],
       },
+      radio: "指标二",
     };
   },
   mounted() {
