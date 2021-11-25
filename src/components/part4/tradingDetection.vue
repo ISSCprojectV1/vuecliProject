@@ -111,7 +111,7 @@
           <el-table-column prop="id" label="账户id"></el-table-column>
           <el-table-column prop="name" label="账户姓名"> </el-table-column>
           <el-table-column prop="productId" label="商品种类"></el-table-column>
-          <el-table-column prop="level" label="风险等价"></el-table-column>
+          <el-table-column prop="level" label="风险等级"></el-table-column>
           <el-table-column label="查看关联内幕人员" align="center">
             <template slot-scope="scope">
               <el-button
@@ -174,16 +174,16 @@
         >
         </el-pagination>
         <div style="margin: 10px">
-          <el-radio-group v-model="radio">
-            <el-radio-button label="关系一"></el-radio-button>
-            <el-radio-button label="关系二"></el-radio-button>
-            <el-radio-button label="关系三"></el-radio-button>
+          <el-radio-group v-model="radio" @change="handleRadioChange">
+            <el-radio-button label="0">指标1</el-radio-button>
+            <el-radio-button label="1">指标2</el-radio-button>
+            <el-radio-button label="2">指标3</el-radio-button>
           </el-radio-group>
         </div>
 
         <div
           id="container"
-          style="width: 800px; height: 500px; margin: 10px"
+          style="width: 750px; height: 500px; margin: 5px"
           ref="chart"
         ></div>
       </el-col>
@@ -197,116 +197,6 @@ import {
   getDetectionOptions,
   getAnomolyList,
 } from "@/api/part4/tradingDetection";
-var option;
-let accountTableData = [];
-let tradeTableData = [];
-function init() {
-  for (let i = 0; i < 20; i++)
-    accountTableData.push({
-      id: i,
-      name: "张三",
-      productId: i + Math.floor(Math.random() * 10),
-      level: Math.floor(Math.random() * 4),
-    });
-  console.log(accountTableData);
-
-  for (let i = 0; i < 10; i++)
-    tradeTableData.push({
-      id: i,
-      productId: i + Math.floor(Math.random() * 10),
-      type: Math.random() < 0.5 ? "买入" : "卖出",
-      price: Math.floor(Math.random() * 20),
-      quantity: Math.floor(Math.random() * 200),
-    });
-
-  var app = {};
-
-  let base = +new Date(1988, 9, 3);
-  let oneDay = 24 * 3600 * 1000;
-  let data = [[base, 100 + Math.random() * 100]];
-  for (let i = 1; i < 200; i++) {
-    let now = new Date((base += oneDay));
-    let sgn = -0.5;
-    if (data[i - 1][1] < 50 + Math.random() * 100) sgn = 0.5;
-    data.push([+now, Math.round((Math.random() + sgn) * 10 + data[i - 1][1])]);
-  }
-  console.log(data);
-  option = {
-    tooltip: {
-      trigger: "axis",
-      position: function (pt) {
-        return [pt[0], "10%"];
-      },
-    },
-    legend: {
-      type: "plain",
-      data: ["Fake Data"],
-      right: "20%",
-    },
-    title: {
-      left: "center",
-      text: "Large Ara Chart",
-    },
-    toolbox: {
-      feature: {
-        dataZoom: {
-          yAxisIndex: "none",
-        },
-        restore: {},
-        saveAsImage: {},
-      },
-    },
-    xAxis: {
-      type: "time",
-      boundaryGap: false,
-    },
-    yAxis: {
-      type: "value",
-      boundaryGap: [0, "100%"],
-    },
-    dataZoom: [
-      {
-        type: "inside",
-        start: 0,
-        end: 100,
-      },
-      {
-        start: 0,
-        end: 100,
-      },
-    ],
-    series: [
-      {
-        name: "Fake Data",
-        type: "line",
-        symbol: "none",
-        itemStyle: {
-          color: "#0099FF",
-        },
-        data: data,
-        markArea: {
-          itemStyle: {
-            color: "rgba(255, 173, 177, 0.4)",
-          },
-          label: {
-            color: "#000000",
-          },
-          data: [
-            [
-              {
-                name: "Morning Peak",
-                xAxis: base - oneDay * 50,
-              },
-              {
-                xAxis: base - oneDay * 20,
-              },
-            ],
-          ],
-        },
-      },
-    ],
-  };
-}
 
 export default {
   name: "tradingDetection",
@@ -317,14 +207,14 @@ export default {
         nameValue: [],
         accountOptions: [],
 
-        accoutnValue: [],
+        accountValue: [],
         goodOptions: [],
         goodValue: [],
         date1: "",
-        data2: "",
+        date2: "",
       },
       accountTable: {
-        dormitory: accountTableData,
+        dormitory: [],
         // 默认显示第几页
         currentPage: 1,
         // 条数选择器（可修改）
@@ -336,7 +226,7 @@ export default {
         loading: false,
       },
       tradeTable: {
-        dormitory: tradeTableData,
+        dormitory: [],
         currentPage: 1,
         pageSizes: [5, 10, 20, 50],
         // 默认每页显示的条数（可修改）
@@ -345,26 +235,26 @@ export default {
         totalCount: 100,
         loading: false,
       },
-      radio: "指标二",
+      radio: "",
+      indexData: [],
     };
   },
   created() {
-    init();
     getDetectionOptions().then((response) => {
       console.log(response);
-      for (var i = 0; i < response.data.nameOptions.length; i++) {
+      for (let i = 0; i < response.data.nameOptions.length; i++) {
         this.form.nameOptions.push({
           value: i + 1,
           label: response.data.nameOptions[i],
         });
       }
-      for (i = 0; i < response.data.accountOptions.length; i++) {
+      for (let i = 0; i < response.data.accountOptions.length; i++) {
         this.form.accountOptions.push({
           value: i + 1,
           label: response.data.accountOptions[i],
         });
       }
-      for (i = 0; i < response.data.goodOptions.length; i++) {
+      for (let i = 0; i < response.data.goodOptions.length; i++) {
         this.form.goodOptions.push({
           value: i + 1,
           label: response.data.goodOptions[i],
@@ -384,12 +274,13 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      console.log(this.form);
-      var dom = this.$refs.chart;
-      var myChart = echarts.init(dom);
-      if (option && typeof option === "object") {
-        myChart.setOption(option);
-      }
+      this.initAccountTableData();
+      this.initTradeTableData();
+      this.initTimeSeriesData();
+      this.timeSeriesInit(this.indexData[parseInt(this.radio)]);
+      console.log(this.accountTable);
+      console.log(this.tradeTable);
+      console.log(this.indexData);
     },
     handleAccountTableSizeChange(val) {
       // 改变每页显示的条数
@@ -419,6 +310,142 @@ export default {
     handleRowClick(row, column, event) {
       console.log(row);
       console.log(column);
+      this.initTradeTableData();
+    },
+    handleRadioChange() {
+      console.log(this.radio);
+      this.timeSeriesInit(this.indexData[parseInt(this.radio)]);
+    },
+    timeSeriesInit(timeSeries) {
+      let dom = this.$refs.chart;
+      let myChart = echarts.init(dom);
+      let option = {
+        tooltip: {
+          trigger: "axis",
+          position: function (pt) {
+            return [pt[0], "10%"];
+          },
+        },
+        legend: {
+          type: "plain",
+          data: [timeSeries.name],
+          right: "20%",
+        },
+        title: {
+          left: "center",
+          text: "交易行为指标变化图",
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none",
+            },
+            restore: {},
+            saveAsImage: {},
+          },
+        },
+        xAxis: {
+          type: "time",
+          boundaryGap: false,
+        },
+        yAxis: {
+          type: "value",
+          boundaryGap: [0, "100%"],
+        },
+        dataZoom: [
+          {
+            type: "inside",
+            start: 0,
+            end: 100,
+          },
+          {
+            start: 0,
+            end: 100,
+          },
+        ],
+        series: [
+          {
+            name: timeSeries.name,
+            type: "line",
+            symbol: "none",
+            itemStyle: {
+              color: "#0099FF",
+            },
+            data: timeSeries.data,
+            markArea: {
+              itemStyle: {
+                color: "rgba(255, 173, 177, 0.4)",
+              },
+              label: {
+                color: "#000000",
+              },
+              data: [
+                [
+                  {
+                    name: "Morning Peak",
+                    xAxis: timeSeries.start, // base - oneDay * 50,
+                  },
+                  {
+                    xAxis: timeSeries.end, // base - oneDay * 20,
+                  },
+                ],
+              ],
+            },
+          },
+        ],
+      };
+
+      if (option && typeof option === "object") {
+        myChart.setOption(option);
+      }
+    },
+    initTimeSeriesData() {
+      this.indexData = [];
+      for (let i = 0; i < 3; i++) {
+        let base = +new Date(1988, 9, 3);
+        let oneDay = 24 * 3600 * 1000;
+        let seriesData = [[base, 100 + Math.random() * 100]];
+        let s = Math.floor(Math.random() * 100) + 10;
+        for (let i = 1; i < 200; i++) {
+          let now = new Date((base += oneDay));
+          let sgn = -0.5;
+          if (seriesData[i - 1][1] < 50 + Math.random() * 100) sgn = 0.5;
+          seriesData.push([
+            +now,
+            Math.round((Math.random() + sgn) * 10 + seriesData[i - 1][1]),
+          ]);
+        }
+        this.indexData.push({
+          data: seriesData,
+          start: new Date(1988, 9, 3).getTime() + oneDay * s,
+          end: new Date(1988, 9, 3).getTime() + oneDay * (s + 20),
+          name: "指标" + (i + 1),
+        });
+      }
+    },
+    initAccountTableData() {
+      let accountTableData = [];
+      for (let i = 0; i < 20; i++)
+        accountTableData.push({
+          id: i,
+          name: "用户" + (i + 1),
+          productId: i + Math.floor(Math.random() * 10),
+          level: Math.floor(Math.random() * 4),
+        });
+      console.log(accountTableData);
+      this.accountTable.dormitory = accountTableData;
+    },
+    initTradeTableData() {
+      let tradeTableData = [];
+      for (let i = 0; i < 10; i++)
+        tradeTableData.push({
+          id: i,
+          productId: i + Math.floor(Math.random() * 10),
+          type: Math.random() < 0.5 ? "买入" : "卖出",
+          price: Math.floor(Math.random() * 20),
+          quantity: Math.floor(Math.random() * 200),
+        });
+      this.tradeTable.dormitory = tradeTableData;
     },
   },
 };

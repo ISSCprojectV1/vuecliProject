@@ -6,7 +6,6 @@
           <el-col :span="13">
             <el-select
               v-model="form.nameValue"
-              multiple
               filterable
               placeholder="请选择"
               class="select-box"
@@ -72,11 +71,9 @@
       <el-col :span="12">
         <div>
           <div style="margin: 10px">
-            <el-radio-group v-model="radio">
-              <el-radio-button label="指标一"></el-radio-button>
-              <el-radio-button label="指标二"></el-radio-button>
-              <el-radio-button label="指标三"></el-radio-button>
-              <el-radio-button label="指标四"></el-radio-button>
+            <el-radio-group v-model="radio" @change="handleRadioChange">
+              <el-radio-button label="0">关系网络1</el-radio-button>
+              <el-radio-button label="1">关系网络2</el-radio-button>
             </el-radio-group>
           </div>
           <div
@@ -99,23 +96,19 @@ export default {
       form: {
         nameOptions: [
           {
-            value: "选项1",
-            label: "张三",
+            value: 0,
+            label: "用户1",
           },
           {
-            value: "选项2",
-            label: "李四",
+            value: 1,
+            label: "用户2",
           },
           {
-            value: "选项3",
-            label: "王五",
-          },
-          {
-            value: "选项4",
-            label: "赵六",
+            value: 2,
+            label: "用户3",
           },
         ],
-        nameValue: [],
+        nameValue: null,
       },
       accountTable: {
         dormitory: [],
@@ -129,52 +122,15 @@ export default {
         totalCount: 100,
         loading: false,
       },
-      graph: {
-        nodes: [
-          {
-            id: "0",
-            name: "0",
-            category: 0,
-          },
-          {
-            id: "1",
-            name: "1",
-            category: 1,
-          },
-        ],
-        links: [
-          {
-            source: "0",
-            target: "1",
-          },
-        ],
-        categories: [
-          {
-            name: "A",
-            itemStyle: {
-              color: "#FF8000",
-            },
-          },
-          {
-            name: "B",
-            itemStyle: {
-              color: "#01DF01",
-            },
-          },
-          {
-            name: "C",
-            itemStyle: {
-              color: "#DF0101",
-            },
-          },
-        ],
-      },
-      radio: "指标二",
+      networks: [],
+      radio: "",
     };
   },
   mounted() {
     this.accountTable.dormitory = this.getAccountTableData();
-    this.initGraph();
+    if (!this.hasNoId) this.initNetworksData();
+    if (!this.hasNoId) this.initGraph(this.networks[parseInt(this.radio)]);
+    console.log("hasNoId" + this.hasNoId);
   },
   computed: {
     hasNoId: function () {
@@ -182,32 +138,36 @@ export default {
     },
   },
   methods: {
-    initGraph() {
+    initGraph(graphData) {
       var dom = this.$refs.graph;
       var graph = echarts.init(dom);
       let option = {
         title: {
           left: "center",
-          text: "Les Miserables",
+          text: "关联关系网络",
         },
-        tooltip: {},
+        tooltip: {
+          show: false,
+        },
         legend: [
           {
-            right: "20%",
+            top: "10%",
+            right: "25%",
             // selectedMode: 'single',
-            data: this.graph.categories.map(function (a) {
+            data: graphData.categories.map(function (a) {
               return a.name;
             }),
           },
         ],
         series: [
           {
-            name: "Les Miserables",
+            name: "关联关系网络",
             type: "graph",
             layout: "force",
-            data: this.graph.nodes,
-            links: this.graph.links,
-            categories: this.graph.categories,
+            draggable: true,
+            data: graphData.nodes,
+            links: graphData.links,
+            categories: graphData.categories,
             animation: false,
             roam: true,
             label: {
@@ -231,17 +191,97 @@ export default {
       };
     },
     onSubmit() {
-      console.log("submit");
+      console.log(this.form);
+      this.initNetworksData(this.form.nameValue);
+      this.initGraph(this.networks[parseInt(this.radio)]);
     },
     getAccountTableData() {
       let accountTableData = [];
       for (let i = 0; i < 20; i++)
         accountTableData.push({
-          id: i,
-          name: "张三",
+          id: i + 1,
+          name: "内幕信息人员" + (i + 1),
           level: Math.floor(Math.random() * 4),
         });
       return accountTableData;
+    },
+    initNetworksData(nameValue) {
+      this.networks = [];
+      for (let i = 0; i < 2; i++) {
+        let g = {
+          nodes: [],
+          links: [],
+          categories: [
+            {
+              name: "内幕信息人员",
+              itemStyle: {
+                color: "#FF8000",
+              },
+            },
+            {
+              name: "异常用户",
+              itemStyle: {
+                color: "#FF0000",
+              },
+              symbolSize: 20,
+            },
+            {
+              name: "中间联系人",
+              itemStyle: {
+                color: "#01DF01",
+              },
+            },
+          ],
+        };
+        // 对内幕交易添加节点 1~10
+        for (let i = 1; i <= 10; i++) {
+          g.nodes.push({
+            id: i,
+            name: "内幕信息人员" + i,
+            category: 0,
+          });
+        }
+        // 对异常交易账户添加节点 11
+        let k;
+        if (this.hasNoId) k = nameValue + 1;
+        else k = this.$route.params.id;
+        console.log(k);
+        g.nodes.push({
+          id: 11,
+          name: "异常用户" + k,
+          category: 1,
+        });
+
+        // 对中间联系人添加节点
+        for (let i = 12; i <= 30; i++) {
+          g.nodes.push({
+            id: i,
+            name: "中间联系人" + i,
+            category: 2,
+          });
+        }
+        // 对内幕交易添加边
+        for (let i = 1; i <= 30; i++) {
+          let t = i;
+          while (t == i) t = Math.floor(Math.random() * 30);
+          g.links.push({
+            source: i,
+            target: t,
+          });
+        }
+        for (let i = 1; i <= 10; i++) {
+          let s = Math.floor(Math.random() * 30);
+          let t = Math.floor(Math.random() * 30);
+          if (s === t) continue;
+          let link = {
+            source: s,
+            target: t,
+          };
+          if (g.links.includes(link)) continue;
+          g.links.push(link);
+        }
+        this.networks.push(g);
+      }
     },
     handleAccountTableSizeChange(val) {
       // 改变每页显示的条数
@@ -257,6 +297,10 @@ export default {
     handleRowClick(row, column, event) {
       console.log(row);
       console.log(column);
+    },
+    handleRadioChange() {
+      this.initGraph(this.networks[parseInt(this.radio)]);
+      console.log(this.networks);
     },
   },
 };
