@@ -71,14 +71,14 @@
       <el-col :span="12">
         <div>
           <div style="margin: 10px">
-            <el-radio-group v-model="radio" @change="handleRadioChange">
+            <el-radio-group v-model.number="radio" @change="handleRadioChange">
               <el-radio-button label="0">关系网络1</el-radio-button>
               <el-radio-button label="1">关系网络2</el-radio-button>
             </el-radio-group>
           </div>
           <div
             id="container"
-            style="width: 700px; height: 500px; margin: 10px"
+            style="width: 700px; height: 700px; margin: 10px"
             ref="graph"
           ></div>
         </div>
@@ -123,13 +123,13 @@ export default {
         loading: false,
       },
       networks: [],
-      radio: "",
+      radio: null,
     };
   },
   mounted() {
     this.accountTable.dormitory = this.getAccountTableData();
     if (!this.hasNoId) this.initNetworksData();
-    if (!this.hasNoId) this.initGraph(this.networks[parseInt(this.radio)]);
+    if (!this.hasNoId) this.initGraph(this.networks[this.radio]);
     console.log("hasNoId" + this.hasNoId);
   },
   computed: {
@@ -193,7 +193,7 @@ export default {
     onSubmit() {
       console.log(this.form);
       this.initNetworksData(this.form.nameValue);
-      this.initGraph(this.networks[parseInt(this.radio)]);
+      this.initGraph(this.networks[this.radio]);
     },
     getAccountTableData() {
       let accountTableData = [];
@@ -299,7 +299,7 @@ export default {
       console.log(column);
     },
     handleRadioChange() {
-      this.initGraph(this.networks[parseInt(this.radio)]);
+      this.initGraph(this.networks[this.radio]);
       console.log(this.networks);
     },
   },

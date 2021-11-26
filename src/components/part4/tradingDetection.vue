@@ -174,7 +174,7 @@
         >
         </el-pagination>
         <div style="margin: 10px">
-          <el-radio-group v-model="radio" @change="handleRadioChange">
+          <el-radio-group v-model.number="radio" @change="handleRadioChange">
             <el-radio-button label="0">指标1</el-radio-button>
             <el-radio-button label="1">指标2</el-radio-button>
             <el-radio-button label="2">指标3</el-radio-button>
@@ -235,11 +235,11 @@ export default {
         totalCount: 100,
         loading: false,
       },
-      radio: "",
+      radio: null,
       indexData: [],
     };
   },
-  created() {
+  mounted() {
     getDetectionOptions().then((response) => {
       console.log(response);
       for (let i = 0; i < response.data.nameOptions.length; i++) {
@@ -277,7 +277,7 @@ export default {
       this.initAccountTableData();
       this.initTradeTableData();
       this.initTimeSeriesData();
-      this.timeSeriesInit(this.indexData[parseInt(this.radio)]);
+      this.timeSeriesInit(this.indexData[this.radio]);
       console.log(this.accountTable);
       console.log(this.tradeTable);
       console.log(this.indexData);
@@ -314,7 +314,7 @@ export default {
     },
     handleRadioChange() {
       console.log(this.radio);
-      this.timeSeriesInit(this.indexData[parseInt(this.radio)]);
+      this.timeSeriesInit(this.indexData[this.radio]);
     },
     timeSeriesInit(timeSeries) {
       let dom = this.$refs.chart;
@@ -382,7 +382,7 @@ export default {
               data: [
                 [
                   {
-                    name: "Morning Peak",
+                    name: "异常交易区间",
                     xAxis: timeSeries.start, // base - oneDay * 50,
                   },
                   {
