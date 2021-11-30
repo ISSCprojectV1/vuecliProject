@@ -21,6 +21,9 @@
               </el-option>
             </el-select>
           </el-col>
+          <el-col :span="2">
+            <el-button type="text" @click="handleNameSelectAll">全选</el-button>
+          </el-col>
         </el-form-item>
 
         <el-form-item label="交易账户id" style="margin-left: 300px">
@@ -42,6 +45,11 @@
               </el-option>
             </el-select>
           </el-col>
+          <el-col :span="2">
+            <el-button type="text" @click="handleAccountSelectAll"
+              >全选</el-button
+            >
+          </el-col>
         </el-form-item>
 
         <el-form-item label="商品种类" style="margin-left: 300px">
@@ -62,6 +70,9 @@
               >
               </el-option>
             </el-select>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="text" @click="handleGoodSelectAll">全选</el-button>
           </el-col>
         </el-form-item>
 
@@ -206,7 +217,6 @@ export default {
         nameOptions: [],
         nameValue: [],
         accountOptions: [],
-
         accountValue: [],
         goodOptions: [],
         goodValue: [],
@@ -446,6 +456,24 @@ export default {
           quantity: Math.floor(Math.random() * 200),
         });
       this.tradeTable.dormitory = tradeTableData;
+    },
+    handleNameSelectAll() {
+      this.form.nameValue = [];
+      for (let option of this.form.nameOptions) {
+        this.form.nameValue.push(option.value);
+      }
+    },
+    handleAccountSelectAll() {
+      this.form.accountValue = [];
+      for (let account of this.form.accountOptions) {
+        this.form.accountValue.push(account.value);
+      }
+    },
+    handleGoodSelectAll() {
+      this.form.goodValue = [];
+      for (let good of this.form.goodOptions) {
+        this.form.goodValue.push(good.value);
+      }
     },
   },
 };
