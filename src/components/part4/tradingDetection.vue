@@ -11,6 +11,7 @@
               placeholder="请选择"
               class="select-box"
               style="width: 100%"
+              @change="handleNameChange"
             >
               <el-option
                 v-for="item in form.nameOptions"
@@ -207,6 +208,10 @@ import echarts from "echarts";
 import {
   getDetectionOptions,
   getAnomolyList,
+  getInstitutes,
+  getGoodsByInstitutes,
+  getTradersByInstitutes,
+  tradingDetection,
 } from "@/api/part4/tradingDetection";
 
 export default {
@@ -250,28 +255,15 @@ export default {
     };
   },
   mounted() {
-    getDetectionOptions().then((response) => {
-      console.log(response);
-      for (let i = 0; i < response.data.nameOptions.length; i++) {
+    getInstitutes().then((response) => {
+      let data = response.data;
+      for (let i = 0; i < data.length; i++) {
         this.form.nameOptions.push({
-          value: i + 1,
-          label: response.data.nameOptions[i],
-        });
-      }
-      for (let i = 0; i < response.data.accountOptions.length; i++) {
-        this.form.accountOptions.push({
-          value: i + 1,
-          label: response.data.accountOptions[i],
-        });
-      }
-      for (let i = 0; i < response.data.goodOptions.length; i++) {
-        this.form.goodOptions.push({
-          value: i + 1,
-          label: response.data.goodOptions[i],
+          value: data[i].instituteId,
+          label: data[i].instituteName,
         });
       }
     });
-    console.log(this.form);
   },
   methods: {
     headcell() {
@@ -287,10 +279,19 @@ export default {
       this.initAccountTableData();
       this.initTradeTableData();
       this.initTimeSeriesData();
-      this.timeSeriesInit(this.indexData[this.radio]);
       console.log(this.accountTable);
       console.log(this.tradeTable);
       console.log(this.indexData);
+      let params = {
+        institutesId: this.form.nameValue,
+        tradersId: this.form.accountValue,
+        goodsId: this.form.goodValue,
+        startDate: this.form.date1,
+        endDate: this.form.date2,
+      };
+      tradingDetection(params).then((response) => {
+        console.log(response);
+      });
     },
     handleAccountTableSizeChange(val) {
       // 改变每页显示的条数
@@ -327,6 +328,7 @@ export default {
       this.timeSeriesInit(this.indexData[this.radio]);
     },
     timeSeriesInit(timeSeries) {
+      console.log(timeSeries);
       let dom = this.$refs.chart;
       let myChart = echarts.init(dom);
       let option = {
@@ -474,6 +476,29 @@ export default {
       for (let good of this.form.goodOptions) {
         this.form.goodValue.push(good.value);
       }
+    },
+    handleNameChange() {
+      this.form.accountValue = [];
+      this.form.goodValue = [];
+      console.log("name changed");
+      getGoodsByInstitutes(this.form.nameValue).then((response) => {
+        this.form.goodOptions = [];
+        for (let good of response.data) {
+          this.form.goodOptions.push({
+            value: good.goodId,
+            label: good.goodName,
+          });
+        }
+      });
+      getTradersByInstitutes(this.form.nameValue).then((response) => {
+        this.form.accountOptions = [];
+        for (let account of response.data) {
+          this.form.accountOptions.push({
+            value: account.traderId,
+            label: account.traderName,
+          });
+        }
+      });
     },
   },
 };

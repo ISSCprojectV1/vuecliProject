@@ -13,5 +13,20 @@ export function getAnomolyList(data) {
     })
 }
 
+export function getInstitutes() {
+    return request.get('/getInstitutes');
+}
+
+export function getGoodsByInstitutes(data) {
+    return request.post('/getGoodsByInstitutes', data, { headers: { 'content-type': 'application/json' } })
+}
+
+export function getTradersByInstitutes(data) {
+    return request.post('/getTradersByInstitutes', data, { headers: { 'content-type': 'application/json' } })
+}
+
+export function tradingDetection(data) {
+    return request.post('/tradingDetection', data, { headers: { 'content-type': 'application/json' } })
+}
 
 
