@@ -78,6 +78,13 @@ let routes = [
           title: "预警监控"
         }
       },
+      {
+        path: "/trade/riskPrediction/riskPropagation",
+        component: () => import("@/components/part1/riskPrediction/riskPropagation"),
+        meta: {
+          title: "传播链路"
+        }
+      }
     ]
   },
 

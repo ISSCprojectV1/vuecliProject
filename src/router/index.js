@@ -269,6 +269,12 @@ export const asyncRoutes = [
         id: 39,
         path: "/trade/DefaultRisk/categoryEvaluation",
         component: () => import("@/components/part4/DefaultRisk/categoryEvaluation"),
+      },
+      {
+        id: 40,
+        path: "/trade/riskPrediction/riskPropagation",
+        component: () => import("@/components/part1/riskPrediction/riskPropagation"),
+
       }
     ]
   },

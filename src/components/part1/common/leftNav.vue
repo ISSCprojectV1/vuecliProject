@@ -180,6 +180,14 @@
             </el-menu-item>
 
             <el-menu-item
+                v-if="false"
+                index="/trade/riskPrediction/riskPropagation"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">风险传播链路</span>
+            </el-menu-item>
+
+            <el-menu-item
               v-if="false"
               index="/trade/riskPrediction/riskSurveillance"
               style="text-align: left; padding-left: 70px; font-size: 18px"
