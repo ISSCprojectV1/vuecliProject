@@ -197,12 +197,19 @@ export default {
     },
     getAccountTableData() {
       let accountTableData = [];
+      let levels = ["风险等级低", "风险等级中", "风险等级高"];
       for (let i = 0; i < 20; i++)
         accountTableData.push({
           id: i + 1,
           name: "内幕信息人员" + (i + 1),
-          level: Math.floor(Math.random() * 4),
+          level: Math.floor(Math.random() * 3),
         });
+      accountTableData.sort((a, b) => {
+        return b.level - a.level;
+      });
+      for (let account of accountTableData) {
+        account.level = levels[account.level];
+      }
       return accountTableData;
     },
     initNetworksData(nameValue) {
