@@ -412,7 +412,7 @@ export default {
     initTimeSeriesData() {
       this.indexData = [];
       for (let i = 0; i < 3; i++) {
-        let base = +new Date(1988, 9, 3);
+        let base = +new Date(2021, 9, 3);
         let oneDay = 24 * 3600 * 1000;
         let seriesData = [[base, 100 + Math.random() * 100]];
         let s = Math.floor(Math.random() * 100) + 10;
@@ -427,21 +427,28 @@ export default {
         }
         this.indexData.push({
           data: seriesData,
-          start: new Date(1988, 9, 3).getTime() + oneDay * s,
-          end: new Date(1988, 9, 3).getTime() + oneDay * (s + 20),
+          start: new Date(2021, 9, 3).getTime() + oneDay * s,
+          end: new Date(2021, 9, 3).getTime() + oneDay * (s + 20),
           name: "指标" + (i + 1),
         });
       }
     },
     initAccountTableData() {
       let accountTableData = [];
+      let levels = ["风险等级低", "风险等级中", "风险等级高"];
       for (let i = 0; i < 20; i++)
         accountTableData.push({
           id: i,
           name: "用户" + (i + 1),
           productId: i + Math.floor(Math.random() * 10),
-          level: Math.floor(Math.random() * 4),
+          level: Math.floor(Math.random() * 3),
         });
+      accountTableData.sort((a, b) => {
+        return b.level - a.level;
+      });
+      for (let account of accountTableData) {
+        account.level = levels[account.level];
+      }
       console.log(accountTableData);
       this.accountTable.dormitory = accountTableData;
     },
