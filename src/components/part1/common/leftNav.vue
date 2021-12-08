@@ -180,9 +180,9 @@
             </el-menu-item>
 
             <el-menu-item
-                v-if="false"
-                index="/trade/riskPrediction/riskPropagation"
-                style="text-align: left; padding-left: 70px; font-size: 18px"
+              v-if="false"
+              index="/trade/riskPrediction/riskPropagation"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">风险传播链路</span>
             </el-menu-item>
@@ -232,12 +232,12 @@
             >
               <span slot="title">异常交易检测</span>
             </el-menu-item>
-            <el-menu-item
+            <!-- <el-menu-item
               index="/trade/insiderTrading/relationDetection/all"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">异常关系检测</span>
-            </el-menu-item>
+            </el-menu-item> -->
           </el-submenu>
 
           <el-submenu
@@ -249,8 +249,10 @@
             style="text-align: left"
           >
             <template slot="title">
-                            <i class="el-icon-menu"></i>
-              <span style="font-size: 20px; white-space: normal;">交易模式异常检测子系统</span>
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px; white-space: normal"
+                >交易模式异常检测子系统</span
+              >
             </template>
 
             <el-menu-item
@@ -260,8 +262,9 @@
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
-                          index="/trade/PolicyRisk/viewIndustryPolicy"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
+              index="/trade/PolicyRisk/viewIndustryPolicy"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
               <span slot="title">异常交易模式检测</span>
             </el-menu-item>
             <!--el-menu-item

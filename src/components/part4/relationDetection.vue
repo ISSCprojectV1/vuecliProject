@@ -1,6 +1,6 @@
 <template>
   <div class="root">
-    <div v-if="hasNoId" class="form">
+    <!-- <div v-if="hasNoId" class="form">
       <el-form ref="form" :model="form">
         <el-form-item label="选择用户" style="margin-left: 300px">
           <el-col :span="13">
@@ -25,12 +25,16 @@
           </el-col>
         </el-form-item>
       </el-form>
-    </div>
-
+    </div> -->
+    <el-row>
+      <el-button @click="backward">返回</el-button>
+    </el-row>
     <el-row>
       <el-col :span="12">
         <div>
-          <p class="title"><b>关联内幕人员</b></p>
+          <p class="title">
+            <b>关联内幕人员({{ trader.id }}-{{ trader.name }}) </b>
+          </p>
           <el-table
             ref="domitoryTable"
             :data="
@@ -46,7 +50,6 @@
             border
             v-loading="accountTable.loading"
             element-loading-text="加载中"
-            @row-click="handleRowClick"
           >
             <el-table-column prop="id" label="关联内幕人员id"></el-table-column>
             <el-table-column
@@ -89,26 +92,14 @@
 
 <script>
 import echarts from "echarts";
+import { getTraderById } from "@/api/part4/relationDetection";
 export default {
   name: "reationDetection",
   data() {
     return {
-      form: {
-        nameOptions: [
-          {
-            value: 0,
-            label: "用户1",
-          },
-          {
-            value: 1,
-            label: "用户2",
-          },
-          {
-            value: 2,
-            label: "用户3",
-          },
-        ],
-        nameValue: null,
+      trader: {
+        id: 0,
+        name: "",
       },
       accountTable: {
         dormitory: [],
@@ -123,13 +114,21 @@ export default {
         loading: false,
       },
       networks: [],
-      radio: null,
+      radio: 0,
     };
   },
   mounted() {
     this.accountTable.dormitory = this.getAccountTableData();
-    if (!this.hasNoId) this.initNetworksData();
-    if (!this.hasNoId) this.initGraph(this.networks[this.radio]);
+    if (!this.hasNoId) {
+      console.log(this.$route.params);
+      getTraderById(parseInt(this.$route.params.id)).then((response) => {
+        console.log(response);
+        this.trader.id = response.data.traderId;
+        this.trader.name = response.data.traderName;
+        this.initNetworksData();
+        this.initGraph(this.networks[this.radio]);
+      });
+    }
     console.log("hasNoId" + this.hasNoId);
   },
   computed: {
@@ -144,7 +143,8 @@ export default {
       let option = {
         title: {
           left: "center",
-          text: "关联关系网络",
+          text:
+            " 关联关系网络(" + this.trader.id + "-" + this.trader.name + ")",
         },
         tooltip: {
           show: false,
@@ -161,7 +161,8 @@ export default {
         ],
         series: [
           {
-            name: "关联关系网络",
+            name:
+              " 关联关系网络(" + this.trader.id + "-" + this.trader.name + ")",
             type: "graph",
             layout: "force",
             draggable: true,
@@ -197,7 +198,7 @@ export default {
     },
     getAccountTableData() {
       let accountTableData = [];
-      let levels = ["风险等级低", "风险等级中", "风险等级高"];
+      let levels = ["低", "中", "高"];
       for (let i = 0; i < 20; i++)
         accountTableData.push({
           id: i + 1,
@@ -249,13 +250,9 @@ export default {
           });
         }
         // 对异常交易账户添加节点 11
-        let k;
-        if (this.hasNoId) k = nameValue + 1;
-        else k = this.$route.params.id;
-        console.log(k);
         g.nodes.push({
           id: 11,
-          name: "异常用户" + k,
+          name: "异常用户: " + this.trader.id + "-" + this.trader.name,
           category: 1,
         });
 
@@ -301,13 +298,12 @@ export default {
       // 改变默认的页数
       this.accountTable.currentPage = val;
     },
-    handleRowClick(row, column, event) {
-      console.log(row);
-      console.log(column);
-    },
     handleRadioChange() {
       this.initGraph(this.networks[this.radio]);
       console.log(this.networks);
+    },
+    backward() {
+      this.$router.go(-1);
     },
   },
 };

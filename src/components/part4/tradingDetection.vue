@@ -265,7 +265,8 @@ export default {
     handleTradingButtonClick(index, row) {
       console.log(index);
       console.log(row);
-      this.dialog.name = "click at" + row.id;
+      this.dialog.name =
+        "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
       this.dialog.visible = true;
       this.traderId = row.id;
     },
@@ -387,7 +388,7 @@ export default {
       for (let i = 0; i < 20; i++)
         accountTableData.push({
           id: i,
-          name: "用户" + (i + 1),
+          name: "用户" + String.fromCharCode(i + 65),
           productId: i + Math.floor(Math.random() * 10),
           level: Math.floor(Math.random() * 3),
         });

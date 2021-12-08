@@ -1,7 +1,5 @@
 <template>
   <div class="tradeTable">
-    <h1>get {{ traderId }}</h1>
-    <p class="title"><b>异常交易行为</b></p>
     <el-table
       ref="tradeTable"
       :data="
@@ -46,7 +44,7 @@
     <el-row justify="center">
       <div
         id="container"
-        style="width: 800px; height: 500px; margin: 5px"
+        style="width: 950px; height: 500px; margin: 5px"
         ref="chart"
       ></div>
     </el-row>
