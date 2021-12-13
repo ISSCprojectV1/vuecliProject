@@ -1,13 +1,13 @@
 import Axios from 'axios';
 
-const baseURL = process.env.NODE_ENV==="development"?"/api":'/api';
+const baseURL = process.env.NODE_ENV === "development" ? "/api" : '/api';
 
 export {baseURL}
 
 const service = Axios.create({
-    baseURL,
-    timeout:10000,
-    //headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+  baseURL: "http://172.16.7.11:18860/market-service/resourceAllocation/",
+  timeout: 10000,
+  //headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
 });
 
 // Add a request interceptor
