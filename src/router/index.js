@@ -195,7 +195,31 @@ export const asyncRoutes = [
         id:30,
         path: '/trade/auctionNew/score',
         component: () => import("@/components/admin/score"),
-      }
+      },
+      {
+        id:1,
+        name:"今日舆情汇总",
+        path:'/trade/PublicOpinionsRisk/opinions_summary',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_summary"),
+      },
+      {
+        id:2,
+        name:"今日风险详情",
+        path:'/trade/PublicOpinionsRisk/opinions_riskinfo',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_riskinfo"),
+      },
+      {
+        id:3,
+        name:"舆情网络",
+        path:'/trade/PublicOpinionsRisk/opinions_network',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_network"),
+      },
+      {
+        id:4,
+        name:"舆情事件查询",
+        path:'/trade/PublicOpinionsRisk/opinions_search',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_search"),
+      },
     ]
   },
   {

@@ -220,6 +220,45 @@ let routes = [
     }
   },
 
+  //*****************************************************************************
+  //****************************舆情风险*******************************************
+  //*****************************************************************************
+  {
+    path:"/trade",
+    component:() => import("@/components/part1/common/full"),
+    children:[
+      {
+        path:"/trade/PublicOpinionsRisk/opinions_summary",
+        component:() => import("@/components/part1/PublicOpinionsRisk/opinions_summary"),
+        meta: {
+          title: "今日舆情汇总"
+        }
+      },
+      {
+        path:"/trade/PublicOpinionsRisk/opinions_riskinfo",
+        component:() => import("@/components/part1/PublicOpinionsRisk/opinions_riskinfo"),
+        meta: {
+          title: "今日风险信息"
+        }
+      },
+      {
+        path:"/trade/PublicOpinionsRisk/opinions_network",
+        component:() => import("@/components/part1/PublicOpinionsRisk/opinions_network"),
+        meta: {
+          title: "舆情网络详情"
+        }
+      },
+      {
+        path:"/trade/PublicOpinionsRisk/opinions_search",
+        component:() => import("@/components/part1/PublicOpinionsRisk/opinions_search"),
+        meta: {
+          title: "舆情事件查询"
+        }
+      },
+
+    ],
+  },
+
   // deprecated
   // {
   //   path: "/trade",

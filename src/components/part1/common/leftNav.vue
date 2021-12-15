@@ -172,6 +172,37 @@
             </el-menu-item>
           </el-submenu>
 
+          <!--舆情风险子系统-->
+          <el-submenu
+              index="/trade/PublicOpinionsRisk"
+              style="text-align: left">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px; white-space: normal;">舆情风险子系统</span>
+            </template>
+
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_summary"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">今日舆情汇总</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_riskinfo"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">今日舆情信息</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_search"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">舆情事件查询</span>
+            </el-menu-item>
+           <!-- <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_network"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">舆情网络详情</span>
+            </el-menu-item> -->
+          </el-submenu>
+
         </el-menu>
       </el-col>
     </el-row>
