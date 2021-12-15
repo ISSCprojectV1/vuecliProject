@@ -3,8 +3,10 @@
     <el-button id="button-refresh" type="primary" @click="getTableData">指标计算</el-button>
     <el-container>
       <el-aside id="container-table-time-analysis">
-        <el-table :data="dataTableTime" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}"
-                  :cell-style="changeCellStyle">
+        <el-table :data="dataTableTime"
+                  :header-cell-style="getHeaderStylesheet"
+                  :cell-style="changeCellStyle"
+                  :row-style="{height: '40px'}">
           <el-table-column label="模块名称" prop="name"></el-table-column>
           <el-table-column label="对比算法运行时间" prop="comparedAlgoRunningTime"></el-table-column>
           <el-table-column label="系统算法运行时间" prop="proposedAlgoRunningTime"></el-table-column>
@@ -18,8 +20,11 @@
         </el-table>
       </el-aside>
       <el-container id="container-table-success-rate-analysis">
-        <el-table :data="dataTableSuccess" :header-cell-style="{'background-color': '#dfdfdf', 'color': '#606162'}"
-                  :cell-style="changeCellStyle">
+        <el-table
+            :data="dataTableSuccess"
+            :header-cell-style="getHeaderStylesheet"
+            :cell-style="changeCellStyle"
+            :row-style="{height: '40px'}">
           <el-table-column label="模块名称" prop="name"></el-table-column>
           <el-table-column label="对比算法成功率" prop="comparedAlgoSuccessRate"></el-table-column>
           <el-table-column label="系统算法成功率" prop="proposedAlgoSuccessRate"></el-table-column>
@@ -51,6 +56,15 @@ export default {
     this.getTableData()
   },
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     getTableData() {
       getComparisonResults().then(res => {
         this.dataTableTime = [];
@@ -75,9 +89,9 @@ export default {
     },
     changeCellStyle(row) {
       if (row.column.label === '响应时间减少' || row.column.label === '自适应协同成功率提升')
-        return 'background-color: #e3eff3; color: #469b4c; font-weight: 900'
+        return 'background-color: #e3eff3; color: #469b4c; font-weight: 900; padding: 2px'
       else
-        return ''
+        return 'padding: 2px'
     }
   }
 }
@@ -90,11 +104,11 @@ export default {
 
 #container-table-time-analysis {
   min-width: 50%;
-  border: 0.5rem solid #f5f6f7;
+  border: 0.5rem solid #ffffff;
 }
 
 #container-table-success-rate-analysis {
   min-width: 50%;
-  border: 0.5rem solid #f5f6f7;
+  border: 0.5rem solid #ffffff;
 }
 </style>

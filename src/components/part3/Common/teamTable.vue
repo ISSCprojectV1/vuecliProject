@@ -2,485 +2,110 @@
   <div>
     <h2>监管联盟详情</h2>
     <div class="dormitoryData" v-loading="loading" element-loading-text="加载中">
-        <el-form :inline="true">
-          <!-- <el-form-item label="联盟编号：">
-             <el-input v-model="teamId" placeholder="请输入要查询的联盟id"></el-input>
-           </el-form-item> -->
-          <el-form-item>
-                        <el-button type="primary" @click="onClickQuery">表格视图</el-button>
-                        <!-- <el-button type="primary" @click="onClickQuery1">查询操作员列表</el-button> -->
-                        <el-button type="primary" @click="onClickQueryMap">地图视图</el-button>
-                        <el-button type="primary" @click="goback">返回</el-button>
-          </el-form-item>  
+
+      <!--顶部按钮-->
+      <el-form :inline="true">
+        <!-- <el-form-item label="联盟编号：">
+           <el-input v-model="teamId" placeholder="请输入要查询的联盟id"></el-input>
+         </el-form-item> -->
+        <el-form-item>
+          <el-button size="small" @click="onClickQuery">表格视图</el-button>
+          <!-- <el-button type="primary" @click="onClickQuery1">查询操作员列表</el-button> -->
+          <el-button size="small" @click="onClickQueryMap">地图视图</el-button>
+          <el-button size="small" @click="goBack">返回</el-button>
+        </el-form-item>
       </el-form>
-      <div id="map" style=" height: 1000px"></div>
-      <div id="caozuoyuan" style=" height: 1000px"></div>
-    <div id="form" style="display: block">
-      <el-table
-          ref="dormitoryTable"
-          :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
-          tooltip-effect="dark"
-          stripe
-          style="width: 100%"
-          border
-          >
-                 
-<!--任务基本-->
-       <!-- <el-table-column label="任务编号" prop="id" width="80"></el-table-column>
-        <el-table-column label="所属联盟" prop="team" width="80"></el-table-column> -->
-        <el-table-column label="监管任务名称" prop="name" min-width="120"></el-table-column>
-        <el-table-column label="被监管的交易平台" prop="content">
-        </el-table-column>
-        <el-table-column label="监管商品" prop="commodityName" >
-        </el-table-column>
-        <el-table-column label="监管机构" prop="regulatorName" >
-        </el-table-column>
 
+      <!--地图视图-->
+      <div id="map" style="height: 100%"></div>
 
-  
-        
+      <!--操作员视图-->
+      <!--      <div id="caozuoyuan" style=" height: 1000px"></div>-->
 
-      </el-table>
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="pageSizes"
-                     :page-size="PageSize" layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalCount">
-      </el-pagination>
-</div>
+      <!--表格视图-->
+      <div id="form" style="display: block">
+        <el-table
+            ref="dormitoryTable"
+            :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+            tooltip-effect="dark"
+            style="width: 100%"
+            :header-cell-style="getHeaderStylesheet"
+            :row-style="{height: '40px'}"
+            :cell-style="{padding:'0px'}">
+          <el-table-column label="监管任务名称" prop="name" min-width="160"></el-table-column>
+          <el-table-column label="被监管的交易平台" prop="content" min-width="80"></el-table-column>
+          <el-table-column label="监管商品" prop="commodityName" min-width="40"></el-table-column>
+          <el-table-column label="监管机构" prop="regulatorName" min-width="80"></el-table-column>
+        </el-table>
+        <el-pagination
+            style="margin-top: 0.5rem"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="pageSizes"
+            :page-size="PageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import {changetimeadvise, taskQuery,spaceResult,getRolenameById,getOneTeamResult} from "@/api/part1/Multimodal-multigranularity";
+import {
+  changetimeadvise,
+  taskQuery,
+  spaceResult,
+  getRolenameById,
+  getOneTeamResult
+} from "@/api/part1/Multimodal-multigranularity";
 import echarts from "echarts";
 import $ from 'jQuery'
-import {setToken,getToken} from "@/utils/auth"
+import {setToken, getToken} from "@/utils/auth"
 import {getAllRegulators} from "@/api/part1/Multimodal-multigranularity";
+
 export default {
   name: "teamTable",
-  components: {
-
-},
-inject:['reload'],
+  components: {},
+  inject: ['reload'],
   data() {
     return {
-      teamId:'',
-      tempId:0,
+      teamId: '',
+      tempId: 0,
       dormitory: [],
       // 默认显示第几页
       currentPage: 1,
       // 条数选择器（可修改）
-      pageSizes: [5, 10],
+      pageSizes: [5, 10, 20, 50],
       // 默认每页显示的条数（可修改）
       PageSize: 10,
       // 总条数，根据接口获取数据长度(注意：这里不能为空)
       totalCount: 100,
       loading: false,
       taskin: {
-        changeflag:
-        Number.NEGATIVE_INFINITY
+        changeflag: Number.NEGATIVE_INFINITY
       },
-   
-      
     }
   },
+  mounted() {
+    this.loading = false;
+    this.onClickQuery();
+  },
   methods: {
-    onClickQuery2(){
-      document.getElementById("form").style.display="none";
-      document.getElementById("map").style.display="block";
-              //地图容器
-      let chart = this.$echarts.init(document.getElementById('map'));
-      var Management = [];
-      var mapdata = [];
-      const team = this.$router.currentRoute.params.team;
-        var url='/yu/getOneTeamResult/'+team
-        getOneTeamResult(url).then((res) => {
-                //this.dealwithData(res)
-        //document.getElementById("form").style.display="block";
-        //document.getElementById("map").style.display="none";
-                chart.hideLoading();
-
-                for(var i = 0; i < res.data.data.length;i++){
-                    console.log(res.data.data[i].content)
-                    Management.push(
-                        {
-                            "name":res.data.data[i].content,
-                            "value":[res.data.data[i].x,res.data.data[i].y]
-                            })                
-                            }
-               // console.log("到这里了吗？"+Management[3].name+Management[3].value)
-      //绘制全国地图
-      $.getJSON('/china.json', function(data){
-        console.log("是不是成功读到数据"+status);
-        var d = [];
-        for( var i=0;i<data.features.length;i++ ){
-		d.push({
-			name:data.features[i].properties.name
-		})
-	}
-	mapdata = d;
-	//注册地图
-	echarts.registerMap('china', data);
-    //绘制地图
-    console.log("绘制全国地图 开始")
-    renderMap('china',d);
-    console.log("绘制全国地图 结束")
-      });
-    
-
-       //初始化绘制全国地图配置
-  var option = {
-    geo:{
-        type:'map',
-        map:'china',
-        top: '5%',
-        bottom: '20%',
-        roam:true,	
-        label: {
-            show: true,
-            color: 'white',
-            formatter: `{a}`,
-          },
-        // label: {
-        //             // 地图上省市标签
-        //       normal:{
-        //         show:false,
-        //         textStyle:{
-        //           color:'#000',
-        //           fontSize:15
-        //         }  
-        //         },
-        //         // 选中的省市的标签
-        //         emphasis: {
-        //             show: true,
-        //             textStyle:{
-        //                   color:'#fff',
-        //                   fontSize:15
-				// 	}
-        //          }
-        //     },
-      itemStyle: {
-            // 地图的填充色
-            areaColor: '#2E72BF',
-            // 省份的边框色
-            borderColor: '#333',
-          },   
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
     },
-	backgroundColor: '#FFFCFB',
-    title : {
-        text: '▎大宗商品监管联盟示意图',
-        left: 20,
-        top:20,
-        textStyle:{
-            color: '#000',
-            fontSize:24,
-            fontWeight:'normal',
-            fontFamily:"Microsoft YaHei"
-        },
-    },
-    legend:{
-					left: '5%',
-					bottom: '5%',
-					orient: 'vertical'
-				},
-    tooltip: {
-        trigger: 'item',
-        formatter: '{b}'
-    },
-    toolbox: {
-        show: true,
-        orient: 'vertical',
-        left: 'right',
-        top: 'center',
-        feature: {
-            dataView: {readOnly: false},
-            restore: {},
-            saveAsImage: {}
-        },
-        iconStyle:{
-                normal:{
-                color:'#000'
-          }        	
-        }
-    },
-    animationDuration:1000,
-	animationEasing:'cubicOut',
-	animationDurationUpdate:1000
-    
-
-    };
-function renderMap(map,data){
-    console.log( "调用renderMap 函数" );
-	option.title.subtext = map;
-    option.series = [ 
-		{
-                      
-            data:data,
-            type:'map'
-        },	
-        {
-            data:Management,
-            symbolSize: function (val) {
-                        return 15;
-                    },
-            hoverAnimation: true,
-            type: 'effectScatter',
-            coordinateSystem:'geo',
-            rippleEffect: {
-              //period: 1, // 动画时间，值越小速度越快
-              //brushType: 'stroke', // 波纹绘制方式 stroke, fill
-              brushType: 'stroke',
-              scale: 5 // 波纹圆环最大限制，值越大波纹越大
-            },
-
-            label: {
-                        normal: {
-                         show: false,
-                         position: 'left',
-                    textStyle: {
-                        color:'white',
-                        //fontSize:15,
-                    },
-                    formatter (Management){
-                        return Management.name
-                    }
-                },
-                        emphasis: {
-                            show: false,
-                            fontSize: 15,
-                            color:'#000000',
-                            backgroundColor:'#FFFFFF',
-                            position: 'right',
-                            formatter: '{b}'
-                        }
-                    },
-                        itemStyle: {
-                        normal: {
-                            color: '#F4E925',
-                            shadowBlur: 10,
-                            shadowColor: '#05C3F9'
-                        }
-                    },
-                    zlevel: 1
-
-        }
-          
-    ];
-    //渲染地图
-    chart.setOption(option);
-}
-
-      }).catch(() => {
-        console.log("getTransactionData fail")
-      });
-
-
- 
-    },
-    onClickQuery3(team){
-      document.getElementById("form").style.display="none";
-      document.getElementById("caozuoyuan").style.display="none";
-      document.getElementById("map").style.display="block";
-              //地图容器
-      let chart = this.$echarts.init(document.getElementById('map'));
-      var Management = [];
-      var mapdata = [];
-        var url='/yu/getOneTeamResult/'+team
-        getOneTeamResult(url).then((res) => {
-                //this.dealwithData(res)
-        //document.getElementById("form").style.display="block";
-        //document.getElementById("map").style.display="none";
-                chart.hideLoading();
-
-                for(var i = 0; i < res.data.data.length;i++){
-                    console.log(res.data.data[i].regulatorName)
-                    Management.push(
-                        {
-                            "name":res.data.data[i].regulatorName,
-                            "value":[res.data.data[i].x,res.data.data[i].y]
-                            })                
-                            }
-                //console.log("到这里了吗？"+Management[3].name+Management[3].value)
-      //绘制全国地图
-      $.getJSON('/china.json', function(data){
-        console.log("是不是成功读到数据"+status);
-        var d = [];
-        for( var i=0;i<data.features.length;i++ ){
-		d.push({
-			name:data.features[i].properties.name
-		})
-	}
-	mapdata = d;
-	//注册地图
-	echarts.registerMap('china', data);
-    //绘制地图
-    console.log("绘制全国地图 开始")
-    renderMap('china',d);
-    console.log("绘制全国地图 结束")
-      });
-    
-
-       //初始化绘制全国地图配置
-  var option = {
-    geo:{
-        type:'map',
-        map:'china',
-        top: '5%',
-        bottom: '20%',
-        roam:true,	
-        label: {
-            show: true,
-            color: 'white',
-            formatter: `{a}`,
-          },
-        // label: {
-        //             // 地图上省市标签
-        //       normal:{
-        //         show:false,
-        //         textStyle:{
-        //           color:'#000',
-        //           fontSize:15
-        //         }  
-        //         },
-        //         // 选中的省市的标签
-        //         emphasis: {
-        //             show: true,
-        //             textStyle:{
-        //                   color:'#fff',
-        //                   fontSize:15
-				// 	}
-        //          }
-        //     },
-      itemStyle: {
-            // 地图的填充色
-            areaColor: '#2E72BF',
-            // 省份的边框色
-            borderColor: '#333',
-          },   
-    },
-	backgroundColor: '#FFFCFB',
-    title : {
-        text: '▎大宗商品监管联盟示意图',
-        left: 20,
-        top:20,
-        textStyle:{
-            color: '#000',
-            fontSize:24,
-            fontWeight:'normal',
-            fontFamily:"Microsoft YaHei"
-        },
-    },
-    legend:{
-					left: '5%',
-					bottom: '5%',
-					orient: 'vertical'
-				},
-    tooltip: {
-        trigger: 'item',
-        formatter: '{b}'
-    },
-    toolbox: {
-        show: true,
-        orient: 'vertical',
-        left: 'right',
-        top: 'center',
-        feature: {
-            dataView: {readOnly: false},
-            restore: {},
-            saveAsImage: {}
-        },
-        iconStyle:{
-                normal:{
-                color:'#000'
-          }        	
-        }
-    },
-    animationDuration:1000,
-	animationEasing:'cubicOut',
-	animationDurationUpdate:1000
-    
-
-    };
-function renderMap(map,data){
-    console.log( "调用renderMap 函数" );
-	option.title.subtext = map;
-    option.series = [ 
-		{
-                      
-            data:data,
-            type:'map'
-        },	
-        {
-            data:Management,
-            symbolSize: function (val) {
-                        return 15;
-                    },
-            hoverAnimation: true,
-            type: 'effectScatter',
-            coordinateSystem:'geo',
-            rippleEffect: {
-              //period: 1, // 动画时间，值越小速度越快
-              //brushType: 'stroke', // 波纹绘制方式 stroke, fill
-              brushType: 'stroke',
-              scale: 5 // 波纹圆环最大限制，值越大波纹越大
-            },
-
-            label: {
-                        normal: {
-                         show: true,
-                         position: 'left',
-                    textStyle: {
-                        // color:'red',
-                        // fontSize:15,
-                            fontSize: 15,
-                            color:'#000000',
-                            backgroundColor:'#FFFFFF',
-                            position: 'right',
-                            formatter: '{b}'
-
-                    },
-                    formatter (Management){
-                        return Management.name
-                    }
-                },
-                        // emphasis: {
-                        //     show: false,
-                        //     fontSize: 15,
-                        //     color:'#000000',
-                        //     backgroundColor:'#FFFFFF',
-                        //     position: 'right',
-                        //     formatter: '{b}'
-                        // }
-                    },
-                        itemStyle: {
-                        normal: {
-                            color: '#F4E925',
-                            shadowBlur: 10,
-                            shadowColor: '#05C3F9'
-                        }
-                    },
-                    zlevel: 1
-
-        }
-          
-    ];
-    //渲染地图
-    chart.setOption(option);
-}
-
-      }).catch(() => {
-        console.log("getTransactionData fail")
-      });
-
-
-    },
-    onClickQuery1(){
-      document.getElementById("form").style.display="none";
-      document.getElementById("caozuoyuan").style.display="block";
-      document.getElementById("map").style.display="none";
+    onClickQuery1() {
+      document.getElementById("form").style.display = "none";
+      document.getElementById("caozuoyuan").style.display = "block";
+      document.getElementById("map").style.display = "none";
       const handle = function handleData(data, index, color = '#00f6ff') {
         //index标识第几层
         return data.map((item, index2) => {
@@ -552,18 +177,13 @@ function renderMap(map,data){
       let renwu = []
       let renwhhetask = []
       for (let i = 0; i < this.dormitory.length; i++) {
-    //    console.log(this.dormitory[i].operatorName)
+        //    console.log(this.dormitory[i].operatorName)
         if (renwu.indexOf(this.dormitory[i].operatorName) === -1) {
           renwu.push(this.dormitory[i].operatorName)
           renwhhetask[this.dormitory[i].operatorName] = []
         }
         renwhhetask[this.dormitory[i].operatorName].push(this.dormitory[i].name)
       }
-      for (let i = 0; i < this.dormitory.length; i++) {
-   //     console.log(renwhhetask[i])
-      }
-
-  //    console.log(renwhhetask.keys())
 
       const getdata = function getData() {
         let data = {
@@ -592,7 +212,7 @@ function renderMap(map,data){
         let arr = []
         arr.push(data)
         arr = handle(arr, 0)
-    //    console.log(arr);
+        //    console.log(arr);
         return arr;
       };
 
@@ -653,38 +273,407 @@ function renderMap(map,data){
       };
       echart1.setOption(option);
     },
-     goback(){
-            //this.$router.go(-1)
-             this.$router.push(`/trade/Multimodal-multigranularity/stepBar`);
-        },
-     onClickQuery() {
-        const team = this.$router.currentRoute.params.team;
-        this.GetTeamData(team);
-        },
-     onClickQueryMap(){
-       this.onClickQuery3(this.$router.currentRoute.params.team);
-     }, 
-          
-   
+    onClickQuery2() {
+      document.getElementById("form").style.display = "none";
+      document.getElementById("map").style.display = "block";
+      //地图容器
+      let chart = this.$echarts.init(document.getElementById('map'));
+      var Management = [];
+      var mapdata = [];
+      const team = this.$router.currentRoute.params.team;
+      var url = '/yu/getOneTeamResult/' + team
+      getOneTeamResult(url).then((res) => {
+        //this.dealwithData(res)
+        //document.getElementById("form").style.display="block";
+        //document.getElementById("map").style.display="none";
+        chart.hideLoading();
 
-    
+        for (var i = 0; i < res.data.data.length; i++) {
+          console.log(res.data.data[i].content)
+          Management.push(
+              {
+                "name": res.data.data[i].content,
+                "value": [res.data.data[i].x, res.data.data[i].y]
+              })
+        }
+        // console.log("到这里了吗？"+Management[3].name+Management[3].value)
+        //绘制全国地图
+        $.getJSON('/china.json', function (data) {
+          console.log("是不是成功读到数据" + status);
+          var d = [];
+          for (var i = 0; i < data.features.length; i++) {
+            d.push({
+              name: data.features[i].properties.name
+            })
+          }
+          mapdata = d;
+          //注册地图
+          echarts.registerMap('china', data);
+          //绘制地图
+          console.log("绘制全国地图 开始")
+          renderMap('china', d);
+          console.log("绘制全国地图 结束")
+        });
 
-    setgoto(scope) {
+
+        //初始化绘制全国地图配置
+        var option = {
+          geo: {
+            type: 'map',
+            map: 'china',
+            top: '5%',
+            bottom: '20%',
+            roam: true,
+            label: {
+              show: true,
+              color: 'white',
+              formatter: `{a}`,
+            },
+            // label: {
+            //             // 地图上省市标签
+            //       normal:{
+            //         show:false,
+            //         textStyle:{
+            //           color:'#000',
+            //           fontSize:15
+            //         }
+            //         },
+            //         // 选中的省市的标签
+            //         emphasis: {
+            //             show: true,
+            //             textStyle:{
+            //                   color:'#fff',
+            //                   fontSize:15
+            // 	}
+            //          }
+            //     },
+            itemStyle: {
+              // 地图的填充色
+              areaColor: '#2E72BF',
+              // 省份的边框色
+              borderColor: '#333',
+            },
+          },
+          backgroundColor: '#FFFCFB',
+          title: {
+            text: '▎大宗商品监管联盟示意图',
+            left: 20,
+            top: 20,
+            textStyle: {
+              color: '#000',
+              fontSize: 24,
+              fontWeight: 'normal',
+              fontFamily: "Microsoft YaHei"
+            },
+          },
+          legend: {
+            left: '5%',
+            bottom: '5%',
+            orient: 'vertical'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}'
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: {readOnly: false},
+              restore: {},
+              saveAsImage: {}
+            },
+            iconStyle: {
+              normal: {
+                color: '#000'
+              }
+            }
+          },
+          animationDuration: 1000,
+          animationEasing: 'cubicOut',
+          animationDurationUpdate: 1000
+
+
+        };
+
+        function renderMap(map, data) {
+          console.log("调用renderMap 函数");
+          option.title.subtext = map;
+          option.series = [
+            {
+
+              data: data,
+              type: 'map'
+            },
+            {
+              data: Management,
+              symbolSize: function (val) {
+                return 15;
+              },
+              hoverAnimation: true,
+              type: 'effectScatter',
+              coordinateSystem: 'geo',
+              rippleEffect: {
+                //period: 1, // 动画时间，值越小速度越快
+                //brushType: 'stroke', // 波纹绘制方式 stroke, fill
+                brushType: 'stroke',
+                scale: 5 // 波纹圆环最大限制，值越大波纹越大
+              },
+
+              label: {
+                normal: {
+                  show: false,
+                  position: 'left',
+                  textStyle: {
+                    color: 'white',
+                    //fontSize:15,
+                  },
+                  formatter(Management) {
+                    return Management.name
+                  }
+                },
+                emphasis: {
+                  show: false,
+                  fontSize: 15,
+                  color: '#000000',
+                  backgroundColor: '#FFFFFF',
+                  position: 'right',
+                  formatter: '{b}'
+                }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#F4E925',
+                  shadowBlur: 10,
+                  shadowColor: '#05C3F9'
+                }
+              },
+              zlevel: 1
+
+            }
+
+          ];
+          //渲染地图
+          chart.setOption(option);
+        }
+
+      }).catch(() => {
+        console.log("getTransactionData fail")
+      });
+
+
+    },
+    onClickQuery3(team) {
+      document.getElementById("form").style.display = "none";
+      // document.getElementById("caozuoyuan").style.display = "none";
+      document.getElementById("map").style.display = "block";
+      //地图容器
+      let chart = this.$echarts.init(document.getElementById('map'));
+      let Management = [];
+      let mapData = [];
+      let url = '/yu/getOneTeamResult/' + team
+      getOneTeamResult(url).then((res) => {
+        //this.dealwithData(res)
+        //document.getElementById("form").style.display="block";
+        //document.getElementById("map").style.display="none";
+        chart.hideLoading();
+
+        for (var i = 0; i < res.data.data.length; i++) {
+          console.log(res.data.data[i].regulatorName)
+          Management.push(
+              {
+                "name": res.data.data[i].regulatorName,
+                "value": [res.data.data[i].x, res.data.data[i].y]
+              })
+        }
+        //绘制全国地图
+        $.getJSON('/china.json', function (data) {
+          var d = [];
+          for (var i = 0; i < data.features.length; i++) {
+            d.push({
+              name: data.features[i].properties.name
+            })
+          }
+          mapData = d;
+          //注册地图
+          echarts.registerMap('china', data);
+          //绘制地图
+          console.log("绘制全国地图 开始")
+          renderMap('china', d);
+          console.log("绘制全国地图 结束")
+        });
+        //初始化绘制全国地图配置
+        var option = {
+          geo: {
+            type: 'map',
+            map: 'china',
+            top: '5%',
+            bottom: '20%',
+            roam: true,
+            label: {
+              show: true,
+              color: 'white',
+              formatter: `{a}`,
+            },
+            // label: {
+            //             // 地图上省市标签
+            //       normal:{
+            //         show:false,
+            //         textStyle:{
+            //           color:'#000',
+            //           fontSize:15
+            //         }
+            //         },
+            //         // 选中的省市的标签
+            //         emphasis: {
+            //             show: true,
+            //             textStyle:{
+            //                   color:'#fff',
+            //                   fontSize:15
+            // 	}
+            //          }
+            //     },
+            itemStyle: {
+              // 地图的填充色
+              areaColor: '#2E72BF',
+              // 省份的边框色
+              borderColor: '#333',
+            },
+          },
+          backgroundColor: '#FFFCFB',
+          title: {
+            text: '▎大宗商品监管联盟示意图',
+            left: 20,
+            top: 20,
+            textStyle: {
+              color: '#000',
+              fontSize: 24,
+              fontWeight: 'normal',
+              fontFamily: "Microsoft YaHei"
+            },
+          },
+          legend: {
+            left: '5%',
+            bottom: '5%',
+            orient: 'vertical'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}'
+          },
+          toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+              dataView: {readOnly: false},
+              restore: {},
+              saveAsImage: {}
+            },
+            iconStyle: {
+              normal: {
+                color: '#000'
+              }
+            }
+          },
+          animationDuration: 1000,
+          animationEasing: 'cubicOut',
+          animationDurationUpdate: 1000
+        };
+
+        function renderMap(map, data) {
+          console.log("调用renderMap 函数");
+          option.title.subtext = map;
+          option.series = [
+            {
+              data: data,
+              type: 'map'
+            },
+            {
+              data: Management,
+              symbolSize: function (val) {
+                return 15;
+              },
+              hoverAnimation: true,
+              type: 'effectScatter',
+              coordinateSystem: 'geo',
+              rippleEffect: {
+                //period: 1, // 动画时间，值越小速度越快
+                //brushType: 'stroke', // 波纹绘制方式 stroke, fill
+                brushType: 'stroke',
+                scale: 5 // 波纹圆环最大限制，值越大波纹越大
+              },
+
+              label: {
+                normal: {
+                  show: true,
+                  position: 'left',
+                  textStyle: {
+                    // color:'red',
+                    // fontSize:15,
+                    fontSize: 15,
+                    color: '#000000',
+                    backgroundColor: '#FFFFFF',
+                    position: 'right',
+                    formatter: '{b}'
+
+                  },
+                  formatter(Management) {
+                    return Management.name
+                  }
+                },
+                // emphasis: {
+                //     show: false,
+                //     fontSize: 15,
+                //     color:'#000000',
+                //     backgroundColor:'#FFFFFF',
+                //     position: 'right',
+                //     formatter: '{b}'
+                // }
+              },
+              itemStyle: {
+                normal: {
+                  color: '#F4E925',
+                  shadowBlur: 10,
+                  shadowColor: '#05C3F9'
+                }
+              },
+              zlevel: 1
+            }
+          ];
+          //渲染地图
+          chart.setOption(option);
+        }
+      }).catch(() => {
+        console.log("getTransactionData fail")
+      });
+    },
+    goBack() {
+      this.$router.push(`/trade/Multimodal-multigranularity/stepBar`);
+    },
+    onClickQuery() {
+      const team = this.$router.currentRoute.params.team;
+      this.GetTeamData(team);
+    },
+    onClickQueryMap() {
+      this.onClickQuery3(this.$router.currentRoute.params.team);
+    },
+    setGoTo(scope) {
       return scope.row.commodityName !== "小麦";
     },
-    goToprice() {
+    goToPrice() {
       //直接跳转
       this.$router.push('/trade/Multimodal-multigranularity/priceshow');
     },
-    setdis(scope) {
+    setDis(scope) {
       return scope.row.content === "暂时未分配";
     },
     gotoDetail(id) {
       this.$router.push(`/trade/acpassTask/activetask/${id}`);
-      console.log(`/trade/acpassTask/activetask/${id}`)
     },
-
-  
     // 分页
     // 每页显示的条数
     handleSizeChange(val) {
@@ -698,21 +687,17 @@ function renderMap(map,data){
       // 改变默认的页数
       this.currentPage = val
     },
-
     getData() {
       // 获取表格数据
-      console.log("获取表格数据")
       taskQuery().then((res) => {
-                this.dealwithData(res)
+        this.dealWithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
     },
-    dealwithData(res) {
-      console.log("dataconvert:"+res)
+    dealWithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
-      console.log("dataConvert = res.data.data;"+res.data.data);
       this.totalCount = dataConvert.length
       for (let i = 0; i < dataConvert.length; i++) {
         // let data = this.timestampToTime(dataConvert[i].gmtCreate);
@@ -726,70 +711,58 @@ function renderMap(map,data){
 
         // data = this.timestampToTime(dataConvert[i].endTime)
         // dataConvert[i].endTime = data
-        
-      //   if (dataConvert[i].humanUse) // true
-      //     dataConvert[i].humanUse = "是"
-      //   else // false
-      //     dataConvert[i].humanUse = "否"
-      //   if (!dataConvert[i].timeAdvise) // true
-      //     dataConvert[i].timeAdvise = "否"
-      //   if (!dataConvert[i].commodityName) // true
-      //     dataConvert[i].commodityName = "暂无"
 
-      //   if (!dataConvert[i].content) // true
-      //   {
-      //     dataConvert[i].content = "暂时未分配"
-      //   }
+        //   if (dataConvert[i].humanUse) // true
+        //     dataConvert[i].humanUse = "是"
+        //   else // false
+        //     dataConvert[i].humanUse = "否"
+        //   if (!dataConvert[i].timeAdvise) // true
+        //     dataConvert[i].timeAdvise = "否"
+        //   if (!dataConvert[i].commodityName) // true
+        //     dataConvert[i].commodityName = "暂无"
 
-      //   if (!dataConvert[i].team) // true
-      //   {
-      //     dataConvert[i].team = "暂时未分配"
-      //   }
+        //   if (!dataConvert[i].content) // true
+        //   {
+        //     dataConvert[i].content = "暂时未分配"
+        //   }
 
-      //  if (!dataConvert[i].subtask) // 追加种类
-      //   {
-      //     dataConvert[i].subtask = "无"
-      //   }
-      //   if (!dataConvert[i].resourceNeed) // 追加平台
-      //   {
-      //     dataConvert[i].resourceNeed = "无"
-      //   }
-      //   if (dataConvert[i].workStatus == null) // true
-      //     dataConvert[i].workStatus = "未分配"
-      //   if (dataConvert[i].workStatus === 0) // true
-      //     dataConvert[i].workStatus = "已分配"
-      //   if (dataConvert[i].workStatus === 1) // true
-      //     dataConvert[i].workStatus = "任务已经执行"
-      //   if (dataConvert[i].workStatus === 2) // true
-      //     dataConvert[i].workStatus = "任务出现异常"
+        //   if (!dataConvert[i].team) // true
+        //   {
+        //     dataConvert[i].team = "暂时未分配"
+        //   }
+
+        //  if (!dataConvert[i].subtask) // 追加种类
+        //   {
+        //     dataConvert[i].subtask = "无"
+        //   }
+        //   if (!dataConvert[i].resourceNeed) // 追加平台
+        //   {
+        //     dataConvert[i].resourceNeed = "无"
+        //   }
+        //   if (dataConvert[i].workStatus == null) // true
+        //     dataConvert[i].workStatus = "未分配"
+        //   if (dataConvert[i].workStatus === 0) // true
+        //     dataConvert[i].workStatus = "已分配"
+        //   if (dataConvert[i].workStatus === 1) // true
+        //     dataConvert[i].workStatus = "任务已经执行"
+        //   if (dataConvert[i].workStatus === 2) // true
+        //     dataConvert[i].workStatus = "任务出现异常"
       }
       dataConvert.reverse()
       this.dormitory = dataConvert;
       this.loading = false;
     },
- 
-    GetTeamData(team){
-        var url='/yu/getOneTeamResult/'+team
-        getOneTeamResult(url).then((res) => {
-                this.dealwithData(res)
-        document.getElementById("form").style.display="block";
-        document.getElementById("map").style.display="none";
-        document.getElementById("caozuoyuan").style.display="none";
+    GetTeamData(team) {
+      let url = '/yu/getOneTeamResult/' + team
+      getOneTeamResult(url).then((res) => {
+        this.dealWithData(res)
+        document.getElementById("form").style.display = "block";
+        document.getElementById("map").style.display = "none";
+        // document.getElementById("caozuoyuan").style.display = "none";
       }).catch(() => {
         console.log("getTransactionData fail")
       });
     },
-  },    
-  created() {
-    console.log(this.$router.currentRoute.params.team);
-    const team = this.$router.currentRoute.params.team;
-    //this.getData();
-    //this.GetTeamData(team);
-    
-  },
-  mounted() {
-    this.loading = false;
-    this.onClickQuery();
   }
 }
 </script>
@@ -799,7 +772,8 @@ function renderMap(map,data){
   width: 100%;
   height: 600px;
 }
-  .el-table thead{
-    color: black;
-  }
+
+.el-table thead {
+  color: black;
+}
 </style>

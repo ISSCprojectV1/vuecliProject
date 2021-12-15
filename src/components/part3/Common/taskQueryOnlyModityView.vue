@@ -2,15 +2,13 @@
   <div>
     <div class="dormitoryData">
       <el-table
-          ref="dormitoryTable"
           :data="dormitory.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           tooltip-effect="dark"
-          stripe
           style="width: 100%"
-          :header-cell-style="headcell"
-          border
+          :header-cell-style="getHeaderStylesheet"
           v-loading="loading"
-          element-loading-text="加载中">
+          element-loading-text="加载中"
+          :cell-style="{padding:'3px'}">
         <!--任务基本-->
         <el-table-column label="序号" prop="id" min-width="25"></el-table-column>
 
@@ -19,7 +17,7 @@
         <!--主被动模态-->
         <el-table-column label="平台" min-width="60" prop="content"></el-table-column>
 
-        <el-table-column label="价格波动频率（按日更新）" min-width="85" prop="riskValue"></el-table-column>
+        <el-table-column label="价格波动频率（按日更新）" min-width="70" prop="riskValue"></el-table-column>
 
         <el-table-column label="价格波动等级" min-width="45">
           <template slot-scope="scope">
@@ -101,8 +99,7 @@ export default {
       totalCount: 100,
       loading: false,
       taskin: {
-        changeflag:
-        Number.NEGATIVE_INFINITY
+        changeflag: Number.NEGATIVE_INFINITY
       },
       // 补全商品粒度
       commodityDialogVisible: false,
@@ -120,25 +117,31 @@ export default {
       buttonName: "0",
     }
   },
+  created() {
+    //this.getData();
+    this.getModeSwitchAll()
+    this.sendMsg()
+  },
+  mounted() {
+    this.loading = true;
+  },
   methods: {
-    headcell() {
+    getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
-    /*
-    * 商品粒度模块Method
-    */
+    // 商品粒度模块Method
     // 补全商品粒度，获得商品粒度推荐名单
     getCommodity(val) {
       this.temp = val.id;
       this.commodityDialogVisible = true;
       let URL = '/getcommodityRelationdetails/' + val.commodityName;
       getcommodityRelationdetails2(URL).then((response) => {
-        console.log("result------", response.data)
         for (let i = 0; i < response.data.length; i++) {
           let temp = {};
           temp.commodityDialog_id = response.data[i].id2;
@@ -169,7 +172,7 @@ export default {
       }, 1000);
     },
     // 确认追加该粒度
-    updateCommodity(val) {
+    updateCommodity() {
       this.commodityDialogVisible = false;
       let selectedCommodity = [];
       for (let i = 0; i < this.multipleSelection.length; i++) {
@@ -189,9 +192,7 @@ export default {
       });
       this.reload();// 刷新页面
     },
-    /*
- * 空间粒度模块Method
- */
+    // 空间粒度模块Method
     // 获得空间粒度推荐名单
     getFlats(val) {
       this.temp = val.id;
@@ -200,7 +201,6 @@ export default {
       getrecommendrlatform(URL).then((response) => {
         for (let i = 0; i < response.data.data.length; i++) {
           let temp = {};
-          console.log("result:", response.data.data[i])
           temp.platform = response.data.data[i].platform;
           temp.association = response.data.data[i].association;
           this.flatData.push(temp);
@@ -235,15 +235,13 @@ export default {
       });
       this.reload();// 刷新页面
     },
-    changespaceResult() {
+    changeSpaceResult() {
       spaceResult().then((res) => {
         let datt = res.data.data
         for (var i = 0; i < datt.length; i++) {
           for (var j = 0; j < this.dormitory.length; j++) {
             if (datt[i].id === this.dormitory[j].id) {
               this.dormitory[j].subtask = datt[i].subtask
-              console.log(this.dormitory[j])
-              console.log(this.dormitory)
               break;
             }
           }
@@ -252,27 +250,27 @@ export default {
         console.log("getTransactionData fail")
       });
     },
-    setgoto(scope) {
+    setGoTo(scope) {
       return scope.row.commodityName !== "小麦";
     },
-    goToprice() {
+    goToPrice() {
       //直接跳转
       this.$router.push('/trade/Multimodal-multigranularity/priceshow');
     },
-    setdis(scope) {
+    setDis(scope) {
       return scope.row.content === "暂时未分配";
     },
     gotoDetail(id) {
       this.$router.push(`/trade/acpassTask/activetask/${id}`);
     },
-    changetime(data) {
+    changeTime() {
       changetimeadvise().then((res) => {
-        this.dealwithData(res)
+        this.dealWithData(res)
       }).catch(() => {
         console.log("taskQuery fail")
       });
     },
-    changetask(scope) {
+    changeTask(scope) {
       this.taskin = scope.row
       this.taskin.changeflag = this.taskin.id;
       this.addNewTask1()
@@ -294,8 +292,7 @@ export default {
       this.$router.push({
         path: '/trade/acpassTask/activetask/' + id,
         query: {
-          data: passive,
-
+          data: passive
         }
       });
     },
@@ -303,17 +300,16 @@ export default {
       let idd = getToken()
       let url = '/getTaskById/' + idd
       let url2 = '/getroles/' + idd
-      console.log(getRolenameById(url2))
       // 获取表格数据
       taskQuery().then((res) => {
-        this.dealwithData(res)
+        this.dealWithData(res)
       }).catch(() => {
         console.log("getTransactionData fail")
       });
     },
-    getModeSwitchAll(data) {
+    getModeSwitchAll() {
       getModeSwitch().then((res) => {
-        this.dealwithRiskData(res.data.data);
+        this.dealWithRiskData(res.data.data);
       }).catch(() => {
         console.log("getModeSwitchAll fail")
       });
@@ -334,9 +330,8 @@ export default {
           }
         }
       }
-      console.log(dataConvert)
     },
-    dealwithData(res) {
+    dealWithData(res) {
       let dataConvert = [];
       dataConvert = res.data.data;
       this.totalCount = dataConvert.length;
@@ -393,10 +388,10 @@ export default {
       this.dormitory = dataConvert;
       this.loading = false;
     },
-    dealwithRiskData(data) {
+    dealWithRiskData(data) {
       let dataConvert = [];
       dataConvert = data;
-      this.totalCount=data.length;
+      this.totalCount = data.length;
       dataConvert.reverse();
       this.dormitory = dataConvert;
       this.loading = false;
@@ -412,14 +407,6 @@ export default {
       const s = date.getSeconds();
       return Y + M + D + h + m + s
     },
-  },
-  created() {
-    //this.getData();
-    this.getModeSwitchAll()
-    this.sendMsg()
-  },
-  mounted() {
-    this.loading = true;
   }
 }
 </script>
@@ -427,10 +414,5 @@ export default {
 <style scoped>
 .dormitoryData {
   width: 100%;
-  height: 600px;
-}
-
-.el-table thead {
-  color: black;
 }
 </style>

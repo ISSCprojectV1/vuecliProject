@@ -1,11 +1,14 @@
 <template>
   <div style="width: 100%">
-    <el-container style="height: 700px; border: 0.5rem solid #eee">
-      <el-aside width="60%" style="border: 0.5rem solid #eee">
-        <h2>主动监管名单</h2>
-
-        <el-table :data="dataTableActive" highlight-current-row @row-click="onClickTableActive"
-                  :header-cell-style="getHeaderStylesheet">
+    <el-container style="height: 700px; border: 0.5rem solid #ffffff">
+      <el-aside width="55%" style="border: 0.5rem solid #ffffff">
+        <div class="title">主动监管名单</div>
+        <el-table
+            :data="dataTableActive"
+            highlight-current-row @row-click="onClickTableActive"
+            :header-cell-style="getHeaderStylesheet"
+            :row-style="{height: '40px'}"
+            :cell-style="{padding:'0px'}">
           <el-table-column prop="company" label="交易主体" min-width="200"></el-table-column>
           <el-table-column prop="category" label="商品类型" min-width="70"></el-table-column>
           <el-table-column prop="abnormalValue" label="异常值" min-width="70">
@@ -58,14 +61,18 @@
         </el-pagination>
 
       </el-aside>
-      <el-container style="border: 0.5rem solid #eee">
+      <el-container style="border: 0.5rem solid #ffffff">
         <div id="tableCompanyDetail" style="width: 100%; height: 100%">
-          <h2>主体交易详情</h2>
-
-          <el-table :data="dataTableDetail" style="width: 100%">
-            <el-table-column prop="seller" label="主要交易卖方" fixed="left" min-width="60"></el-table-column>
+          <div class="title">主体交易详情</div>
+          <el-table
+              :data="dataTableDetail"
+              style="width: 100%"
+              :header-cell-style="getHeaderStylesheet"
+              :row-style="{height: '40px'}"
+              :cell-style="{padding:'0px'}">
+            <el-table-column prop="seller" label="主要交易卖方" min-width="60"></el-table-column>
             <el-table-column prop="buyer" label="主要交易买方" min-width="60"></el-table-column>
-            <el-table-column prop="amount" label="交易数" min-width="40"></el-table-column>
+            <el-table-column prop="amount" label="交易数" min-width="20"></el-table-column>
           </el-table>
 
           <el-pagination
@@ -108,16 +115,11 @@ export default {
       totalTableDetail: 0,
       pageSizeDetail: 10,
       currentPageDetail: 1,
-      Admin: false
     }
   },
   created() {
     const id = this.$router.currentRoute.params.id;
     this.queryActiveGroup(id, 1, this.pageSizeActive);
-    if (getRole() == "admin")
-      this.Admin = true
-    else
-      this.Admin = false
   },
   mounted() {
     document.getElementById('tableCompanyDetail').style.display = 'none'
@@ -125,10 +127,11 @@ export default {
   methods: {
     getHeaderStylesheet() {
       return {
-        'background-color': '#dfdfdf',
-        'color': 'rgb(96, 97, 98)',
+        'background-color': '#f8f8f8',
+        'color': '#909399',
         'font-weight': 'bold',
-        'font-size': '18px'
+        'padding-top': '20px',
+        'padding-bottom': '20px',
       }
     },
     // table active group
@@ -196,5 +199,12 @@ export default {
 </script>
 
 <style scoped>
-
+.title {
+  height: 40px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 40px;
+  padding-left: 16px;
+  font-weight: bold;
+}
 </style>

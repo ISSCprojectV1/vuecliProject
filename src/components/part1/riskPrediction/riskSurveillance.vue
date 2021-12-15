@@ -2,7 +2,7 @@
   <div>
     <h2>大宗商品价格波动预警监控平台</h2>
     <el-container style="height: 650px; border: 10px solid #eee">
-      <el-aside width="370px" style="border: 10px solid #eee; background-color: white;">
+      <el-aside width="370px" style="border: 10px solid #eeeeee; background-color: white;">
         <div id="chart-risk-frequency" style="margin-top: 1rem; width: 350px; height: 500px"></div>
       </el-aside>
 

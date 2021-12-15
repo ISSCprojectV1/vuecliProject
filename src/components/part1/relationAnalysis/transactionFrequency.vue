@@ -338,7 +338,7 @@
                     userrelation(params).then(res=>{
                         console.log(res.data.data)
                         this.SimilarityUser = res.data.data
-                        this.drawechart2(res.data.data,prepared);
+                        this.drawChart2(res.data.data,prepared);
                     }).catch(err=>{
                         console.log(err)
                     })

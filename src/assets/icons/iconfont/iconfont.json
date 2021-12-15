@@ -1,0 +1,16 @@
+{
+  "id": "2906679",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1347243",
+      "name": "色块－问号",
+      "font_class": "icon-test",
+      "unicode": "e693",
+      "unicode_decimal": 59027
+    }
+  ]
+}

@@ -25,13 +25,41 @@ export const constantRoutes = [
     name: "Register",
     component: () => import("@/views/part1/register")
   },
+  {
+    path: "/trade",
+    component: () => import("@/components/part1/common/full"),
+    children: [
+      {
+        path:"/trade/PolicyRisk/event_calendar",
+        component: () => import("@/components/part1/PolicyRisk/event_calendar"),
+        meta: {
+          title: "政策-事件日历"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
+        meta: {
+          title: "业内政策1"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicyco",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
+        meta: {
+          title: "业内政策1"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewAssociatedPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
+        meta: {
+          title: "关联政策"
+        }
+      }
+    ]
+  },
 ]
-
-// 实例化vue时候只挂载constantRoutes
-export default new VueRouter({
-  mode: "history",
-  routes: constantRoutes.concat(adminRoutes)
-})
 
 // 异步挂载路由，根据权限加载路由表
 export const asyncRoutes = [
@@ -182,20 +210,72 @@ export const asyncRoutes = [
       },
 
       {
-        id:28,
+        id: 28,
         path: '/trade/auctionNew/auctionNew',
         component: () => import("@/components/admin/auctionNew"),
       },
       {
-        id:29,
+        id: 29,
         path: '/trade/auctionNew/data',
         component: () => import("@/components/admin/data"),
       },
       {
-        id:30,
+        id: 30,
         path: '/trade/auctionNew/score',
         component: () => import("@/components/admin/score"),
       },
+      {
+        id: 31,
+        path: "/trade/insiderTrading/tradingDetection",
+        component: () => import("@/components/part4/tradingDetection"),
+      },
+      {
+        id: 32,
+        path: "/trade/insiderTrading/relationDetection/:id",
+        component: () => import("@/components/part4/relationDetection"),
+      },
+      {
+        id: 33,
+        path: "/trade/PolicyRisk/event_calendar",
+        component: () => import("@/components/part1/PolicyRisk/event_calendar"),
+      },
+      {
+        id: 34,
+        path: "/trade/PolicyRisk/viewIndustryPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
+      },
+      {
+        id: 35,
+        path: "/trade/PolicyRisk/viewIndustryPolicyco/:platform",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
+      },
+      {
+        id: 36,
+        path: "/trade/PolicyRisk/viewAssociatedPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
+      },
+      // default risk
+      {
+        id: 47,
+        path: "/trade/DefaultRisk/transactionEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/transactionEvaluation"),
+      },
+      {
+        id: 38,
+        path: "/trade/DefaultRisk/firmEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/firmEvaluation"),
+      },
+      {
+        id: 39,
+        path: "/trade/DefaultRisk/categoryEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/categoryEvaluation"),
+      },
+      {
+        id: 40,
+        path: "/trade/riskPrediction/riskPropagation",
+        component: () => import("@/components/part1/riskPrediction/riskPropagation"),
+      },
+        // 舆情风险
       {
         id:1,
         name:"今日舆情汇总",
@@ -222,6 +302,8 @@ export const asyncRoutes = [
       },
     ]
   },
+
+
   {
     path: '/console',
     component: () => import("@/views/part3/incentiveMechanism/Console/home"),
@@ -254,4 +336,10 @@ export const asyncRoutes = [
     ]
   }
 ]
+
+// 实例化vue时候只挂载constantRoutes
+export default new VueRouter({
+  mode: "history",
+  routes: constantRoutes.concat(adminRoutes).concat(asyncRoutes)
+})
 
