@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <el-container style="height: 700px; border: 0.5rem solid #eee">
       <el-aside width="50%" style="border: 0.5rem solid #eee">
-        <h2>异常交易模式风险传播</h2>
+        <h2>业内系统性风险传播</h2>
         <el-table :data="dataImpact" highlight-current-row>
           <el-table-column
             label="平台名称"

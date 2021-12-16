@@ -262,7 +262,7 @@
             <el-menu-item
                           index="/trade/PolicyRisk/viewIndustryPolicy"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
-              <span slot="title">异常交易模式检测与预警</span>
+              <span slot="title">业内系统性风险检测</span>
             </el-menu-item>
             <el-menu-item
                           index="/trade/PolicyRisk/viewAssociated"
