@@ -249,15 +249,8 @@
             style="text-align: left"
           >
             <template slot="title">
-<<<<<<< HEAD
                             <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal;">系统性风险检测子系统</span>
-=======
-              <i class="el-icon-menu"></i>
-              <span style="font-size: 20px; white-space: normal"
-                >交易模式异常检测子系统</span
-              >
->>>>>>> 535a9a8e7f101ac4eae916be16ad054ae52c7e60
             </template>
 
             <el-menu-item
@@ -267,16 +260,9 @@
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
-<<<<<<< HEAD
                           index="/trade/PolicyRisk/viewIndustryPolicy"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">异常交易模式检测与预警</span>
-=======
-              index="/trade/PolicyRisk/viewIndustryPolicy"
-              style="text-align: left; padding-left: 70px; font-size: 18px"
-            >
-              <span slot="title">异常交易模式检测</span>
->>>>>>> 535a9a8e7f101ac4eae916be16ad054ae52c7e60
             </el-menu-item>
             <el-menu-item
                           index="/trade/PolicyRisk/viewAssociated"
