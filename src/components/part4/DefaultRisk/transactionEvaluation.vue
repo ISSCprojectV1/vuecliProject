@@ -44,7 +44,7 @@
     </el-card>
 
     <!--交易信息表格-->
-    <el-card v-show="noQuery" shadow="hover" class="box-card box-card-no-padding">
+    <el-card v-if="noQuery" shadow="hover" class="box-card box-card-no-padding">
       <el-table
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
@@ -60,7 +60,7 @@
     </el-card>
 
     <!--交易查询结果-->
-    <el-card v-show="!noQuery" shadow="hover" class="box-card" style="height: 460px">
+    <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: 460px">
       <div slot="header" class="box-card-header">
         <span>交易评估信息</span>
       </div>

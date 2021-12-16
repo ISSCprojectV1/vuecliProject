@@ -278,9 +278,7 @@
           <el-submenu index="/trade/DefaultRisk">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span style="font-size: 20px; white-space: normal"
-                >违约风险评估预警</span
-              >
+              <span style="font-size: 20px; white-space: normal; text-align: left">违约风险监测子系统</span>
             </template>
 
             <el-menu-item
