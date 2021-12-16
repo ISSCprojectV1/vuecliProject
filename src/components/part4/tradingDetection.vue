@@ -124,15 +124,6 @@
           <el-table-column prop="goodId" label="商品id"></el-table-column>
           <el-table-column prop="goodName" label="商品名"></el-table-column>
           <el-table-column prop="level" label="风险等级"></el-table-column>
-          <el-table-column label="查看关联内幕人员" align="center">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleRelationButtonClick(scope.$index, scope.row)"
-                >查看</el-button
-              >
-            </template>
-          </el-table-column>
           <el-table-column label="查看异常交易行为" align="center">
             <template slot-scope="scope">
               <el-button
@@ -142,6 +133,16 @@
               >
             </template>
           </el-table-column>
+          <el-table-column label="查看关联内幕人员" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleRelationButtonClick(scope.$index, scope.row)"
+                >查看</el-button
+              >
+            </template>
+          </el-table-column>
+          
         </el-table>
 
         <el-pagination
