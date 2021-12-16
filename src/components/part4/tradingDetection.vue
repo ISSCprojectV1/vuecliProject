@@ -2,7 +2,7 @@
   <div>
     <div class="form">
       <el-form ref="form" label-width="130px" :model="form">
-        <el-form-item label="交易机构名称" style="margin-left: 300px">
+        <el-form-item label="交易机构" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.nameValue"
@@ -27,7 +27,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="交易账户id" style="margin-left: 300px">
+        <el-form-item label="交易账户" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.accountValue"
@@ -77,7 +77,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="活动时间" style="margin-left: 300px">
+        <el-form-item label="交易时间" style="margin-left: 300px">
           <el-col :span="6">
             <el-date-picker
               type="date"
@@ -446,7 +446,7 @@ export default {
         for (let good of response.data) {
           this.form.goodOptions.push({
             value: good.goodId,
-            label: good.goodName,
+            label: good.goodId + "-" + good.goodName,
           });
         }
       });
@@ -455,7 +455,7 @@ export default {
         for (let account of response.data) {
           this.form.accountOptions.push({
             value: account.traderId,
-            label: account.traderName,
+            label: account.traderId + "-" + account.traderName,
           });
         }
       });
