@@ -251,6 +251,13 @@ let routes = [
         meta: {
           title: "关联政策"
         }
+      },
+      {
+        path:"/trade/PolicyRisk/viewAssociated",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociated"),
+        meta: {
+          title: "关联系统风险"
+        }
       }
     ]
   },

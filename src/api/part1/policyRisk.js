@@ -48,3 +48,13 @@ export function getImpactDetail(platform) {
         url: '/getImpactDetail'
     })
 }
+
+export function getAssociatedDetail(industry) {
+    return request({
+        method: 'GET',
+        params: {
+            industry: industry
+        },
+        url: '/getAssociatedDetail'
+    })
+}
