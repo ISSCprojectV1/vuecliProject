@@ -181,6 +181,14 @@
 
             <el-menu-item
               v-if="false"
+              index="/trade/riskPrediction/riskPropagation"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">风险传播链路</span>
+            </el-menu-item>
+
+            <el-menu-item
+              v-if="false"
               index="/trade/riskPrediction/riskSurveillance"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
@@ -224,12 +232,12 @@
             >
               <span slot="title">异常交易检测</span>
             </el-menu-item>
-            <el-menu-item
+            <!-- <el-menu-item
               index="/trade/insiderTrading/relationDetection/all"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">异常关系检测</span>
-            </el-menu-item>
+            </el-menu-item> -->
           </el-submenu>
 
           <el-submenu
@@ -241,8 +249,15 @@
             style="text-align: left"
           >
             <template slot="title">
+<<<<<<< HEAD
                             <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal;">系统性风险检测子系统</span>
+=======
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px; white-space: normal"
+                >交易模式异常检测子系统</span
+              >
+>>>>>>> 535a9a8e7f101ac4eae916be16ad054ae52c7e60
             </template>
 
             <el-menu-item
@@ -252,9 +267,16 @@
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
+<<<<<<< HEAD
                           index="/trade/PolicyRisk/viewIndustryPolicy"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">异常交易模式检测与预警</span>
+=======
+              index="/trade/PolicyRisk/viewIndustryPolicy"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">异常交易模式检测</span>
+>>>>>>> 535a9a8e7f101ac4eae916be16ad054ae52c7e60
             </el-menu-item>
             <el-menu-item
                           index="/trade/PolicyRisk/viewAssociated"
@@ -293,6 +315,38 @@
               <span slot="title">品类评估</span>
             </el-menu-item>
           </el-submenu>
+
+          <!--舆情风险子系统-->
+          <el-submenu
+              index="/trade/PublicOpinionsRisk"
+              style="text-align: left">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span style="font-size: 20px; white-space: normal;">舆情风险子系统</span>
+            </template>
+
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_summary"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">今日舆情汇总</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_riskinfo"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">今日舆情信息</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_search"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">舆情事件查询</span>
+            </el-menu-item>
+           <!-- <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_network"
+                style="text-align: left;padding-left: 70px;font-size: 18px">
+              <span slot="title">舆情网络详情</span>
+            </el-menu-item> -->
+          </el-submenu>
+
         </el-menu>
       </el-col>
     </el-row>

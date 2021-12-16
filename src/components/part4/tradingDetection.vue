@@ -11,6 +11,7 @@
               placeholder="请选择"
               class="select-box"
               style="width: 100%"
+              @change="handleNameChange"
             >
               <el-option
                 v-for="item in form.nameOptions"
@@ -100,7 +101,7 @@
       </el-form>
     </div>
     <div class="accountTable">
-      <el-col :span="10" style="margin-right: 10px">
+      <el-col style="margin-right: 10px">
         <p class="title"><b>异常交易用户</b></p>
         <el-table
           ref="dormitoryTable"
@@ -117,17 +118,26 @@
           border
           v-loading="accountTable.loading"
           element-loading-text="加载中"
-          @row-click="handleRowClick"
         >
           <el-table-column prop="id" label="账户id"></el-table-column>
-          <el-table-column prop="name" label="账户姓名"> </el-table-column>
-          <el-table-column prop="productId" label="商品种类"></el-table-column>
+          <el-table-column prop="name" label="账户名"> </el-table-column>
+          <el-table-column prop="goodId" label="商品id"></el-table-column>
+          <el-table-column prop="goodName" label="商品名"></el-table-column>
           <el-table-column prop="level" label="风险等级"></el-table-column>
           <el-table-column label="查看关联内幕人员" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleButtonClick(scope.$index, scope.row)"
+                @click="handleRelationButtonClick(scope.$index, scope.row)"
+                >查看</el-button
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="查看异常交易行为" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleTradingButtonClick(scope.$index, scope.row)"
                 >查看</el-button
               >
             </template>
@@ -147,58 +157,13 @@
         </el-pagination>
       </el-col>
     </div>
-    <div class="tradeTable">
-      <el-col :span="10">
-        <p class="title"><b>异常交易行为</b></p>
-        <el-table
-          ref="tradeTable"
-          :data="
-            tradeTable.dormitory.slice(
-              (tradeTable.currentPage - 1) * tradeTable.PageSize,
-              tradeTable.currentPage * tradeTable.PageSize
-            )
-          "
-          tooltip-effect="dark"
-          stripe
-          style="width: 100%"
-          :header-cell-style="headcell"
-          border
-          v-loading="tradeTable.loading"
-          element-loading-text="加载中"
-        >
-          <el-table-column prop="id" label="交易id"></el-table-column>
-          <el-table-column prop="productId" label="商品id"></el-table-column>
-          <el-table-column prop="type" label="交易操作"></el-table-column>
-          <el-table-column prop="price" label="成交价格"></el-table-column>
-          <el-table-column prop="quantity" label="交易数量"></el-table-column>
-        </el-table>
-
-        <el-pagination
-          @size-change="handleTradeTableSizeChange"
-          @current-change="handleTradeTableCurrentChange"
-          :current-page="accountTable.currentPage"
-          :page-sizes="accountTable.pageSizes"
-          :page-size="accountTable.PageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="accountTable.totalCount"
-          style="margin-top: 0.5rem"
-        >
-        </el-pagination>
-        <div style="margin: 10px">
-          <el-radio-group v-model.number="radio" @change="handleRadioChange">
-            <el-radio-button label="0">指标1</el-radio-button>
-            <el-radio-button label="1">指标2</el-radio-button>
-            <el-radio-button label="2">指标3</el-radio-button>
-          </el-radio-group>
-        </div>
-
-        <div
-          id="container"
-          style="width: 750px; height: 500px; margin: 5px"
-          ref="chart"
-        ></div>
-      </el-col>
-    </div>
+    <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
+      <trading-dialog
+        :traderId="traderId"
+        :startDate="form.date1"
+        :endDate="form.date2"
+      ></trading-dialog>
+    </el-dialog>
   </div>
 </template>
 
@@ -207,9 +172,15 @@ import echarts from "echarts";
 import {
   getDetectionOptions,
   getAnomolyList,
+  getInstitutes,
+  getGoodsByInstitutes,
+  getTradersByInstitutes,
+  tradingDetection,
 } from "@/api/part4/tradingDetection";
+import tradingDialog from "./tradingDialog.vue";
 
 export default {
+  components: { tradingDialog },
   name: "tradingDetection",
   data() {
     return {
@@ -235,43 +206,24 @@ export default {
         totalCount: 100,
         loading: false,
       },
-      tradeTable: {
-        dormitory: [],
-        currentPage: 1,
-        pageSizes: [5, 10, 20, 50],
-        // 默认每页显示的条数（可修改）
-        PageSize: 5,
-        // 总条数，根据接口获取数据长度(注意：这里不能为空)
-        totalCount: 100,
-        loading: false,
+      traderId: 0,
+      dialog: {
+        name: "",
+        visible: false,
       },
-      radio: null,
-      indexData: [],
+      detectionResults: [],
     };
   },
   mounted() {
-    getDetectionOptions().then((response) => {
-      console.log(response);
-      for (let i = 0; i < response.data.nameOptions.length; i++) {
+    getInstitutes().then((response) => {
+      let data = response.data;
+      for (let i = 0; i < data.length; i++) {
         this.form.nameOptions.push({
-          value: i + 1,
-          label: response.data.nameOptions[i],
-        });
-      }
-      for (let i = 0; i < response.data.accountOptions.length; i++) {
-        this.form.accountOptions.push({
-          value: i + 1,
-          label: response.data.accountOptions[i],
-        });
-      }
-      for (let i = 0; i < response.data.goodOptions.length; i++) {
-        this.form.goodOptions.push({
-          value: i + 1,
-          label: response.data.goodOptions[i],
+          value: data[i].instituteId,
+          label: data[i].instituteName,
         });
       }
     });
-    console.log(this.form);
   },
   methods: {
     headcell() {
@@ -284,13 +236,32 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      this.initAccountTableData();
-      this.initTradeTableData();
+      // this.initAccountTableData();
       this.initTimeSeriesData();
-      this.timeSeriesInit(this.indexData[this.radio]);
       console.log(this.accountTable);
-      console.log(this.tradeTable);
       console.log(this.indexData);
+      let params = {
+        institutesId: this.form.nameValue,
+        tradersId: this.form.accountValue,
+        goodsId: this.form.goodValue,
+        startDate: this.form.date1,
+        endDate: this.form.date2,
+      };
+      tradingDetection(params).then((response) => {
+        console.log(response);
+        this.detectionResults = response.data;
+        this.accountTable.dormitory = [];
+        let levels = ["风险等级低", "风险等级中", "风险等级高"];
+        for (let element of this.detectionResults) {
+          this.accountTable.dormitory.push({
+            id: element.traderId,
+            name: element.traderName,
+            goodId: element.goodId,
+            goodName: element.goodName,
+            level: levels[element.level],
+          });
+        }
+      });
     },
     handleAccountTableSizeChange(val) {
       // 改变每页显示的条数
@@ -303,30 +274,26 @@ export default {
       // 改变默认的页数
       this.accountTable.currentPage = val;
     },
-    handleTradeTableSizeChange(val) {
-      this.tradeTable.PageSize = val;
-      // 注意：在改变每页显示的条数时，要将页码显示到第一页
-      this.tradeTable.currentPage = 1;
-    },
-    handleTradeTableCurrentChange(val) {
-      this.tradeTable.currentPage = val;
-    },
-    handleButtonClick(index, row) {
+    handleRelationButtonClick(index, row) {
       console.log(index, row);
       this.$router.push({
         path: "/trade/insiderTrading/relationDetection/" + row.id,
       });
     },
-    handleRowClick(row, column, event) {
+    handleTradingButtonClick(index, row) {
+      console.log(index);
       console.log(row);
-      console.log(column);
-      this.initTradeTableData();
+      this.dialog.name =
+        "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
+      this.dialog.visible = true;
+      this.traderId = row.id;
     },
     handleRadioChange() {
       console.log(this.radio);
       this.timeSeriesInit(this.indexData[this.radio]);
     },
     timeSeriesInit(timeSeries) {
+      console.log(timeSeries);
       let dom = this.$refs.chart;
       let myChart = echarts.init(dom);
       let option = {
@@ -412,7 +379,7 @@ export default {
     initTimeSeriesData() {
       this.indexData = [];
       for (let i = 0; i < 3; i++) {
-        let base = +new Date(1988, 9, 3);
+        let base = +new Date(2021, 9, 3);
         let oneDay = 24 * 3600 * 1000;
         let seriesData = [[base, 100 + Math.random() * 100]];
         let s = Math.floor(Math.random() * 100) + 10;
@@ -427,35 +394,30 @@ export default {
         }
         this.indexData.push({
           data: seriesData,
-          start: new Date(1988, 9, 3).getTime() + oneDay * s,
-          end: new Date(1988, 9, 3).getTime() + oneDay * (s + 20),
+          start: new Date(2021, 9, 3).getTime() + oneDay * s,
+          end: new Date(2021, 9, 3).getTime() + oneDay * (s + 20),
           name: "指标" + (i + 1),
         });
       }
     },
     initAccountTableData() {
       let accountTableData = [];
+      let levels = ["风险等级低", "风险等级中", "风险等级高"];
       for (let i = 0; i < 20; i++)
         accountTableData.push({
           id: i,
-          name: "用户" + (i + 1),
-          productId: i + Math.floor(Math.random() * 10),
-          level: Math.floor(Math.random() * 4),
+          name: "用户" + String.fromCharCode(i + 65),
+          goodId: i + Math.floor(Math.random() * 10),
+          level: Math.floor(Math.random() * 3),
         });
+      accountTableData.sort((a, b) => {
+        return b.level - a.level;
+      });
+      for (let account of accountTableData) {
+        account.level = levels[account.level];
+      }
       console.log(accountTableData);
       this.accountTable.dormitory = accountTableData;
-    },
-    initTradeTableData() {
-      let tradeTableData = [];
-      for (let i = 0; i < 10; i++)
-        tradeTableData.push({
-          id: i,
-          productId: i + Math.floor(Math.random() * 10),
-          type: Math.random() < 0.5 ? "买入" : "卖出",
-          price: Math.floor(Math.random() * 20),
-          quantity: Math.floor(Math.random() * 200),
-        });
-      this.tradeTable.dormitory = tradeTableData;
     },
     handleNameSelectAll() {
       this.form.nameValue = [];
@@ -474,6 +436,29 @@ export default {
       for (let good of this.form.goodOptions) {
         this.form.goodValue.push(good.value);
       }
+    },
+    handleNameChange() {
+      this.form.accountValue = [];
+      this.form.goodValue = [];
+      console.log("name changed");
+      getGoodsByInstitutes(this.form.nameValue).then((response) => {
+        this.form.goodOptions = [];
+        for (let good of response.data) {
+          this.form.goodOptions.push({
+            value: good.goodId,
+            label: good.goodName,
+          });
+        }
+      });
+      getTradersByInstitutes(this.form.nameValue).then((response) => {
+        this.form.accountOptions = [];
+        for (let account of response.data) {
+          this.form.accountOptions.push({
+            value: account.traderId,
+            label: account.traderName,
+          });
+        }
+      });
     },
   },
 };
