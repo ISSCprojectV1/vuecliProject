@@ -235,16 +235,10 @@
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
-<<<<<<< HEAD
               index="/trade/PolicyRisk/viewIndustryPolicy"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">异常交易模式检测与预警</span>
-=======
-                          index="/trade/PolicyRisk/viewIndustryPolicy"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">业内系统性风险检测</span>
->>>>>>> dfe885513ce73a948d09803119526d608161a05c
             </el-menu-item>
             <el-menu-item
               index="/trade/PolicyRisk/viewAssociated"
