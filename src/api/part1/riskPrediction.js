@@ -90,6 +90,53 @@ export function getDataRiskChart(name) {
         url: 'risk/name/' + name
     })
 }
+
+// 优化前端：
+export function getForecastHistoryRisk(name){
+
+    console.log(name)
+    return request({
+        method: 'GET',
+        url: 'risk/forecast/name/'+name
+    })
+}
+
+// 优化前端：根据状态获取forecast
+export function getForecastNewRiskByStatus(status) {
+    return request({
+        method: 'GET',
+        url: 'risk/forecast/status/' + status
+    })
+}
+
+// 优化前端：获取forecastNewRisk 即状态值为0和1的
+export function getAllForecastNewRisk() {
+    return request({
+        method: 'GET',
+        url: 'risk/forecast/allrisk'
+    })
+}
+
+// 优化前端：修改风险预警等级
+export function updateForecastNewRisk(data) {
+    return request({
+        method: 'POST',
+        data: data,
+        url: '/risk/forecast/update'
+    })
+}
+
+// 优化前端：获取风险频率
+export function getForecastFrequency(nums) {
+    return request({
+        method: 'GET',
+        url: 'risk/forecast/frequency/'+nums
+    })
+}
+
+
+
+
 // risk chart end
 // riskvolumn start
 
@@ -107,7 +154,10 @@ export function getVolumeInfoByStatus(status) {
   })
 }
 
+
+
 export function updateVolumeInfo(data) {
+
   return request({
     method: 'POST',
     data: data,
