@@ -173,10 +173,10 @@
             </el-menu-item>
 
             <el-menu-item
-              index="/trade/riskPrediction/riskSurveillance"
+              index="/trade/riskPrediction/forecastMonitorInfo"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">价格演化分析模块</span>
+              <span slot="title">价格波动风险演化模块</span>
             </el-menu-item>
 
             <el-menu-item
