@@ -277,10 +277,23 @@ export const asyncRoutes = [
         path: "/trade/DefaultRisk/categoryEvaluation",
         component: () => import("@/components/part4/DefaultRisk/categoryEvaluation"),
       },
+      //  价格波动风险预警与传导
       {
         id: 40,
         path: "/trade/riskPrediction/riskPropagation",
         component: () => import("@/components/part1/riskPrediction/riskPropagation"),
+      },
+      {
+        id: 41,
+        name: '历史价格波动风险演化图',
+        path: "/trade/riskPrediction/forecastHistoryRisk",
+        component: () => import("@/components/part1/riskPrediction/forecastHistoryRisk"),
+      },
+      {
+        id: 42,
+        name: '风险预警监控',
+        path: "/trade/riskPrediction/forecastMonitorInfo",
+        component: () => import("@/components/part1/riskPrediction/forecastMonitorInfo"),
       },
         // 舆情风险
       {

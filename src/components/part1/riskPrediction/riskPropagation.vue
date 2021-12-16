@@ -51,7 +51,7 @@ export default {
     }
 
 
-
+    // 通过设置links不同的curveness，解决边的重叠问题
     let links = [
       {
         source: '焦煤',
@@ -143,6 +143,9 @@ export default {
     this.chart.setOption(this.option);
   },
   methods: {
+    goBack() {
+      history.back();
+    },
     drawRiskPropagation(data, links){
       this.option = {
         tooltip: {},
