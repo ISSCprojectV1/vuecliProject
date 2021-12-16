@@ -249,10 +249,8 @@
             style="text-align: left"
           >
             <template slot="title">
-
                             <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal;">系统性风险检测子系统</span>
-
             </template>
 
             <el-menu-item
@@ -262,7 +260,6 @@
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
-
                           index="/trade/PolicyRisk/viewIndustryPolicy"
                           style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">异常交易模式检测与预警</span>
