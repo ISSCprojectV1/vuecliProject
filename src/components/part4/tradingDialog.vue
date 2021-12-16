@@ -17,7 +17,6 @@
       element-loading-text="加载中"
     >
       <el-table-column prop="id" label="交易id"></el-table-column>
-      <el-table-column prop="productId" label="商品id"></el-table-column>
       <el-table-column prop="type" label="交易操作"></el-table-column>
       <el-table-column prop="price" label="成交价格"></el-table-column>
       <el-table-column prop="quantity" label="交易数量"></el-table-column>
@@ -55,9 +54,7 @@
 import echarts from "echarts";
 export default {
   name: "trading-dialog",
-  props: {
-    traderId: Number,
-  },
+  props: ["traderId", "startDate", "endDate"],
   data() {
     return {
       tradeTable: {
@@ -186,6 +183,8 @@ export default {
     },
     initTimeSeriesData() {
       this.indexData = [];
+      console.log(this.startDate, typeof this.startDate);
+      console.log(this.endDate, typeof this.endDate);
       for (let i = 0; i < 3; i++) {
         let base = +new Date(2021, 9, 3);
         let oneDay = 24 * 3600 * 1000;
@@ -213,7 +212,6 @@ export default {
       for (let i = 0; i < 10; i++)
         tradeTableData.push({
           id: i,
-          productId: i + Math.floor(Math.random() * 10),
           type: Math.random() < 0.5 ? "买入" : "卖出",
           price: Math.floor(Math.random() * 20),
           quantity: Math.floor(Math.random() * 200),

@@ -120,8 +120,9 @@
           element-loading-text="加载中"
         >
           <el-table-column prop="id" label="账户id"></el-table-column>
-          <el-table-column prop="name" label="账户姓名"> </el-table-column>
-          <el-table-column prop="productId" label="商品种类"></el-table-column>
+          <el-table-column prop="name" label="账户名"> </el-table-column>
+          <el-table-column prop="goodId" label="商品id"></el-table-column>
+          <el-table-column prop="goodName" label="商品名"></el-table-column>
           <el-table-column prop="level" label="风险等级"></el-table-column>
           <el-table-column label="查看关联内幕人员" align="center">
             <template slot-scope="scope">
@@ -157,7 +158,11 @@
       </el-col>
     </div>
     <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
-      <trading-dialog :traderId="traderId"></trading-dialog>
+      <trading-dialog
+        :traderId="traderId"
+        :startDate="form.date1"
+        :endDate="form.date2"
+      ></trading-dialog>
     </el-dialog>
   </div>
 </template>
@@ -206,6 +211,7 @@ export default {
         name: "",
         visible: false,
       },
+      detectionResults: [],
     };
   },
   mounted() {
@@ -230,7 +236,7 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      this.initAccountTableData();
+      // this.initAccountTableData();
       this.initTimeSeriesData();
       console.log(this.accountTable);
       console.log(this.indexData);
@@ -243,6 +249,18 @@ export default {
       };
       tradingDetection(params).then((response) => {
         console.log(response);
+        this.detectionResults = response.data;
+        this.accountTable.dormitory = [];
+        let levels = ["风险等级低", "风险等级中", "风险等级高"];
+        for (let element of this.detectionResults) {
+          this.accountTable.dormitory.push({
+            id: element.traderId,
+            name: element.traderName,
+            goodId: element.goodId,
+            goodName: element.goodName,
+            level: levels[element.level],
+          });
+        }
       });
     },
     handleAccountTableSizeChange(val) {
@@ -389,7 +407,7 @@ export default {
         accountTableData.push({
           id: i,
           name: "用户" + String.fromCharCode(i + 65),
-          productId: i + Math.floor(Math.random() * 10),
+          goodId: i + Math.floor(Math.random() * 10),
           level: Math.floor(Math.random() * 3),
         });
       accountTableData.sort((a, b) => {
