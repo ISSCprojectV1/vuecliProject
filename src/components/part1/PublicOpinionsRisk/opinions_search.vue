@@ -60,6 +60,12 @@
     <div class="dialog_class">
       <PersonalEventDetailDialog_LT :show="detailShow_LT" title="相关信息详情" @close="closePersonalEventDialog_LT" v-bind:listValue_LT="listValue_LT" ></PersonalEventDetailDialog_LT>
     </div>
+    <div class="dialog_class">
+      <PersonalEventDetailDialog_XW :show="detailShow_XW" title="相关信息详情" @close="closePersonalEventDialog_XW" v-bind:listValue_XW="listValue_XW" ></PersonalEventDetailDialog_XW>
+    </div>
+    <div class="dialog_class">
+      <PersonalEventDetailDialog_TB :show="detailShow_TB" title="相关信息详情" @close="closePersonalEventDialog_TB" v-bind:listValue_TB="listValue_TB" ></PersonalEventDetailDialog_TB>
+    </div>
   </div>
 </template>
 
@@ -67,18 +73,20 @@
 import RelativeEventDialog from "./RelativeEventDialog";
 import PersonalEventDetailDialog_WB from "./PersonalEventDetailDialog_WB";
 import PersonalEventDetailDialog_LT from "./PersonalEventDetailDialog_LT";
+import PersonalEventDetailDialog_TB from "./PersonalEventDetailDialog_TB";
+import PersonalEventDetailDialog_XW from "./PersonalEventDetailDialog_XW";
 import {
   createWbForwardInformation,
   getSearchStatus,
   getWbForwardInformation,
   getWbInformationByKeyWords,
-  getLtInformationByKeyWords,
+  getLtInformationByKeyWords, getTbInformationByKeyWords, getXwInformationByKeyWords,
 } from "../../../api/part1/PublicOpinionsRisk";
 import moment from "moment";
 import {Loading} from "element-ui";
 export default {
   name: "opinions_search",
-  components:{PersonalEventDetailDialog_WB,PersonalEventDetailDialog_LT,RelativeEventDialog},
+  components:{PersonalEventDetailDialog_WB,PersonalEventDetailDialog_LT,PersonalEventDetailDialog_TB,PersonalEventDetailDialog_XW,RelativeEventDialog},
   data(){
     return{
       eventShow:true,
@@ -97,6 +105,10 @@ export default {
       detailShow_WB:false,//详情展示dialog
       listValue_LT:'',//传给dialog的数据
       detailShow_LT:false,//详情展示dialog
+      listValue_TB:'',//传给dialog的数据
+      detailShow_TB:false,//详情展示dialog
+      listValue_XW:'',//传给dialog的数据
+      detailShow_XW:false,//详情展示dialog
 
       loading_forward:'',
 
@@ -123,7 +135,7 @@ export default {
       this.startTime=data.starttime;
       this.endTime=data.endtime;
       this.exchangename=data.exchangename;
-      if(this.keyWord!=='' && this.fromPlatform!=='' && this.startTime!=='' && this.endTime!=='')
+      if(this.keyWord!=='' && this.fromPlatform!=='' && this.startTime!=='' && this.endTime!=='' && this.exchangename!=='')
       {
         //判断来源平台
         if(this.fromPlatform==='微博')
@@ -138,6 +150,20 @@ export default {
           this.forwardShow=false;
           //获取论坛数据
           this.getLtDataByForm(this.keyWord,this.startTime,this.endTime,this.exchangename);
+        }
+        else if(this.fromPlatform==='贴吧')
+        {
+          this.commentShow=false;
+          this.forwardShow=false;
+          //获取贴吧数据
+          this.getTbDataByForm(this.keyWord,this.startTime,this.endTime,this.exchangename);
+        }
+        else if(this.fromPlatform==='新闻')
+        {
+          this.commentShow=false;
+          this.forwardShow=false;
+          //获取新闻数据
+          this.getXwDataByForm(this.keyWord,this.startTime,this.endTime,this.exchangename);
         }
       }
       else
@@ -182,6 +208,44 @@ export default {
         }
       }).catch(()=>{
         console.log("getLtInformationByKeyWords fail")
+      });
+    },
+
+    //根据关键词读取新闻数据
+    getXwDataByForm(val,starttime,endtime,exchangename)
+    {
+      let URL='/getXwInformationByKeyWords/'+val+'/'+starttime+'/'+endtime+'/'+exchangename;
+      getXwInformationByKeyWords(URL).then((res) => {
+        console.log('根据关键词读取新闻数据');
+        if(res.data.length>0)
+        {
+          this.dormitory=res.data;
+        }
+        else
+        {
+          this.$message.warning('获取相关内容数为0！');
+        }
+      }).catch(()=>{
+        console.log("getXwInformationByKeyWords fail")
+      });
+    },
+
+    //根据关键词读取贴吧数据
+    getTbDataByForm(val,starttime,endtime,exchangename)
+    {
+      let URL='/getTbInformationByKeyWords/'+val+'/'+starttime+'/'+endtime+'/'+exchangename;
+      getTbInformationByKeyWords(URL).then((res) => {
+        console.log('根据关键词读取贴吧数据');
+        if(res.data.length>0)
+        {
+          this.dormitory=res.data;
+        }
+        else
+        {
+          this.$message.warning('获取相关内容数为0！');
+        }
+      }).catch(()=>{
+        console.log("getTbInformationByKeyWords fail")
       });
     },
 
@@ -243,12 +307,52 @@ export default {
         }
         this.listValue_LT=this.dormitory[index];
       }
+      else if(val.platform==='新闻')
+      {
+        //显示dialog
+        this.detailShow_XW=true;
+
+        //传值给dialog
+        let index=0;
+        for(let i=0;i<this.dormitory.length;i++)
+        {
+          if(this.dormitory[i].id===val.id)
+          {
+            index=i;
+            break;
+          }
+        }
+        this.listValue_XW=this.dormitory[index];
+      }
+      else if(val.platform==='贴吧')
+      {
+        //显示dialog
+        this.detailShow_TB=true;
+
+        //传值给dialog
+        let index=0;
+        for(let i=0;i<this.dormitory.length;i++)
+        {
+          if(this.dormitory[i].id===val.id)
+          {
+            index=i;
+            break;
+          }
+        }
+        this.listValue_TB=this.dormitory[index];
+      }
     },
     closePersonalEventDialog_WB(){
       this.detailShow_WB=false;
     },
     closePersonalEventDialog_LT(){
       this.detailShow_LT=false;
+    },
+    closePersonalEventDialog_TB(){
+      this.detailShow_TB=false;
+    },
+    closePersonalEventDialog_XW(){
+      this.detailShow_XW=false;
     },
     //*******************************************************************
     //勾选源头节点相关函数
@@ -273,7 +377,13 @@ export default {
     //*******************************************************************
     handleClick_multi_points_network() {
 
-      if(this.selectedData.length===0)
+      if(this.fromPlatform!=='微博')
+      {
+        this.selectedData=[];
+        this.$refs.multipleTable.clearSelection();//清空之前选中的数据
+        this.$message.error('目前仅支持对微博的舆情网络分析！');
+      }
+      else if(this.selectedData.length===0)
       {
         this.$message.warning('请选择源头节点');
       }
