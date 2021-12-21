@@ -1,12 +1,12 @@
 <template>
   <el-dialog :visible.sync="localShow" :title="title" :before-close="beforeClose" @open="open()">
     <slot>
-      <div style="border:#121313 solid 2px;background: #ffffff">
+      <div style="border:#121313 solid 2px;background: #7a98b2">
         <div style="width: 100%;height: 20px;margin-bottom: 5px" >
           <el-button type="primary" icon="el-icon-refresh" @click="handleClick_refreshGraph()" style="float: right;background: none;color: #121313;border: none;"></el-button>
         </div>
-        <div class="line_graph_class" style="width: 100% ;height: 360px;">
-          <div id="line_graph" ref="line_graph"  :style="{width: '100%', height: '340px',margin:'0,5px,0,5px'}" ></div>
+        <div class="line_graph_class" style="width: calc(100% - 24px) ;height: 360px; margin:8px 10px 8px 10px;background: #ffffff;border:#121313 solid 2px;">
+          <div id="line_graph" ref="line_graph"  :style="{width: '100%', height: '100%'}" ></div>
         </div>
       </div>
     </slot>

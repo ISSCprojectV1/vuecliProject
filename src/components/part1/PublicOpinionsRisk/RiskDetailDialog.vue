@@ -19,7 +19,13 @@
         </tr>
         <tr>
           <td class="column_key">舆情网络直径</td>
-          <td class="column_value">{{ RiskInfo.netdiameter }}</td>
+          <td class="column_value">
+            <template>
+              <el-button type="text" @click="handleClick_diameter()">
+                {{ RiskInfo.netdiameter }}
+              </el-button>
+            </template>
+          </td>
         </tr>
         <tr>
           <td class="column_key">舆情网络平均距离</td>
@@ -60,6 +66,10 @@
       <div>
         <DensityDialog :show="detailShow_density" title="舆情网络密度展示" @close="closeDensityDialog"></DensityDialog>
       </div>
+      <!--舆情网络直径-->
+      <div>
+        <DiameterDialog :show="detailShow_diameter" title="舆情网络最长传播链展示" @close="closeDiameterDialog"></DiameterDialog>
+      </div>
     </slot>
   </el-dialog>
 
@@ -69,10 +79,11 @@
 import {getOpinionsRiskLevelInformation} from "../../../api/part1/PublicOpinionsRisk";
 import DiffusionDialog from "./DiffusionDialog";
 import DensityDialog from "./DensityDialog";
+import DiameterDialog from "./DiameterDialog";
 
 export default {
   name: "RiskDetailDialog",
-  components: {DensityDialog, DiffusionDialog},
+  components: {DiameterDialog, DensityDialog, DiffusionDialog},
   props: {
     show: {
       type: Boolean,
@@ -94,6 +105,8 @@ export default {
       detailShow: false,
       //舆情网络密度dialog参数
       detailShow_density:false,
+      //舆情网络直径dialog参数
+      detailShow_diameter:false,
     }
   },
   watch: {
@@ -152,6 +165,18 @@ export default {
     closeDensityDialog(){
       this.detailShow_density=false;
     },
+    //*******************************************************************
+    //舆情网络直径Dialog相关函数
+    //*******************************************************************
+    handleClick_diameter()
+    {
+      console.log("获取舆情网络最长传播链展示图！");
+      this.detailShow_diameter=true;
+    },
+    closeDiameterDialog(){
+      this.detailShow_diameter=false;
+    },
+
   },
 }
 </script>

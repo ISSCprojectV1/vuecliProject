@@ -216,3 +216,11 @@ export function getLtWordsCloudData(URL) {
         method: 'get'
     })
 }
+
+export function getNetworkPath() {
+    console.log("getNetworkPath")
+    return request({
+        url:'/getNetworkPath',
+        method: 'get'
+    })
+}

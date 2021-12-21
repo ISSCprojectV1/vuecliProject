@@ -9,12 +9,11 @@
           <SeeksRelationGraph ref="seeksRelationGraph" :options="graphOptions" />
         </div>
         <div class="edge_classify" style="margin-top: 10px">
-          <div>
-            <label style="color: #121313">红色粗线:实际存在的边</label>
-          </div>
-          <div>
-            <label style="color: #121313">黑色细线:理论可能的边</label>
-          </div>
+          <el-radio-group v-model="check_edge" size="mini" @change="doFilter">
+            <el-radio-button label="理论可能的边"></el-radio-button>
+            <el-radio-button label="实际存在的边"></el-radio-button>
+            <el-radio-button label="">两者重叠</el-radio-button>
+          </el-radio-group>
         </div>
       </div>
     </slot>
@@ -46,7 +45,6 @@ export default {
       //网状图选项设置
       forwardData:[],
       g_loading:true,
-      check_edge:'',
       demoname: '---',
       graphOptions:{
         defaultNodeBorderWidth: 0,
@@ -66,6 +64,7 @@ export default {
         ],
         defaultJunctionPoint: 'border'
       },
+      check_edge:'',
     }
   },
   watch: {
@@ -262,6 +261,52 @@ export default {
       return flag;
     },
 
+    doFilter()
+    {
+      let _all_lines=this.$refs.seeksRelationGraph.getLines();
+      _all_lines.forEach(thisLine => {
+        var _isHideThisLine = true;
+            thisLine.relations.forEach(thisLink => {
+            if(this.check_edge==='理论可能的边')
+            {
+              if(thisLink.data['theoryEdge']!==1)
+              {
+                thisLink.isHide=true;
+              }
+              else {
+                _isHideThisLine = false;
+                thisLink.isHide = false;
+                thisLink.color='#121313';
+                thisLink.lineWidth=1;
+              }
+            }
+            else if(this.check_edge==='实际存在的边')
+            {
+              if(thisLink.data['trueEdge']!==1)
+              {
+                thisLink.isHide=true;
+              }
+              else {
+                _isHideThisLine = false;
+                thisLink.isHide = false;
+                thisLink.color='#911115';
+                thisLink.lineWidth=3;
+              }
+            }
+            else{
+              thisLink.isHide = false;
+              thisLink.color='#121313';
+              thisLink.lineWidth=1;
+              if(thisLink.data['trueEdge']===1)
+              {
+                thisLink.color='#911115';
+                thisLink.lineWidth=3;
+              }
+            }
+          })
+      })
+    },
+
     //加载网状图
     handleClick_refreshGraph()
     {
@@ -278,8 +323,6 @@ export default {
     float:right;
     background: #ffffff;
     margin-top: 10px;
-
-
   }
   .DensityDialogClass .el-dialog__body{
     height:600px
