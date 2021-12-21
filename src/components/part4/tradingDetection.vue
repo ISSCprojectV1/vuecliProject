@@ -160,10 +160,7 @@
     </div>
     <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
       <trading-dialog
-        :traderId="traderId"
-        :startDate="form.date1"
-        :endDate="form.date2"
-      ></trading-dialog>
+      :detectionResults="detectionResults" :index="index"></trading-dialog>
     </el-dialog>
   </div>
 </template>
@@ -213,6 +210,7 @@ export default {
         visible: false,
       },
       detectionResults: [],
+      index: 0,
     };
   },
   mounted() {
@@ -284,6 +282,7 @@ export default {
     handleTradingButtonClick(index, row) {
       console.log(index);
       console.log(row);
+      this.index = index;
       this.dialog.name =
         "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
       this.dialog.visible = true;
