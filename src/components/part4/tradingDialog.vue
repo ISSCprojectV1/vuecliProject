@@ -36,9 +36,10 @@
     </el-pagination>
     <div style="margin: 10px">
       <el-radio-group v-model.number="radio" @change="handleRadioChange">
-        <el-radio-button label="0">指标1</el-radio-button>
+        <!-- <el-radio-button label="0">指标1</el-radio-button>
         <el-radio-button label="1">指标2</el-radio-button>
-        <el-radio-button label="2">指标3</el-radio-button>
+        <el-radio-button label="2">指标3</el-radio-button> -->
+        <el-radio-button v-for="(r, i) in detectionResults[index].indexLists" :key="r.name" :label="i"> 指标{{i + 1}} </el-radio-button>
       </el-radio-group>
     </div>
     <el-row justify="center">
