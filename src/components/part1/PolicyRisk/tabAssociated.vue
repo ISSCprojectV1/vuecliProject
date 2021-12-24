@@ -17,8 +17,8 @@
             min-width="120"
           ></el-table-column>
           <el-table-column
-            label="交易品类"
-            prop="category"
+            label="原材料品类"
+            prop="product"
             min-width="140"
           ></el-table-column>
         </el-table>
@@ -58,53 +58,22 @@
   </div>
 </template>
 <script>
-import { getAssociatedDetail } from "@/api/part1/policyRisk";
+import { getAssociatedDetail, getAssociated } from "@/api/part1/policyRisk";
 import * as d3 from "d3";
 export default {
   data() {
     return {
+      currentPage:1,
+      total: 0,
       row: "",
       column: "",
       industry: "",
-      dataAssociated: [
-        {
-          industry: "纺织业",
-          category: "棉花",
-        },
-        {
-          industry: "纺织业",
-          category: "蚕茧丝",
-        },
-        {
-          industry: "纺织业",
-          category: "化学纤维",
-        },
-        {
-          industry: "农业种植",
-          category: "玉米",
-        },
-        {
-          industry: "农业种植",
-          category: "大豆",
-        },
-        {
-          industry: "农业种植",
-          category: "小麦",
-        },
-        {
-          industry: "畜牧业",
-          category: "猪肉",
-        },
-        {
-          industry: "畜牧业",
-          category: "牛肉",
-        },
-        {
-          industry: "畜牧业",
-          category: "羊肉",
-        },
-      ],
+      spanArr: [],
+      dataAssociated: [],
     };
+  },
+  created() {
+    this.queryAssociated(1, 10);
   },
   mounted() {
     console.log(this.node);
@@ -270,19 +239,53 @@ export default {
         return "#A86F67";
       }
     },
+    queryAssociated(currentPage, pageSize) {
+      getAssociated(currentPage, pageSize)
+        .then((res) => {
+          console.log("请求列表api成功");
+          console.log(res);
+          this.dataAssociated = res.data.data.reslist;
+          this.total = res.data.data.total;
+          this.getSpanArr(this.dataAssociated);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("请求列表api失败");
+        });
+    },
+    getSpanArr(data) {
+      this.spanArr=[]
+      for (var i = 0; i < data.length; i++) {
+        if (i === 0) {
+          this.spanArr.push(1);
+          this.pos = 0;
+        } else {
+          // 判断当前元素与上一个元素是否相同
+          if (data[i].industry === data[i - 1].industry) {
+            this.spanArr[this.pos] += 1;
+            this.spanArr.push(0);
+          } else {
+            this.spanArr.push(1);
+            this.pos = i;
+          }
+        }
+        console.log(this.spanArr);
+      }
+    },
+    pageChange(page) {
+      this.currentPage = page;
+      this.queryAssociated(page, 10);
+    },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
-        if (rowIndex % 3 === 0) {
-          return {
-            rowspan: 3,
-            colspan: 1,
-          };
-        } else {
-          return {
-            rowspan: 0,
-            colspan: 0,
-          };
-        }
+        const _row = this.spanArr[rowIndex];
+        const _col = _row > 0 ? 1 : 0;
+        console.log(`rowspan:${_row} colspan:${_col}`);
+        return {
+          // [0,0] 表示这一行不显示， [2,1]表示行的合并数
+          rowspan: _row,
+          colspan: _col,
+        };
       }
     },
     onClickTableAssociated(row, column) {

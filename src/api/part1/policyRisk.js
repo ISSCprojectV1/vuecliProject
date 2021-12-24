@@ -49,6 +49,17 @@ export function getImpactDetail(platform) {
     })
 }
 
+export function getAssociated(currentPage, pageSize) {
+    return request({
+        method: 'GET',
+        params: {
+            currentPage: currentPage,
+            pageSize: pageSize
+        },
+        url: '/getAssociated'
+    })
+}
+
 export function getAssociatedDetail(industry) {
     return request({
         method: 'GET',
