@@ -172,7 +172,7 @@ this.getImportantNodes();
 this.getRiskLevel();
 
 //设置网状图
-this.demoname = this.$route.params.demoname
+this.demoname = this.$route.params.demoname;
 this.setGraphData();
 
 },
@@ -447,6 +447,7 @@ getRootID(val)
 getNodesInformation(val,rootids)
 {
   var nodes=[];
+  let index=0;
   for(let i=0;i<val.length;i++)
   {
     let obj={};
@@ -459,25 +460,50 @@ getNodesInformation(val,rootids)
       obj2.levelType='源头节点';
       obj.data=obj2;
       obj.innerHTML='<div class="c-my-node" style="background:#ffffff; border:#121313 solid 3px;"> <div class="c-node-name" style="color:#ff875e">'+obj.text+'</div></div>' ;
-      nodes[i]=obj;
+      nodes[index]=obj;
+      index++;
     }
-    else if(!this.checkNodeExist(val[i].userid,rootids))
+    else if(!this.checkRootNode(val[i].userid,rootids) && !this.checkNodeExist(val[i].userid,nodes))
     {
       obj2.levelType='非源头节点';
       obj.data=obj2;
       obj.innerHTML='<div class="c-my-node" style="background:#ffffff; border:#121313 solid 3px;"> <div class="c-node-name" style="color:#ff875e">'+obj.text+'</div></div>' ;
-      nodes[i]=obj;
+      nodes[index]=obj;
+      index++;
     }
   }
   return nodes;
 },
 
-  checkNodeExist(val,rootids)
+  checkRootNode(val,rootids)
   {
     let flag=false;
     for(let i=0;i<rootids.length;i++)
     {
       if(val===rootids[i])
+      {
+        flag=true;
+        break;
+      }
+    }
+    return flag;
+  } ,
+  checkNodeExist(val,nodes)
+  {
+    let flag=false;
+    for (let i=0;i<nodes.length;i++)
+    {
+      let obj=nodes[i];
+      var value=null;
+      for(var key in obj)
+      {
+        if(key==='id')
+        {
+          value=obj[key];
+          break;
+        }
+      }
+      if(value!==null && val===value)
       {
         flag=true;
         break;
@@ -493,7 +519,7 @@ getNodeLinks(val)
  let index=0;
  for(let i=0;i<val.length;i++)
  {
-   if(val[i].level!=='0' && val[i].fromnodeuserid!=='')
+   if(val[i].level!=='0' && val[i].fromnodeuserid!=='' && val[i].fromnodeuserid!==val[i].userid)
    {
      let obj={};
      obj.from=val[i].fromnodeuserid;
@@ -527,7 +553,7 @@ getNodeLinks(val)
 
   //过滤源头节点和非源头节点
   doFilter() {
-  var _all_nodes = this.$refs.seeksRelationGraph.getNodes()
+  var _all_nodes = this.$refs.seeksRelationGraph.getNodes();
   _all_nodes.forEach(thisNode => {
    var _isHideThisLine = false
    if (this.check_level !== '') {

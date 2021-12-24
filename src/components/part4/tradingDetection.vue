@@ -2,7 +2,7 @@
   <div>
     <div class="form">
       <el-form ref="form" label-width="130px" :model="form">
-        <el-form-item label="交易机构名称" style="margin-left: 300px">
+        <el-form-item label="交易机构" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.nameValue"
@@ -27,7 +27,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="交易账户id" style="margin-left: 300px">
+        <el-form-item label="交易账户" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.accountValue"
@@ -77,7 +77,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="活动时间" style="margin-left: 300px">
+        <el-form-item label="交易时间" style="margin-left: 300px">
           <el-col :span="6">
             <el-date-picker
               type="date"
@@ -124,15 +124,6 @@
           <el-table-column prop="goodId" label="商品id"></el-table-column>
           <el-table-column prop="goodName" label="商品名"></el-table-column>
           <el-table-column prop="level" label="风险等级"></el-table-column>
-          <el-table-column label="查看关联内幕人员" align="center">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleRelationButtonClick(scope.$index, scope.row)"
-                >查看</el-button
-              >
-            </template>
-          </el-table-column>
           <el-table-column label="查看异常交易行为" align="center">
             <template slot-scope="scope">
               <el-button
@@ -142,6 +133,16 @@
               >
             </template>
           </el-table-column>
+          <el-table-column label="查看关联内幕人员" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleRelationButtonClick(scope.$index, scope.row)"
+                >查看</el-button
+              >
+            </template>
+          </el-table-column>
+          
         </el-table>
 
         <el-pagination
@@ -159,10 +160,7 @@
     </div>
     <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
       <trading-dialog
-        :traderId="traderId"
-        :startDate="form.date1"
-        :endDate="form.date2"
-      ></trading-dialog>
+      :detectionResults="detectionResults" :index="index"></trading-dialog>
     </el-dialog>
   </div>
 </template>
@@ -212,6 +210,7 @@ export default {
         visible: false,
       },
       detectionResults: [],
+      index: 0,
     };
   },
   mounted() {
@@ -283,6 +282,7 @@ export default {
     handleTradingButtonClick(index, row) {
       console.log(index);
       console.log(row);
+      this.index = index;
       this.dialog.name =
         "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
       this.dialog.visible = true;
@@ -446,7 +446,7 @@ export default {
         for (let good of response.data) {
           this.form.goodOptions.push({
             value: good.goodId,
-            label: good.goodName,
+            label: good.goodId + "-" + good.goodName,
           });
         }
       });
@@ -455,7 +455,7 @@ export default {
         for (let account of response.data) {
           this.form.accountOptions.push({
             value: account.traderId,
-            label: account.traderName,
+            label: account.traderId + "-" + account.traderName,
           });
         }
       });

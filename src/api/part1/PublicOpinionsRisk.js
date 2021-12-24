@@ -49,6 +49,22 @@ export function getLtInformationByKeyWords(URL) {
     })
 }
 
+export function getTbInformationByKeyWords(URL) {
+    console.log("getTbInformationByKeyWords")
+    return request({
+        url: URL,
+        method: 'get'
+    })
+}
+
+export function getXwInformationByKeyWords(URL) {
+    console.log("getXwInformationByKeyWords")
+    return request({
+        url: URL,
+        method: 'get'
+    })
+}
+
 export function createWbForwardInformation(data) {
     console.log("createWbForwardInformation")
     return request({
@@ -197,6 +213,14 @@ export function getLtWordsCloudData(URL) {
     console.log("getLtWordsCloudData")
     return request({
         url: URL,
+        method: 'get'
+    })
+}
+
+export function getNetworkPath() {
+    console.log("getNetworkPath")
+    return request({
+        url:'/getNetworkPath',
         method: 'get'
     })
 }

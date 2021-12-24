@@ -17,9 +17,10 @@
       element-loading-text="加载中"
     >
       <el-table-column prop="id" label="交易id"></el-table-column>
+      <el-table-column prop="date" label="交易时间"></el-table-column>
       <el-table-column prop="type" label="交易操作"></el-table-column>
       <el-table-column prop="price" label="成交价格"></el-table-column>
-      <el-table-column prop="quantity" label="交易数量"></el-table-column>
+      <el-table-column prop="quantity" label="成交数量"></el-table-column>
     </el-table>
 
     <el-pagination
@@ -54,7 +55,7 @@
 import echarts from "echarts";
 export default {
   name: "trading-dialog",
-  props: ["traderId", "startDate", "endDate"],
+  props: ["detectionResults", "index"],
   data() {
     return {
       tradeTable: {
@@ -71,7 +72,18 @@ export default {
       indexData: [],
     };
   },
+  watch: {
+    // when click another row
+    index: function () {
+      console.log("row changed" + this.index);
+      console.log(this.detectionResults);
+      this.initTradeTableData();
+      this.initTimeSeriesData();
+      this.timeSeriesInit(this.indexData[this.radio]);
+    },
+  },
   mounted() {
+    // init the data at row 0
     this.initTradeTableData();
     this.initTimeSeriesData();
     this.timeSeriesInit(this.indexData[this.radio]);
@@ -209,13 +221,16 @@ export default {
     },
     initTradeTableData() {
       let tradeTableData = [];
-      for (let i = 0; i < 10; i++)
+      let tradeList = this.detectionResults[this.index].transactionRecordList;
+      for (const record of tradeList) {
         tradeTableData.push({
-          id: i,
-          type: Math.random() < 0.5 ? "买入" : "卖出",
-          price: Math.floor(Math.random() * 20),
-          quantity: Math.floor(Math.random() * 200),
+          id: record.transactionId,
+          type: record.transactionType > 0 ? "买入" : "卖出",
+          date: record.transactionDate.substring(0, 10),
+          price: record.transactionPrice,
+          quantity: record.transactionVolume,
         });
+      }
       this.tradeTable.dormitory = tradeTableData;
     },
   },
