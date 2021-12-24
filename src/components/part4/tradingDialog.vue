@@ -175,15 +175,15 @@ export default {
                 color: "#000000",
               },
               data: [
-                [
-                  {
-                    name: "异常交易区间",
-                    xAxis: timeSeries.start, // base - oneDay * 50,
-                  },
-                  {
-                    xAxis: timeSeries.end, // base - oneDay * 20,
-                  },
-                ],
+                // [
+                //   {
+                //     name: "异常交易区间",
+                //     xAxis: timeSeries.start, // base - oneDay * 50,
+                //   },
+                //   {
+                //     xAxis: timeSeries.end, // base - oneDay * 20,
+                //   },
+                // ],
               ],
             },
           },
@@ -196,28 +196,19 @@ export default {
     },
     initTimeSeriesData() {
       this.indexData = [];
-      console.log(this.startDate, typeof this.startDate);
-      console.log(this.endDate, typeof this.endDate);
-      for (let i = 0; i < 3; i++) {
-        let base = +new Date(2021, 9, 3);
-        let oneDay = 24 * 3600 * 1000;
-        let seriesData = [[base, 100 + Math.random() * 100]];
-        let s = Math.floor(Math.random() * 100) + 10;
-        for (let i = 1; i < 200; i++) {
-          let now = new Date((base += oneDay));
-          let sgn = -0.5;
-          if (seriesData[i - 1][1] < 50 + Math.random() * 100) sgn = 0.5;
-          seriesData.push([
-            +now,
-            Math.round((Math.random() + sgn) * 10 + seriesData[i - 1][1]),
-          ]);
+      let indexes = this.detectionResults[this.index].indexLists;
+      console.log(indexes)
+      for (const index of indexes) {
+        let seriesData = [];
+        for (const data of index.indexList) {
+          let date = this.strToMills(data.date);
+          let value = data.value.toFixed(2);
+          seriesData.push([date, value]);
         }
         this.indexData.push({
           data: seriesData,
-          start: new Date(2021, 9, 3).getTime() + oneDay * s,
-          end: new Date(2021, 9, 3).getTime() + oneDay * (s + 20),
-          name: "指标" + (i + 1),
-        });
+          name: index.name
+        })
       }
     },
     initTradeTableData() {
@@ -234,6 +225,10 @@ export default {
       }
       this.tradeTable.dormitory = tradeTableData;
     },
+    strToMills(str) {
+      let [y, m, d] = str.split("-");
+      return new Date(y, m - 1, d).getTime();
+    }
   },
 };
 </script>

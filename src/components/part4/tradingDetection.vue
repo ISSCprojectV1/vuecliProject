@@ -78,21 +78,19 @@
         </el-form-item>
 
         <el-form-item label="交易时间" style="margin-left: 300px">
-          <el-col :span="6">
+          <el-col :span="13">
+          <div class="block">
             <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date1"
-              style="width: 100%"
-            ></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="1">-</el-col>
-          <el-col :span="6">
-            <el-date-picker
-              placeholder="选择时间"
-              v-model="form.date2"
-              style="width: 100%"
-            ></el-date-picker>
+              v-model="form.date"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              unlink-panels
+              value-format="yyyy-MM-dd"
+              size="large">
+            </el-date-picker>
+          </div>
           </el-col>
           <el-col :span="3">
             <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -189,8 +187,7 @@ export default {
         accountValue: [],
         goodOptions: [],
         goodValue: [],
-        date1: "",
-        date2: "",
+        date: ""
       },
       accountTable: {
         dormitory: [],
@@ -235,16 +232,14 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      // this.initAccountTableData();
+      console.log(this.form.date)
       this.initTimeSeriesData();
-      console.log(this.accountTable);
-      console.log(this.indexData);
       let params = {
         institutesId: this.form.nameValue,
         tradersId: this.form.accountValue,
         goodsId: this.form.goodValue,
-        startDate: this.form.date1,
-        endDate: this.form.date2,
+        startDate: this.form.date[0],
+        endDate: this.form.date[1],
       };
       tradingDetection(params).then((response) => {
         console.log(response);
@@ -477,5 +472,9 @@ export default {
 
 /deep/ .title {
   font-size: 20px;
+}
+
+/deep/ .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner {
+    width: 100%;
 }
 </style>
