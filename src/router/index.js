@@ -13,7 +13,7 @@ import adminRoutes from "@/router/admin"
 export const constantRoutes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/trade/Dashboard'
   },
   {
     path: "/login",
