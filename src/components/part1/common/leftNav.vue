@@ -14,7 +14,6 @@
         >
           <!--     首页     -->
           <el-menu-item
-            v-if="isAvailable('/trade/Dashboard')"
             index="/trade/Dashboard"
             style="text-align: left; font-size: 20px"
           >
@@ -24,10 +23,6 @@
 
           <!--监管模态粒度决策子系统-->
           <el-submenu
-            v-if="
-              isAvailable('/trade/Multimodal-multigranularity/stepBar') ||
-              isAvailable('/trade/Multimodal-multigranularity/goodsgranularity')
-            "
             index="/trade/Multimodal-multigranularity"
             style="text-align: left"
           >
@@ -39,11 +34,6 @@
             </template>
 
             <el-menu-item
-              v-if="
-                isAvailable(
-                  '/trade/Multimodal-multigranularity/stepBar/taskInput'
-                )
-              "
               index="/trade/Multimodal-multigranularity/stepBar/taskInput"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
@@ -110,14 +100,7 @@
           </el-submenu>
 
           <!--数据共享融合子系统-->
-          <el-submenu
-            v-if="
-              isAvailable('/trade/auction') ||
-              isAvailable('/trade/uploadResource')
-            "
-            index="/trade/auction"
-            style="text-align: left"
-          >
+          <el-submenu index="/trade/auction" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px">数据共享融合子系统</span>
@@ -132,14 +115,12 @@
               </template>
 
               <el-menu-item
-                v-if="isAvailable('/trade/auction')"
                 index="/trade/auction"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
               >
                 <span slot="title">数据共享中心</span>
               </el-menu-item>
               <el-menu-item
-                v-if="isAvailable('/trade/uploadResource')"
                 index="/trade/uploadResource"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
               >
@@ -173,10 +154,10 @@
             </el-menu-item>
 
             <el-menu-item
-              index="/trade/riskPrediction/riskSurveillance"
+              index="/trade/riskPrediction/forecastMonitorInfo"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">价格演化分析模块</span>
+              <span slot="title">价格波动风险演化模块</span>
             </el-menu-item>
 
             <el-menu-item
@@ -212,7 +193,6 @@
               <span slot="title">价格波动态势演化</span>
             </el-menu-item>
             <el-menu-item
-              v-if="isAvailable('/trade/riskPrediction/riskVolumePicture')"
               index="/trade/riskPrediction/riskVolumeSurveillance"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
@@ -240,18 +220,11 @@
             </el-menu-item> -->
           </el-submenu>
 
-          <el-submenu
-            v-if="
-              isAvailable('/trade/PolicyRisk/event_calendar') ||
-              isAvailable('/trade/PolicyRisk/event_calendar')
-            "
-            index="/trade/PolicyRisk"
-            style="text-align: left"
-          >
+          <el-submenu index="/trade/PolicyRisk" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal"
-                >交易模式异常检测子系统</span
+                >系统性风险检测子系统</span
               >
             </template>
 
@@ -265,13 +238,14 @@
               index="/trade/PolicyRisk/viewIndustryPolicy"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">异常交易模式检测</span>
+              <span slot="title">业内系统性风险检测</span>
             </el-menu-item>
-            <!--el-menu-item
-                          index="/trade/PolicyRisk/viewAssociatedPolicy"
-                          style="text-align: left;padding-left: 70px;font-size: 18px">
-              <span slot="title">关联政策</span>
-            </el-menu-item-->
+            <el-menu-item
+              index="/trade/PolicyRisk/viewAssociated"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">关联性系统风险检测</span>
+            </el-menu-item>
           </el-submenu>
 
           <!--违约风险评估预警-->
@@ -305,35 +279,40 @@
 
           <!--舆情风险子系统-->
           <el-submenu
-              index="/trade/PublicOpinionsRisk"
-              style="text-align: left">
+            index="/trade/PublicOpinionsRisk"
+            style="text-align: left"
+          >
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span style="font-size: 20px; white-space: normal;">舆情风险子系统</span>
+              <span style="font-size: 20px; white-space: normal"
+                >舆情风险子系统</span
+              >
             </template>
 
             <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_summary"
-                style="text-align: left;padding-left: 70px;font-size: 18px">
+              index="/trade/PublicOpinionsRisk/opinions_summary"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
               <span slot="title">今日舆情汇总</span>
             </el-menu-item>
             <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_riskinfo"
-                style="text-align: left;padding-left: 70px;font-size: 18px">
+              index="/trade/PublicOpinionsRisk/opinions_riskinfo"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
               <span slot="title">今日舆情信息</span>
             </el-menu-item>
             <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_search"
-                style="text-align: left;padding-left: 70px;font-size: 18px">
+              index="/trade/PublicOpinionsRisk/opinions_search"
+              style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
               <span slot="title">舆情事件查询</span>
             </el-menu-item>
-           <!-- <el-menu-item
+            <!-- <el-menu-item
                 index="/trade/PublicOpinionsRisk/opinions_network"
                 style="text-align: left;padding-left: 70px;font-size: 18px">
               <span slot="title">舆情网络详情</span>
             </el-menu-item> -->
           </el-submenu>
-
         </el-menu>
       </el-col>
     </el-row>

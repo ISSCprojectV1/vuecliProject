@@ -2,7 +2,7 @@
   <div>
     <div class="form">
       <el-form ref="form" label-width="130px" :model="form">
-        <el-form-item label="交易机构名称" style="margin-left: 300px">
+        <el-form-item label="交易机构" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.nameValue"
@@ -27,7 +27,7 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="交易账户id" style="margin-left: 300px">
+        <el-form-item label="交易账户" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.accountValue"
@@ -77,22 +77,20 @@
           </el-col>
         </el-form-item>
 
-        <el-form-item label="活动时间" style="margin-left: 300px">
-          <el-col :span="6">
+        <el-form-item label="交易时间" style="margin-left: 300px">
+          <el-col :span="13">
+          <div class="block">
             <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date1"
-              style="width: 100%"
-            ></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="1">-</el-col>
-          <el-col :span="6">
-            <el-date-picker
-              placeholder="选择时间"
-              v-model="form.date2"
-              style="width: 100%"
-            ></el-date-picker>
+              v-model="form.date"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              unlink-panels
+              value-format="yyyy-MM-dd"
+              size="large">
+            </el-date-picker>
+          </div>
           </el-col>
           <el-col :span="3">
             <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -120,18 +118,10 @@
           element-loading-text="加载中"
         >
           <el-table-column prop="id" label="账户id"></el-table-column>
-          <el-table-column prop="name" label="账户姓名"> </el-table-column>
-          <el-table-column prop="productId" label="商品种类"></el-table-column>
+          <el-table-column prop="name" label="账户名"> </el-table-column>
+          <el-table-column prop="goodId" label="商品id"></el-table-column>
+          <el-table-column prop="goodName" label="商品名"></el-table-column>
           <el-table-column prop="level" label="风险等级"></el-table-column>
-          <el-table-column label="查看关联内幕人员" align="center">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleRelationButtonClick(scope.$index, scope.row)"
-                >查看</el-button
-              >
-            </template>
-          </el-table-column>
           <el-table-column label="查看异常交易行为" align="center">
             <template slot-scope="scope">
               <el-button
@@ -141,6 +131,16 @@
               >
             </template>
           </el-table-column>
+          <el-table-column label="查看关联内幕人员" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleRelationButtonClick(scope.$index, scope.row)"
+                >查看</el-button
+              >
+            </template>
+          </el-table-column>
+          
         </el-table>
 
         <el-pagination
@@ -157,7 +157,8 @@
       </el-col>
     </div>
     <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
-      <trading-dialog :traderId="traderId"></trading-dialog>
+      <trading-dialog
+      :detectionResults="detectionResults" :index="index"></trading-dialog>
     </el-dialog>
   </div>
 </template>
@@ -186,8 +187,7 @@ export default {
         accountValue: [],
         goodOptions: [],
         goodValue: [],
-        date1: "",
-        date2: "",
+        date: ""
       },
       accountTable: {
         dormitory: [],
@@ -206,6 +206,8 @@ export default {
         name: "",
         visible: false,
       },
+      detectionResults: [],
+      index: 0,
     };
   },
   mounted() {
@@ -230,19 +232,29 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      this.initAccountTableData();
+      console.log(this.form.date)
       this.initTimeSeriesData();
-      console.log(this.accountTable);
-      console.log(this.indexData);
       let params = {
         institutesId: this.form.nameValue,
         tradersId: this.form.accountValue,
         goodsId: this.form.goodValue,
-        startDate: this.form.date1,
-        endDate: this.form.date2,
+        startDate: this.form.date[0],
+        endDate: this.form.date[1],
       };
       tradingDetection(params).then((response) => {
         console.log(response);
+        this.detectionResults = response.data;
+        this.accountTable.dormitory = [];
+        let levels = ["风险等级低", "风险等级中", "风险等级高"];
+        for (let element of this.detectionResults) {
+          this.accountTable.dormitory.push({
+            id: element.traderId,
+            name: element.traderName,
+            goodId: element.goodId,
+            goodName: element.goodName,
+            level: levels[element.level],
+          });
+        }
       });
     },
     handleAccountTableSizeChange(val) {
@@ -265,6 +277,7 @@ export default {
     handleTradingButtonClick(index, row) {
       console.log(index);
       console.log(row);
+      this.index = index;
       this.dialog.name =
         "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
       this.dialog.visible = true;
@@ -389,7 +402,7 @@ export default {
         accountTableData.push({
           id: i,
           name: "用户" + String.fromCharCode(i + 65),
-          productId: i + Math.floor(Math.random() * 10),
+          goodId: i + Math.floor(Math.random() * 10),
           level: Math.floor(Math.random() * 3),
         });
       accountTableData.sort((a, b) => {
@@ -428,7 +441,7 @@ export default {
         for (let good of response.data) {
           this.form.goodOptions.push({
             value: good.goodId,
-            label: good.goodName,
+            label: good.goodId + "-" + good.goodName,
           });
         }
       });
@@ -437,7 +450,7 @@ export default {
         for (let account of response.data) {
           this.form.accountOptions.push({
             value: account.traderId,
-            label: account.traderName,
+            label: account.traderId + "-" + account.traderName,
           });
         }
       });
@@ -459,5 +472,9 @@ export default {
 
 /deep/ .title {
   font-size: 20px;
+}
+
+/deep/ .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner {
+    width: 100%;
 }
 </style>

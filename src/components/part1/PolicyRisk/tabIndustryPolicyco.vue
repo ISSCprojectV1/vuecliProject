@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <el-container style="height: 700px; border: 0.5rem solid #eee">
       <el-aside width="50%" style="border: 0.5rem solid #eee">
-        <h2>异常交易模式风险传播</h2>
+        <h2>业内系统性风险传播</h2>
         <el-table :data="dataImpact" highlight-current-row>
           <el-table-column
             label="平台名称"
@@ -76,7 +76,7 @@
       </el-aside>
       <el-container style="border: 0.5rem solid #eee">
         <div id="tableSpaceDetail" style="width: 100%; height: 100%">
-          <h2>政策风险传播关系图</h2>
+          <h2>业内系统性风险传播关系图</h2>
           <div class="force-base-ii">
             <div class="outborder">
               <div class="inA">
@@ -123,6 +123,7 @@ export default {
     creatB() {
       // create somewhere to put the force directed graph
       let svg = d3.select("svg");
+      svg.selectAll('*').remove()//清空原图
       let width = +svg.attr("width");
       let height = +svg.attr("height");
       let radius = 20;

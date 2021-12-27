@@ -17,10 +17,10 @@
       element-loading-text="加载中"
     >
       <el-table-column prop="id" label="交易id"></el-table-column>
-      <el-table-column prop="productId" label="商品id"></el-table-column>
+      <el-table-column prop="date" label="交易时间"></el-table-column>
       <el-table-column prop="type" label="交易操作"></el-table-column>
       <el-table-column prop="price" label="成交价格"></el-table-column>
-      <el-table-column prop="quantity" label="交易数量"></el-table-column>
+      <el-table-column prop="quantity" label="成交数量"></el-table-column>
     </el-table>
 
     <el-pagination
@@ -36,9 +36,10 @@
     </el-pagination>
     <div style="margin: 10px">
       <el-radio-group v-model.number="radio" @change="handleRadioChange">
-        <el-radio-button label="0">指标1</el-radio-button>
+        <!-- <el-radio-button label="0">指标1</el-radio-button>
         <el-radio-button label="1">指标2</el-radio-button>
-        <el-radio-button label="2">指标3</el-radio-button>
+        <el-radio-button label="2">指标3</el-radio-button> -->
+        <el-radio-button v-for="(r, i) in detectionResults[index].indexLists" :key="r.name" :label="i"> 指标{{i + 1}} </el-radio-button>
       </el-radio-group>
     </div>
     <el-row justify="center">
@@ -55,9 +56,7 @@
 import echarts from "echarts";
 export default {
   name: "trading-dialog",
-  props: {
-    traderId: Number,
-  },
+  props: ["detectionResults", "index"],
   data() {
     return {
       tradeTable: {
@@ -74,7 +73,18 @@ export default {
       indexData: [],
     };
   },
+  watch: {
+    // when click another row
+    index: function () {
+      console.log("row changed" + this.index);
+      console.log(this.detectionResults);
+      this.initTradeTableData();
+      this.initTimeSeriesData();
+      this.timeSeriesInit(this.indexData[this.radio]);
+    },
+  },
   mounted() {
+    // init the data at row 0
     this.initTradeTableData();
     this.initTimeSeriesData();
     this.timeSeriesInit(this.indexData[this.radio]);
@@ -165,15 +175,15 @@ export default {
                 color: "#000000",
               },
               data: [
-                [
-                  {
-                    name: "异常交易区间",
-                    xAxis: timeSeries.start, // base - oneDay * 50,
-                  },
-                  {
-                    xAxis: timeSeries.end, // base - oneDay * 20,
-                  },
-                ],
+                // [
+                //   {
+                //     name: "异常交易区间",
+                //     xAxis: timeSeries.start, // base - oneDay * 50,
+                //   },
+                //   {
+                //     xAxis: timeSeries.end, // base - oneDay * 20,
+                //   },
+                // ],
               ],
             },
           },
@@ -186,40 +196,39 @@ export default {
     },
     initTimeSeriesData() {
       this.indexData = [];
-      for (let i = 0; i < 3; i++) {
-        let base = +new Date(2021, 9, 3);
-        let oneDay = 24 * 3600 * 1000;
-        let seriesData = [[base, 100 + Math.random() * 100]];
-        let s = Math.floor(Math.random() * 100) + 10;
-        for (let i = 1; i < 200; i++) {
-          let now = new Date((base += oneDay));
-          let sgn = -0.5;
-          if (seriesData[i - 1][1] < 50 + Math.random() * 100) sgn = 0.5;
-          seriesData.push([
-            +now,
-            Math.round((Math.random() + sgn) * 10 + seriesData[i - 1][1]),
-          ]);
+      let indexes = this.detectionResults[this.index].indexLists;
+      console.log(indexes)
+      for (const index of indexes) {
+        let seriesData = [];
+        for (const data of index.indexList) {
+          let date = this.strToMills(data.date);
+          let value = data.value.toFixed(2);
+          seriesData.push([date, value]);
         }
         this.indexData.push({
           data: seriesData,
-          start: new Date(2021, 9, 3).getTime() + oneDay * s,
-          end: new Date(2021, 9, 3).getTime() + oneDay * (s + 20),
-          name: "指标" + (i + 1),
-        });
+          name: index.name
+        })
       }
     },
     initTradeTableData() {
       let tradeTableData = [];
-      for (let i = 0; i < 10; i++)
+      let tradeList = this.detectionResults[this.index].transactionRecordList;
+      for (const record of tradeList) {
         tradeTableData.push({
-          id: i,
-          productId: i + Math.floor(Math.random() * 10),
-          type: Math.random() < 0.5 ? "买入" : "卖出",
-          price: Math.floor(Math.random() * 20),
-          quantity: Math.floor(Math.random() * 200),
+          id: record.transactionId,
+          type: record.transactionType > 0 ? "买入" : "卖出",
+          date: record.transactionDate.substring(0, 10),
+          price: record.transactionPrice,
+          quantity: record.transactionVolume,
         });
+      }
       this.tradeTable.dormitory = tradeTableData;
     },
+    strToMills(str) {
+      let [y, m, d] = str.split("-");
+      return new Date(y, m - 1, d).getTime();
+    }
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="display: inline-block; font-size: 40px;">业内政策</div>
+    <div style="display: inline-block; font-size: 40px;">业内系统性风险</div>
 
     <div>
       <el-button size="small" style="margin: 0.5rem 0" @click="goBack">返回</el-button>

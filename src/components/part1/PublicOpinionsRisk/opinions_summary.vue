@@ -358,6 +358,15 @@ export default {
           itemStyle: { normal: { areaStyle: { type: 'default' }, color: 'rgb(122,152,178)' } }
         }
       ],
+        dataZoom: [
+          {
+            type: 'inside',
+            show: true,
+            start: 0,
+            end: 100,
+            handleSize: 8,
+          },
+        ],
     },
 
       //是否更新dialog
@@ -487,6 +496,7 @@ export default {
 
         //更新微博数据
         this.checkWbUpdateState();
+
       }
     },
 
