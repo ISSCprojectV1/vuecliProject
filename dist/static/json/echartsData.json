@@ -1,8 +1,0 @@
-
-{"code":200,
-"message":"请求成功",
-"data":[
-    {"id":1,"seller":"南京商品交易中心","buyer":"交易中心B","content":"海产品","amount":20000,"unitprice":1,"sum":4000,"time":"2019-09-02T00:00:00.000+0000"},
-    {"id":2,"seller":"海洋商品交易中心2","buyer":"交易中心B","content":"海产品","amount":20000,"unitprice":2,"sum":4000,"time":"2019-09-02T00:00:00.000+0000"},
-    {"id":3,"seller":"海洋商品交易中心2","buyer":"交易中心CB","content":"海产品","amount":20000,"unitprice":2,"sum":4000,"time":"2019-09-02T00:00:00.000+0000"}]
-}
