@@ -2,30 +2,25 @@
   <div style="width: 100%">
     <el-container style="height: 700px; border: 0.5rem solid #eee">
       <el-aside width="50%" style="border: 0.5rem solid #eee">
-        <h2>业内政策不利因素</h2>
+        <h2>相关行业系统性风险</h2>
         <el-table
-          :data="dataIndustryPolicy"
+          :data="dataAssociated"
           highlight-current-row
-          @row-click="onClickTableIndustry"
+          :span-method="objectSpanMethod"
+          @cell-click="onClickTableAssociated"
+          :cell-style="tableCellStyle"
         >
           <el-table-column
-            label="平台名称"
+            label="行业名称"
             fixed="left"
-            prop="platform"
+            prop="industry"
             min-width="120"
           ></el-table-column>
           <el-table-column
-            label="涉及禁止交易模式"
-            prop="transactionMode"
+            label="原材料品类"
+            prop="product"
             min-width="140"
           ></el-table-column>
-          <el-table-column label="影响详情" min-width="80">
-            <template slot-scope="scope">
-              <el-button type="text" @click="gotoSpread(scope.row.platform)"
-                >查看详情</el-button
-              >
-            </template>
-          </el-table-column>
         </el-table>
         <el-pagination
           ref="pagination"
@@ -37,72 +32,58 @@
         >
         </el-pagination>
       </el-aside>
-      <el-container style="border: 0.5rem solid #eee">
-        <div id="tablePolicyDetail" style="width: 100%; height: 100%">
-          <h2>关系图</h2>
-          <div class="force-base-ii">
-            <div class="outborder">
-              <div class="inA">
-                <el-button class="inborderA" circle></el-button>
-                <div class="user">交易账户</div>
-                <!--div class="inborderA"></div>
-                <div class="tracom">交易商品</div-->
-              </div>
-              <div class="inB">
-                <div class="inborderB"></div>
-                <div class="finan">交易过程</div>
-              </div>
+      <el-container style="border: 0.5rem solid #eee"> </el-container>
+      <div id="tableSpaceDetail" style="width: 100%; height: 100%">
+        <h2>相关行业系统风险传播关系图</h2>
+        <div class="force-base-ii">
+          <div class="outborder">
+            <div class="inA">
+              <el-button class="inborderA" circle></el-button>
+              <div class="main">行业</div>
             </div>
-            <svg width="700" height="500" class="container-border"></svg>
+            <div class="inB">
+              <el-button class="inborderB" circle></el-button>
+              <div class="other">交易品类</div>
+            </div>
+          </div>
+          <svg width="700" height="500" class="container-border"></svg>
+          <div class="instruction">
+            <div class="low">低</div>
+            <div class="risk"></div>
+            <div class="hight">高</div>
           </div>
         </div>
-      </el-container>
+      </div>
     </el-container>
   </div>
 </template>
-
 <script>
-import {
-  getIndustryPolicy,
-  getIndustryPolicyDetail,
-} from "@/api/part1/policyRisk";
+import { getAssociatedDetail, getAssociated } from "@/api/part1/policyRisk";
 import * as d3 from "d3";
 export default {
   data() {
     return {
+      currentPage:1,
       total: 0,
-      dataIndustryPolicy: [],
-      transactionMode: "",
+      row: "",
+      column: "",
+      industry: "",
+      spanArr: [],
+      dataAssociated: [],
     };
   },
   created() {
-    // table IndustryPolicy
-    this.queryIndustryPolicy(1, 10);
+    this.queryAssociated(1, 10);
   },
   mounted() {
-    console.log(this.node)
-    document.getElementById("tablePolicyDetail").style.display = "none";
-    // this.creatA();
+    console.log(this.node);
+    document.getElementById("tableSpaceDetail").style.display = "none";
   },
   methods: {
     creatA(nodes, edges) {
-      
       let marge = { top: 0, bottom: 0, left: 60, right: 60 };
       let svg = d3.select("svg");
-      svg.selectAll('*').remove()//清空原图
-      let marker = svg
-        .append("marker")
-        .attr("id", "arrow")
-        .attr("markerUnits", "strokeWidth") //设置为strokeWidth箭头会随着线的粗细发生变化
-        .attr("viewBox", "0 0 12 12") //坐标系的区域
-        .attr("refX", 16) //箭头坐标
-        .attr("refY", 6)
-        .attr("markerWidth", 12)
-        .attr("markerHeight", 12)
-        .attr("orient", "auto") //绘制方向，可设定为：auto（自动确认方向）和 角度值
-        .append("path")
-        .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2") //箭头的路径
-        .attr("fill", "#999"); //箭头颜色
+      svg.selectAll("*").remove(); //清空原图
       let width = svg.attr("width");
       let height = svg.attr("height");
       let g = svg
@@ -135,14 +116,14 @@ export default {
         .links(edges)
         .distance(function (d) {
           // side length / 每一边的长度
-          return d.value * 100;
+          return 100;
         });
       // Set drawing center location
       // 设置图形中心位置
       forceSimulation
         .force("center")
         .x(width / 2)
-        .y(height / 6);
+        .y(height / 3);
       // Draw side
       // 绘制边
       let links = g
@@ -152,8 +133,7 @@ export default {
         .enter()
         .append("line")
         .attr("stroke", this.linkColor)
-        .attr("stroke-width", 1.5)
-        .attr("marker-end", "url(#arrow)");
+        .attr("stroke-width", 3);
       // Text on side
       // 边上的文字
       let linksText = g
@@ -245,47 +225,78 @@ export default {
     },
     circleColor(d) {
       if (d.type === "1") {
-        return "#0489DF";
+        return "#fe5b70";
       } else if (d.type === "2") {
-        return "#F1D672";
-      } else {
-        return "#8D180C";
+        return "#3ccabc";
       }
     },
     linkColor(d) {
       if (d.typeid === "1") {
-        return "black";
+        return "#008000";
+      } else if (d.typeid === "2") {
+        return "#FF0000";
       } else {
         return "#A86F67";
       }
     },
-    gotoSpread(platform) {
-      this.$router.push(`/trade/PolicyRisk/viewIndustryPolicyco/${platform}`);
-    },
-    queryIndustryPolicy(currentPage, pageSize) {
-      getIndustryPolicy(currentPage, pageSize)
+    queryAssociated(currentPage, pageSize) {
+      getAssociated(currentPage, pageSize)
         .then((res) => {
           console.log("请求列表api成功");
           console.log(res);
-          this.dataIndustryPolicy = res.data.data.reslist;
+          this.dataAssociated = res.data.data.reslist;
           this.total = res.data.data.total;
+          this.getSpanArr(this.dataAssociated);
         })
         .catch((err) => {
           console.log(err);
           console.log("请求列表api失败");
         });
     },
+    getSpanArr(data) {
+      this.spanArr=[]
+      for (var i = 0; i < data.length; i++) {
+        if (i === 0) {
+          this.spanArr.push(1);
+          this.pos = 0;
+        } else {
+          // 判断当前元素与上一个元素是否相同
+          if (data[i].industry === data[i - 1].industry) {
+            this.spanArr[this.pos] += 1;
+            this.spanArr.push(0);
+          } else {
+            this.spanArr.push(1);
+            this.pos = i;
+          }
+        }
+        console.log(this.spanArr);
+      }
+    },
     pageChange(page) {
       this.currentPage = page;
-      this.queryIndustryPolicy(page, 10);
+      this.queryAssociated(page, 10);
     },
-    onClickTableIndustry(row) {
-      document.getElementById("tablePolicyDetail").style.display = "block";
-      this.transactionMode = row.transactionMode;
-      this.queryIndustryPolicyDetail(row.transactionMode);
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        const _row = this.spanArr[rowIndex];
+        const _col = _row > 0 ? 1 : 0;
+        console.log(`rowspan:${_row} colspan:${_col}`);
+        return {
+          // [0,0] 表示这一行不显示， [2,1]表示行的合并数
+          rowspan: _row,
+          colspan: _col,
+        };
+      }
     },
-    queryIndustryPolicyDetail(transactionMode) {
-      getIndustryPolicyDetail(transactionMode)
+    onClickTableAssociated(row, column) {
+      this.row = row;
+      this.column = column;
+      document.getElementById("tableSpaceDetail").style.display = "block";
+      this.industry = row.industry;
+      this.queryAssociatedDetail(row.industry);
+    },
+    queryAssociatedDetail(industry) {
+      getAssociatedDetail(industry)
         .then((res) => {
           let data = res.data.data;
           console.log(res);
@@ -293,8 +304,8 @@ export default {
           let edge = [];
           for (let i = 0; i < data[0].length; i++) {
             node.push({
-              name: data[0][i],
-              type: "2",
+              name: data[0][i].name,
+              type: data[0][i].type,
             });
           }
           console.log(node);
@@ -302,63 +313,63 @@ export default {
             edge.push({
               source: data[1][i].source,
               target: data[1][i].target,
-              value: data[1][i].value,
-              typeid: "2",
+              typeid: data[1][i].typeId,
             });
           }
           console.log(edge);
-          this.creatA(node, edge)
+          this.creatA(node, edge);
         })
         .catch((err) => {
           console.log(err);
           console.log("请求列表api失败");
         });
     },
+
+    tableCellStyle(row, rowIndex, column) {
+      if (this.row === row.row && this.column === row.column) {
+        return "background-color:#ECF5FF;";
+      } else {
+        return "background-color:#fff;";
+      }
+    },
   },
 };
 </script>
+
 <style scoped>
 .outborder {
-  margin: 5px 0px 5px 550px;
-  width: 200px;
-  height: 100px;
+  margin: 5px 0px 5px 600px;
+  width: 170px;
+  height: 80px;
   border: 1px solid #8ea7b8;
 }
-/*
-.inA{
-  height: 30px;
-  width: 180px;
-  margin:30px 0px 5px 10px;
-}
-.inborderA{
-  width: 90px;
-  height: 1px;
-  background:black;
-}
-*/
 .inA {
-  margin: 20px 100px 5px 13px;
+  margin: 10px 150px 5px 13px;
 }
 .inborderA {
-  background-color: #f1d672;
+  background-color: #fe5b70;
 }
-.user {
+.main {
   width: 90px;
-  margin: -23px 0px 0px 97px;
-}
-.tracom {
-  width: 90px;
-  margin: -12px 0px 0px 100px;
+  margin: -23px 0px 0px 50px;
 }
 .inB {
-  margin: 20px 10px 5px 10px;
+  margin: 5px 150px 5px 13px;
 }
 .inborderB {
-  width: 90px;
-  border-top: 1px solid #a86f67;
+  background-color: #3ccabc;
 }
-.finan {
+.other {
   width: 90px;
-  margin: -12px 0px 0px 100px;
+  margin: -23px 0px 0px 50px;
+}
+.instruction {
+  margin: -400px 0px 5px 600px;
+}
+.risk {
+  margin: 5px 0px 5px 72px;
+  width: 30px;
+  height: 180px;
+  background-image: linear-gradient(#008000, #ffd700, #ff0000);
 }
 </style>

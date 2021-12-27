@@ -17,7 +17,6 @@
 </template>
 
 <script>
-
 import Header from "@/components/part3/Common/header";
 import leftNav from "@/components/part1/common/leftNav";
 
@@ -34,17 +33,20 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.el-header
-  //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
-  padding 0;
-  margin-bottom 1px
+.el-header {
+  // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+  padding: 0;
+  margin-bottom: 1px;
+}
 
-.el-aside
-  //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
-  padding 0;
-  margin-bottom 1px
+.el-aside {
+  // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+  padding: 0;
+  margin-bottom: 1px;
+}
 
-.el-main
-  padding 0;
-  background-color #ffffff;
+.el-main {
+  padding: 0;
+  background-color: #ffffff;
+}
 </style>

@@ -25,6 +25,47 @@ export const constantRoutes = [
     name: "Register",
     component: () => import("@/views/part1/register")
   },
+  {
+    path: "/trade",
+    component: () => import("@/components/part1/common/full"),
+    children: [
+      {
+        path:"/trade/PolicyRisk/event_calendar",
+        component: () => import("@/components/part1/PolicyRisk/event_calendar"),
+        meta: {
+          title: "政策-事件日历"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
+        meta: {
+          title: "业内政策1"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewIndustryPolicyco",
+        component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
+        meta: {
+          title: "业内政策1"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewAssociatedPolicy",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
+        meta: {
+          title: "关联政策"
+        }
+      },
+      {
+        path:"/trade/PolicyRisk/viewAssociated",
+        component: () => import("@/components/part1/PolicyRisk/viewAssociated"),
+        meta: {
+          title: "关联系统风险"
+        }
+      }
+    ]
+  },
 ]
 
 // 异步挂载路由，根据权限加载路由表
@@ -197,7 +238,7 @@ export const asyncRoutes = [
       },
       {
         id: 32,
-        path: "/trade/insiderTrading/relationDetection",
+        path: "/trade/insiderTrading/relationDetection/:id",
         component: () => import("@/components/part4/relationDetection"),
       },
       {
@@ -212,14 +253,73 @@ export const asyncRoutes = [
       },
       {
         id: 35,
-        path: "/trade/PolicyRisk/viewIndustryPolicyco",
+        path: "/trade/PolicyRisk/viewIndustryPolicyco/:platform",
         component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
       },
       {
         id: 36,
         path: "/trade/PolicyRisk/viewAssociatedPolicy",
         component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
-      }
+      },
+      // default risk
+      {
+        id: 47,
+        path: "/trade/DefaultRisk/transactionEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/transactionEvaluation"),
+      },
+      {
+        id: 38,
+        path: "/trade/DefaultRisk/firmEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/firmEvaluation"),
+      },
+      {
+        id: 39,
+        path: "/trade/DefaultRisk/categoryEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/categoryEvaluation"),
+      },
+      //  价格波动风险预警与传导
+      {
+        id: 40,
+        path: "/trade/riskPrediction/riskPropagation",
+        component: () => import("@/components/part1/riskPrediction/riskPropagation"),
+      },
+      {
+        id: 41,
+        name: '历史价格波动风险演化图',
+        path: "/trade/riskPrediction/forecastHistoryRisk",
+        component: () => import("@/components/part1/riskPrediction/forecastHistoryRisk"),
+      },
+      {
+        id: 42,
+        name: '风险预警监控',
+        path: "/trade/riskPrediction/forecastMonitorInfo",
+        component: () => import("@/components/part1/riskPrediction/forecastMonitorInfo"),
+      },
+        // 舆情风险
+      {
+        id:1,
+        name:"今日舆情汇总",
+        path:'/trade/PublicOpinionsRisk/opinions_summary',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_summary"),
+      },
+      {
+        id:2,
+        name:"今日风险详情",
+        path:'/trade/PublicOpinionsRisk/opinions_riskinfo',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_riskinfo"),
+      },
+      {
+        id:3,
+        name:"舆情网络",
+        path:'/trade/PublicOpinionsRisk/opinions_network',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_network"),
+      },
+      {
+        id:4,
+        name:"舆情事件查询",
+        path:'/trade/PublicOpinionsRisk/opinions_search',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_search"),
+      },
     ]
   },
 

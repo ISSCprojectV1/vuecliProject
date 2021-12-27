@@ -90,6 +90,24 @@ export default {
       this.svg = d3
         .select('svg.d3-tree-vii')
         .attr('viewBox', [-margin.left, -margin.top, width, dx])
+      //箭头
+      /*
+      let marker =
+            this.svg.append("marker")
+                .attr("id", 'resolved')
+                .attr("markerUnits", "strokeWidth")//设置为strokeWidth箭头会随着线的粗细发生变化
+                .attr("markerUnits", "userSpaceOnUse")
+                .attr("viewBox", "0 -5 10 10")//坐标系的区域
+                .attr("refX", 10)//箭头坐标
+                .attr("refY", -1)
+                .attr("markerWidth", 12)//标识的大小
+                .attr("markerHeight", 12)
+                .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+                .attr("stroke-width", 1)//箭头宽度
+                .append("path")
+                .attr("d", "M0,-5L10,0L0,5")//箭头的路径
+                .attr('fill', '#000000');//箭头颜色
+      */
       let translateTop = (this.height - 120) / 2
       let transform = d3.zoomIdentity
         .translate(this.margin.left, translateTop)
@@ -271,6 +289,7 @@ export default {
         .attr('fill', 'none')
         .attr('stroke-width', 1)
         .attr('stroke', '#ccc')
+        .attr("marker-end", "url(#resolved)")//根据箭头标记的id号标记箭头
       // Transition links to their new position.
       let linkUpdate = linkEnter.merge(link)
       linkUpdate
@@ -308,7 +327,7 @@ export default {
      display: flex;
 }
 .columnLeft{
-  border: 5px solid rgb(255, 255, 255);
+  border: 8px solid #eee;
   width: 15%;
   height: 50px;
   line-height: 50px;
@@ -318,7 +337,7 @@ export default {
   background: #388BC8;
 }
 .columnRight{
-  border: 5px solid rgb(255, 255, 255);
+  border: 8px solid #eee;
   width: 35%;
   height: 50px;
   line-height: 50px;
