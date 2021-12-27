@@ -37,8 +37,11 @@
         <span>用户查询</span>
       </div>
 
-      <el-input placeholder="请输入用户UID" maxlength="50">
-        <template slot="prepend">用户UID</template>
+      <el-input placeholder="请输入内容">
+        <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 8rem">
+          <el-option label="用户账号" value="1"></el-option>
+          <el-option label="用户名称" value="2"></el-option>
+        </el-select>
         <el-button slot="append" @click="onQueryFirmInfo">查询</el-button>
       </el-input>
     </el-card>
@@ -50,7 +53,7 @@
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}">
-        <el-table-column prop="company" label="用户UID" min-width="100"></el-table-column>
+        <el-table-column prop="company" label="用户账号" min-width="100"></el-table-column>
         <el-table-column prop="company" label="用户名称" min-width="100"></el-table-column>
         <el-table-column prop="company" label="风险评级" min-width="100"></el-table-column>
         <el-table-column prop="company" label="风险评分" min-width="100"></el-table-column>
@@ -113,6 +116,16 @@ export default {
     return {
       noQuery: true,
       score: 91,
+      select: '',
+      tableData: [
+        {
+          id: 'DS-2212',
+          name: '',
+          risk_level: '',
+          risk_score: '',
+          problem: '',
+        },
+      ],
     }
   },
   methods: {

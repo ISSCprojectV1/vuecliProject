@@ -37,9 +37,9 @@
         <span>品类查询</span>
       </div>
 
-      <el-input placeholder="请输入品类UID" maxlength="50">
-        <template slot="prepend">品类UID</template>
-        <el-button slot="append" @click="onQueryFirmInfo">查询</el-button>
+      <el-input placeholder="请输入内容">
+        <template slot="prepend">品种名称</template>
+        <el-button slot="append" @click="onQueryCategoryInfo">查询</el-button>
       </el-input>
     </el-card>
 
@@ -49,12 +49,12 @@
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
-          :cell-style="{padding:'0px'}">
-        <el-table-column prop="company" label="品类UID" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="品类名称" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="风险评级" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="风险评分" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="主要问题" min-width="100"></el-table-column>
+          :cell-style="{padding:'0px'}"
+          :data="tableData">
+        <el-table-column prop="name" label="品种名称" min-width="100"></el-table-column>
+        <el-table-column prop="risk_level" label="风险评级" min-width="100"></el-table-column>
+        <el-table-column prop="risk_score" label="风险评分" min-width="100"></el-table-column>
+        <el-table-column prop="problem" label="主要问题" min-width="100"></el-table-column>
       </el-table>
     </el-card>
 
@@ -113,6 +113,33 @@ export default {
     return {
       noQuery: true,
       score: 91,
+      select: '',
+      tableData: [
+        {
+          name: '大蒜',
+          risk_level: '',
+          risk_score: '',
+          problem: '',
+        },
+        {
+          name: '棉粕',
+          risk_level: '',
+          risk_score: '',
+          problem: '',
+        },
+        {
+          name: '辣椒干',
+          risk_level: '',
+          risk_score: '',
+          problem: '',
+        },
+        {
+          name: '棉籽',
+          risk_level: '',
+          risk_score: '',
+          problem: '',
+        },
+      ],
     }
   },
   methods: {
@@ -136,7 +163,7 @@ export default {
       this.noQuery = true;
     },
     // 查询品类信息
-    onQueryFirmInfo() {
+    onQueryCategoryInfo() {
       this.noQuery = false;
       this.drawChart();
     },

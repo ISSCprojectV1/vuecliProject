@@ -37,9 +37,9 @@
         <span>交易查询</span>
       </div>
 
-      <el-input placeholder="请输入交易UID" maxlength="50">
-        <template slot="prepend">交易UID</template>
-        <el-button slot="append" @click="onQueryFirmInfo">查询</el-button>
+      <el-input placeholder="请输入内容" v-model="queryData">
+        <template slot="prepend">合同编号</template>
+        <el-button slot="append" @click="onQueryTransactionInfo">查询</el-button>
       </el-input>
     </el-card>
 
@@ -49,61 +49,64 @@
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
-          :cell-style="{padding:'0px'}">
-        <el-table-column prop="company" label="交易UID" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="风险评级" min-width="50"></el-table-column>
-        <el-table-column prop="company" label="交易方A" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="交易方B" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="交易品类" min-width="50"></el-table-column>
-        <el-table-column prop="company" label="主要问题" min-width="100"></el-table-column>
+          :cell-style="{padding:'0px'}"
+          :data="tableData">
+        <el-table-column prop="id" label="合同编号" min-width="50"></el-table-column>
+        <el-table-column prop="risk_level" label="风险评级" min-width="50"></el-table-column>
+        <el-table-column prop="party_A" label="交易方A" min-width="90"></el-table-column>
+        <el-table-column prop="party_B" label="交易方B" min-width="90"></el-table-column>
+        <el-table-column prop="category" label="交易品类" min-width="50"></el-table-column>
+        <el-table-column prop="problem" label="主要问题" min-width="120"></el-table-column>
       </el-table>
     </el-card>
 
     <!--交易查询结果-->
-    <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: 460px">
-      <div slot="header" class="box-card-header">
-        <span>交易评估信息</span>
-      </div>
+    <transition name="el-fade-in" @after-enter="transitionComplete">
+      <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: 460px">
+        <div slot="header" class="box-card-header">
+          <span>交易评估信息</span>
+        </div>
 
-      <el-row :gutter="2">
-        <el-col :span="5" style="padding-top: 1rem">
-          <div style="margin-top: auto; margin-bottom: auto">
-            <el-progress type="circle" :percentage="100" :stroke-width="10" color="lightgreen" stroke-linecap="square"
-                         :format="formatScore" :width="150" class="green-score"></el-progress>
-            <p class="progress-text">守约分</p>
-          </div>
-        </el-col>
-        <el-col :span="12" style="padding-left: 3rem">
-          <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
-            <el-form-item label="交易UID">
-              XXXXXX
-            </el-form-item>
-            <el-form-item label="交易方A">
-              XXXX交易所
-            </el-form-item>
-            <el-form-item label="交易方B">
-              XXXX交易所
-            </el-form-item>
-            <el-form-item label="交易品类">
-              XXXX
-            </el-form-item>
-            <el-form-item label="交易用户风险">
-              XXXX<br/>
-              XXXX
-            </el-form-item>
-            <el-form-item label="交易品类风险">
-              XXXXXXX<br/>
-              XXXXXXX
-            </el-form-item>
-          </el-form>
-        </el-col>
-        <el-col :span="7">
-          <div id="chart"></div>
-          <p class="progress-text">违约风险级联关系图</p>
-        </el-col>
-      </el-row>
+        <el-row :gutter="2">
+          <el-col :span="5" style="padding-top: 1rem">
+            <div style="margin-top: auto; margin-bottom: auto">
+              <el-progress type="circle" :percentage="100" :stroke-width="10" color="lightgreen" stroke-linecap="square"
+                           :format="formatScore" :width="150" class="green-score"></el-progress>
+              <p class="progress-text">守约分</p>
+            </div>
+          </el-col>
+          <el-col :span="12" style="padding-left: 3rem">
+            <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
+              <el-form-item label="合同编号">
+                DS-2212
+              </el-form-item>
+              <el-form-item label="交易方A">
+                A公司
+              </el-form-item>
+              <el-form-item label="交易方B">
+                B公司
+              </el-form-item>
+              <el-form-item label="交易品类">
+                杂交大蒜
+              </el-form-item>
+              <el-form-item label="交易用户风险">
+                XXXX<br/>
+                XXXX
+              </el-form-item>
+              <el-form-item label="交易品类风险">
+                XXXXXXX<br/>
+                XXXXXXX
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="7">
+            <div id="chart"></div>
+            <p class="progress-text">违约风险级联关系图</p>
+          </el-col>
+        </el-row>
 
-    </el-card>
+      </el-card>
+    </transition>
   </div>
 </template>
 
@@ -116,6 +119,42 @@ export default {
     return {
       noQuery: true,
       score: 91,
+      select: '',
+      queryData: '',
+      tableData: [
+        {
+          id: 'DS-2212',
+          risk_level: 'I',
+          party_A: 'A公司',
+          party_B: 'B公司',
+          category: '杂交大蒜',
+          problem: '......',
+        },
+        {
+          id: 'MP-2207',
+          risk_level: 'I',
+          party_A: 'A公司',
+          party_B: 'B公司',
+          category: '棉籽粕',
+          problem: '......',
+        },
+        {
+          id: 'MP-2205',
+          risk_level: 'I',
+          party_A: 'A公司',
+          party_B: 'B公司',
+          category: '棉籽粕',
+          problem: '......',
+        },
+        {
+          id: 'LJ-2205',
+          risk_level: 'I',
+          party_A: 'A公司',
+          party_B: 'B公司',
+          category: '辣椒干',
+          problem: '......',
+        },
+      ],
     }
   },
   methods: {
@@ -139,14 +178,17 @@ export default {
       this.noQuery = true;
     },
     // 查询交易信息
-    onQueryFirmInfo() {
+    onQueryTransactionInfo() {
       this.noQuery = false;
+    },
+    transitionComplete: function (el) {
       this.drawChart();
     },
     // 绘制G6关系图
     drawChart() {
       // 绘制前先清除
-      document.getElementById("chart").innerHTML = '';
+      if (document.getElementById("chart"))
+        document.getElementById("chart").innerHTML = '';
 
       const data = {
         nodes: [
@@ -273,6 +315,8 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css");
+
 .box-card {
   width: 80%;
   margin-top: 2rem;
