@@ -29,11 +29,23 @@
         </tr>
         <tr>
           <td class="column_key">舆情网络平均距离</td>
-          <td class="column_value">{{ RiskInfo.netaveragedistance | numFilter }}</td>
+          <td class="column_value">
+            <template>
+              <el-button type="text" @click="handleClick_avgdistance()">
+                {{ RiskInfo.netaveragedistance | numFilter }}
+              </el-button>
+            </template>
+          </td>
         </tr>
         <tr>
           <td class="column_key">舆情网络聚类系数</td>
-          <td class="column_value">{{ RiskInfo.netclusteringcoefficient | numFilter }}</td>
+          <td class="column_value">
+            <template>
+              <el-button type="text" @click="handleClick_cluster()">
+                {{ RiskInfo.netclusteringcoefficient | numFilter }}
+              </el-button>
+            </template>
+          </td>
         </tr>
         <tr>
           <td class="column_key">舆情扩散速度</td>
@@ -70,6 +82,14 @@
       <div>
         <DiameterDialog :show="detailShow_diameter" title="舆情网络最长传播链展示" @close="closeDiameterDialog"></DiameterDialog>
       </div>
+      <!--网络聚类系数-->
+      <div>
+        <ClusterDialog :show="detailShow_cluster" title="舆情网络集团化群组展示" @close="closeClusterDialog"></ClusterDialog>
+      </div>
+      <!--网络平均距离-->
+      <div>
+        <AvgDistanceDialog :show="detailShow_avgdistance" title="舆情网络各节点传播链展示" @close="closeAvgDistanceDialog"></AvgDistanceDialog>
+      </div>
     </slot>
   </el-dialog>
 
@@ -80,10 +100,12 @@ import {getOpinionsRiskLevelInformation} from "../../../api/part1/PublicOpinions
 import DiffusionDialog from "./DiffusionDialog";
 import DensityDialog from "./DensityDialog";
 import DiameterDialog from "./DiameterDialog";
+import ClusterDialog from "./ClusterDialog";
+import AvgDistanceDialog from "./AvgDistanceDialog";
 
 export default {
   name: "RiskDetailDialog",
-  components: {DiameterDialog, DensityDialog, DiffusionDialog},
+  components: {AvgDistanceDialog, ClusterDialog, DiameterDialog, DensityDialog, DiffusionDialog},
   props: {
     show: {
       type: Boolean,
@@ -107,6 +129,10 @@ export default {
       detailShow_density:false,
       //舆情网络直径dialog参数
       detailShow_diameter:false,
+      //网络聚类系数dialog参数
+      detailShow_cluster:false,
+      //网络平均距离dialog参数
+      detailShow_avgdistance:false,
     }
   },
   watch: {
@@ -176,7 +202,28 @@ export default {
     closeDiameterDialog(){
       this.detailShow_diameter=false;
     },
-
+    //*******************************************************************
+    //舆情网络聚类系数Dialog相关函数
+    //*******************************************************************
+    handleClick_cluster()
+    {
+      console.log("获取舆情网络聚类三角展示图！");
+      this.detailShow_cluster=true;
+    },
+    closeClusterDialog(){
+      this.detailShow_cluster=false;
+    },
+    //*******************************************************************
+    //舆情网络平均距离Dialog相关函数
+    //*******************************************************************
+    handleClick_avgdistance()
+    {
+      console.log("获取舆情网络各点距离展示图！");
+      this.detailShow_avgdistance=true;
+    },
+    closeAvgDistanceDialog(){
+      this.detailShow_avgdistance=false;
+    },
   },
 }
 </script>

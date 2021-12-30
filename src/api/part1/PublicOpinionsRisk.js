@@ -1,4 +1,3 @@
-
 import request from '@/utils/request'
 
 export function getOpinionsWbInformation(URL) {
@@ -183,7 +182,7 @@ export function getExchangeNameData() {
     console.log("getExchangeNameData")
     return request({
         url: '/getExchangeNameData',
-        method: 'get'
+        method: 'GET'
     })
 }
 
@@ -221,6 +220,22 @@ export function getNetworkPath() {
     console.log("getNetworkPath")
     return request({
         url:'/getNetworkPath',
+        method: 'get'
+    })
+}
+
+export function getNetworkAllPath() {
+    console.log("getNetworkAllPath")
+    return request({
+        url:'/getNetworkAllPath',
+        method: 'get'
+    })
+}
+
+export function getNetworkCluster() {
+    console.log("getNetworkCluster")
+    return request({
+        url:'/getNetworkCluster',
         method: 'get'
     })
 }
