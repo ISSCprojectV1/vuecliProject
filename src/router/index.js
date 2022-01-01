@@ -360,6 +360,7 @@ export const asyncRoutes = [
 // 实例化vue时候只挂载constantRoutes
 export default new VueRouter({
   mode: "history",
+  base: "/regulator-service/web",
   routes: constantRoutes.concat(adminRoutes).concat(asyncRoutes)
 })
 
