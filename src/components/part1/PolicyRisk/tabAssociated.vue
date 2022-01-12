@@ -1,11 +1,12 @@
 <template>
   <div style="width: 100%">
-    <el-container style="height: 700px; border: 0.5rem solid #eee">
-      <el-aside width="50%" style="border: 0.5rem solid #eee">
+    <el-container style="height: 700px; border: 0.5rem solid #ffffff">
+      <el-aside width="50%" style="border: 0.5rem solid #ffffff">
         <h2>相关行业系统性风险</h2>
         <el-table
           :data="dataAssociated"
           highlight-current-row
+          :header-cell-style="getHeaderStylesheet"
           :span-method="objectSpanMethod"
           @cell-click="onClickTableAssociated"
           :cell-style="tableCellStyle"
@@ -32,8 +33,8 @@
         >
         </el-pagination>
       </el-aside>
-      <el-container style="border: 0.5rem solid #eee"> </el-container>
-      <div id="tableSpaceDetail" style="width: 100%; height: 100%">
+      <el-container style="border: 0.5rem solid #ffffff"> </el-container>
+      <!--div id="tableSpaceDetail" style="width: 100%; height: 100%">
         <h2>相关行业系统风险传播关系图</h2>
         <div class="force-base-ii">
           <div class="outborder">
@@ -53,7 +54,45 @@
             <div class="hight">高</div>
           </div>
         </div>
-      </div>
+      </div-->
+        <div id="tableSpaceDetail" style="width: 100%; height: 100%">
+        <h2>行业系统性风险关联传播详情</h2>
+        <el-table
+          :data="dataRelevance"
+          :cell-style="tableCellStyle"
+          :header-cell-style="getHeaderStylesheet"
+        >
+          <el-table-column
+            label="行业名称"
+            prop="industry1"
+            min-width="70"
+          ></el-table-column>
+          <el-table-column
+            label="正传播强度"
+            prop="posRel"
+            min-width="70"
+          ></el-table-column>
+          <el-table-column
+            label="行业名称"
+            prop="industry2"
+            min-width="60"
+          ></el-table-column>
+          <el-table-column
+            label="负传播强度"
+            prop="negRel"
+            min-width="60"
+          ></el-table-column>
+        </el-table>
+        <el-pagination
+          ref="pagination"
+          style="text-align: center; margin-top: 0.5rem"
+          background
+          layout="prev, pager, next"
+          @current-change="pageChangeDetal"
+          :total="total"
+        >
+        </el-pagination>
+        </div>
     </el-container>
   </div>
 </template>
@@ -70,6 +109,7 @@ export default {
       industry: "",
       spanArr: [],
       dataAssociated: [],
+      dataRelevance: [],
     };
   },
   created() {
@@ -80,6 +120,16 @@ export default {
     document.getElementById("tableSpaceDetail").style.display = "none";
   },
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
+    /*
     creatA(nodes, edges) {
       let marge = { top: 0, bottom: 0, left: 60, right: 60 };
       let svg = d3.select("svg");
@@ -168,15 +218,6 @@ export default {
       gs.append("title").text(function (d) {
         return d.name;
       });
-      /*
-    gs.append('text')
-      .attr('x', -10)
-      .attr('y', -20)
-      .attr('dy', 10)
-      .text(function (d) {
-        return d.name
-      })
-    */
       // ticked
       function ticked() {
         links
@@ -223,6 +264,7 @@ export default {
         d.fy = null;
       }
     },
+    */
     circleColor(d) {
       if (d.type === "1") {
         return "#fe5b70";
@@ -276,6 +318,10 @@ export default {
       this.currentPage = page;
       this.queryAssociated(page, 10);
     },
+    pageChangeDetal(page){
+      this.currentPage = page;
+      this.queryAssociatedDetail(this.industry,page, 10);
+    },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
         const _row = this.spanArr[rowIndex];
@@ -293,13 +339,15 @@ export default {
       this.column = column;
       document.getElementById("tableSpaceDetail").style.display = "block";
       this.industry = row.industry;
-      this.queryAssociatedDetail(row.industry);
+      this.queryAssociatedDetail(row.industry, 1,10);
     },
-    queryAssociatedDetail(industry) {
-      getAssociatedDetail(industry)
+    queryAssociatedDetail(industry, currentPage, pageSize) {
+      getAssociatedDetail(industry, currentPage, pageSize)
         .then((res) => {
-          let data = res.data.data;
           console.log(res);
+          this.dataRelevance = res.data.data.reslist;
+          this.total = res.data.data.total;
+          /*
           let node = [];
           let edge = [];
           for (let i = 0; i < data[0].length; i++) {
@@ -318,6 +366,7 @@ export default {
           }
           console.log(edge);
           this.creatA(node, edge);
+          */
         })
         .catch((err) => {
           console.log(err);

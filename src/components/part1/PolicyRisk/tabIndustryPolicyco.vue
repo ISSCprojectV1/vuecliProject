@@ -1,9 +1,13 @@
 <template>
   <div style="width: 100%">
-    <el-container style="height: 700px; border: 0.5rem solid #eee">
-      <el-aside width="50%" style="border: 0.5rem solid #eee">
+    <el-container style="height: 700px; border: 0.5rem solid #ffffff">
+      <el-aside width="50%" style="border: 0.5rem solid #ffffff">
         <h2>业内系统性风险传播</h2>
-        <el-table :data="dataImpact" highlight-current-row>
+        <el-table 
+        :data="dataImpact" 
+        :header-cell-style="getHeaderStylesheet"
+        highlight-current-row
+        >
           <el-table-column
             label="平台名称"
             fixed="left"
@@ -74,7 +78,7 @@
         >
         </el-pagination>
       </el-aside>
-      <el-container style="border: 0.5rem solid #eee">
+      <el-container style="border: 0.5rem solid #ffffff">
         <div id="tableSpaceDetail" style="width: 100%; height: 100%">
           <h2>业内系统性风险传播关系图</h2>
           <div class="force-base-ii">
@@ -120,6 +124,15 @@ export default {
   },
   mounted() {},
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     creatB() {
       // create somewhere to put the force directed graph
       let svg = d3.select("svg");

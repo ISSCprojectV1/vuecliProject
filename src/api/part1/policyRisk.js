@@ -60,11 +60,13 @@ export function getAssociated(currentPage, pageSize) {
     })
 }
 
-export function getAssociatedDetail(industry) {
+export function getAssociatedDetail(industry, currentPage, pageSize) {
     return request({
         method: 'GET',
         params: {
-            industry: industry
+            industry: industry,
+            currentPage: currentPage,
+            pageSize: pageSize
         },
         url: '/getAssociatedDetail'
     })
