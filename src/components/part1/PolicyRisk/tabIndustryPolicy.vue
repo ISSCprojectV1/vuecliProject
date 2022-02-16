@@ -1,11 +1,12 @@
 <template>
   <div style="width: 100%">
-    <el-container style="height: 700px; border: 0.5rem solid #eee">
-      <el-aside width="50%" style="border: 0.5rem solid #eee">
+    <el-container style="height: 700px; border: 0.5rem solid #ffffff">
+      <el-aside width="50%" style="border: 0.5rem solid #ffffff">
         <h2>业内政策不利因素</h2>
         <el-table
           :data="dataIndustryPolicy"
           highlight-current-row
+          :header-cell-style="getHeaderStylesheet"
           @row-click="onClickTableIndustry"
         >
           <el-table-column
@@ -37,7 +38,7 @@
         >
         </el-pagination>
       </el-aside>
-      <el-container style="border: 0.5rem solid #eee">
+      <el-container style="border: 0.5rem solid #ffffff">
         <div id="tablePolicyDetail" style="width: 100%; height: 100%">
           <h2>关系图</h2>
           <div class="force-base-ii">
@@ -85,6 +86,15 @@ export default {
     // this.creatA();
   },
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     creatA(nodes, edges) {
       
       let marge = { top: 0, bottom: 0, left: 60, right: 60 };
