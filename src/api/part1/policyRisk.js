@@ -17,11 +17,11 @@ export function getIndustryPolicy(currentPage, pageSize) {
     })
 }
 
-export function getIndustryPolicyDetail(transactionMode) {
+export function getIndustryPolicyDetail(id) {
     return request({
         method: 'GET',
         params: {
-            transactionMode: transactionMode
+            id: id
         },
         url: '/getIndustryPolicyDetail'
     })
