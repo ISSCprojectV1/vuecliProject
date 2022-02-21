@@ -213,6 +213,7 @@ export default {
         });
       }
       this.tradeTable.dormitory = tradeTableData;
+      this.tradeTable.totalCount = tradeTableData.length;
     },
     strToMills(str) {
       let [y, m, d] = str.split("-");

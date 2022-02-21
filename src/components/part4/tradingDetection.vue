@@ -156,9 +156,12 @@
         </el-pagination>
       </el-col>
     </div>
-    <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
+    <el-dialog :title="tradeDialog.name" :visible.sync="tradeDialog.visible">
       <trading-dialog
       :detectionResults="detectionResults" :index="index"></trading-dialog>
+    </el-dialog>
+    <el-dialog :title="relationDialog.name" :visible.sync="relationDialog.visible">
+      <relation-dialog :traderId="traderId"></relation-dialog>
     </el-dialog>
   </div>
 </template>
@@ -174,9 +177,10 @@ import {
   tradingDetection,
 } from "@/api/part4/tradingDetection";
 import tradingDialog from "./tradingDialog.vue";
+import relationDialog from "./relationDetection.vue"
 
 export default {
-  components: { tradingDialog },
+  components: { tradingDialog, relationDialog },
   name: "tradingDetection",
   data() {
     return {
@@ -202,7 +206,11 @@ export default {
         loading: false,
       },
       traderId: 0,
-      dialog: {
+      tradeDialog: {
+        name: "",
+        visible: false,
+      },
+      relationDialog: {
         name: "",
         visible: false,
       },
@@ -253,6 +261,7 @@ export default {
             goodName: element.goodName,
             level: levels[element.level],
           });
+          this.accountTable.totalCount = this.accountTable.dormitory.length;
         }
       });
     },
@@ -269,17 +278,17 @@ export default {
     },
     handleRelationButtonClick(index, row) {
       console.log(index, row);
-      this.$router.push({
-        path: "/trade/insiderTrading/relationDetection/" + row.id,
-      });
+      this.relationDialog.name = "关联网络分析";
+      this.relationDialog.visible = true;
+      this.traderId = row.id;
     },
     handleTradingButtonClick(index, row) {
       console.log(index);
       console.log(row);
       this.index = index;
-      this.dialog.name =
+      this.tradeDialog.name =
         "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
-      this.dialog.visible = true;
+      this.tradeDialog.visible = true;
       this.traderId = row.id;
     },
     handleNameSelectAll() {
