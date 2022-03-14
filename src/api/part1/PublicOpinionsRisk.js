@@ -239,3 +239,20 @@ export function getNetworkCluster() {
         method: 'get'
     })
 }
+
+export function getMaliciousLeaderNodes(){
+    console.log("getMaliciousLeaderNodes")
+    return request({
+        url:'/getMaliciousLeaderNodes',
+        method: 'get'
+    })
+}
+
+
+export function getMaliciousDetectionStatus(){
+    console.log("getMaliciousDetectionStatus")
+    return request({
+        url:'/getMaliciousDetectionStatus',
+        method: 'get'
+    })
+}
