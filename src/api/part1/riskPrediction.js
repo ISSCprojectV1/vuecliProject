@@ -173,3 +173,25 @@ export function getVolumeRiskChart(name) {
   })
 }
 // riskvolumn end
+
+// 风险传播
+export function getAllPropagation() {
+    return request({
+        method: 'GET',
+        url: 'propagation/getAllPropagation'
+    })
+}
+
+export function getPropagationByName(name) {
+    return request({
+        method: 'GET',
+        url: 'propagation/getPropagationByName/'+name
+    })
+}
+
+export function getHistoryPriceByName(name){
+    return request({
+        method: 'GET',
+        url: 'propagation/getHistoryPrice/'+name
+    })
+}

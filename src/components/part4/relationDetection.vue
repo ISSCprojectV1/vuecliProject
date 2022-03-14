@@ -1,36 +1,6 @@
 <template>
   <div class="root">
-    <!-- <div v-if="hasNoId" class="form">
-      <el-form ref="form" :model="form">
-        <el-form-item label="选择用户" style="margin-left: 300px">
-          <el-col :span="13">
-            <el-select
-              v-model="form.nameValue"
-              filterable
-              placeholder="请选择"
-              class="select-box"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in form.nameOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="3">
-            <el-button type="primary" @click="onSubmit"> 提交 </el-button>
-          </el-col>
-        </el-form-item>
-      </el-form>
-    </div> -->
     <el-row>
-      <el-button @click="backward">返回</el-button>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
         <div>
           <p class="title">
             <b>关联内幕人员({{ trader.id }}-{{ trader.name }}) </b>
@@ -70,8 +40,6 @@
           >
           </el-pagination>
         </div>
-      </el-col>
-      <el-col :span="12">
         <div>
           <div style="margin: 10px">
             <el-radio-group v-model.number="radio" @change="handleRadioChange">
@@ -81,12 +49,11 @@
           </div>
           <div
             id="container"
-            style="width: 700px; height: 700px; margin: 10px"
+            style="width: 925px; height: 700px; margin: 10px"
             ref="graph"
           ></div>
         </div>
-      </el-col>
-    </el-row>
+      </el-row>
   </div>
 </template>
 
@@ -94,13 +61,14 @@
 import echarts from "echarts";
 import { getTraderById } from "@/api/part4/relationDetection";
 export default {
-  name: "reationDetection",
-  data() {
+  name: "reation-dialog",
+  props: ["traderId"],
+  data() {    
     return {
-      trader: {
-        id: 0,
-        name: "",
-      },
+      trader : {
+      id: 0,
+      name: "",
+    },
       accountTable: {
         dormitory: [],
         // 默认显示第几页
@@ -119,22 +87,14 @@ export default {
   },
   mounted() {
     this.accountTable.dormitory = this.getAccountTableData();
-    if (!this.hasNoId) {
       console.log(this.$route.params);
-      getTraderById(parseInt(this.$route.params.id)).then((response) => {
+      getTraderById(this.traderId).then((response) => {
         console.log(response);
         this.trader.id = response.data.traderId;
         this.trader.name = response.data.traderName;
         this.initNetworksData();
         this.initGraph(this.networks[this.radio]);
       });
-    }
-    console.log("hasNoId" + this.hasNoId);
-  },
-  computed: {
-    hasNoId: function () {
-      return isNaN(this.$route.params.id);
-    },
   },
   methods: {
     initGraph(graphData) {
@@ -152,7 +112,7 @@ export default {
         legend: [
           {
             top: "10%",
-            right: "25%",
+           ght: "25%",
             // selectedMode: 'single',
             data: graphData.categories.map(function (a) {
               return a.name;

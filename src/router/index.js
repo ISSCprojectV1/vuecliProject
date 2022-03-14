@@ -320,6 +320,12 @@ export const asyncRoutes = [
         path:'/trade/PublicOpinionsRisk/opinions_search',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_search"),
       },
+      {
+        id: 43,
+        name: '价格对比',
+        path: "/trade/riskPrediction/priceCompare",
+        component: () => import("@/components/part1/riskPrediction/priceCompare"),
+      },
     ]
   },
 
