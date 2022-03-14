@@ -27,13 +27,11 @@ export function getIndustryPolicyDetail(id) {
     })
 }
 
-export function getImpact(platform, currentPage, pageSize) {
+export function getImpact(platform) {
     return request({
         method: 'GET',
         params: {
-            platform: platform,
-            currentPage: currentPage,
-            pageSize: pageSize
+            platform: platform
         },
         url: '/getImpact'
     })
