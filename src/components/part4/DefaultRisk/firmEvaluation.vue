@@ -1,70 +1,68 @@
 <template>
   <div>
-    <!--用户情况统计-->
+    <!--交易主体情况统计-->
     <el-card shadow="hover" class="box-card">
       <div slot="header" class="box-card-header">
-        <span>用户情况统计</span>
+        <span>交易主体情况统计</span>
       </div>
 
       <el-row style="margin-left: 5rem; margin-right: 5rem">
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskI">
-            <el-progress type="circle" :percentage="10" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgress" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I<br/>用户数</p>
+            <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10"
+                         stroke-linecap="square"
+                         :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
+            <p class="progress-text">风险评级I<br/>交易主体数</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskII">
-            <el-progress type="circle" :percentage="15" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgress" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II<br/>用户数</p>
+            <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
+            <p class="progress-text">风险评级II<br/>交易主体数</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskIII">
-            <el-progress type="circle" :percentage="75" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgress" color="lightgreen" :width="90" class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III<br/>用户数</p>
+            <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgressNum" color="lightgreen" :width="90"
+                         class="green-progress"></el-progress>
+            <p class="progress-text">风险评级III<br/>交易主体数</p>
           </button>
         </el-col>
       </el-row>
     </el-card>
 
-    <!--用户查询-->
+    <!--交易主体查询-->
     <el-card shadow="hover" class="box-card">
       <div slot="header" class="box-card-header">
-        <span>用户查询</span>
+        <span>交易主体查询</span>
       </div>
 
-      <el-input placeholder="请输入内容">
-        <el-select v-model="select" slot="prepend" placeholder="请选择" style="width: 8rem">
-          <el-option label="用户账号" value="1"></el-option>
-          <el-option label="用户名称" value="2"></el-option>
-        </el-select>
-        <el-button slot="append" @click="onQueryFirmInfo">查询</el-button>
+      <el-input v-model="QueriedEntityName" placeholder="请输入名称">
+        <template slot="prepend">交易主体名称</template>
+        <el-button slot="append" @click="onQueryEntity">查询</el-button>
       </el-input>
     </el-card>
 
-    <!--用户信息表格-->
+    <!--交易主体信息表格-->
     <el-card v-if="noQuery" shadow="hover" class="box-card box-card-no-padding">
       <el-table
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
-          :cell-style="{padding:'0px'}">
-        <el-table-column prop="company" label="用户账号" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="用户名称" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="风险评级" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="风险评分" min-width="100"></el-table-column>
-        <el-table-column prop="company" label="主要问题" min-width="100"></el-table-column>
+          :cell-style="{padding:'0px'}"
+          :data="tableData">
+        <el-table-column prop="id" label="交易主体ID" min-width="100"></el-table-column>
+        <el-table-column prop="name" label="交易主体名称" min-width="100"></el-table-column>
+        <el-table-column prop="riskLevel" label="风险评级" min-width="100"></el-table-column>
       </el-table>
     </el-card>
 
-    <!--用户查询结果-->
+    <!--交易主体查询结果-->
     <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: 460px">
       <div slot="header" class="box-card-header">
-        <span>用户评估信息</span>
+        <span>交易主体评估信息</span>
       </div>
 
       <el-row :gutter="2">
@@ -77,23 +75,14 @@
         </el-col>
         <el-col :span="12" style="padding-left: 3rem">
           <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
-            <el-form-item label="用户UID">
-              XXXXXX
+            <el-form-item label="交易主体ID">
+            {{ entityData.id }}
             </el-form-item>
-            <el-form-item label="用户名称">
-              XXXX交易所
+            <el-form-item label="交易主体名称">
+            {{ entityData.name }}
             </el-form-item>
-            <el-form-item label="相关交易信息">
-              XXXX<br/>
-              XXXX
-            </el-form-item>
-            <el-form-item label="主营品类信息">
-              XXXX<br/>
-              XXXX
-            </el-form-item>
-            <el-form-item label="主要问题">
-              XXXXXXX<br/>
-              XXXXXXX
+            <el-form-item label="风险评级">
+            {{ entityData.riskLevel }}
             </el-form-item>
           </el-form>
         </el-col>
@@ -109,24 +98,43 @@
 
 <script>
 import G6 from '@antv/g6';
+import {getEntitiesByLevel, getEntityByName, getEntityCountPerLevel} from '@/api/part4/DefaultRisk/firmEvaluation';
 
 export default {
   name: "firmEvaluation.vue",
   data() {
     return {
+      /* 交易主体情况统计数据 */
+      countTotalEntity: 0,
+      countsPerLevel: [],
+
+      /* 查询相关 */
       noQuery: true,
+      QueriedEntityName: '',
+
       score: 91,
-      select: '',
-      tableData: [
-        {
-          id: 'DS-2212',
-          name: '',
-          risk_level: '',
-          risk_score: '',
-          problem: '',
-        },
-      ],
+      tableData: [],
+
+      /* 交易主体评估信息 */
+      entityData: [],
     }
+  },
+  computed: {
+    l1Percentage: function () {
+      return this.countsPerLevel[0] * 100 / this.countTotalEntity || 0;
+    },
+    l2Percentage: function () {
+      return this.countsPerLevel[1] * 100 / this.countTotalEntity || 0;
+    },
+    l3Percentage: function () {
+      return this.countsPerLevel[2] * 100 / this.countTotalEntity || 0;
+    },
+  },
+  created() {
+    getEntityCountPerLevel().then(res => {
+      this.countsPerLevel = res.data;
+      this.countTotalEntity = res.data.reduce((sum, num) => sum + num, 0);
+    });
   },
   methods: {
     getHeaderStylesheet() {
@@ -141,22 +149,35 @@ export default {
     // 情况统计圆环点击事件
     onClickRiskI() {
       this.noQuery = true;
+      getEntitiesByLevel(1).then(res => {
+        this.tableData = res.data;
+      });
     },
     onClickRiskII() {
       this.noQuery = true;
+      getEntitiesByLevel(2).then(res => {
+        this.tableData = res.data;
+      });
     },
     onClickRiskIII() {
       this.noQuery = true;
+      getEntitiesByLevel(3).then(res => {
+        this.tableData = res.data;
+      });
     },
-    // 查询用户信息
-    onQueryFirmInfo() {
+    // 查询交易主体信息
+    onQueryEntity() {
       this.noQuery = false;
-      this.drawChart();
+      getEntityByName(this.QueriedEntityName).then(res => {
+        this.entityData = res.data;
+      });
+      // this.drawChart();
     },
     // 绘制G6关系图
     drawChart() {
       // 绘制前先清除
-      document.getElementById("chart").innerHTML = '';
+      if (document.getElementById("chart"))
+        document.getElementById("chart").innerHTML = '';
 
       const data = {
         nodes: [
@@ -271,10 +292,10 @@ export default {
       });
     },
     // 格式化情况统计圆环文本
-    formatProgress(percentage) {
-      return `${percentage}`;
+    formatProgressNum(percentage) {
+      return percentage * this.countTotalEntity / 100;
     },
-    // 格式化用户信息得分文本
+    // 格式化交易主体信息得分文本
     formatScore() {
       return this.score;
     }
@@ -310,7 +331,7 @@ button.transparent-button {
   cursor: pointer;
 }
 
-/* 用户情况统计圆环内部样式 */
+/* 交易主体情况统计圆环内部样式 */
 /deep/ .orange-progress .el-progress__text {
   font-weight: bold;
   font-size: x-large !important;
@@ -332,7 +353,7 @@ button.transparent-button {
   color: lightgreen;
 }
 
-/* 用户评估信息圆环内部样式 */
+/* 交易主体评估信息圆环内部样式 */
 /deep/ .green-score .el-progress__text {
   font-weight: bold;
   font-size: xxx-large !important;
@@ -340,7 +361,7 @@ button.transparent-button {
   color: lightgreen;
 }
 
-/* 用户信息表单样式 */
+/* 交易主体信息表单样式 */
 .firm-info-form .el-form-item {
   text-align: left;
 }
