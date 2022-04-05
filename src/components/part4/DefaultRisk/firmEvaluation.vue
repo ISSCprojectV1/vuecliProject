@@ -52,53 +52,130 @@
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}"
-          :data="tableData">
+          :data="mainTableData">
         <el-table-column prop="id" label="交易主体ID" min-width="100"></el-table-column>
-        <el-table-column prop="name" label="交易主体名称" min-width="100"></el-table-column>
-        <el-table-column prop="riskLevel" label="风险评级" min-width="100"></el-table-column>
+        <el-table-column prop="name" label="交易主体名称" min-width="100">
+          <template v-slot="scope">
+            <el-link type="primary" @click="onClickEntityName(scope.row.name)">
+              {{ scope.row.name }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="score" label="守约评分" min-width="100">
+          <template v-slot="scope">
+            <span v-if="scope.row.riskLevel===1" style="color: orange; font-weight: bold">{{ scope.row.score }}</span>
+            <span v-else-if="scope.row.riskLevel===2" style="color: gold; font-weight: bold">{{
+                scope.row.score
+              }}</span>
+            <span v-else style="color: lightgreen; font-weight: bold">{{ scope.row.score }}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
 
     <!--交易主体查询结果-->
-    <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: 460px">
+    <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: auto">
       <div slot="header" class="box-card-header">
         <span>交易主体评估信息</span>
       </div>
 
-      <el-row :gutter="2">
-        <el-col :span="5" style="padding-top: 1rem">
+      <el-row type="flex" :gutter="2">
+
+        <!--守约分-->
+        <el-col :span="5">
           <div style="margin-top: auto; margin-bottom: auto">
-            <el-progress type="circle" :percentage="100" :stroke-width="10" color="lightgreen" stroke-linecap="square"
-                         :format="formatScore" :width="150" class="green-score"></el-progress>
+            <el-progress type="circle" :percentage="100" :stroke-width="10"
+                         stroke-linecap="square"
+                         :color="entityData.riskLevel===1?'orange':(entityData.riskLevel===2?'gold':'lightgreen')"
+                         :format="()=>entityData.score" :width="150"
+                         :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"></el-progress>
             <p class="progress-text">守约分</p>
           </div>
         </el-col>
-        <el-col :span="12" style="padding-left: 3rem">
+
+        <!--交易主体信息表单-->
+        <el-col :span="12" style="margin: auto">
           <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
             <el-form-item label="交易主体ID">
-            {{ entityData.id }}
+              {{ entityData.id }}
             </el-form-item>
             <el-form-item label="交易主体名称">
-            {{ entityData.name }}
+              {{ entityData.name }}
             </el-form-item>
             <el-form-item label="风险评级">
-            {{ entityData.riskLevel }}
+              <template>
+                <span v-if="entityData.riskLevel===1" style="color: orange; font-weight: bold">
+                  一级风险
+                </span>
+                <span v-else-if="entityData.riskLevel===2" style="color: gold; font-weight: bold">
+                  二级风险
+                </span>
+                <span v-else style="color: lightgreen; font-weight: bold">
+                  三级风险
+                </span>
+              </template>
             </el-form-item>
           </el-form>
         </el-col>
-        <el-col :span="7">
-          <div id="chart"></div>
-          <p class="progress-text">违约风险级联关系图</p>
-        </el-col>
+
       </el-row>
+
+      <el-divider></el-divider>
+
+      <!--交易情况：销售表 和 采购表-->
+      <el-table
+          :data="salesTableData">
+      </el-table>
+      <div class="detail-subheader">采购情况表</div>
+
+      <el-table
+          highlight-current-row
+          :header-cell-style="getHeaderStylesheet"
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}"
+          :data="purchaseTableData">
+        <el-table-column prop="id" label="交易ID"></el-table-column>
+        <el-table-column prop="sellerName" label="卖方名称" min-width="120"></el-table-column>
+        <el-table-column prop="category" label="采购品类"></el-table-column>
+        <el-table-column prop="unitPrice" label="采购单价"></el-table-column>
+        <el-table-column prop="amount" label="采购量"></el-table-column>
+      </el-table>
+
+      <div class="detail-subheader">销售情况表</div>
+
+      <el-table
+          highlight-current-row
+          :header-cell-style="getHeaderStylesheet"
+          :row-style="{height: '40px'}"
+          :cell-style="{padding:'0px'}"
+          :data="salesTableData">
+        <el-table-column prop="id" label="交易ID"></el-table-column>
+        <el-table-column prop="buyerName" label="买方名称" min-width="120"></el-table-column>
+        <el-table-column prop="category" label="销售品类"></el-table-column>
+        <el-table-column prop="unitPrice" label="销售单价"></el-table-column>
+        <el-table-column prop="amount" label="销售量"></el-table-column>
+      </el-table>
+
+      <el-table
+          :data="salesTableData">
+      </el-table>
+
+      <!--关系图-->
+            <div id="chart"></div>
+      <div class="detail-subheader">交易关系图</div>
 
     </el-card>
   </div>
 </template>
 
 <script>
-import G6 from '@antv/g6';
-import {getEntitiesByLevel, getEntityByName, getEntityCountPerLevel} from '@/api/part4/DefaultRisk/firmEvaluation';
+import * as echarts from 'echarts5';
+import {
+  getAllPurchasesById, getAllSalesById,
+  getEntitiesByLevel,
+  getEntityByName,
+  getEntityCountPerLevel
+} from '@/api/part4/DefaultRisk/firmEvaluation';
 
 export default {
   name: "firmEvaluation.vue",
@@ -107,16 +184,16 @@ export default {
       /* 交易主体情况统计数据 */
       countTotalEntity: 0,
       countsPerLevel: [],
+      mainTableData: [],
 
       /* 查询相关 */
       noQuery: true,
       QueriedEntityName: '',
 
-      score: 91,
-      tableData: [],
-
       /* 交易主体评估信息 */
       entityData: [],
+      purchaseTableData: [],
+      salesTableData: [],
     }
   },
   computed: {
@@ -135,6 +212,7 @@ export default {
       this.countsPerLevel = res.data;
       this.countTotalEntity = res.data.reduce((sum, num) => sum + num, 0);
     });
+    this.onClickRiskI();
   },
   methods: {
     getHeaderStylesheet() {
@@ -150,146 +228,106 @@ export default {
     onClickRiskI() {
       this.noQuery = true;
       getEntitiesByLevel(1).then(res => {
-        this.tableData = res.data;
+        this.mainTableData = res.data;
       });
     },
     onClickRiskII() {
       this.noQuery = true;
       getEntitiesByLevel(2).then(res => {
-        this.tableData = res.data;
+        this.mainTableData = res.data;
       });
     },
     onClickRiskIII() {
       this.noQuery = true;
       getEntitiesByLevel(3).then(res => {
-        this.tableData = res.data;
+        this.mainTableData = res.data;
       });
+    },
+    // 表格中名字列点击事件
+    onClickEntityName(name) {
+      this.QueriedEntityName = name;
+      this.onQueryEntity();
     },
     // 查询交易主体信息
     onQueryEntity() {
       this.noQuery = false;
+      this.QueriedEntityName = this.QueriedEntityName.trim();
       getEntityByName(this.QueriedEntityName).then(res => {
         this.entityData = res.data;
+        getAllPurchasesById(this.entityData.id).then(res => {
+          this.purchaseTableData = res.data;
+        });
+        getAllSalesById(this.entityData.id).then(res => {
+          this.salesTableData = res.data;
+          this.drawChart();
+        });
       });
-      // this.drawChart();
     },
-    // 绘制G6关系图
     drawChart() {
       // 绘制前先清除
-      if (document.getElementById("chart"))
-        document.getElementById("chart").innerHTML = '';
+      let chartDom = document.getElementById('chart');
+      // if (chartDom)
+      //   chartDom.innerHTML = '';
 
-      const data = {
-        nodes: [
-          {id: 'node1', size: 30},
-          {id: 'node2', size: 30},
-          {id: 'node3', size: 30},
-          {id: 'node6', size: 15, isLeaf: true},
-          {id: 'node7', size: 15, isLeaf: true},
-          {id: 'node8', size: 15, isLeaf: true},
-          {id: 'node9', size: 15, isLeaf: true},
-          {id: 'node10', size: 15, isLeaf: true},
-          {id: 'node11', size: 15, isLeaf: true},
-          {id: 'node12', size: 15, isLeaf: true},
-          {id: 'node13', size: 15, isLeaf: true},
-          {id: 'node14', size: 15, isLeaf: true},
-          {id: 'node15', size: 15, isLeaf: true},
-          {id: 'node16', size: 15, isLeaf: true},
-        ],
-        edges: [
-          {source: 'node1', target: 'node6'},
-          {source: 'node1', target: 'node7'},
-          {source: 'node2', target: 'node8'},
-          {source: 'node2', target: 'node9'},
-          {source: 'node2', target: 'node10'},
-          {source: 'node2', target: 'node11'},
-          {source: 'node2', target: 'node12'},
-          {source: 'node2', target: 'node13'},
-          {source: 'node3', target: 'node14'},
-          {source: 'node3', target: 'node15'},
-          {source: 'node3', target: 'node16'},
-        ],
+      let chart = echarts.init(chartDom);
+
+      // 构造data和links
+      let data = [{
+        name: this.entityData.name,
+        category: 0,
+      }];
+      let links = [];
+      let nodeSet = new Set();
+      for (let purchase of this.purchaseTableData) {
+        if (!nodeSet.has(purchase.sellerName)) {
+          nodeSet.add(purchase.sellerName);
+          data.push({
+            name: purchase.sellerName,
+            category: 1,
+          });
+        }
+        links.push({
+          source: data[0].name,
+          target: purchase.sellerName,
+        })
+      }
+      for (let sale of this.salesTableData) {
+        if (!nodeSet.has(sale.buyerName)) {
+          nodeSet.add(sale.buyerName);
+          data.push({
+            name: sale.buyerName,
+            category: 1,
+          });
+        }
+        links.push({
+          source: sale.buyerName,
+          target: data[0].name,
+        })
+      }
+
+      let option = {
+        series: [
+          {
+            type: 'graph',
+            layout: 'force',
+            symbolSize: 30,
+            edgeSymbol: ['none', 'arrow'],
+            force: {
+              repulsion: 600,
+            },
+            data: data,
+            links: links,
+            legend: ['交易主体', '交易对手'],
+            categories: [0, 1],
+            tooltip: {},
+            label: {
+              position: 'right',
+            },
+          }
+        ]
       };
-      const nodes = data.nodes;
 
-      const graph = new G6.Graph({
-        container: 'chart',
-        width: 300,
-        height: 300,
-        modes: {
-          default: ['drag-canvas', 'zoom-canvas', 'drag-node', 'lasso-select'],
-        },
-        layout: {
-          type: 'force',
-          preventOverlap: true,
-          linkDistance: (d) => {
-            if (d.source.id === 'node0') {
-              return 300;
-            }
-            return 60;
-          },
-          nodeStrength: (d) => {
-            if (d.isLeaf) {
-              return -50;
-            }
-            return -10;
-          },
-          edgeStrength: (d) => {
-            if (d.source.id === 'node1' || d.source.id === 'node2' || d.source.id === 'node3') {
-              return 0.7;
-            }
-            return 0.1;
-          },
-        },
-      });
-
-      graph.data({
-        nodes,
-        edges: data.edges.map(function (edge, i) {
-          edge['id'] = 'edge' + i;
-          return Object.assign({}, edge);
-        }),
-      });
-
-      graph.render();
-
-      // 添加轮廓
-      let centerNodes = graph.getNodes().filter((node) => !node.getModel().isLeaf);
-
-      graph.on('afterlayout', () => {
-        const hull1 = graph.createHull({
-          id: 'centerNode-hull',
-          type: 'bubble',
-          members: centerNodes,
-          padding: 10,
-        });
-
-        const hull2 = graph.createHull({
-          id: 'leafNode-hull1',
-          members: ['node6', 'node7'],
-          padding: 10,
-          style: {
-            fill: 'lightgreen',
-            stroke: 'green',
-          },
-        });
-
-        const hull3 = graph.createHull({
-          id: 'leafNode-hull2',
-          members: ['node8', 'node9', 'node10', 'node11', 'node12', 'node13'],
-          padding: 10,
-          style: {
-            fill: 'lightgreen',
-            stroke: 'green',
-          },
-        });
-
-        graph.on('afterupdateitem', (e) => {
-          hull1.updateData(hull1.members);
-          hull2.updateData(hull2.members);
-          hull3.updateData(hull3.members);
-        });
-      });
+      option && chart.setOption(option);
     },
     // 格式化情况统计圆环文本
     formatProgressNum(percentage) {
@@ -297,7 +335,7 @@ export default {
     },
     // 格式化交易主体信息得分文本
     formatScore() {
-      return this.score;
+      return this.entityData.score;
     }
   }
 }
@@ -306,9 +344,7 @@ export default {
 <style scoped>
 .box-card {
   width: 80%;
-  margin-top: 2rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2rem auto;
 }
 
 .box-card-header {
@@ -354,6 +390,20 @@ button.transparent-button {
 }
 
 /* 交易主体评估信息圆环内部样式 */
+/deep/ .orange-score .el-progress__text {
+  font-weight: bold;
+  font-size: xxx-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: orange;
+}
+
+/deep/ .gold-score .el-progress__text {
+  font-weight: bold;
+  font-size: xxx-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: gold;
+}
+
 /deep/ .green-score .el-progress__text {
   font-weight: bold;
   font-size: xxx-large !important;
@@ -364,5 +414,15 @@ button.transparent-button {
 /* 交易主体信息表单样式 */
 .firm-info-form .el-form-item {
   text-align: left;
+}
+
+.detail-subheader {
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+#chart {
+  width: 100%;
+  height: 400px;
 }
 </style>
