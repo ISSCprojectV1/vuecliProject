@@ -161,7 +161,7 @@
       </el-table>
 
       <!--关系图-->
-            <div id="chart"></div>
+      <div id="chart"></div>
       <div class="detail-subheader">交易关系图</div>
 
     </el-card>
@@ -175,10 +175,10 @@ import {
   getEntitiesByLevel,
   getEntityByName,
   getEntityCountPerLevel
-} from '@/api/part4/DefaultRisk/firmEvaluation';
+} from '@/api/part4/DefaultRisk/entityEvaluation';
 
 export default {
-  name: "firmEvaluation.vue",
+  name: "entityEvaluation.vue",
   data() {
     return {
       /* 交易主体情况统计数据 */
@@ -311,6 +311,7 @@ export default {
             type: 'graph',
             layout: 'force',
             symbolSize: 30,
+            tooltip: {},
             edgeSymbol: ['none', 'arrow'],
             force: {
               repulsion: 600,
@@ -319,10 +320,6 @@ export default {
             links: links,
             legend: ['交易主体', '交易对手'],
             categories: [0, 1],
-            tooltip: {},
-            label: {
-              position: 'right',
-            },
           }
         ]
       };

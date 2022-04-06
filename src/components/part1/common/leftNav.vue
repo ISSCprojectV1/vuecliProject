@@ -256,7 +256,7 @@
             </template>
 
             <el-menu-item
-                index="/trade/DefaultRisk/firmEvaluation"
+                index="/trade/DefaultRisk/entityEvaluation"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">交易主体评估</span>

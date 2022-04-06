@@ -269,8 +269,8 @@ export const asyncRoutes = [
       },
       {
         id: 38,
-        path: "/trade/DefaultRisk/firmEvaluation",
-        component: () => import("@/components/part4/DefaultRisk/firmEvaluation"),
+        path: "/trade/DefaultRisk/entityEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/entityEvaluation"),
       },
       {
         id: 39,
