@@ -16,10 +16,6 @@ export function getEntityByName(name) {
   return request.get('/getEntityByName?name=' + name);
 }
 
-export function getAllPurchasesById(id) {
-  return request.get('/getAllPurchasesById?id=' + id);
-}
-
-export function getAllSalesById(id) {
-  return request.get('/getAllSalesById?id=' + id);
+export function calcEntityRisk() {
+  return request.get('calcEntityRisk');
 }

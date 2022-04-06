@@ -39,7 +39,7 @@
         <span>交易主体查询</span>
       </div>
 
-      <el-input v-model="QueriedEntityName" placeholder="请输入名称">
+      <el-input v-model="queriedEntityName" placeholder="请输入名称">
         <template slot="prepend">交易主体名称</template>
         <el-button slot="append" @click="onQueryEntity">查询</el-button>
       </el-input>
@@ -171,11 +171,12 @@
 <script>
 import * as echarts from 'echarts5';
 import {
-  getAllPurchasesById, getAllSalesById,
+  calcEntityRisk,
   getEntitiesByLevel,
   getEntityByName,
   getEntityCountPerLevel
 } from '@/api/part4/DefaultRisk/entityEvaluation';
+import {getAllPurchasesById, getAllSalesById} from '@/api/part4/DefaultRisk/txnOnlineEvaluation';
 
 export default {
   name: "entityEvaluation.vue",
@@ -188,7 +189,7 @@ export default {
 
       /* 查询相关 */
       noQuery: true,
-      QueriedEntityName: '',
+      queriedEntityName: '',
 
       /* 交易主体评估信息 */
       entityData: [],
@@ -208,9 +209,11 @@ export default {
     },
   },
   created() {
-    getEntityCountPerLevel().then(res => {
-      this.countsPerLevel = res.data;
-      this.countTotalEntity = res.data.reduce((sum, num) => sum + num, 0);
+    calcEntityRisk().then(() => {
+      getEntityCountPerLevel().then(res => {
+        this.countsPerLevel = res.data;
+        this.countTotalEntity = res.data.reduce((sum, num) => sum + num, 0);
+      });
     });
     this.onClickRiskI();
   },
@@ -245,14 +248,14 @@ export default {
     },
     // 表格中名字列点击事件
     onClickEntityName(name) {
-      this.QueriedEntityName = name;
+      this.queriedEntityName = name;
       this.onQueryEntity();
     },
     // 查询交易主体信息
     onQueryEntity() {
       this.noQuery = false;
-      this.QueriedEntityName = this.QueriedEntityName.trim();
-      getEntityByName(this.QueriedEntityName).then(res => {
+      this.queriedEntityName = this.queriedEntityName.trim();
+      getEntityByName(this.queriedEntityName).then(res => {
         this.entityData = res.data;
         getAllPurchasesById(this.entityData.id).then(res => {
           this.purchaseTableData = res.data;
