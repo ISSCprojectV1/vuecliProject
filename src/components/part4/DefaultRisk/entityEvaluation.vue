@@ -12,14 +12,14 @@
             <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10"
                          stroke-linecap="square"
                          :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I<br/>交易主体数</p>
+            <p class="progress-text">风险评级I 交易主体数<br/>（风险评估分 &lt; 60）</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskII">
             <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II<br/>交易主体数</p>
+            <p class="progress-text">风险评级II 交易主体数<br/>（60 &le; 风险评估分 &lt; 80）</p>
           </button>
         </el-col>
         <el-col :span="8">
@@ -27,7 +27,7 @@
             <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="lightgreen" :width="90"
                          class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III<br/>交易主体数</p>
+            <p class="progress-text">风险评级III 交易主体数<br/>（风险评估分 &ge; 80）</p>
           </button>
         </el-col>
       </el-row>
@@ -61,7 +61,7 @@
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="score" label="守约评分" min-width="100">
+        <el-table-column prop="score" label="风险评估分" min-width="100">
           <template v-slot="scope">
             <span v-if="scope.row.riskLevel===1" style="color: orange; font-weight: bold">{{ scope.row.score }}</span>
             <span v-else-if="scope.row.riskLevel===2" style="color: gold; font-weight: bold">{{
@@ -81,7 +81,7 @@
 
       <el-row type="flex" :gutter="2">
 
-        <!--守约分-->
+        <!--风险评估分-->
         <el-col :span="5">
           <div style="margin-top: auto; margin-bottom: auto">
             <el-progress type="circle" :percentage="100" :stroke-width="10"
@@ -89,7 +89,7 @@
                          :color="entityData.riskLevel===1?'orange':(entityData.riskLevel===2?'gold':'lightgreen')"
                          :format="()=>entityData.score" :width="150"
                          :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"></el-progress>
-            <p class="progress-text">守约分</p>
+            <p class="progress-text">风险评估分</p>
           </div>
         </el-col>
 
