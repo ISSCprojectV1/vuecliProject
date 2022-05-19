@@ -64,7 +64,7 @@
         <el-table-column prop="category" label="交易品类" min-width="50"></el-table-column>
         <el-table-column prop="unitPrice" label="交易单价" min-width="35"></el-table-column>
         <el-table-column prop="amount" label="交易量" min-width="30"></el-table-column>
-        <el-table-column prop="score" label="守约评分" min-width="35">
+        <el-table-column prop="score" label="风险评估分" min-width="35">
           <template v-slot="scope">
             <span v-if="scope.row.riskLevel===1" style="color: orange; font-weight: bold">{{ scope.row.score }}</span>
             <span v-else-if="scope.row.riskLevel===2" style="color: gold; font-weight: bold">{{
@@ -84,7 +84,7 @@
 
       <el-row type="flex" :gutter="20">
 
-        <!--守约分-->
+        <!--风险评估分-->
         <el-col :span="6">
           <div style="margin-top: auto; margin-bottom: auto">
             <el-progress type="circle" :percentage="100" :stroke-width="10"
@@ -92,7 +92,7 @@
                          stroke-linecap="square"
                          :format="()=>txnData.score" :width="150"
                          :class="txnData.riskLevel===1?'orange-score':(txnData.riskLevel===2?'gold-score':'green-score')"></el-progress>
-            <p class="progress-text">守约分</p>
+            <p class="progress-text">风险评估分</p>
           </div>
         </el-col>
 
