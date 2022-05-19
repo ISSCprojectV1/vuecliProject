@@ -17,23 +17,21 @@ export function getIndustryPolicy(currentPage, pageSize) {
     })
 }
 
-export function getIndustryPolicyDetail(transactionMode) {
+export function getIndustryPolicyDetail(id) {
     return request({
         method: 'GET',
         params: {
-            transactionMode: transactionMode
+            id: id
         },
         url: '/getIndustryPolicyDetail'
     })
 }
 
-export function getImpact(platform, currentPage, pageSize) {
+export function getImpact(platform) {
     return request({
         method: 'GET',
         params: {
-            platform: platform,
-            currentPage: currentPage,
-            pageSize: pageSize
+            platform: platform
         },
         url: '/getImpact'
     })
@@ -60,11 +58,13 @@ export function getAssociated(currentPage, pageSize) {
     })
 }
 
-export function getAssociatedDetail(industry) {
+export function getAssociatedDetail(industry, currentPage, pageSize) {
     return request({
         method: 'GET',
         params: {
-            industry: industry
+            industry: industry,
+            currentPage: currentPage,
+            pageSize: pageSize
         },
         url: '/getAssociatedDetail'
     })

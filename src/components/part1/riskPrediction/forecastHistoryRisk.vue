@@ -40,7 +40,7 @@
     <!--  图例 end  -->
     <el-button type="primary" @click="onClickQueryRelation" style="margin-top: 2rem">查询关联商品</el-button>
 
-    <el-button type="primary" @click="onClickToPropagation" style="margin-top: 2rem">风险传播链路</el-button>
+<!--    <el-button type="primary" @click="onClickToPropagation" style="margin-top: 2rem">风险传播链路</el-button>-->
 
     <el-dialog :visible.sync="dialogFormVisible" width="30%" :title="value + '关联商品'" center>
       <el-table :data="formRelation"

@@ -14,9 +14,9 @@
                     @current-change="handleCurrentChange_table"
                     :header-cell-style="{color:'black'}">
            <!-- <el-table-column table-column prop="sourceNode1_Uid" label="端点id" ></el-table-column> -->
-            <el-table-column table-column prop="sourceNode1" label="端点名称" ></el-table-column>
+            <el-table-column table-column prop="sourceNode1" label="起(终)点" ></el-table-column>
            <!-- <el-table-column table-column prop="sourceNode2_Uid" label="端点id" ></el-table-column> -->
-            <el-table-column table-column prop="sourceNode2" label="端点名称" ></el-table-column>
+            <el-table-column table-column prop="sourceNode2" label="终(起)点" ></el-table-column>
           </el-table>
           <!--分页器-->
           <el-pagination
@@ -24,7 +24,7 @@
               @current-change="handleCurrentChange"
               :pager-count="5"
               :current-page="currentPage"
-              :page-size="PageSize" layout="total, prev, pager, next"
+              :page-size="PageSize" layout="total, prev, pager, next,jumper"
               :total="dormitory.length">
           </el-pagination>
         </div>
@@ -101,12 +101,12 @@ export default {
         this.localShow = val
       }
   },
-    mounted()
-    {
-      this.getForwardData();
-      this.getPathData();
-    },
-    methods: {
+  created()
+  {
+    this.getForwardData();
+    this.getPathData();
+  },
+  methods: {
       //*******************************************************************
       //dialog相关函数
       //*******************************************************************
@@ -140,7 +140,7 @@ export default {
             this.forwardData=res.data.searchresult;
           }
           else {
-            console.log("网络直径：获取数据为null!");
+            console.log("网络直径：获取Forward数据为null!");
           }
         }).catch(()=>{
           console.log("Diameter:getWbForwardInformation fail");
@@ -154,7 +154,7 @@ export default {
             console.log("网络直径：getNetworkPath！");
             this.pathData=res.data;
           }else {
-            console.log("网络直径：获取数据为null!");
+            console.log("网络直径：获取Path数据为null!");
           }
         }).catch(()=>{
           console.log("Diameter:getNetworkPath fail");
@@ -164,7 +164,7 @@ export default {
       //获取表格数据（起始/终止端点）
       getTableData(val)
       {
-        console.log("获取表格数据！");
+        console.log("Diameter:获取表格数据！");
         let dormitory=[];
         for(let i=0;i<val.length;i++)
         {
@@ -217,7 +217,23 @@ export default {
           'nodes':this.nodes,
           'links':this.links,
         };
-        this.$refs.seeksRelationGraph.setJsonData(graph_json_data, (seeksRGGraph) => {});
+        this.$refs.seeksRelationGraph.setJsonData(graph_json_data, (seeksRGGraph) => {
+          // 这些写上当图谱初始化完成后需要执行的代码
+          let _all_lines=this.$refs.seeksRelationGraph.getLines();
+          _all_lines.forEach(thisLine => {
+            var _isHideThisLine = true;
+            thisLine.relations.forEach(thisLink => {
+              if (thisLink.data['trueEdge'] !== 1) {
+                thisLink.isHide = true;
+              } else {
+                _isHideThisLine = false;
+                thisLink.isHide = false;
+                thisLink.color = '#121313';
+                thisLink.lineWidth = 1;
+              }
+            })
+          })
+        });
       },
 
       //获取根节点
@@ -281,45 +297,68 @@ export default {
       } ,
 
       //设置网络图中边信息
-      getNodeLinks(val)
-      {
-        let links=[];
-        let index=0;
+    getNodeLinks(val)
+    {
+      let links=[];
+      let index=0;
 
-        for(let i=0;i<val.length;i++)
+      for(let i=0;i<val.length;i++)
+      {
+        for(let j=i+1;j<val.length;j++)
         {
-          if(val[i].level!=='0' && val[i].fromnodeuserid!=='' && val[i].fromnodeuserid!==val[i].userid)
+          if(val[i].userid!==val[j].userid)
           {
             let obj={};
-            obj.from=val[i].fromnodeuserid;
-            obj.to=val[i].userid;
+            obj.from=val[i].userid;
+            obj.to=val[j].userid;
             obj.color='#121313';
             obj.isHideArrow=true;//是否隐藏箭头
+            obj.data={'trueEdge':0,'theoryEdge':1};
             if(!this.checkLinkExist(obj,links))
             {
+              if(this.checkTrueEdge(obj,val))
+              {
+                obj.color='#911115';
+                obj.lineWidth=3;
+                obj.data={'trueEdge':1,'theoryEdge':1};
+              }
               links[index]=obj;
               index++;
             }
-            obj=null;
           }
         }
+      }
 
-        return links;
-      },
-      //检查边是否已经存在
-      checkLinkExist(obj,data)
+      return links;
+    },
+
+    checkLinkExist(obj,data)
+    {
+      let flag=false;
+      for(let i=0;i<data.length;i++)
       {
-        let flag=false;
-        for(let i=0;i<data.length;i++)
+        if((obj.from===data[i].from && obj.to===data[i].to)||(obj.from===data[i].to && obj.to===data[i].from))
         {
-          if((obj.from===data[i].from && obj.to===data[i].to)||(obj.from===data[i].to && obj.to===data[i].from))
-          {
-            flag=true;
-            break;
-          }
+          flag=true;
+          break;
         }
-        return flag;
-      },
+      }
+      return flag;
+    },
+
+    checkTrueEdge(obj,val)
+    {
+      let flag=false;
+      for(let i=0;i<val.length;i++)
+      {
+        if((obj.from===val[i].fromnodeuserid && obj.to===val[i].userid)|| (obj.from===val[i].userid && obj.to===val[i].fromnodeuserid))
+        {
+          flag=true;
+          break;
+        }
+      }
+      return flag;
+    },
 
       //加载网状图
       handleClick_refreshGraph()

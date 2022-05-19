@@ -4,52 +4,26 @@
     <el-container style="height: 1000px; border: 10px solid #eee">
 
 
-      <el-container style="border: 10px solid #eee;width: 40%">
+      <el-container style="border: 10px solid #eee;width: 30%">
         <el-header>
-          <h4>大宗商品价格波动传导模块</h4>
-
+          <h4>最近30天风险预警等级分布</h4>
         </el-header>
-        <el-row>
-          <el-form :inline="true" :model="formInline" class="demo-form-inline">
-            <el-form-item >
-              <el-input
-                  v-model="value"
-                  placeholder="请输入查询商品"
-              ></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="initPropagation">全部商品</el-button>
-            </el-form-item>
-          </el-form>
-        </el-row>
-          <el-table :data="tableData" border style="width: 100%">
-            <el-table-column prop="id" label="序号" type="index" width="60"></el-table-column>
-            <el-table-column prop="name1" align="center" label="大宗商品X" min-width="50"></el-table-column>
-            <el-table-column prop="name2" align="center" label="大宗商品Y" min-width="50"></el-table-column>
-            <el-table-column prop="coff"  align="center" label="价格传导系数" min-width="50"></el-table-column>
-            <el-table-column label="操作" align="center" min-width="50">
-              <template slot-scope="scope">
-                <el-button type="text" class="el-option-in-table" @click="goToPriceComparePage(scope.row)">走势对比</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+        <el-main  style="border: solid #eeeeee; background-color: white;">
+          <div id="chart-risk-frequency" style=" width: 100%; height: 100%"></div>
+        </el-main>
       </el-container>
 
 
-      <el-container style="border: 10px solid #eeeeee;width:60%">
+      <el-container style="border: 10px solid #eeeeee;width:70%">
         <el-header>
-          <h4>大宗商品价格波动风险预警模块</h4>
-
+          <h4>预警信息综合显示</h4>
         </el-header>
 
         <el-tabs v-model="tabSelected" @tab-click="handleTabClick" type="border-card" style="width: 100%; height: 100%">
 
           <el-tab-pane label="已发布">
             <el-table :data="formReleased" >
-<!--              <el-table-column prop="id" label="序号" min-width="30">index</el-table-column>-->
+              <!--              <el-table-column prop="id" label="序号" min-width="30">index</el-table-column>-->
               <el-table-column prop="id" label="序号" type="index" min-width="40"></el-table-column>
               <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="risk" label="预警信息" min-width="40">
@@ -74,15 +48,15 @@
 
           <el-tab-pane label="待处理" v-if="this.dialogVisible">
             <el-table :data="formReleased">
-<!--              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>-->
+              <!--              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>-->
               <el-table-column prop="id" label="序号" type="index" min-width="40"></el-table-column>
               <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="risk" label="预警信息" min-width="40">
-                  <template slot-scope="scope">
-                    <span v-if="scope.row.risk === 3" style="color: red">高</span>
-                    <span v-else-if="scope.row.risk === 1" style="color: #00DB00">低</span>
-                    <span v-else-if="scope.row.risk === 2" style="color: orange">中</span>
-                  </template>
+                <template slot-scope="scope">
+                  <span v-if="scope.row.risk === 3" style="color: red">高</span>
+                  <span v-else-if="scope.row.risk === 1" style="color: #00DB00">低</span>
+                  <span v-else-if="scope.row.risk === 2" style="color: orange">中</span>
+                </template>
               </el-table-column>
               <el-table-column prop="date" label="发布时间" min-width="70">
                 <template slot-scope="scope">
@@ -101,7 +75,7 @@
 
           <el-tab-pane label="已修改" v-if="this.dialogVisible">
             <el-table :data="formModified">
-<!--              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>-->
+              <!--              <el-table-column prop="id" label="序号" min-width="30"></el-table-column>-->
               <el-table-column prop="id" label="序号" type="index" min-width="40"></el-table-column>
               <el-table-column prop="name" label="商品" min-width="50"></el-table-column>
               <el-table-column prop="risk" label="预警信息" min-width="40">
@@ -163,21 +137,11 @@
 <script>
 import * as echarts5 from "echarts5";
 import {getRole} from "@/utils/auth"
-import {
-  getAllForecastNewRisk,
-  getForecastFrequency,
-  getAllPropagation,
-  getPropagationByName,
-  getForecastNewRiskByStatus,
-  updateForecastNewRisk,
-  getForecastHistoryRisk
-} from "@/api/part1/riskPrediction";
-
+import {getAllForecastNewRisk, getForecastFrequency, getForecastNewRiskByStatus, updateForecastNewRisk} from "@/api/part1/riskPrediction";
 export default {
   name: "forecastMonitorInfo",
   data() {
     return {
-      value:'',
       tabSelected: '',
       infoSelected: '', // store old info for comparison
       formRowSelected: {},
@@ -191,12 +155,10 @@ export default {
       role:'',
       dialogVisible:'',
       frequency:[],
-      tableData: []
     }
   },
   created() {
     this.initFormReleased()
-    this.initPropagation()
     console.log(this.formReleased)
   },
   mounted() {
@@ -218,27 +180,13 @@ export default {
         this.getRiskInfo(0)
       if(tab.label === "已修改")
         this.getRiskInfo(1)
-
     },
-
     initFormReleased()
     {
       getAllForecastNewRisk().then(res=>{
         this.formReleased = res.data;
       })
     },
-    initPropagation()
-    {
-      getAllPropagation().then(res=>{
-        this.tableData = res.data;
-      })
-    },
-    onSubmit() {
-      getPropagationByName(this.value).then(res => {
-        this.tableData = res.data
-      })
-    },
-
     // 根据状态值获取预警信息
     getRiskInfo(status) {
       getForecastNewRiskByStatus(status).then(res => {
@@ -254,7 +202,6 @@ export default {
         }
       })
     },
-
     dealwithid(data) {
       data.sort(function (a, b) {
         let x = a.id;
@@ -278,15 +225,14 @@ export default {
         this.formRowSelected.risk = 2;
       else
         this.formRowSelected.risk = 1;
-
-     let data = {
-       id: this.formRowSelected.id,
-       name:this.formRowSelected.name,
-       code:this.formRowSelected.code,
-       risk:this.formRowSelected.risk,
-       date:this.formRowSelected.date,
-       status:this.formRowSelected.status
-     }
+      let data = {
+        id: this.formRowSelected.id,
+        name:this.formRowSelected.name,
+        code:this.formRowSelected.code,
+        risk:this.formRowSelected.risk,
+        date:this.formRowSelected.date,
+        status:this.formRowSelected.status
+      }
       updateForecastNewRisk(data).then(res => {
         this.$message({
           message: '修改成功',
@@ -301,7 +247,6 @@ export default {
       })
       this.dialogModifyVisible = false;
     },
-
     goToFirst() {
       this.$router.push('/trade/dashboard')
     },
@@ -314,18 +259,101 @@ export default {
         }
       });
     },
-    goToPriceComparePage(row) {
-      this.$store.commit('setPriceRow', [row.name1,row.name2])
-      // console.log("setPriceRow:"+[row.name1,row.name2])
-      this.$router.push({
-        path: '/trade/riskPrediction/priceCompare',
-        query: {
-          data: row,
+    // 绘图
+    drawChartRiskFrequency() {
+      let chart = echarts5.init(document.getElementById('chart-risk-frequency'))
+      getForecastFrequency(8).then(res=>
+      {
+        this.frequency = res.data;
+        console.log("xxxx")
+        console.log(this.frequency)
+        let name = []
+        let high = []
+        let mid = []
+        let low = []
+        for(let i=0; i< this.frequency.length;i++)
+        {
+          name.push(this.frequency[i].name);
+          high.push(this.frequency[i].high);
+          mid.push(this.frequency[i].mid);
+          low.push(this.frequency[i].low);
         }
-      });
+        name = name.reverse()
+        high = high.reverse()
+        mid = mid.reverse()
+        low = low.reverse()
+        console.log(name)
+        console.log(high)
+        console.log(mid)
+        console.log(low)
+        let option = {
+          // title: {
+          //   text: '当月预警等级分布',
+          //   left: 'center'
+          // },
+          legend: {},
+          grid: {
+            left: '10%',
+            right: '10%',
+            top:'10%',
+            bottom: '10%',
+            // height:'90%',
+            // width:'90%',
+            containLabel: false
+          },
+          xAxis: {
+            type: 'value'
+          },
+          yAxis: {
+            type: 'category',
+            data: name
+          },
+          barWidth: '40px',
+          series: [
+            {
+              name: '高风险',
+              type: 'bar',
+              stack: 'total',
+              label: {
+                show: true
+              },
+              color:'#FF5809',
+              emphasis: {
+                focus: 'series'
+              },
+              data: high
+            },
+            {
+              name: '中风险',
+              type: 'bar',
+              stack: 'total',
+              color:'#FFDC35',
+              label: {
+                show: true
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: mid
+            },
+            {
+              name: '低风险',
+              type: 'bar',
+              stack: 'total',
+              color:'#00DB00',
+              label: {
+                show: true
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: low
+            }
+          ]
+        };
+        chart.setOption(option)
+      })
     },
-
-
   }
 }
 </script>

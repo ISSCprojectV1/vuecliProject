@@ -1,9 +1,13 @@
 <template>
   <div style="width: 100%">
-    <el-container style="height: 700px; border: 0.5rem solid #eee">
-      <el-aside width="50%" style="border: 0.5rem solid #eee">
+    <el-container style="height: 700px; border: 0.5rem solid #ffffff">
+      <el-aside width="50%" style="border: 0.5rem solid #ffffff">
         <h2>业内系统性风险传播</h2>
-        <el-table :data="dataImpact" highlight-current-row>
+        <el-table 
+        :data="dataImpact.slice((currentPage-1)*PageSize,currentPage*PageSize)" 
+        :header-cell-style="getHeaderStylesheet"
+        highlight-current-row
+        >
           <el-table-column
             label="平台名称"
             fixed="left"
@@ -29,6 +33,9 @@
               ></span>
             </template>
             <template slot-scope="scope">
+              <span v-if="scope.row.riskLevel === '传染源交易平台'" class="zore">{{
+                scope.row.riskLevel
+              }}</span>
               <span v-if="scope.row.riskLevel === '一级风险'" class="first">{{
                 scope.row.riskLevel
               }}</span>
@@ -52,10 +59,10 @@
         >
           <div class="first">—级预警:交易平台受政策不利因素直接影响</div>
           <div class="second">
-            二级预警:与其相关性高的交易平台受政策不利因素直接影响（跳数范围)
+            二级预警:与其相关性高的交易平台受政策不利因素直接影响（跳数范围在全部感染平台的一半以下)
           </div>
           <div class="third">
-            三级预警:与其相关性中的交易平台受政策不利因素直接影响（跳数范围)
+            三级预警:与其相关性中的交易平台受政策不利因素直接影响（跳数范围在全部感染平台的一半及以上)
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -68,29 +75,33 @@
           ref="pagination"
           style="text-align: center; margin-top: 0.5rem"
           background
-          layout="prev, pager, next"
-          @current-change="pageChange"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="pageSizes"
+          :page-size="PageSize"
           :total="total"
         >
         </el-pagination>
       </el-aside>
-      <el-container style="border: 0.5rem solid #eee">
+      <el-container style="border: 0.5rem solid #ffffff">
         <div id="tableSpaceDetail" style="width: 100%; height: 100%">
           <h2>业内系统性风险传播关系图</h2>
           <div class="force-base-ii">
             <div class="outborder">
               <div class="inA">
                 <el-button class="inborderA" circle></el-button>
-                <div class="main">主交易平台</div>
+                <div class="main">感染源交易平台</div>
               </div>
               <div class="inB">
                 <el-button class="inborderB" circle></el-button>
-                <div class="other">交易平台</div>
+                <div class="other">被感染交易平台</div>
               </div>
-              <!--div class="inC">
+              <div class="inC">
                 <el-button class="inborderC" circle></el-button>
-                <div class="policy">政策</div>
-              </div-->
+                <div class="policy">已恢复交易平台</div>
+              </div>
             </div>
             <svg width="700" height="500" class="container-border"></svg>
           </div>
@@ -100,7 +111,7 @@
   </div>
 </template>
 <script>
-import { getImpact, getImpactDetail } from "@/api/part1/policyRisk";
+import { getImpact } from "@/api/part1/policyRisk";
 import * as d3 from "d3";
 export default {
   data() {
@@ -108,18 +119,32 @@ export default {
       //platName: "南方稀贵金属交易所",
       dialogVisible: false,
       dataImpact: [],
+      // 总条数，根据接口获取数据长度(注意：这里不能为空)
       total: 0,
       node: [],
       edge: [],
+      currentPage: 1,
+      // 个数选择器（可修改）
+      pageSizes: [5, 10, 20, 50],
+      // 默认每页显示的条数（可修改）
+      PageSize: 10,
     };
   },
   created() {
     const platform = this.$router.currentRoute.params.platform;
-    this.queryImpact(platform, 1, 10);
-    this.queryImpactDetail(platform);
+    this.queryImpact(platform);
   },
   mounted() {},
   methods: {
+    getHeaderStylesheet() {
+      return {
+        'background-color': '#f8f8f8',
+        'color': '#909399',
+        'font-weight': 'bold',
+        'padding-top': '20px',
+        'padding-bottom': '20px',
+      }
+    },
     creatB() {
       // create somewhere to put the force directed graph
       let svg = d3.select("svg");
@@ -257,23 +282,49 @@ export default {
           });
       }
     },
-    queryImpact(platform, currentPage, pageSize) {
-      getImpact(platform, currentPage, pageSize)
+    queryImpact(platform) {
+      getImpact(platform)
         .then((res) => {
           console.log("请求列表api成功");
           console.log(res);
-          this.dataImpact = res.data.data.reslist;
-          this.total = res.data.data.total;
+          let data = res.data.data;
+          this.dataImpact = data[0];
+          this.total = data[0].length;
+          this.node = [];
+          this.edge = [];
+          for (let i = 0; i < data[1].length; i++) {
+            this.node.push({
+              name: data[1][i].name,
+              type: data[1][i].type,
+            });
+          }
+          for (let i = 0; i < data[2].length; i++) {
+            this.edge.push({
+              source: data[2][i].source,
+              target: data[2][i].target,
+              typeid: data[2][i].typeid,
+            });
+          }
+          this.creatB();
         })
         .catch((err) => {
           console.log(err);
           console.log("请求列表api失败");
         });
     },
-    pageChange(page) {
-      this.currentPage = page;
-      this.queryImpact(page, 10);
+    // 每页显示的条数
+    handleSizeChange(val) {
+      // 改变每页显示的条数
+      this.PageSize = val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage = 1
     },
+    // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.currentPage = val
+    },
+    /*
     queryImpactDetail(platform) {
       getImpactDetail(platform)
         .then((res) => {
@@ -301,6 +352,7 @@ export default {
           console.log("请求列表api失败");
         });
     },
+    */
   },
 };
 </script>
@@ -308,6 +360,10 @@ export default {
 .buttonclick {
   height: 33px;
   margin-left: 5px;
+}
+.zore{
+  font-size: 18px;
+  color: red;
 }
 .first {
   font-size: 18px;
@@ -322,9 +378,9 @@ export default {
   color: #ffd700;
 }
 .outborder {
-  margin: 5px 0px 5px 600px;
-  width: 170px;
-  height: 80px;
+  margin: 5px 0px 5px 550px;
+  width: 200px;
+  height: 100px;
   border: 1px solid #8ea7b8;
 }
 .inA {
@@ -334,7 +390,7 @@ export default {
   background-color: #c22d3b;
 }
 .main {
-  width: 90px;
+  width: 115px;
   margin: -23px 0px 0px 50px;
 }
 .inB {
@@ -344,7 +400,7 @@ export default {
   background-color: #0489df;
 }
 .other {
-  width: 90px;
+  width: 115px;
   margin: -23px 0px 0px 50px;
 }
 .inC {
@@ -354,7 +410,7 @@ export default {
   background-color: #c69bae;
 }
 .policy {
-  width: 90px;
+  width: 115px;
   margin: -23px 0px 0px 50px;
 }
 .link line {

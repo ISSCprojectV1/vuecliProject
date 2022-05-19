@@ -156,9 +156,12 @@
         </el-pagination>
       </el-col>
     </div>
-    <el-dialog :title="dialog.name" :visible.sync="dialog.visible">
+    <el-dialog :title="tradeDialog.name" :visible.sync="tradeDialog.visible">
       <trading-dialog
       :detectionResults="detectionResults" :index="index"></trading-dialog>
+    </el-dialog>
+    <el-dialog :title="relationDialog.name" :visible.sync="relationDialog.visible">
+      <relation-dialog :traderId="traderId" :index="index"></relation-dialog>
     </el-dialog>
   </div>
 </template>
@@ -174,9 +177,10 @@ import {
   tradingDetection,
 } from "@/api/part4/tradingDetection";
 import tradingDialog from "./tradingDialog.vue";
+import relationDialog from "./relationDetection.vue"
 
 export default {
-  components: { tradingDialog },
+  components: { tradingDialog, relationDialog },
   name: "tradingDetection",
   data() {
     return {
@@ -202,7 +206,11 @@ export default {
         loading: false,
       },
       traderId: 0,
-      dialog: {
+      tradeDialog: {
+        name: "",
+        visible: false,
+      },
+      relationDialog: {
         name: "",
         visible: false,
       },
@@ -233,7 +241,6 @@ export default {
     onSubmit() {
       console.log("submit!");
       console.log(this.form.date)
-      this.initTimeSeriesData();
       let params = {
         institutesId: this.form.nameValue,
         tradersId: this.form.accountValue,
@@ -254,6 +261,7 @@ export default {
             goodName: element.goodName,
             level: levels[element.level],
           });
+          this.accountTable.totalCount = this.accountTable.dormitory.length;
         }
       });
     },
@@ -270,149 +278,19 @@ export default {
     },
     handleRelationButtonClick(index, row) {
       console.log(index, row);
-      this.$router.push({
-        path: "/trade/insiderTrading/relationDetection/" + row.id,
-      });
+      this.index = index;
+      this.relationDialog.name = "关联网络分析";
+      this.relationDialog.visible = true;
+      this.traderId = row.id;
     },
     handleTradingButtonClick(index, row) {
       console.log(index);
       console.log(row);
       this.index = index;
-      this.dialog.name =
+      this.tradeDialog.name =
         "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
-      this.dialog.visible = true;
+      this.tradeDialog.visible = true;
       this.traderId = row.id;
-    },
-    handleRadioChange() {
-      console.log(this.radio);
-      this.timeSeriesInit(this.indexData[this.radio]);
-    },
-    timeSeriesInit(timeSeries) {
-      console.log(timeSeries);
-      let dom = this.$refs.chart;
-      let myChart = echarts.init(dom);
-      let option = {
-        tooltip: {
-          trigger: "axis",
-          position: function (pt) {
-            return [pt[0], "10%"];
-          },
-        },
-        legend: {
-          type: "plain",
-          data: [timeSeries.name],
-          right: "20%",
-        },
-        title: {
-          left: "center",
-          text: "交易行为指标变化图",
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none",
-            },
-            restore: {},
-            saveAsImage: {},
-          },
-        },
-        xAxis: {
-          type: "time",
-          boundaryGap: false,
-        },
-        yAxis: {
-          type: "value",
-          boundaryGap: [0, "100%"],
-        },
-        dataZoom: [
-          {
-            type: "inside",
-            start: 0,
-            end: 100,
-          },
-          {
-            start: 0,
-            end: 100,
-          },
-        ],
-        series: [
-          {
-            name: timeSeries.name,
-            type: "line",
-            symbol: "none",
-            itemStyle: {
-              color: "#0099FF",
-            },
-            data: timeSeries.data,
-            markArea: {
-              itemStyle: {
-                color: "rgba(255, 173, 177, 0.4)",
-              },
-              label: {
-                color: "#000000",
-              },
-              data: [
-                [
-                  {
-                    name: "异常交易区间",
-                    xAxis: timeSeries.start, // base - oneDay * 50,
-                  },
-                  {
-                    xAxis: timeSeries.end, // base - oneDay * 20,
-                  },
-                ],
-              ],
-            },
-          },
-        ],
-      };
-
-      if (option && typeof option === "object") {
-        myChart.setOption(option);
-      }
-    },
-    initTimeSeriesData() {
-      this.indexData = [];
-      for (let i = 0; i < 3; i++) {
-        let base = +new Date(2021, 9, 3);
-        let oneDay = 24 * 3600 * 1000;
-        let seriesData = [[base, 100 + Math.random() * 100]];
-        let s = Math.floor(Math.random() * 100) + 10;
-        for (let i = 1; i < 200; i++) {
-          let now = new Date((base += oneDay));
-          let sgn = -0.5;
-          if (seriesData[i - 1][1] < 50 + Math.random() * 100) sgn = 0.5;
-          seriesData.push([
-            +now,
-            Math.round((Math.random() + sgn) * 10 + seriesData[i - 1][1]),
-          ]);
-        }
-        this.indexData.push({
-          data: seriesData,
-          start: new Date(2021, 9, 3).getTime() + oneDay * s,
-          end: new Date(2021, 9, 3).getTime() + oneDay * (s + 20),
-          name: "指标" + (i + 1),
-        });
-      }
-    },
-    initAccountTableData() {
-      let accountTableData = [];
-      let levels = ["风险等级低", "风险等级中", "风险等级高"];
-      for (let i = 0; i < 20; i++)
-        accountTableData.push({
-          id: i,
-          name: "用户" + String.fromCharCode(i + 65),
-          goodId: i + Math.floor(Math.random() * 10),
-          level: Math.floor(Math.random() * 3),
-        });
-      accountTableData.sort((a, b) => {
-        return b.level - a.level;
-      });
-      for (let account of accountTableData) {
-        account.level = levels[account.level];
-      }
-      console.log(accountTableData);
-      this.accountTable.dormitory = accountTableData;
     },
     handleNameSelectAll() {
       this.form.nameValue = [];

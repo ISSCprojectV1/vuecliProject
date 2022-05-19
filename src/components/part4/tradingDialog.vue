@@ -36,10 +36,7 @@
     </el-pagination>
     <div style="margin: 10px">
       <el-radio-group v-model.number="radio" @change="handleRadioChange">
-        <!-- <el-radio-button label="0">指标1</el-radio-button>
-        <el-radio-button label="1">指标2</el-radio-button>
-        <el-radio-button label="2">指标3</el-radio-button> -->
-        <el-radio-button v-for="(r, i) in detectionResults[index].indexLists" :key="r.name" :label="i"> 指标{{i + 1}} </el-radio-button>
+      <el-radio-button v-for="(r, i) in detectionResults[index].indexLists" :key="r.name" :label="i"> 指标{{i + 1}} </el-radio-button>
       </el-radio-group>
     </div>
     <el-row justify="center">
@@ -76,18 +73,14 @@ export default {
   watch: {
     // when click another row
     index: function () {
-      console.log("row changed" + this.index);
-      console.log(this.detectionResults);
-      this.initTradeTableData();
-      this.initTimeSeriesData();
-      this.timeSeriesInit(this.indexData[this.radio]);
+      this.updateDialogData();
     },
+    detectionResults: function() {
+      this.updateDialogData();
+    }
   },
   mounted() {
-    // init the data at row 0
-    this.initTradeTableData();
-    this.initTimeSeriesData();
-    this.timeSeriesInit(this.indexData[this.radio]);
+    this.updateDialogData();
   },
   methods: {
     headcell() {
@@ -112,6 +105,7 @@ export default {
     },
     timeSeriesInit(timeSeries) {
       console.log(timeSeries);
+      console.log(timeSeries.range)
       let dom = this.$refs.chart;
       let myChart = echarts.init(dom);
       let option = {
@@ -174,17 +168,7 @@ export default {
               label: {
                 color: "#000000",
               },
-              data: [
-                // [
-                //   {
-                //     name: "异常交易区间",
-                //     xAxis: timeSeries.start, // base - oneDay * 50,
-                //   },
-                //   {
-                //     xAxis: timeSeries.end, // base - oneDay * 20,
-                //   },
-                // ],
-              ],
+              data: timeSeries.range
             },
           },
         ],
@@ -201,12 +185,17 @@ export default {
       for (const index of indexes) {
         let seriesData = [];
         for (const data of index.indexList) {
-          let date = this.strToMills(data.date);
+          let date = data.date;
           let value = data.value.toFixed(2);
           seriesData.push([date, value]);
         }
+        let rangeData = [];
+        for (const range of index.rangeList) {
+          rangeData.push([{xAxis: range.startDate},{xAxis: range.endDate}]);
+        }
         this.indexData.push({
           data: seriesData,
+          range: rangeData,
           name: index.name
         })
       }
@@ -224,10 +213,16 @@ export default {
         });
       }
       this.tradeTable.dormitory = tradeTableData;
+      this.tradeTable.totalCount = tradeTableData.length;
     },
     strToMills(str) {
       let [y, m, d] = str.split("-");
       return new Date(y, m - 1, d).getTime();
+    },
+    updateDialogData() {
+      this.initTradeTableData();
+      this.initTimeSeriesData();
+      this.timeSeriesInit(this.indexData[this.radio]);
     }
   },
 };
