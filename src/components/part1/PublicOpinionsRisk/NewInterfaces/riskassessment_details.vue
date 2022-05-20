@@ -192,14 +192,18 @@ export default {
     title: {
       type: String,
       default: '详情'
+    },
+    RiskData:{
+      required:true,
+      default:{},
     }
   },
   data(){
     return{
       //dialog参数
       localShow: this.show,
-      //表格参数
-      RiskData: {},
+
+
       //
     }
   },
@@ -209,7 +213,7 @@ export default {
     }
   },
   created() {
-    this.getRiskDetailData();
+
   },
   methods:{
     /**

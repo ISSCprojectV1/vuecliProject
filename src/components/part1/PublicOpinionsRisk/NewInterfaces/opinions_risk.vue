@@ -29,7 +29,7 @@
       </div>
       <!--风险评估详情-->
       <div>
-        <riskassessment_details :show="detailShow_assessment" title="风险评估详情" @close="closeRiskAssessmentDialog"></riskassessment_details>
+        <riskassessment_details :show="detailShow_assessment" title="风险评估详情" @close="closeRiskAssessmentDialog" v-bind:RiskData="RiskData"></riskassessment_details>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
 
 <script>
 import Sankeygraph from "./sankeygraph";
-import {getMaliciousUserDetails, getWbSankeyGraphData} from "../../../../api/part1/PublicSentimentRisk";
+import {getMaliciousUserDetails, getRiskDetails, getWbSankeyGraphData} from "../../../../api/part1/PublicSentimentRisk";
 import maliciousdetection_details from "./maliciousdetection_details";
 import riskassessment_details from "./riskassessment_details";
 export default {
@@ -52,6 +52,7 @@ export default {
       malicious_data:[],
       //风险评估详情dialog参数
       detailShow_assessment:false,
+      RiskData:{},
     }
   },
   created() {
@@ -190,7 +191,14 @@ export default {
     //风险评估
     handleClick_assessment()
     {
-      this.detailShow_assessment=true;
+      //获取风险评估详情
+      let URL="/getRiskDetails";
+      getRiskDetails(URL).then((res) =>{
+        this.RiskData=res.data;
+        this.detailShow_assessment=true;
+      }).catch(() => {
+        console.log("获取风险评估详情失败");
+      })
     },
     closeRiskAssessmentDialog()
     {

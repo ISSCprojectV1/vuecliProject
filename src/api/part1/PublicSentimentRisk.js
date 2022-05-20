@@ -44,3 +44,12 @@ export function getMaliciousUserDetails(URL) {
         method: 'get'
     })
 }
+
+//获取风险评估详情
+export function getRiskDetails(URL) {
+    console.log("获取风险评估详情:"+URL)
+    return request({
+        url: URL,
+        method: 'get'
+    })
+}

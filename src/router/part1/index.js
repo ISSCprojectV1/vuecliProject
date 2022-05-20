@@ -308,21 +308,21 @@ let routes = [
         path:"/trade/PublicOpinionsRisk/opinions_main",
         component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
         meta: {
-          title: "界面一"
+          title: "今日舆情汇总"
         }
       },
       {
         path:"/trade/PublicOpinionsRisk/opinions_risk",
         component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
         meta: {
-          title: "界面二"
+          title: "舆情事件详情"
         }
       },
       {
         path:"/trade/PublicOpinionsRisk/opinions_details",
         component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
         meta: {
-          title: "界面三"
+          title: "恶意检测与风险评估"
         }
       },
     ],
