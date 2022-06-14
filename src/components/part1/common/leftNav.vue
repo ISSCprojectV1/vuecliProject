@@ -289,6 +289,7 @@
               >
             </template>
 
+            <!--
             <el-menu-item
                 index="/trade/PublicOpinionsRisk/opinions_summary"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -307,11 +308,25 @@
             >
               <span slot="title">舆情事件查询</span>
             </el-menu-item>
-            <!-- <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_network"
-                style="text-align: left;padding-left: 70px;font-size: 18px">
-              <span slot="title">舆情网络详情</span>
-            </el-menu-item> -->
+            -->
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_main"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">今日舆情汇总</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_details"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">舆情事件详情</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinions_risk"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">恶意检测与风险评估</span>
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-col>
