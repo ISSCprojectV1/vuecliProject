@@ -11,14 +11,14 @@
           <button class="transparent-button" @click="onClickRiskI">
             <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I<br/>交易数</p>
+            <p class="progress-text">风险评级I 交易数<br/>（风险评估分 &lt; 60）</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskII">
             <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II<br/>交易数</p>
+            <p class="progress-text">风险评级II 交易数<br/>（60 &le; 风险评估分 &lt; 80）</p>
           </button>
         </el-col>
         <el-col :span="8">
@@ -26,7 +26,7 @@
             <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="lightgreen" :width="90"
                          class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III<br/>交易数</p>
+            <p class="progress-text">风险评级III 交易数<br/>（风险评估分 &ge; 80）</p>
           </button>
         </el-col>
       </el-row>
