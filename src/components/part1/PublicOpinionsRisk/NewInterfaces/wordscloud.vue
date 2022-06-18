@@ -78,7 +78,7 @@ export default {
     this.words_cloud.setOption(this.WordCloudOptions);
     setTimeout(()=>{
       this.drawWordCloud();
-    },500)//接收数据，延迟加载
+    },1000)//接收数据，延迟加载
   },
   methods:{
     drawWordCloud()

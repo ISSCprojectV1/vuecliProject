@@ -2,6 +2,22 @@
   <el-dialog :visible.sync="localShow" :title="title" :before-close="beforeClose" >
     <slot>
       <div class="risk_assessment_class" style="width: 100%;height: 100%;background: #ffffff; border: #121313 solid 2px">
+        <el-row style="height: 50px;">
+          <el-col :span="12">
+            <el-row style="height: 50px;border-bottom: #121313 solid 2px; background: #7a98b2;color: #121313;font-weight: bolder;">
+              <div>
+                <p>风险等级</p>
+              </div>
+            </el-row>
+          </el-col>
+          <el-col :span="12">
+            <el-row style="height: 50px;border-bottom: #121313 solid 2px; border-left: #121313 solid 2px;background: #7a98b2;color: #121313;font-weight: bolder;">
+              <div>
+                <p>{{RiskData.risklevel}}</p>
+              </div>
+            </el-row>
+          </el-col>
+        </el-row>
         <el-row style="border-bottom: #121313 solid 2px;height: 100px">
           <el-col :span="8">
             <div >
@@ -9,7 +25,7 @@
             </div>
           </el-col>
           <el-col :span="8" >
-            <el-row style="border-left:#121313 solid 2px;border-right: #121313 solid 2px;border-bottom: #121313 solid 2px;;height: 50px" >
+            <el-row style="border-left:#121313 solid 2px;border-right: #121313 solid 2px;border-bottom: #121313 solid 2px;;height: 50px;" >
               <div>
                 <p>平均传播速度</p>
               </div>
@@ -225,9 +241,9 @@ export default {
     close() {
       this.$emit('close');
     },
-    /**
-     * 获取风险评估详情
-     */
+
+    /* 获取风险评估详情
+
     getRiskDetailData()
     {
       this.RiskData={
@@ -245,7 +261,7 @@ export default {
         user_intensity:0,
         user_communication:0,
       }
-    },
+    },*/
   }
 }
 </script>
