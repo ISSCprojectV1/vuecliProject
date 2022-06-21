@@ -344,6 +344,16 @@ export const asyncRoutes = [
         path:'/trade/PublicOpinionsRisk/opinions_details',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
       },
+      {
+        id: 50,
+        path: "/trade/PolicyRisk/gpr_chn",
+        component: () => import("@/components/part1/PolicyRisk/gpr_chn"),
+      },
+      {
+        id: 51,
+        path: "/trade/PolicyRisk/comAssociated",
+        component: () => import("@/components/part1/PolicyRisk/comAssociated"),
+      },
     ]
   },
 
