@@ -42,7 +42,7 @@
     <el-row justify="center">
       <div
         id="container"
-        style="width: 950px; height: 500px; margin: 5px"
+        style="height: 500px; margin: 5px"
         ref="chart"
       ></div>
     </el-row>
@@ -223,9 +223,10 @@ export default {
       this.initTradeTableData();
       this.initTimeSeriesData();
       this.timeSeriesInit(this.indexData[this.radio]);
-    }
+    },
   },
 };
+
 </script>
 
 <style>

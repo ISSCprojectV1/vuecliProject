@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <el-container style="height: 700px; border: 0.5rem solid #ffffff">
       <el-aside width="50%" style="border: 0.5rem solid #ffffff">
-        <h2>业内政策不利因素</h2>
+        <h2>业内平台涉及禁止交易模式状况</h2>
         <el-table
           :data="dataIndustryPolicy"
           highlight-current-row

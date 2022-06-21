@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1 class="t-center">政策-事件日历</h1>
-    <vue-event-calendar class="cale" :events="demoEvents" @day-changed="handleDayChanged" @month-changed="handleMonthChanged">
+    <vue-event-calendar locale= 'ch' class="cale" :events="demoEvents" @day-changed="handleDayChanged" @month-changed="handleMonthChanged">
     <template slot-scope="props">
         <div v-for="(event, index) in props.showEvents" class="event-item classItem" :key="index">
             <div class="reuse-head">
@@ -73,6 +73,19 @@ h1{
 }
 /deep/ .__vev_calendar-wrapper{
     max-width: 1500px; //可以调大整个
+    .events-wrapper{
+      .date{
+        visibility: hidden;
+      }
+      .date:after{
+        content:'政策-事件';
+        visibility: visible;
+        display: block;
+        margin-block-start: 0.1em;
+        margin-block-end: 0.1em;
+        text-align: center;
+      }
+    }
     .cal-wrapper{
       padding: 100px 10px;
       .cal-header{
