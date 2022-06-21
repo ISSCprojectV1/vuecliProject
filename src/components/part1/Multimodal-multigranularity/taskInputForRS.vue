@@ -34,7 +34,7 @@
         <!--选定的监管任务类型-->
         <el-form-item label="交易风险类型" style="margin-left:300px">
           <el-col :span="13">
-            <el-select v-model="taskType" placeholder="请选择" style="width: 100%">
+            <el-select v-model="taskType" placeholder="请选择交易风险类型" style="width: 100%">
               <el-option label="交易主体异常" value="交易主体异常"></el-option>
               <el-option label="仓单异常" value="仓单异常"></el-option>
               <el-option label="融资异常" value="融资异常"></el-option>
