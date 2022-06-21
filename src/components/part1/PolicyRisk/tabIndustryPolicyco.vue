@@ -19,10 +19,10 @@
             prop="commodity"
             min-width="140"
           ></el-table-column>
-          <el-table-column label="政策风险等级" min-width="70">
+          <el-table-column label="风险等级" min-width="70">
             <template slot="header">
               <span
-                >政策风险等级<el-button
+                >风险等级 <el-button
                   class="buttonclick"
                   type="warning"
                   icon="iconfont icon-icon-test"

@@ -326,6 +326,34 @@ export const asyncRoutes = [
         path: "/trade/riskPrediction/priceCompare",
         component: () => import("@/components/part1/riskPrediction/priceCompare"),
       },
+      {
+        id:47,
+        name:"今日舆情汇总",
+        path:'/trade/PublicOpinionsRisk/opinions_main',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
+      },
+      {
+        id:48,
+        name:"舆情事件详情",
+        path:'/trade/PublicOpinionsRisk/opinions_risk',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
+      },
+      {
+        id:49,
+        name:"恶意检测与风险评估",
+        path:'/trade/PublicOpinionsRisk/opinions_details',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
+      },
+      {
+        id: 50,
+        path: "/trade/PolicyRisk/gpr_chn",
+        component: () => import("@/components/part1/PolicyRisk/gpr_chn"),
+      },
+      {
+        id: 51,
+        path: "/trade/PolicyRisk/comAssociated",
+        component: () => import("@/components/part1/PolicyRisk/comAssociated"),
+      },
     ]
   },
 
