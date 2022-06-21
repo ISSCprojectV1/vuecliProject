@@ -49,7 +49,7 @@
         </div>
         <div
           id="container"
-          style="height: 700px; margin: 10px"
+          style="width: 925px; height: 700px; margin: 10px"
           ref="graph"
         ></div>
       </div>
