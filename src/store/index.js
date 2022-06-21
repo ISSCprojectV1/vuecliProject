@@ -22,6 +22,7 @@ export default new Vuex.Store(
       hasChosen: false,
       token: "",
       commodityForMonitoring: '', // 风险演化绘图输入
+      pricerow:[]
     },
     mutations: {
       setData(state, payload) {
@@ -33,7 +34,11 @@ export default new Vuex.Store(
 ,
       setCommodityForMonitoring(state, commodity) {
         state.commodityForMonitoring = commodity;
-      }
+      },
+        setPriceRow(state,pricerow)
+        {
+            state.pricerow = pricerow;
+        }
     },
     actions: {
       getChosen({state, commit}) {

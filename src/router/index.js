@@ -269,8 +269,8 @@ export const asyncRoutes = [
       },
       {
         id: 38,
-        path: "/trade/DefaultRisk/firmEvaluation",
-        component: () => import("@/components/part4/DefaultRisk/firmEvaluation"),
+        path: "/trade/DefaultRisk/entityEvaluation",
+        component: () => import("@/components/part4/DefaultRisk/entityEvaluation"),
       },
       {
         id: 39,
@@ -297,28 +297,52 @@ export const asyncRoutes = [
       },
         // 舆情风险
       {
-        id:1,
+        id:43,
         name:"今日舆情汇总",
         path:'/trade/PublicOpinionsRisk/opinions_summary',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_summary"),
       },
       {
-        id:2,
+        id:44,
         name:"今日风险详情",
         path:'/trade/PublicOpinionsRisk/opinions_riskinfo',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_riskinfo"),
       },
       {
-        id:3,
+        id:45,
         name:"舆情网络",
         path:'/trade/PublicOpinionsRisk/opinions_network',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_network"),
       },
       {
-        id:4,
+        id:46,
         name:"舆情事件查询",
         path:'/trade/PublicOpinionsRisk/opinions_search',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_search"),
+      },
+      {
+        id: 43,
+        name: '价格对比',
+        path: "/trade/riskPrediction/priceCompare",
+        component: () => import("@/components/part1/riskPrediction/priceCompare"),
+      },
+      {
+        id:47,
+        name:"今日舆情汇总",
+        path:'/trade/PublicOpinionsRisk/opinions_main',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
+      },
+      {
+        id:48,
+        name:"舆情事件详情",
+        path:'/trade/PublicOpinionsRisk/opinions_risk',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
+      },
+      {
+        id:49,
+        name:"恶意检测与风险评估",
+        path:'/trade/PublicOpinionsRisk/opinions_details',
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
       },
     ]
   },

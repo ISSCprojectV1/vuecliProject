@@ -18,7 +18,12 @@ np<template>
           </tr>
           <tr >
             <td class="column_key">恶意倾向节点</td>
-            <td class="column_value">{{MaliciousTendencyNodes}}</td>
+            <td class="column_value">
+            <template v-if="MaliciousTendencyNodes===''">
+                <el-button @click="handleClick_Malicious()" type="text">点击检测</el-button>
+              </template>
+              <span v-if="MaliciousTendencyNodes!=''">{{MaliciousTendencyNodes}}</span>
+            </td>
           </tr>
           <tr >
             <td class="column_key">信息最早发布时间</td>
@@ -39,7 +44,7 @@ np<template>
           <tr>
             <td class="column_key">风险等级</td>
             <td class="column_value">
-              <template>
+              <template v-if="MaliciousTendencyNodes!==''">
                 <el-button @click="handleClick_Risk()" type="text">{{RiskInfo}}</el-button>
               </template>
             </td>
@@ -91,11 +96,14 @@ import RiskDetailDialog from './RiskDetailDialog';
 import SeeksRelationGraph from 'relation-graph';
 import FeaturesDetailDialog from "./FeaturesDetailDialog";
 import {
+  getMaliciousDetectionStatus,
+  getMaliciousLeaderNodes,
   getOpinionsForwardImportantNodes,
   getOpinionsRiskLevelInformation,
   getWbForwardInformation
 } from "../../../api/part1/PublicOpinionsRisk";
 import moment from "moment";
+import {Loading} from "element-ui";
 
 export default {
   name:'opinions_network',
@@ -116,6 +124,12 @@ export default {
       NewestOpinionsTime:'',
       NewestOpinionsNode:'',
       RiskInfo:'',
+
+      //是否轮询标志
+      intervalFlag:true,
+      timer:null,
+
+      loading_malicious:'',
 
       //风险等级dialog
       detailShow:false,
@@ -167,9 +181,9 @@ export default {
 //获取重要传播节点（意见领袖节点）
     this.getImportantNodes();
 //获取恶意倾向节点
-
+    //this.getMaliciousNodes();
 //获取事件风险等级
-    this.getRiskLevel();
+    //this.getRiskLevel();
 
 //设置网状图
     this.demoname = this.$route.params.demoname;
@@ -376,6 +390,86 @@ export default {
         }
       }).catch(() => {
         console.log("taskExecution fail ImportantNodes")
+      })
+    },
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//获取恶意意见领袖节点
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    handleClick_Malicious()
+    {
+      let options = {
+        lock: true,
+        text: '正在检测意见领袖节点恶意倾向...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      };
+      this.loading_malicious=Loading.service(options);
+      this.checkMaliciousState();
+    },
+
+    //查询检测状态
+    checkMaliciousState()
+    {
+      getMaliciousDetectionStatus().then((res)=>{
+        console.log('getMaliciousDetectionStatus:status='+res.data);
+        this.getMaliciousNodes();
+        if(this.intervalFlag)
+        {
+          this.set_interval();
+        }
+      }).catch(()=>{
+        console.log("getSearchStatus fail");
+      });
+    },
+
+    //隔2s访问
+    set_interval()
+    {
+      window.clearInterval(this.timer)
+      this.timer=window.setInterval(()=>{
+        setTimeout(
+            this.getMaliciousNodes(),0)
+      },2000)
+    },
+
+    //获取恶意节点
+    getMaliciousNodes()
+    {
+      getMaliciousLeaderNodes().then((res) => {
+        console.log('获取恶意意见领袖节点！status='+res.data.status);
+        if(res.data.status===0)
+        {
+          window.clearInterval(this.timer);
+          this.timer = null;
+          this.intervalFlag=false; //设置为不执行轮询
+          this.getMaliciousResult();
+        }
+      }).catch(() => {
+        this.loading_malicious.close();
+        console.log("taskExecution fail getMaliciousLeaderNodes")
+      })
+    },
+
+    getMaliciousResult()
+    {
+      getMaliciousLeaderNodes().then((res) => {
+        let result=res.data.maliciousNodes;
+        if(result!=null)
+        {
+          this.MaliciousTendencyNodes=this.MaliciousTendencyNodes+result[0].username;
+          for(let i=1;i<result.length;i++)
+          {
+            this.MaliciousTendencyNodes=this.MaliciousTendencyNodes+","+result[i].username;
+          }
+        }
+        else {
+          this.MaliciousTendencyNodes="无";
+        }
+        this.getRiskLevel();
+        this.loading_malicious.close();
+      }).catch(() => {
+        this.loading_malicious.close();
+        console.log("taskExecution fail getMaliciousResult");
       })
     },
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
