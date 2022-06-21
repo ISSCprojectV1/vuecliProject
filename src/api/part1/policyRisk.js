@@ -6,6 +6,42 @@ export function getEventCalendar() {
     })
 }
 
+export function getCommodityList() {
+    return request({
+        method: 'GET',
+        url: '/getCommodityList',
+    })
+}
+
+
+export function getMessByName(commodityInnerId) {
+    return request({
+        method: 'GET',
+        params: {
+            commodityInnerId: commodityInnerId
+        },
+        url: '/getMessByName',
+    })
+}
+
+export function getCommAss(type,commodity) {
+    return request({
+        method: 'GET',
+        params: {
+            type: type,
+            commodity: commodity
+        },
+        url: '/getCommAss',
+    })
+}
+
+export function getGprChn() {
+    return request({
+        method: 'GET',
+        url: '/getGprChn',
+    })
+}
+
 export function getIndustryPolicy(currentPage, pageSize) {
     return request({
         method: 'GET',

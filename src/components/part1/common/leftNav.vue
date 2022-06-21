@@ -227,13 +227,19 @@
               >系统性风险检测子系统</span
               >
             </template>
-
+      
             <el-menu-item
                 index="/trade/PolicyRisk/event_calendar"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
+            <el-menu-item
+                 index="/trade/PolicyRisk/comAssociated"
+                 style="text-align: left; padding-left: 70px; font-size: 18px"
+             >
+             <span slot="title">行业品种系统性风险检测</span>
+             </el-menu-item>
             <el-menu-item
                 index="/trade/PolicyRisk/viewIndustryPolicy"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -246,6 +252,12 @@
             >
               <span slot="title">关联性系统风险检测</span>
             </el-menu-item>
+            <!--el-menu-item
+                index="/trade/PolicyRisk/gpr_chn"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">行业系统性风险检测</span>
+            </el-menu-item-->
           </el-submenu>
 
           <!--违约风险评估预警-->
