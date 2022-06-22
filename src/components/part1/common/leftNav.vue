@@ -297,7 +297,7 @@
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal"
-              >舆情风险子系统</span
+              >舆情风险监测子系统</span
               >
             </template>
 
