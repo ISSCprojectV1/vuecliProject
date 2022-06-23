@@ -150,7 +150,7 @@
                 index="/trade/dataFusion/dataquery"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">相似交易主体检测模块</span>
+              <span slot="title">相似交易主体监测模块</span>
             </el-menu-item>
 
             <el-menu-item
@@ -200,23 +200,23 @@
             </el-menu-item>
           </el-submenu>
 
-          <!--内幕交易检测-->
+          <!--内幕交易监测-->
           <el-submenu index="/trade/insiderTrading" style="text-align: left">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span style="font-size: 20px">内幕交易检测子系统</span>
+              <span style="font-size: 20px">内幕交易监测子系统</span>
             </template>
             <el-menu-item
                 index="/trade/insiderTrading/tradingDetection"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">异常交易检测</span>
+              <span slot="title">异常交易监测</span>
             </el-menu-item>
             <!-- <el-menu-item
               index="/trade/insiderTrading/relationDetection/all"
               style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">异常关系检测</span>
+              <span slot="title">异常关系监测</span>
             </el-menu-item> -->
           </el-submenu>
 
@@ -224,10 +224,10 @@
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal"
-              >系统性风险检测子系统</span
+              >系统性风险监测子系统</span
               >
             </template>
-
+      
             <el-menu-item
                 index="/trade/PolicyRisk/event_calendar"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -235,17 +235,29 @@
               <span slot="title">政策-事件日历</span>
             </el-menu-item>
             <el-menu-item
+                 index="/trade/PolicyRisk/comAssociated"
+                 style="text-align: left; padding-left: 70px; font-size: 18px"
+             >
+             <span slot="title">行业品种系统性风险监测</span>
+             </el-menu-item>
+            <el-menu-item
                 index="/trade/PolicyRisk/viewIndustryPolicy"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">业内系统性风险检测</span>
+              <span slot="title">业内系统性风险监测</span>
             </el-menu-item>
             <el-menu-item
                 index="/trade/PolicyRisk/viewAssociated"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">关联性系统风险检测</span>
+              <span slot="title">关联性系统风险监测</span>
             </el-menu-item>
+            <!--el-menu-item
+                index="/trade/PolicyRisk/gpr_chn"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">行业系统性风险监测</span>
+            </el-menu-item-->
           </el-submenu>
 
           <!--违约风险评估预警-->
@@ -256,7 +268,7 @@
             </template>
 
             <el-menu-item
-                index="/trade/DefaultRisk/firmEvaluation"
+                index="/trade/DefaultRisk/entityEvaluation"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">交易主体评估</span>
@@ -285,10 +297,11 @@
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal"
-              >舆情风险子系统</span
+              >舆情风险监测子系统</span
               >
             </template>
 
+            <!--
             <el-menu-item
                 index="/trade/PublicOpinionsRisk/opinions_summary"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -307,11 +320,25 @@
             >
               <span slot="title">舆情事件查询</span>
             </el-menu-item>
-            <!-- <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_network"
-                style="text-align: left;padding-left: 70px;font-size: 18px">
-              <span slot="title">舆情网络详情</span>
-            </el-menu-item> -->
+            -->
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinionsMain"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">今日舆情汇总</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinionsDetails"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">舆情事件详情</span>
+            </el-menu-item>
+            <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinionsRisk"
+                style="text-align: left; padding-left: 70px; font-size: 18px"
+            >
+              <span slot="title">恶意监测与风险评估</span>
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-col>

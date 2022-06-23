@@ -69,7 +69,7 @@
           <div style="margin-top: auto; margin-bottom: auto">
             <el-progress type="circle" :percentage="100" :stroke-width="10" color="lightgreen" stroke-linecap="square"
                          :format="formatScore" :width="150" class="green-score"></el-progress>
-            <p class="progress-text">守约分</p>
+            <p class="progress-text">风险评估分</p>
           </div>
         </el-col>
         <el-col :span="12" style="padding-left: 3rem">

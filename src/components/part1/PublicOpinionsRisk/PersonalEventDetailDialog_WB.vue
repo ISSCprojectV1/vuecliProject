@@ -3,14 +3,14 @@
     <slot>
       <el-tabs type="border-card" v-model="activeName">
         <el-tab-pane label="舆情信息详情" name="first" >
-          <table class="event_table" style="border:#121313 solid 2px">
+          <table class="event_table" style="border:#121313 solid 2px;text-align: left">
             <tr>
               <td class="column_key">编号</td>
               <td class="column_value">{{listValue_WB.id}}</td>
             </tr>
             <tr>
               <td class="column_key">发布人</td>
-              <td class="column_value">{{listValue_WB.name}}</td>
+              <td class="column_value">{{listValue_WB.username}}</td>
             </tr>
             <tr>
               <td class="column_key">发布内容</td>
@@ -53,10 +53,10 @@
         </el-tab-pane>
 
         <el-tab-pane label="用户信息详情" name="second">
-          <table class="person_table" style="border:#121313 solid 2px">
+          <table class="person_table" style="border:#121313 solid 2px;text-align: left">
             <tr>
               <td class="column_key">用户名</td>
-              <td class="column_value">{{listValue_WB.name}}</td>
+              <td class="column_value">{{listValue_WB.username}}</td>
             </tr>
             <tr>
               <td class="column_key">用户id</td>
@@ -64,15 +64,15 @@
             </tr>
             <tr>
               <td class="column_key">微博id</td>
-              <td class="column_value">{{listValue_WB.wbid}}</td>
+              <td class="column_value">{{listValue_WB.wblogid}}</td>
             </tr>
             <tr>
-              <td class="column_key">微博等级</td>
+              <td class="column_key">用户等级</td>
               <td class="column_value">{{listValue_WB.userrank}}</td>
             </tr>
             <tr>
-              <td class="column_key">是否vip</td>
-              <td class="column_value">{{listValue_WB.isvip}}</td>
+              <td class="column_key">vip等级</td>
+              <td class="column_value">{{listValue_WB.viplevel}}</td>
             </tr>
             <tr>
               <td class="column_key">用户性别</td>
@@ -127,7 +127,7 @@ export default {
     },
     listValue_WB: {
       required:true,
-      default:{},
+      default:[],
     }
   },
   data(){
@@ -172,7 +172,8 @@ export default {
     font-size: 20px;
     font-weight: bolder;//加粗
     color: #121313;
-    width: 40%;
+    width: 30%;
+    height: 10%;
   }
   .column_value{
     background: #ebeff5;
@@ -189,7 +190,7 @@ export default {
     font-size: 20px;
     font-weight: bolder;//加粗
     color: #121313;
-    width: 40%;
+    width: 30%;
     height: 10%;
   }
   .column_value{

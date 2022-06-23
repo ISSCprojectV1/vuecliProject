@@ -9,23 +9,24 @@
       <el-row style="margin-left: 5rem; margin-right: 5rem">
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskI">
-            <el-progress type="circle" :percentage="10" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgress" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I<br/>交易数</p>
+            <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
+            <p class="progress-text">风险评级I 交易数<br/>（风险评估分 &lt; 60）</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskII">
-            <el-progress type="circle" :percentage="15" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgress" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II<br/>交易数</p>
+            <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
+            <p class="progress-text">风险评级II 交易数<br/>（60 &le; 风险评估分 &lt; 80）</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskIII">
-            <el-progress type="circle" :percentage="75" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgress" color="lightgreen" :width="90" class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III<br/>交易数</p>
+            <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
+                         :format="formatProgressNum" color="lightgreen" :width="90"
+                         class="green-progress"></el-progress>
+            <p class="progress-text">风险评级III 交易数<br/>（风险评估分 &ge; 80）</p>
           </button>
         </el-col>
       </el-row>
@@ -37,9 +38,9 @@
         <span>交易查询</span>
       </div>
 
-      <el-input placeholder="请输入内容" v-model="queryData">
-        <template slot="prepend">合同编号</template>
-        <el-button slot="append" @click="onQueryTransactionInfo">查询</el-button>
+      <el-input placeholder="请输入内容" v-model="queriedId">
+        <template slot="prepend">交易ID</template>
+        <el-button slot="append" @click="onQueryTxn">查询</el-button>
       </el-input>
     </el-card>
 
@@ -50,112 +51,169 @@
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}"
-          :data="tableData">
-        <el-table-column prop="id" label="合同编号" min-width="50"></el-table-column>
-        <el-table-column prop="risk_level" label="风险评级" min-width="50"></el-table-column>
-        <el-table-column prop="party_A" label="交易方A" min-width="90"></el-table-column>
-        <el-table-column prop="party_B" label="交易方B" min-width="90"></el-table-column>
+          :data="mainTableData">
+        <el-table-column prop="id" label="交易ID" min-width="35">
+          <template v-slot="scope">
+            <el-link type="primary" @click="onClickTxnId(scope.row.id)">
+              {{ scope.row.id }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="buyerName" label="卖方" min-width="110"></el-table-column>
+        <el-table-column prop="sellerName" label="卖方" min-width="110"></el-table-column>
         <el-table-column prop="category" label="交易品类" min-width="50"></el-table-column>
-        <el-table-column prop="problem" label="主要问题" min-width="120"></el-table-column>
+        <el-table-column prop="unitPrice" label="交易单价" min-width="35"></el-table-column>
+        <el-table-column prop="amount" label="交易量" min-width="30"></el-table-column>
+        <el-table-column prop="score" label="风险评估分" min-width="35">
+          <template v-slot="scope">
+            <span v-if="scope.row.riskLevel===1" style="color: orange; font-weight: bold">{{ scope.row.score }}</span>
+            <span v-else-if="scope.row.riskLevel===2" style="color: gold; font-weight: bold">{{
+                scope.row.score
+              }}</span>
+            <span v-else style="color: lightgreen; font-weight: bold">{{ scope.row.score }}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
 
     <!--交易查询结果-->
-    <transition name="el-fade-in" @after-enter="transitionComplete">
-      <el-card v-if="!noQuery" shadow="hover" class="box-card" style="height: 460px">
-        <div slot="header" class="box-card-header">
-          <span>交易评估信息</span>
-        </div>
+    <el-card v-if="!noQuery" shadow="hover" class="box-card">
+      <div slot="header" class="box-card-header">
+        <span>交易评估信息</span>
+      </div>
 
-        <el-row :gutter="2">
-          <el-col :span="5" style="padding-top: 1rem">
-            <div style="margin-top: auto; margin-bottom: auto">
-              <el-progress type="circle" :percentage="100" :stroke-width="10" color="lightgreen" stroke-linecap="square"
-                           :format="formatScore" :width="150" class="green-score"></el-progress>
-              <p class="progress-text">守约分</p>
-            </div>
-          </el-col>
-          <el-col :span="12" style="padding-left: 3rem">
-            <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
-              <el-form-item label="合同编号">
-                DS-2212
-              </el-form-item>
-              <el-form-item label="交易方A">
-                A公司
-              </el-form-item>
-              <el-form-item label="交易方B">
-                B公司
-              </el-form-item>
-              <el-form-item label="交易品类">
-                杂交大蒜
-              </el-form-item>
-              <el-form-item label="交易用户风险">
-                XXXX<br/>
-                XXXX
-              </el-form-item>
-              <el-form-item label="交易品类风险">
-                XXXXXXX<br/>
-                XXXXXXX
-              </el-form-item>
-            </el-form>
-          </el-col>
-          <el-col :span="7">
-            <div id="chart"></div>
-            <p class="progress-text">违约风险级联关系图</p>
-          </el-col>
-        </el-row>
+      <el-row type="flex" :gutter="20">
 
-      </el-card>
-    </transition>
+        <!--风险评估分-->
+        <el-col :span="6">
+          <div style="margin-top: auto; margin-bottom: auto">
+            <el-progress type="circle" :percentage="100" :stroke-width="10"
+                         :color="txnData.riskLevel===1?'orange':(txnData.riskLevel===2?'gold':'lightgreen')"
+                         stroke-linecap="square"
+                         :format="()=>txnData.score" :width="150"
+                         :class="txnData.riskLevel===1?'orange-score':(txnData.riskLevel===2?'gold-score':'green-score')"></el-progress>
+            <p class="progress-text">风险评估分</p>
+          </div>
+        </el-col>
+
+        <el-col :span="8" style="margin: auto">
+          <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
+            <el-form-item label="交易ID">
+              {{ txnData.id }}
+            </el-form-item>
+            <el-form-item label="交易品类">
+              {{ txnData.category }}
+            </el-form-item>
+            <el-form-item label="交易单价">
+              {{ txnData.unitPrice }}
+            </el-form-item>
+            <el-form-item label="交易量">
+              {{ txnData.amount }}
+            </el-form-item>
+            <el-form-item label="风险评级">
+              <template>
+                <span v-if="txnData.riskLevel===1" style="color: orange; font-weight: bold">
+                  一级风险
+                </span>
+                <span v-else-if="txnData.riskLevel===2" style="color: gold; font-weight: bold">
+                  二级风险
+                </span>
+                <span v-else style="color: lightgreen; font-weight: bold">
+                  三级风险
+                </span>
+              </template>
+            </el-form-item>
+          </el-form>
+        </el-col>
+
+        <el-col :span="12">
+          <el-form label-position="right" label-width="auto" size="mini" class="firm-info-form">
+            <el-form-item label="卖方名称">
+              {{ txnData.sellerName }}
+            </el-form-item>
+            <el-form-item label="卖方风险评级">
+              <template>
+                <span v-if="sellerRiskLevel===1" style="color: orange; font-weight: bold">
+                  一级风险
+                </span>
+                <span v-else-if="sellerRiskLevel===2" style="color: gold; font-weight: bold">
+                  二级风险
+                </span>
+                <span v-else style="color: lightgreen; font-weight: bold">
+                  三级风险
+                </span>
+              </template>
+            </el-form-item>
+            <el-form-item label="买方名称">
+              {{ txnData.buyerName }}
+            </el-form-item>
+            <el-form-item label="买方风险评级">
+              <template>
+                <span v-if="buyerRiskLevel===1" style="color: orange; font-weight: bold">
+                  一级风险
+                </span>
+                <span v-else-if="buyerRiskLevel===2" style="color: gold; font-weight: bold">
+                  二级风险
+                </span>
+                <span v-else style="color: lightgreen; font-weight: bold">
+                  三级风险
+                </span>
+              </template>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 
 <script>
 import G6 from '@antv/g6';
+import {
+  calcTxnOnlineRisk, getTxnOnlineById,
+  getTxnOnlineByLevel,
+  getTxnOnlineCountPerLevel
+} from "@/api/part4/DefaultRisk/txnOnlineEvaluation";
+import {getEntityByName} from "@/api/part4/DefaultRisk/entityEvaluation";
 
 export default {
   name: "transactionEvaluation.vue",
   data() {
     return {
+      /* 交易情况统计数据 */
+      countTotalTxn: 0,
+      countsPerLevel: [],
+      mainTableData: [],
+
+      /* 查询相关 */
       noQuery: true,
-      score: 91,
-      select: '',
-      queryData: '',
-      tableData: [
-        {
-          id: 'DS-2212',
-          risk_level: 'I',
-          party_A: 'A公司',
-          party_B: 'B公司',
-          category: '杂交大蒜',
-          problem: '......',
-        },
-        {
-          id: 'MP-2207',
-          risk_level: 'I',
-          party_A: 'A公司',
-          party_B: 'B公司',
-          category: '棉籽粕',
-          problem: '......',
-        },
-        {
-          id: 'MP-2205',
-          risk_level: 'I',
-          party_A: 'A公司',
-          party_B: 'B公司',
-          category: '棉籽粕',
-          problem: '......',
-        },
-        {
-          id: 'LJ-2205',
-          risk_level: 'I',
-          party_A: 'A公司',
-          party_B: 'B公司',
-          category: '辣椒干',
-          problem: '......',
-        },
-      ],
+      queriedId: '',
+
+      /* 交易评估信息 */
+      txnData: [],
+      sellerRiskLevel: 0,
+      buyerRiskLevel: 0,
     }
+  },
+  computed: {
+    l1Percentage: function () {
+      return this.countsPerLevel[0] * 100 / this.countTotalTxn || 0;
+    },
+    l2Percentage: function () {
+      return this.countsPerLevel[1] * 100 / this.countTotalTxn || 0;
+    },
+    l3Percentage: function () {
+      return this.countsPerLevel[2] * 100 / this.countTotalTxn || 0;
+    }
+  },
+  created() {
+    calcTxnOnlineRisk().then(() => {
+      getTxnOnlineCountPerLevel().then(res => {
+        this.countsPerLevel = res.data;
+        this.countTotalTxn = res.data.reduce((sum, num) => sum + num, 0);
+      });
+      this.onClickRiskI();
+    });
   },
   methods: {
     getHeaderStylesheet() {
@@ -170,19 +228,38 @@ export default {
     // 情况统计圆环点击事件
     onClickRiskI() {
       this.noQuery = true;
+      getTxnOnlineByLevel(1).then(res => {
+        this.mainTableData = res.data;
+      });
     },
     onClickRiskII() {
       this.noQuery = true;
+      getTxnOnlineByLevel(2).then(res => {
+        this.mainTableData = res.data;
+      });
     },
     onClickRiskIII() {
       this.noQuery = true;
+      getTxnOnlineByLevel(3).then(res => {
+        this.mainTableData = res.data;
+      });
     },
     // 查询交易信息
-    onQueryTransactionInfo() {
-      this.noQuery = false;
+    onClickTxnId(id) {
+      this.queriedId = id;
+      this.onQueryTxn();
     },
-    transitionComplete: function (el) {
-      this.drawChart();
+    onQueryTxn() {
+      this.noQuery = false;
+      getTxnOnlineById(this.queriedId).then(res => {
+        this.txnData = res.data;
+        getEntityByName(this.txnData.sellerName).then(res => {
+          this.sellerRiskLevel = res.data.riskLevel;
+        })
+        getEntityByName(this.txnData.buyerName).then(res => {
+          this.buyerRiskLevel = res.data.riskLevel;
+        })
+      });
     },
     // 绘制G6关系图
     drawChart() {
@@ -303,25 +380,17 @@ export default {
       });
     },
     // 格式化情况统计圆环文本
-    formatProgress(percentage) {
-      return `${percentage}`;
+    formatProgressNum(percentage) {
+      return percentage * this.countTotalTxn / 100;
     },
-    // 格式化交易信息得分文本
-    formatScore() {
-      return this.score;
-    }
   }
 }
 </script>
 
 <style scoped>
-@import url("https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css");
-
 .box-card {
   width: 80%;
-  margin-top: 2rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 2rem auto;
 }
 
 .box-card-header {
@@ -344,7 +413,7 @@ button.transparent-button {
   cursor: pointer;
 }
 
-/* 交易情况统计圆环内部样式 */
+/* 交易主体情况统计圆环内部样式 */
 /deep/ .orange-progress .el-progress__text {
   font-weight: bold;
   font-size: x-large !important;
@@ -366,7 +435,21 @@ button.transparent-button {
   color: lightgreen;
 }
 
-/* 交易评估信息圆环内部样式 */
+/* 交易主体评估信息圆环内部样式 */
+/deep/ .orange-score .el-progress__text {
+  font-weight: bold;
+  font-size: xxx-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: orange;
+}
+
+/deep/ .gold-score .el-progress__text {
+  font-weight: bold;
+  font-size: xxx-large !important;
+  font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", Arial, sans-serif;
+  color: gold;
+}
+
 /deep/ .green-score .el-progress__text {
   font-weight: bold;
   font-size: xxx-large !important;
@@ -374,8 +457,18 @@ button.transparent-button {
   color: lightgreen;
 }
 
-/* 交易信息表单样式 */
+/* 交易主体信息表单样式 */
 .firm-info-form .el-form-item {
   text-align: left;
+}
+
+.detail-subheader {
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+#chart {
+  width: 100%;
+  height: 400px;
 }
 </style>

@@ -161,7 +161,7 @@
       :detectionResults="detectionResults" :index="index"></trading-dialog>
     </el-dialog>
     <el-dialog :title="relationDialog.name" :visible.sync="relationDialog.visible">
-      <relation-dialog :traderId="traderId"></relation-dialog>
+      <relation-dialog :traderId="traderId" :index="index"></relation-dialog>
     </el-dialog>
   </div>
 </template>
@@ -278,6 +278,7 @@ export default {
     },
     handleRelationButtonClick(index, row) {
       console.log(index, row);
+      this.index = index;
       this.relationDialog.name = "关联网络分析";
       this.relationDialog.visible = true;
       this.traderId = row.id;
