@@ -5,7 +5,7 @@ const baseURL = process.env.NODE_ENV === "development" ? "/api" : '/api';
 export {baseURL}
 
 const service = Axios.create({
-  baseURL: "https://www.bcisp.cn:16940/regulator-service/resourceAllocation/",
+  baseURL: "https://www.bcisp.cn:16940/market-service/resourceAllocation/",
   timeout: 10000,
   //headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
 });
