@@ -1,7 +1,7 @@
 module.exports = {
   // 设置部署时的基本URL
-  publicPath: process.env.NODE_ENV === 'production' ? '/regulator-service/web/' : '/',
-  outputDir: process.env.NODE_ENV === 'production' ? 'dist/regulator-service/web' : 'dist',
+  publicPath: process.env.NODE_ENV === 'production' ? '/market-service/web/' : '/',
+  outputDir: process.env.NODE_ENV === 'production' ? 'dist/market-service/web' : 'dist',
   assetsDir: process.env.NODE_ENV === 'production' ? '' : '',
   // lintOnSave: false // 取消 eslint 验证
   devServer: {
@@ -11,7 +11,7 @@ module.exports = {
     proxy:
       {
         // '/api': {
-        //   target: 'http://103.10.85.153:16940/regulator-service/resourceAllocation', //API服务器的地址
+        //   target: 'http://103.10.85.153:16940/market-service/resourceAllocation', //API服务器的地址
         //   // target: 'http://localhost:8088', //API服务器的地址
         //   ws: true,  //代理websockets
         //   changeOrigin: true, // 虚拟的站点需要更管origin
