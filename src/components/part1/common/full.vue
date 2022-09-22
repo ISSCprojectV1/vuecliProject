@@ -1,14 +1,14 @@
 <template>
-  <el-container>
+  <el-container style="width: 100vw; height: 100vh;">
     <el-header>
       <Header></Header>
     </el-header>
 
     <el-container>
-      <el-aside style="width: 250px; height: 100%">
+      <el-aside style="height: calc(100vh - 60px); overflow: auto;">
         <leftNav></leftNav>
       </el-aside>
-      <el-main>
+      <el-main style="height: calc(100vh - 60px); overflow: auto;">
         <keep-alive include="tradingDetection">
           <router-view></router-view>
         </keep-alive>
@@ -33,21 +33,21 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style scoped>
 .el-header {
-  // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
   padding: 0;
-  margin-bottom: 1px;
+  border-bottom: 2px gold solid;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 .el-aside {
-  // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
   padding: 0;
-  margin-bottom: 1px;
+  background-color: #00659b;
 }
 
 .el-main {
   padding: 0;
-  background-color: #ffffff;
+  background-color: #F0F2F5;
 }
 </style>
