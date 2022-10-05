@@ -87,7 +87,7 @@ export default {
         data=res.data;
         this.WordsCloudData_WB={"title":title,"data":data};
       }).catch((e) => {
-        console.log("获取词云数据失败"+e);
+        console.log("获取词云数据失败,数据长度为"+data.length+","+e);
       })
     },
     //刷新词云
@@ -119,7 +119,7 @@ export default {
           this.OpinionsNum_WB=this.OpinionsNum_WB+data[i];
         }
       }).catch((e) => {
-        console.log("获取折线图数据失败"+e);
+        console.log("获取折线图数据失败,数据长度为"+data.length+","+e);
       })
     },
     //刷新折线图
