@@ -26,10 +26,6 @@ export default {
     Header,
     leftNav,
   },
-  data() {
-    return {};
-  },
-  methods: {},
 };
 </script>
 
