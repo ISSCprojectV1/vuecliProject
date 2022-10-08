@@ -99,7 +99,7 @@
         background-color white
         margin-bottom 10px
         border: 1px solid #DCDFE6
-    .userprofile
+    .round-img
         border-radius:50%;
         height 150px;
         width 150px;

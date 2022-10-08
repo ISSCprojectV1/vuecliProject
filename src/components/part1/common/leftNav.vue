@@ -1,5 +1,5 @@
 <template>
-  <div id="diceng" style="background-color: #00659b">
+  <div style="background-color: #00659b">
     <el-row>
       <el-col>
         <el-menu
@@ -227,7 +227,7 @@
               >系统性风险监测子系统</span
               >
             </template>
-      
+
             <el-menu-item
                 index="/trade/PolicyRisk/event_calendar"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -438,6 +438,7 @@ export default {
   },
 };
 </script>
+
 <style>
 /* 菜单栏实现换行 - start */
 .el-submenu__title {
