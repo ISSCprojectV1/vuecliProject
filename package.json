@@ -21,7 +21,7 @@
     "jQuery": "^1.7.4",
     "js-cookie": "^2.2.1",
     "js2wordcloud": "^1.1.12",
-    "jsdom": "^16.2.2",
+    "jsdom": "^16.5.0",
     "location": "0.0.1",
     "moment": "^2.29.1",
     "navigator": "^1.0.1",
