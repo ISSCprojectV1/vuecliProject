@@ -1,7 +1,7 @@
 <template>
     <div class="userbar">
         <el-row :gutter="100">
-            <el-col :span="4"><img :src="userprofile" class="userprofile"></el-col>
+            <el-col :span="4"><img :src="userprofile" class="round-img"></el-col>
             <el-col :span="20" style="text-align: left">
                 <div class="grid-content">
                     <span>ID:{{user.id}}</span>
@@ -89,7 +89,7 @@
         background-color white
         margin-bottom 10px
         border: 1px solid #DCDFE6
-    .userprofile
+    .round-img
         border-radius:50%;
         height 150px;
         width 150px;

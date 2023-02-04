@@ -92,7 +92,7 @@
         height 59px;
         width 50px;
     }
-    .userprofile{
+    .round-img{
         border-radius:50%;
         height 20px;
         width 20px;
