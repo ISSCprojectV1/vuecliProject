@@ -328,9 +328,9 @@ export const asyncRoutes = [
       },
       {
         id:47,
-        name:"今日舆情汇总",
+        name:"舆情信息汇总",
         path:'/trade/PublicOpinionsRisk/opinionsMain',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main2"),
       },
       {
         id:48,
@@ -340,7 +340,7 @@ export const asyncRoutes = [
       },
       {
         id:49,
-        name:"恶意检测与风险评估",
+        name:"舆情风险详情",
         path:'/trade/PublicOpinionsRisk/opinionsDetails',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
       },
