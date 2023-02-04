@@ -118,9 +118,9 @@
           element-loading-text="加载中"
         >
           <el-table-column prop="id" label="账户id"></el-table-column>
-          <el-table-column prop="name" label="账户名"> </el-table-column>
+          <!-- <el-table-column prop="name" label="账户名"> </el-table-column> -->
           <el-table-column prop="goodId" label="商品id"></el-table-column>
-          <el-table-column prop="goodName" label="商品名"></el-table-column>
+          <!-- <el-table-column prop="goodName" label="商品名"></el-table-column> -->
           <el-table-column prop="level" label="风险等级"></el-table-column>
           <el-table-column label="查看异常交易行为" align="center">
             <template slot-scope="scope">
@@ -131,7 +131,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="查看关联内幕人员" align="center">
+          <!-- <el-table-column label="查看关联内幕人员" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -139,7 +139,7 @@
                 >查看</el-button
               >
             </template>
-          </el-table-column>
+          </el-table-column> -->
           
         </el-table>
 
@@ -240,7 +240,7 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      console.log(this.form.date)
+      console.log(this.form)
       let params = {
         institutesId: this.form.nameValue,
         tradersId: this.form.accountValue,
@@ -249,6 +249,7 @@ export default {
         endDate: this.form.date[1],
       };
       tradingDetection(params).then((response) => {
+        console.log("detection results!")
         console.log(response);
         this.detectionResults = response.data;
         this.accountTable.dormitory = [];
@@ -288,7 +289,7 @@ export default {
       console.log(row);
       this.index = index;
       this.tradeDialog.name =
-        "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
+        "异常交易用户 " + row.id + " 的交易行为";
       this.tradeDialog.visible = true;
       this.traderId = row.id;
     },
@@ -319,7 +320,7 @@ export default {
         for (let good of response.data) {
           this.form.goodOptions.push({
             value: good.goodId,
-            label: good.goodId + "-" + good.goodName,
+            label: good.goodId,
           });
         }
       });
@@ -327,8 +328,8 @@ export default {
         this.form.accountOptions = [];
         for (let account of response.data) {
           this.form.accountOptions.push({
-            value: account.traderId,
-            label: account.traderId + "-" + account.traderName,
+            value: account.d_id,
+            label: account.d_id,
           });
         }
       });
