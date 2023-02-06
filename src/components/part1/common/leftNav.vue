@@ -325,7 +325,7 @@
                 index="/trade/PublicOpinionsRisk/opinionsMain"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">今日舆情汇总</span>
+              <span slot="title">舆情信息汇总</span>
             </el-menu-item>
             <el-menu-item
                 index="/trade/PublicOpinionsRisk/opinionsDetails"
@@ -333,12 +333,12 @@
             >
               <span slot="title">舆情事件详情</span>
             </el-menu-item>
-            <el-menu-item
+          <!--  <el-menu-item
                 index="/trade/PublicOpinionsRisk/opinionsRisk"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">恶意监测与风险评估</span>
-            </el-menu-item>
+              <span slot="title">舆情风险详情</span>
+            </el-menu-item>-->
           </el-submenu>
         </el-menu>
       </el-col>

@@ -3,14 +3,18 @@
     <slot>
       <el-tabs type="border-card" v-model="activeName">
         <el-tab-pane label="舆情信息详情" name="first" >
-          <table class="event_table" style="border:#121313 solid 2px;text-align: left">
+          <table class="event_table" style="border:#121313 solid 1px;text-align: left">
             <tr>
               <td class="column_key">编号</td>
               <td class="column_value">{{listValue_WB.id}}</td>
             </tr>
             <tr>
-              <td class="column_key">发布人</td>
+              <td class="column_key">用户昵称</td>
               <td class="column_value">{{listValue_WB.username}}</td>
+            </tr>
+            <tr>
+              <td class="column_key">博文id</td>
+              <td class="column_value">{{listValue_WB.wblogid}}</td>
             </tr>
             <tr>
               <td class="column_key">发布内容</td>
@@ -53,18 +57,14 @@
         </el-tab-pane>
 
         <el-tab-pane label="用户信息详情" name="second">
-          <table class="person_table" style="border:#121313 solid 2px;text-align: left">
-            <tr>
-              <td class="column_key">用户名</td>
+          <table class="person_table" style="border:#121313 solid 1px;text-align: left">
+            <tr >
+              <td class="column_key" >用户昵称</td>
               <td class="column_value">{{listValue_WB.username}}</td>
             </tr>
             <tr>
               <td class="column_key">用户id</td>
               <td class="column_value">{{listValue_WB.userid}}</td>
-            </tr>
-            <tr>
-              <td class="column_key">微博id</td>
-              <td class="column_value">{{listValue_WB.wblogid}}</td>
             </tr>
             <tr>
               <td class="column_key">用户等级</td>
@@ -168,17 +168,19 @@ export default {
   height: 100%;
 
   .column_key{
-    background: #7a98b2;
-    font-size: 20px;
-    font-weight: bolder;//加粗
+    background: #f4f6fc;
+    font-size: 16px;
+    //font-weight: bolder;//加粗
     color: #121313;
     width: 30%;
     height: 10%;
+    border:#121313 solid 1px;
   }
   .column_value{
-    background: #ebeff5;
-    font-size: 18px;
+    background: #ffffff;
+    font-size: 16px;
     color: #121313;
+    border:#121313 solid 1px;
   }
 }
 .person_table{
@@ -186,18 +188,22 @@ export default {
   height: 100%;
 
   .column_key{
-    background: #7a98b2;
-    font-size: 20px;
-    font-weight: bolder;//加粗
+    background: #f4f6fc;
+    font-size: 16px;
+    //font-weight: bolder;//加粗
     color: #121313;
     width: 30%;
     height: 10%;
+    border:#121313 solid 1px;
   }
   .column_value{
-    background: #ebeff5;
-    font-size: 18px;
+    background: #ffffff;
+    font-size: 16px;
     color: #121313;
+    border:#121313 solid 1px;
     height: 10%;
   }
+
+
 }
 </style>

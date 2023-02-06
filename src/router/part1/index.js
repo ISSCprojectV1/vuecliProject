@@ -306,9 +306,9 @@ let routes = [
       },
       {
         path:"/trade/PublicOpinionsRisk/opinionsMain",
-        component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
+        component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main2"),
         meta: {
-          title: "今日舆情汇总"
+          title: "舆情信息汇总"
         }
       },
       {
@@ -322,7 +322,7 @@ let routes = [
         path:"/trade/PublicOpinionsRisk/opinionsDetails",
         component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
         meta: {
-          title: "恶意检测与风险评估"
+          title: "舆情风险详情"
         }
       },
     ],

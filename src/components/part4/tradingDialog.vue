@@ -18,9 +18,12 @@
     >
       <el-table-column prop="id" label="交易id"></el-table-column>
       <el-table-column prop="date" label="交易时间"></el-table-column>
+      <el-table-column prop="goodId" label="商品代码"></el-table-column>
+      <el-table-column prop="firmId" label="交易商代码"></el-table-column>
+      <el-table-column prop="oppFirmId" label="交易对手代码"></el-table-column>
       <el-table-column prop="type" label="交易操作"></el-table-column>
-      <el-table-column prop="price" label="成交价格"></el-table-column>
-      <el-table-column prop="quantity" label="成交数量"></el-table-column>
+      <el-table-column prop="price" label="成交金额"></el-table-column>
+      <el-table-column prop="quantity" label="手续费"></el-table-column>
     </el-table>
 
     <el-pagination
@@ -202,14 +205,17 @@ export default {
     },
     initTradeTableData() {
       let tradeTableData = [];
-      let tradeList = this.detectionResults[this.index].transactionRecordList;
+      let tradeList = this.detectionResults[this.index].remoteTransactionRecordList;
       for (const record of tradeList) {
         tradeTableData.push({
           id: record.transactionId,
+          goodId: this.detectionResults[this.index].goodId,
+          firmId: record.traderId,
+          oppFirmId: record.oppFirmId,
           type: record.transactionType > 0 ? "买入" : "卖出",
-          date: record.transactionDate.substring(0, 10),
-          price: record.transactionPrice,
-          quantity: record.transactionVolume,
+          date: record.transactionDate.substring(0, 10) + " " + record.transactionDate.substring(11, 19),
+          price: record.tradeFunds,
+          quantity: record.tradeFee,
         });
       }
       this.tradeTable.dormitory = tradeTableData;
