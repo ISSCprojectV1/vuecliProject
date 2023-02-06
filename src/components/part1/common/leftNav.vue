@@ -1,5 +1,5 @@
 <template>
-  <div id="diceng" style="background-color: #00659b">
+  <div style="background-color: #00659b">
     <el-row>
       <el-col>
         <el-menu
@@ -438,6 +438,7 @@ export default {
   },
 };
 </script>
+
 <style>
 /* 菜单栏实现换行 - start */
 .el-submenu__title {
