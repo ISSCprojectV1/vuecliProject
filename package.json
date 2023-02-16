@@ -25,7 +25,7 @@
     "location": "0.0.1",
     "moment": "^2.29.1",
     "navigator": "^1.0.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^8.0.0",
     "nprogress": "^0.2.0",
     "qs": "^6.9.4",
     "relation-graph": "^1.1.0",
