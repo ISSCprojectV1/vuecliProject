@@ -26,7 +26,7 @@
         <div style="margin-left:20px;margin-right:20px">
           <el-table :data="dataBreed" highlight-current-row :header-cell-style="getHeaderStylesheet">
             <el-table-column label="序号" fixed="left" prop="id" min-width="25" align='center'></el-table-column>
-            <el-table-column label="品种ID" prop="commodityInnerId" min-width="50" align='center'></el-table-column>
+            <el-table-column label="品种ID" prop="commodityInnerId" min-width="50" align='center' v-if="false"></el-table-column>
             <el-table-column label="品种名称" prop="productName" min-width="55" align='center'></el-table-column>
             <el-table-column label="系统性风险溢出等级" prop="riskLevel" min-width="60" align='center'>
               <template slot="header">
@@ -88,14 +88,14 @@ export default {
   },
   mounted() {
     this.type = "不定突发短期事件";
-    this.commodity = "聚乙烯2109";
+    this.commodity = "DJ2303";
     getCommodityList().then((res) => {
       this.commodityList = res.data.data
     })
       .catch((err) => {
         console.log(err);
       });
-    getCommAss("不定突发短期事件","聚乙烯2109").then((res) => {
+    getCommAss("不定突发短期事件","DJ2303").then((res) => {
           console.log("请求列表api成功");
           console.log(res);
           this.dataBreed = res.data.data;
@@ -104,7 +104,7 @@ export default {
           console.log(err);
           console.log("请求列表api失败");
         });
-      getMessByName("PE2305").then((res) => {
+      getMessByName("DJ2305").then((res) => {
         this.commHis = res.data.data.map((item) => {
           return {
             tradedate: item.tradedate.split("T")[0],
