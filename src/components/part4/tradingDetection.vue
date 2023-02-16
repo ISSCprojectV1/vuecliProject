@@ -2,7 +2,7 @@
   <div>
     <div class="form">
       <el-form ref="form" label-width="130px" :model="form">
-        <el-form-item label="交易机构" style="margin-left: 300px">
+        <!-- <el-form-item label="交易机构" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.nameValue"
@@ -25,7 +25,7 @@
           <el-col :span="2">
             <el-button type="text" @click="handleNameSelectAll">全选</el-button>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="交易账户" style="margin-left: 300px">
           <el-col :span="13">
@@ -221,13 +221,18 @@ export default {
   mounted() {
     getInstitutes().then((response) => {
       let data = response.data;
-      for (let i = 0; i < data.length; i++) {
-        this.form.nameOptions.push({
-          value: data[i].instituteId,
-          label: data[i].instituteName,
-        });
-      }
+      // for (let i = 0; i < data.length; i++) {
+      //   this.form.nameOptions.push({
+      //     value: data[i].instituteId,
+      //     label: data[i].instituteName,
+      //   });
+      // }
+      console.log(data)
+      this.form.nameValue.push(data[0].instituteId)
+      console.log(this.form.nameValue)
+      this.handleNameChange()
     });
+    
   },
   methods: {
     headcell() {
