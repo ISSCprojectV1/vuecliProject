@@ -26,7 +26,7 @@
         <div style="margin-left:20px;margin-right:20px">
           <el-table :data="dataBreed" highlight-current-row :header-cell-style="getHeaderStylesheet">
             <el-table-column label="序号" fixed="left" prop="id" min-width="25" align='center'></el-table-column>
-            <el-table-column label="品种ID" prop="commodityInnerId" min-width="50" align='center' v-if="false"></el-table-column>
+            <el-table-column label="品种ID" prop="commodityInnerId" min-width="50" align='center' ></el-table-column>
             <el-table-column label="品种名称" prop="productName" min-width="55" align='center'></el-table-column>
             <el-table-column label="系统性风险溢出等级" prop="riskLevel" min-width="60" align='center'>
               <template slot="header">
@@ -151,7 +151,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['价格', '交易量','交易频次']
+          data: ['价格', '交易用户数','交易次数']
         },
         grid: {
           left: '3%',
