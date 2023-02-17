@@ -31,9 +31,12 @@
           <el-col :span="13">
             <el-select
               v-model="form.accountValue"
-              multiple
+              
               filterable
-              placeholder="请选择"
+              remote
+              :remote-method="remoteFilter"
+              :loading="loading"
+              placeholder="请输入"
               class="select-box"
               style="width: 100%"
             >
@@ -46,11 +49,11 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <!-- <el-col :span="2">
             <el-button type="text" @click="handleAccountSelectAll"
               >全选</el-button
             >
-          </el-col>
+          </el-col> -->
         </el-form-item>
 
         <el-form-item label="商品种类" style="margin-left: 300px">
@@ -72,9 +75,9 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <!-- <el-col :span="2">
             <el-button type="text" @click="handleGoodSelectAll">全选</el-button>
-          </el-col>
+          </el-col> -->
         </el-form-item>
 
         <el-form-item label="交易时间" style="margin-left: 300px">
@@ -175,6 +178,7 @@ import {
   getGoodsByInstitutes,
   getTradersByInstitutes,
   tradingDetection,
+  remoteTrader
 } from "@/api/part4/tradingDetection";
 import tradingDialog from "./tradingDialog.vue";
 import relationDialog from "./relationDetection.vue"
@@ -216,6 +220,7 @@ export default {
       },
       detectionResults: [],
       index: 0,
+      loading: false
     };
   },
   mounted() {
@@ -245,16 +250,18 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
+      this.accountTable.loading = true
       console.log(this.form)
       let params = {
         institutesId: this.form.nameValue,
-        tradersId: this.form.accountValue,
+        tradersId: [this.form.accountValue],
         goodsId: this.form.goodValue,
         startDate: this.form.date[0],
         endDate: this.form.date[1],
       };
       tradingDetection(params).then((response) => {
         console.log("detection results!")
+        this.accountTable.loading = false
         console.log(response);
         this.detectionResults = response.data;
         this.accountTable.dormitory = [];
@@ -316,6 +323,32 @@ export default {
         this.form.goodValue.push(good.value);
       }
     },
+    remoteFilter(query) {
+      console.log(query)
+      if (query !== '') {
+        this.loading = true
+        setTimeout(() => {
+          
+          this.form.accountOptions = [];
+          remoteTrader(query).then((response) => {
+            this.loading = false;
+            for (let account of response.data) {
+              this.form.accountOptions.push({
+                value: account.d_id,
+                label: account.d_id,
+              });
+            }
+
+          })
+        }, 200)
+        
+
+        } else {
+          this.options = [];
+        }
+
+      
+    },
     handleNameChange() {
       this.form.accountValue = [];
       this.form.goodValue = [];
@@ -329,15 +362,15 @@ export default {
           });
         }
       });
-      getTradersByInstitutes(this.form.nameValue).then((response) => {
-        this.form.accountOptions = [];
-        for (let account of response.data) {
-          this.form.accountOptions.push({
-            value: account.d_id,
-            label: account.d_id,
-          });
-        }
-      });
+      // getTradersByInstitutes(this.form.nameValue).then((response) => {
+      //   this.form.accountOptions = [];
+      //   for (let account of response.data) {
+      //     this.form.accountOptions.push({
+      //       value: account.d_id,
+      //       label: account.d_id,
+      //     });
+      //   }
+      // });
     },
   },
 };
