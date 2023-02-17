@@ -2,7 +2,7 @@
   <div>
     <div class="form">
       <el-form ref="form" label-width="130px" :model="form">
-        <el-form-item label="交易机构" style="margin-left: 300px">
+        <!-- <el-form-item label="交易机构" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.nameValue"
@@ -25,15 +25,18 @@
           <el-col :span="2">
             <el-button type="text" @click="handleNameSelectAll">全选</el-button>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="交易账户" style="margin-left: 300px">
           <el-col :span="13">
             <el-select
               v-model="form.accountValue"
-              multiple
+              
               filterable
-              placeholder="请选择"
+              remote
+              :remote-method="remoteFilter"
+              :loading="loading"
+              placeholder="请输入"
               class="select-box"
               style="width: 100%"
             >
@@ -46,11 +49,11 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <!-- <el-col :span="2">
             <el-button type="text" @click="handleAccountSelectAll"
               >全选</el-button
             >
-          </el-col>
+          </el-col> -->
         </el-form-item>
 
         <el-form-item label="商品种类" style="margin-left: 300px">
@@ -72,9 +75,9 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <!-- <el-col :span="2">
             <el-button type="text" @click="handleGoodSelectAll">全选</el-button>
-          </el-col>
+          </el-col> -->
         </el-form-item>
 
         <el-form-item label="交易时间" style="margin-left: 300px">
@@ -118,9 +121,9 @@
           element-loading-text="加载中"
         >
           <el-table-column prop="id" label="账户id"></el-table-column>
-          <el-table-column prop="name" label="账户名"> </el-table-column>
+          <!-- <el-table-column prop="name" label="账户名"> </el-table-column> -->
           <el-table-column prop="goodId" label="商品id"></el-table-column>
-          <el-table-column prop="goodName" label="商品名"></el-table-column>
+          <!-- <el-table-column prop="goodName" label="商品名"></el-table-column> -->
           <el-table-column prop="level" label="风险等级"></el-table-column>
           <el-table-column label="查看异常交易行为" align="center">
             <template slot-scope="scope">
@@ -131,7 +134,7 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="查看关联内幕人员" align="center">
+          <!-- <el-table-column label="查看关联内幕人员" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -139,7 +142,7 @@
                 >查看</el-button
               >
             </template>
-          </el-table-column>
+          </el-table-column> -->
           
         </el-table>
 
@@ -175,6 +178,7 @@ import {
   getGoodsByInstitutes,
   getTradersByInstitutes,
   tradingDetection,
+  remoteTrader
 } from "@/api/part4/tradingDetection";
 import tradingDialog from "./tradingDialog.vue";
 import relationDialog from "./relationDetection.vue"
@@ -216,18 +220,24 @@ export default {
       },
       detectionResults: [],
       index: 0,
+      loading: false
     };
   },
   mounted() {
     getInstitutes().then((response) => {
       let data = response.data;
-      for (let i = 0; i < data.length; i++) {
-        this.form.nameOptions.push({
-          value: data[i].instituteId,
-          label: data[i].instituteName,
-        });
-      }
+      // for (let i = 0; i < data.length; i++) {
+      //   this.form.nameOptions.push({
+      //     value: data[i].instituteId,
+      //     label: data[i].instituteName,
+      //   });
+      // }
+      console.log(data)
+      this.form.nameValue.push(data[0].instituteId)
+      console.log(this.form.nameValue)
+      this.handleNameChange()
     });
+    
   },
   methods: {
     headcell() {
@@ -240,15 +250,18 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
-      console.log(this.form.date)
+      this.accountTable.loading = true
+      console.log(this.form)
       let params = {
         institutesId: this.form.nameValue,
-        tradersId: this.form.accountValue,
+        tradersId: [this.form.accountValue],
         goodsId: this.form.goodValue,
         startDate: this.form.date[0],
         endDate: this.form.date[1],
       };
       tradingDetection(params).then((response) => {
+        console.log("detection results!")
+        this.accountTable.loading = false
         console.log(response);
         this.detectionResults = response.data;
         this.accountTable.dormitory = [];
@@ -288,7 +301,7 @@ export default {
       console.log(row);
       this.index = index;
       this.tradeDialog.name =
-        "异常交易用户 " + row.id + "-" + row.name + " 的交易行为";
+        "异常交易用户 " + row.id + " 的交易行为";
       this.tradeDialog.visible = true;
       this.traderId = row.id;
     },
@@ -310,6 +323,32 @@ export default {
         this.form.goodValue.push(good.value);
       }
     },
+    remoteFilter(query) {
+      console.log(query)
+      if (query !== '') {
+        this.loading = true
+        setTimeout(() => {
+          
+          this.form.accountOptions = [];
+          remoteTrader(query).then((response) => {
+            this.loading = false;
+            for (let account of response.data) {
+              this.form.accountOptions.push({
+                value: account.d_id,
+                label: account.d_id,
+              });
+            }
+
+          })
+        }, 200)
+        
+
+        } else {
+          this.options = [];
+        }
+
+      
+    },
     handleNameChange() {
       this.form.accountValue = [];
       this.form.goodValue = [];
@@ -319,19 +358,19 @@ export default {
         for (let good of response.data) {
           this.form.goodOptions.push({
             value: good.goodId,
-            label: good.goodId + "-" + good.goodName,
+            label: good.goodId,
           });
         }
       });
-      getTradersByInstitutes(this.form.nameValue).then((response) => {
-        this.form.accountOptions = [];
-        for (let account of response.data) {
-          this.form.accountOptions.push({
-            value: account.traderId,
-            label: account.traderId + "-" + account.traderName,
-          });
-        }
-      });
+      // getTradersByInstitutes(this.form.nameValue).then((response) => {
+      //   this.form.accountOptions = [];
+      //   for (let account of response.data) {
+      //     this.form.accountOptions.push({
+      //       value: account.d_id,
+      //       label: account.d_id,
+      //     });
+      //   }
+      // });
     },
   },
 };

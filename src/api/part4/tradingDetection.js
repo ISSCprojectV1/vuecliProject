@@ -26,7 +26,24 @@ export function getTradersByInstitutes(data) {
 }
 
 export function tradingDetection(data) {
-    return request.post('/tradingDetection', data, { headers: { 'content-type': 'application/json' } })
+    return request({
+        method: 'POST',
+        url: '/tradingDetection',
+        data: data,
+        headers: { 'content-type': 'application/json' },
+        timeout: 60 * 60 * 1000,
+    }) 
 }
+
+export function remoteTrader(data) {
+    return request({
+        method: 'POST',
+        url: '/getTraderById',
+        data: data,
+        headers: { 'content-type': 'application/json' },
+        timeout: 60 * 1000
+    })
+}
+
 
 
