@@ -1,5 +1,5 @@
 <template>
-  <div id="diceng" style="background-color: #00659b">
+  <div style="background-color: #00659b">
     <el-row>
       <el-col>
         <el-menu
@@ -228,12 +228,12 @@
               >
             </template>
       
-            <el-menu-item
+            <!--el-menu-item
                 index="/trade/PolicyRisk/event_calendar"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">政策-事件日历</span>
-            </el-menu-item>
+            </el-menu-item-->
             <el-menu-item
                  index="/trade/PolicyRisk/comAssociated"
                  style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -244,14 +244,14 @@
                 index="/trade/PolicyRisk/viewIndustryPolicy"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">业内系统性风险监测</span>
+              <span slot="title">行业整体系统性风险监测</span>
             </el-menu-item>
-            <el-menu-item
+            <!--el-menu-item
                 index="/trade/PolicyRisk/viewAssociated"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">关联性系统风险监测</span>
-            </el-menu-item>
+            </el-menu-item-->
             <!--el-menu-item
                 index="/trade/PolicyRisk/gpr_chn"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -297,7 +297,7 @@
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span style="font-size: 20px; white-space: normal"
-              >舆情风险子系统</span
+              >舆情风险监测子系统</span
               >
             </template>
 
@@ -322,23 +322,23 @@
             </el-menu-item>
             -->
             <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_main"
+                index="/trade/PublicOpinionsRisk/opinionsMain"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">今日舆情汇总</span>
+              <span slot="title">舆情信息汇总</span>
             </el-menu-item>
             <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_details"
+                index="/trade/PublicOpinionsRisk/opinionsDetails"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">舆情事件详情</span>
             </el-menu-item>
-            <el-menu-item
-                index="/trade/PublicOpinionsRisk/opinions_risk"
+          <!--  <el-menu-item
+                index="/trade/PublicOpinionsRisk/opinionsRisk"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">恶意监测与风险评估</span>
-            </el-menu-item>
+              <span slot="title">舆情风险详情</span>
+            </el-menu-item>-->
           </el-submenu>
         </el-menu>
       </el-col>
@@ -438,6 +438,7 @@ export default {
   },
 };
 </script>
+
 <style>
 /* 菜单栏实现换行 - start */
 .el-submenu__title {

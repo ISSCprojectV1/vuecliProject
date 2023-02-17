@@ -7,14 +7,6 @@
 <script>
 export default {
   name: 'App',
-  /*
-  created(){
-    if (!this.$store.state.isLogin)
-    {
-      this.$router.push('/login');
-    }
-  },
-   */
   provide() {
     return {
       reload: this.reload
@@ -81,10 +73,12 @@ html
 .el-link {
   font-size: 14px !important;
 }
+
 .el-form {
   font-size: 14px !important;
 }
-.el-input{
+
+.el-input {
   font-size: 14px !important;
 }
 

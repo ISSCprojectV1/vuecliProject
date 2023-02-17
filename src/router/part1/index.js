@@ -305,24 +305,24 @@ let routes = [
         }
       },
       {
-        path:"/trade/PublicOpinionsRisk/opinions_main",
-        component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
+        path:"/trade/PublicOpinionsRisk/opinionsMain",
+        component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main2"),
         meta: {
-          title: "今日舆情汇总"
+          title: "舆情信息汇总"
         }
       },
       {
-        path:"/trade/PublicOpinionsRisk/opinions_risk",
+        path:"/trade/PublicOpinionsRisk/opinionsRisk",
         component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
         meta: {
           title: "舆情事件详情"
         }
       },
       {
-        path:"/trade/PublicOpinionsRisk/opinions_details",
+        path:"/trade/PublicOpinionsRisk/opinionsDetails",
         component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
         meta: {
-          title: "恶意检测与风险评估"
+          title: "舆情风险详情"
         }
       },
     ],

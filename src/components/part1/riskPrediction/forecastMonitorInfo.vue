@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>大宗商品价格波动预警监控平台</h2>
+    <h2>大宗商品价格波动传导与风险预警平台</h2>
     <el-container style="height: 1000px; border: 10px solid #eee">
 
 
@@ -25,17 +25,27 @@
             </el-form-item>
           </el-form>
         </el-row>
-          <el-table :data="tableData" border style="width: 100%">
+          <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)" border style="width: 100%">
             <el-table-column prop="id" label="序号" type="index" width="60"></el-table-column>
             <el-table-column prop="name1" align="center" label="大宗商品X" min-width="50"></el-table-column>
             <el-table-column prop="name2" align="center" label="大宗商品Y" min-width="50"></el-table-column>
-            <el-table-column prop="coff"  align="center" label="价格传导系数" min-width="50"></el-table-column>
+            <el-table-column prop="coff"  align="center" label="关联性" min-width="50"></el-table-column>
+            <el-table-column prop="time"  align="center" label="价格传导时间" min-width="50"></el-table-column>
             <el-table-column label="操作" align="center" min-width="50">
               <template slot-scope="scope">
-                <el-button type="text" class="el-option-in-table" @click="goToPriceComparePage(scope.row)">走势对比</el-button>
+                <el-button type="text" class="el-option-in-table" @click="goToPriceComparePage(scope.row)">趋势对比</el-button>
               </template>
             </el-table-column>
           </el-table>
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="pageSizes"
+                       :page-size="PageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total1"
+                       style="margin-top: 0.5rem">
+        </el-pagination>
       </el-container>
 
 
@@ -191,7 +201,12 @@ export default {
       role:'',
       dialogVisible:'',
       frequency:[],
-      tableData: []
+      tableData: [],
+      currentPage: 1,
+      // 条数选择器（可修改）
+      pageSizes: [5, 10, 20, 50],
+      // 默认每页显示的条数（可修改）
+      PageSize: 10,
     }
   },
   created() {
@@ -210,6 +225,20 @@ export default {
     this.drawChartRiskFrequency()
   },
   methods: {
+    handleSizeChange(val) {
+      // 改变每页显示的条数
+      this.PageSize = val
+      // 注意：在改变每页显示的条数时，要将页码显示到第一页
+      this.currentPage = 1
+    },
+    // 显示第几页
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      if(this.tableData.length / this.PageSize +1<= val)
+        this.currentPage = 1;
+      else
+        this.currentPage = val;
+    },
     handleTabClick(tab) {
       console.log(tab.label)
       if(tab.label === "已发布")
@@ -315,8 +344,9 @@ export default {
       });
     },
     goToPriceComparePage(row) {
-      this.$store.commit('setPriceRow', [row.name1,row.name2])
-      // console.log("setPriceRow:"+[row.name1,row.name2])
+      this.$store.commit('setPriceRow', [row.name1,row.name2, row.time])
+
+      // console.log("setPriceRow:"+[row.name1,row.name2, row.time])
       this.$router.push({
         path: '/trade/riskPrediction/priceCompare',
         query: {

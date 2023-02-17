@@ -5,7 +5,7 @@
       <el-form :inline="true">
         <el-form-item label="事件影响的大小：">
           <el-select v-model="type" placeholder="请选择事件影响的大小" @change="$forceUpdate()">
-            <el-option label="不定突发短期事件" value="不定突发短期事件"></el-option>
+            <el-option label="不定突发短期事件" value="不定突发短期事件" ></el-option>
             <el-option label="重大冲击中期事件" value="重大冲击中期事件"></el-option>
             <el-option label="基本影响长期事件" value="基本影响长期事件"></el-option>
           </el-select>
@@ -22,13 +22,13 @@
       </el-form>
     </div>
     <el-container style="height: 800px; border: 10px solid #eee">
-      <el-aside width="40%" style="border: 10px solid #eee">
+      <el-aside width="42%" style="border: 10px solid #eee">
         <div style="margin-left:20px;margin-right:20px">
           <el-table :data="dataBreed" highlight-current-row :header-cell-style="getHeaderStylesheet">
-            <el-table-column label="序号" fixed="left" prop="id" min-width="30" align='center'></el-table-column>
-            <el-table-column label="品种ID" prop="commodityInnerID" min-width="45" align='center'></el-table-column>
-            <el-table-column label="品种名称" prop="productName" min-width="45" align='center'></el-table-column>
-            <el-table-column label="系统性风险溢出等级" prop="riskLevel" min-width="70" align='center'>
+            <el-table-column label="序号" fixed="left" prop="id" min-width="25" align='center'></el-table-column>
+            <el-table-column label="品种ID" prop="commodityInnerId" min-width="50" align='center' ></el-table-column>
+            <el-table-column label="品种名称" prop="productName" min-width="55" align='center'></el-table-column>
+            <el-table-column label="系统性风险溢出等级" prop="riskLevel" min-width="60" align='center'>
               <template slot="header">
                 <span>风险溢出等级 <el-button class="buttonclick" type="info" icon="iconfont icon-icon-test" size="mini"
                     circle @click="dialogVisible = true"></el-button></span>
@@ -48,15 +48,15 @@
         </div>
         <el-dialog title="风险等级说明" :visible.sync="dialogVisible" width="35%">
           <div style="color: red; font-size: 20px">高: 品种源对行业品种的传递熵大于0.7</div>
-          <div style="color: orange; font-size: 20px">中: 品种源对行业品种的传递熵大于0.5小于0.7</div>
-          <div style="color: #00DB00; font-size: 20px">低: 品种源对行业品种的传递熵小于0.5</div>
+          <div style="color: orange; font-size: 20px">中: 品种源对行业品种的传递熵大于0.3小于0.7</div>
+          <div style="color: #00DB00; font-size: 20px">低: 品种源对行业品种的传递熵小于0.3</div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
           </span>
         </el-dialog>
       </el-aside>
-      <el-aside width="60%" style="border: 10px solid #eee">
+      <el-aside width="58%" style="border: 10px solid #eee">
         <div style="margin-left:20px;margin-right:20px">
           <div id="chartHistory" style="
           width: 93%;
@@ -87,12 +87,40 @@ export default {
     }
   },
   mounted() {
+    this.type = "不定突发短期事件";
+    this.commodity = "DJ2303";
     getCommodityList().then((res) => {
       this.commodityList = res.data.data
     })
       .catch((err) => {
         console.log(err);
       });
+    getCommAss("不定突发短期事件","DJ2303").then((res) => {
+          console.log("请求列表api成功");
+          console.log(res);
+          this.dataBreed = res.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("请求列表api失败");
+        });
+      getMessByName("DJ2305").then((res) => {
+        this.commHis = res.data.data.map((item) => {
+          return {
+            tradedate: item.tradedate.split("T")[0],
+            closeprice: item.closeprice,
+            quantity: item.quantity,
+            tradefrequency: item.tradefrequency
+            //averageprice: item.averageprice,
+            //totalamount:item.totalamount
+          };
+        });
+        this.drawChartHistory();
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+      
   },
   methods: {
     goback() {
@@ -123,7 +151,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['价格', '交易量']
+          data: ['价格', '交易用户数','交易次数']
         },
         grid: {
           left: '3%',
@@ -152,7 +180,8 @@ export default {
             type: 'line',
             stack: 'Total',
             data: this.commHis.map((item) => {
-            return item.averageprice;
+            //return item.averageprice;
+            return item.closeprice
           }),
           },
           {
@@ -160,7 +189,17 @@ export default {
             type: 'line',
             stack: 'Total',
             data: this.commHis.map((item) => {
-            return item.totalamount;
+            //return item.totalamount;
+            return item.quantity
+          }),
+          },
+          {
+            name: '交易频次',
+            type: 'line',
+            stack: 'Total',
+            data: this.commHis.map((item) => {
+            //return item.totalamount;
+            return item.tradefrequency
           }),
           },
         ]
@@ -172,8 +211,11 @@ export default {
         this.commHis = res.data.data.map((item) => {
           return {
             tradedate: item.tradedate.split("T")[0],
-            averageprice: item.averageprice,
-            totalamount:item.totalamount
+            closeprice: item.closeprice,
+            quantity: item.quantity,
+            tradefrequency: item.tradefrequency
+            //averageprice: item.averageprice,
+            //totalamount:item.totalamount
           };
         });
         this.drawChartHistory();
