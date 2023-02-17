@@ -88,14 +88,14 @@ export default {
   },
   mounted() {
     this.type = "不定突发短期事件";
-    this.commodity = "DJ2303";
+    this.commodity = "大姜2303";
     getCommodityList().then((res) => {
       this.commodityList = res.data.data
     })
       .catch((err) => {
         console.log(err);
       });
-    getCommAss("不定突发短期事件","DJ2303").then((res) => {
+    getCommAss("不定突发短期事件","大姜2303").then((res) => {
           console.log("请求列表api成功");
           console.log(res);
           this.dataBreed = res.data.data;
@@ -185,7 +185,7 @@ export default {
           }),
           },
           {
-            name: '交易量',
+            name: '交易用户数',
             type: 'line',
             stack: 'Total',
             data: this.commHis.map((item) => {
@@ -194,7 +194,7 @@ export default {
           }),
           },
           {
-            name: '交易频次',
+            name: '交易次数',
             type: 'line',
             stack: 'Total',
             data: this.commHis.map((item) => {
