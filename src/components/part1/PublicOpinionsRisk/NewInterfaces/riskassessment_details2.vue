@@ -70,7 +70,7 @@
            </tr>
            <tr>
              <td class="column_key">事件影响力</td>
-             <td class="column_value">{{parseFloat(RiskData.event_influence).toFixed(5)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.event_influence).toFixed(2)}}</td>
            </tr>
            <tr>
              <td class="column_key">事件活跃度</td>
@@ -78,7 +78,7 @@
            </tr>
            <tr>
              <td class="column_key" >风险数值</td>
-             <td class="column_value" :style="{'color':RiskData.risk_value<0.4?'#08775b':(RiskData.risk_value<0.7?'rgba(253,166,60,0.91)':'#911115')}">{{parseFloat(RiskData.risk_value).toFixed(5)}}</td>
+             <td class="column_value" :style="{'color':RiskData.risk_value<0.4?'#08775b':(RiskData.risk_value<0.7?'rgba(253,166,60,0.91)':'#911115')}">{{parseFloat(RiskData.risk_value)}}</td>
            </tr>
            <tr>
              <td class="column_key">风险等级</td>

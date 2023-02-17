@@ -227,13 +227,13 @@
               >系统性风险监测子系统</span
               >
             </template>
-
-            <el-menu-item
+      
+            <!--el-menu-item
                 index="/trade/PolicyRisk/event_calendar"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">政策-事件日历</span>
-            </el-menu-item>
+            </el-menu-item-->
             <el-menu-item
                  index="/trade/PolicyRisk/comAssociated"
                  style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -244,14 +244,14 @@
                 index="/trade/PolicyRisk/viewIndustryPolicy"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">业内系统性风险监测</span>
+              <span slot="title">行业整体系统性风险监测</span>
             </el-menu-item>
-            <el-menu-item
+            <!--el-menu-item
                 index="/trade/PolicyRisk/viewAssociated"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
               <span slot="title">关联性系统风险监测</span>
-            </el-menu-item>
+            </el-menu-item-->
             <!--el-menu-item
                 index="/trade/PolicyRisk/gpr_chn"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
