@@ -30,7 +30,7 @@
         <el-table-column prop="id" label="编号" ></el-table-column>
         <el-table-column prop="userid" label="用户ID"></el-table-column>
         <el-table-column prop="username" label="用户昵称"></el-table-column>
-        <!--<el-table-column prop="authentication" label="用户认证"></el-table-column>-->
+        <el-table-column prop="authentication" label="用户认证"></el-table-column>
         <el-table-column prop="content" label="内容摘要" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="releasetime" label="发布时间"></el-table-column>
         <el-table-column prop="likenum" label="点赞数"></el-table-column>
@@ -64,7 +64,7 @@
 
     <!--风险评估详情页-->
     <div>
-      <riskassessment_details2 :show="detailShow_assessment" title="风险评估详情" @close="closeRiskAssessmentDialog" v-bind:RiskData="RiskData"></riskassessment_details2>
+      <riskassessment_details :show="detailShow_assessment" title="风险评估详情" @close="closeRiskAssessmentDialog" v-bind:RiskData="RiskData"></riskassessment_details>
     </div>
 
   </div>
@@ -78,11 +78,11 @@ import {
   getSearchTableData,
   getWbInformationByDate
 } from "../../../../api/part1/PublicSentimentRisk";
-import riskassessment_details2 from "./riskassessment_details2";
+import riskassessment_details from "./riskassessment_details";
 
 export default {
   name: "opinions_details",
-  components: {PersonalEventDetailDialog_WB,riskassessment_details2},
+  components: {PersonalEventDetailDialog_WB,riskassessment_details},
   data(){
     return{
       //日期范围
@@ -93,8 +93,8 @@ export default {
       dataConvert_WB:[],
       //分页器相关变量
       currentPage:1,
-      pageSizes:[5,10,15,20],
-      PageSize:10,
+      pageSizes:[5,8,15,20],
+      PageSize:8,
 
       listValue_WB:[],//传给dialog的数据
       detailShow_WB:false,//详情展示dialog

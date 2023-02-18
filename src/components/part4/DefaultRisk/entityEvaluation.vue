@@ -12,14 +12,14 @@
             <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10"
                          stroke-linecap="square"
                          :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I 交易主体数<br/>（风险评估分 &lt; 60）</p>
+            <p class="progress-text">风险评级I 交易主体数<br/>（履约评估分 &lt; 60）</p>
           </button>
         </el-col>
         <el-col :span="8">
           <button class="transparent-button" @click="onClickRiskII">
             <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II 交易主体数<br/>（60 &le; 风险评估分 &lt; 80）</p>
+            <p class="progress-text">风险评级II 交易主体数<br/>（60 &le; 履约评估分 &lt; 80）</p>
           </button>
         </el-col>
         <el-col :span="8">
@@ -27,7 +27,7 @@
             <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
                          :format="formatProgressNum" color="lightgreen" :width="90"
                          class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III 交易主体数<br/>（风险评估分 &ge; 80）</p>
+            <p class="progress-text">风险评级III 交易主体数<br/>（履约评估分 &ge; 80）</p>
           </button>
         </el-col>
       </el-row>
@@ -39,35 +39,48 @@
         <span>交易主体查询</span>
       </div>
 
-      <el-input v-model="queriedEntityName" placeholder="请输入名称">
-        <template slot="prepend">交易主体名称</template>
+      <el-input v-model="queriedEntityName" placeholder="请输入ID">
+        <template slot="prepend">交易主体ID</template>
         <el-button slot="append" @click="onQueryEntity">查询</el-button>
       </el-input>
     </el-card>
 
     <!--交易主体信息表格-->
-    <el-card v-if="noQuery" shadow="hover" class="box-card box-card-no-padding">
+    <el-card v-if="noQuery" shadow="hover" class="box-card box-card-no-padding" key="mainTable">
+      <div slot="header" class="box-card-header">
+        <span>交易主体详情&nbsp;风险评级{{ currentLevel===1?'I':(currentLevel===2?'II':'III') }}</span>
+      </div>
       <el-table
           highlight-current-row
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}"
           :data="mainTableData">
-        <el-table-column prop="id" label="交易主体ID" min-width="100"></el-table-column>
-        <el-table-column prop="name" label="交易主体名称" min-width="100">
+
+        <el-table-column prop="id" label="交易主体ID" min-width="100">
           <template v-slot="scope">
-            <el-link type="primary" @click="onClickEntityName(scope.row.name)">
-              {{ scope.row.name }}
+            <el-link type="primary" @click="onClickEntityName(scope.row.id)">
+              {{ scope.row.id }}
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="score" label="风险评估分" min-width="100">
+        <!--        <el-table-column prop="name" label="交易主体名称" min-width="100">-->
+        <!--          <template v-slot="scope">-->
+        <!--            <el-link type="primary" @click="onClickEntityName(scope.row.name)">-->
+        <!--              {{ scope.row.name }}-->
+        <!--            </el-link>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
+
+        <el-table-column prop="score" label="履约评估分" min-width="100">
           <template v-slot="scope">
             <span v-if="scope.row.riskLevel===1" style="color: orange; font-weight: bold">{{ scope.row.score }}</span>
             <span v-else-if="scope.row.riskLevel===2" style="color: gold; font-weight: bold">{{
                 scope.row.score
               }}</span>
-            <span v-else style="color: lightgreen; font-weight: bold">{{ scope.row.score }}</span>
+            <span v-else-if="scope.row.riskLevel===3" style="color: lightgreen; font-weight: bold">{{
+                scope.row.score
+              }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -81,7 +94,7 @@
 
       <el-row type="flex" :gutter="2">
 
-        <!--风险评估分-->
+        <!--履约评估分-->
         <el-col :span="5">
           <div style="margin-top: auto; margin-bottom: auto">
             <el-progress type="circle" :percentage="100" :stroke-width="10"
@@ -89,7 +102,7 @@
                          :color="entityData.riskLevel===1?'orange':(entityData.riskLevel===2?'gold':'lightgreen')"
                          :format="()=>entityData.score" :width="150"
                          :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"></el-progress>
-            <p class="progress-text">风险评估分</p>
+            <p class="progress-text">履约评估分</p>
           </div>
         </el-col>
 
@@ -99,9 +112,9 @@
             <el-form-item label="交易主体ID">
               {{ entityData.id }}
             </el-form-item>
-            <el-form-item label="交易主体名称">
-              {{ entityData.name }}
-            </el-form-item>
+            <!--            <el-form-item label="交易主体名称">-->
+            <!--              {{ entityData.name }}-->
+            <!--            </el-form-item>-->
             <el-form-item label="风险评级">
               <template>
                 <span v-if="entityData.riskLevel===1" style="color: orange; font-weight: bold">
@@ -122,10 +135,6 @@
 
       <el-divider></el-divider>
 
-      <!--交易情况：销售表 和 采购表-->
-      <el-table
-          :data="salesTableData">
-      </el-table>
       <div class="detail-subheader">采购情况表</div>
 
       <el-table
@@ -133,9 +142,11 @@
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}"
-          :data="purchaseTableData">
+          :data="purchaseTableData"
+          key="purchaseTable">
         <el-table-column prop="id" label="交易ID"></el-table-column>
-        <el-table-column prop="sellerName" label="卖方名称" min-width="120"></el-table-column>
+        <!--        <el-table-column prop="sellerName" label="卖方名称" min-width="120"></el-table-column>-->
+        <el-table-column prop="sellerId" label="卖方ID"></el-table-column>
         <el-table-column prop="category" label="采购品类"></el-table-column>
         <el-table-column prop="unitPrice" label="采购单价"></el-table-column>
         <el-table-column prop="amount" label="采购量"></el-table-column>
@@ -148,21 +159,19 @@
           :header-cell-style="getHeaderStylesheet"
           :row-style="{height: '40px'}"
           :cell-style="{padding:'0px'}"
-          :data="salesTableData">
+          :data="salesTableData"
+          key="salesTable">
         <el-table-column prop="id" label="交易ID"></el-table-column>
-        <el-table-column prop="buyerName" label="买方名称" min-width="120"></el-table-column>
+        <!--        <el-table-column prop="buyerName" label="买方名称" min-width="120"></el-table-column>-->
+        <el-table-column prop="buyerId" label="买方ID"></el-table-column>
         <el-table-column prop="category" label="销售品类"></el-table-column>
         <el-table-column prop="unitPrice" label="销售单价"></el-table-column>
         <el-table-column prop="amount" label="销售量"></el-table-column>
       </el-table>
 
-      <el-table
-          :data="salesTableData">
-      </el-table>
-
       <!--关系图-->
-      <div id="chart"></div>
-      <div class="detail-subheader">交易关系图</div>
+      <!--      <div id="chart"></div>-->
+      <!--      <div class="detail-subheader">交易关系图</div>-->
 
     </el-card>
   </div>
@@ -184,6 +193,7 @@ export default {
     return {
       /* 交易主体情况统计数据 */
       countTotalEntity: 0,
+      currentLevel: 0,
       countsPerLevel: [],
       mainTableData: [],
 
@@ -230,18 +240,21 @@ export default {
     // 情况统计圆环点击事件
     onClickRiskI() {
       this.noQuery = true;
+      this.currentLevel = 1;
       getEntitiesByLevel(1).then(res => {
         this.mainTableData = res.data;
       });
     },
     onClickRiskII() {
       this.noQuery = true;
+      this.currentLevel = 2;
       getEntitiesByLevel(2).then(res => {
         this.mainTableData = res.data;
       });
     },
     onClickRiskIII() {
       this.noQuery = true;
+      this.currentLevel = 3;
       getEntitiesByLevel(3).then(res => {
         this.mainTableData = res.data;
       });
@@ -262,7 +275,8 @@ export default {
         });
         getAllSalesById(this.entityData.id).then(res => {
           this.salesTableData = res.data;
-          this.drawChart();
+          console.log(this.salesTableData);
+          // this.drawChart();
         });
       });
     },
