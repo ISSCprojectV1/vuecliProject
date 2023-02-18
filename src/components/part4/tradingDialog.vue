@@ -22,8 +22,8 @@
       <el-table-column prop="firmId" label="交易商代码"></el-table-column>
       <el-table-column prop="oppFirmId" label="交易对手代码"></el-table-column>
       <el-table-column prop="type" label="交易操作"></el-table-column>
-      <el-table-column prop="price" label="成交金额"></el-table-column>
-      <el-table-column prop="quantity" label="手续费"></el-table-column>
+      <el-table-column prop="price" label="成交金额(元)"></el-table-column>
+      <el-table-column prop="quantity" label="手续费(元)"></el-table-column>
     </el-table>
 
     <el-pagination
@@ -39,7 +39,7 @@
     </el-pagination>
     <div style="margin: 10px">
       <el-radio-group v-model.number="radio" @change="handleRadioChange">
-      <el-radio-button v-for="(r, i) in detectionResults[index].indexLists" :key="r.name" :label="i"> 指标{{i + 1}} </el-radio-button>
+      <el-radio-button v-for="(r, i) in detectionResults[index].indexLists" :key="r.name" :label="i"> {{indexString[i]}} </el-radio-button>
       </el-radio-group>
     </div>
     <el-row justify="center">
@@ -71,6 +71,7 @@ export default {
       },
       radio: 0,
       indexData: [],
+      indexString: ["投资回报率", "资金增加量", "交易频率"]
     };
   },
   watch: {
@@ -125,7 +126,7 @@ export default {
         },
         title: {
           left: "center",
-          text: "交易行为指标变化图",
+          text: "交易行为指标变化趋势图",
         },
         toolbox: {
           feature: {
