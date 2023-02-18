@@ -18,46 +18,46 @@
          <table class="riskDetail_table" style="margin-top: 10px;border:#121313 solid 1px;text-align: left" v-if="table_visible">
            <tr>
              <td class="column_key">总博文数</td>
-             <td class="column_value">{{parseFloat(RiskData.blog_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.blog_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">总用户数</td>
-             <td class="column_value">{{parseFloat(RiskData.user_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.user_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">总点赞数</td>
-             <td class="column_value">{{parseFloat(RiskData.like_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.like_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">总评论数</td>
-             <td class="column_value">{{parseFloat(RiskData.comment_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.comment_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">总转发数</td>
-             <td class="column_value">{{parseFloat(RiskData.forward_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.forward_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">无微博认证用户数</td>
-             <td class="column_value">{{parseFloat(RiskData.commonuser_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.commonuser_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">微博个人认证用户数</td>
-             <td class="column_value">{{parseFloat(RiskData.yellowVuser_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.yellowVuser_num).toFixed(0)}}</td>
            </tr>
            <tr>
              <td class="column_key">微博官方认证用户数</td>
-             <td class="column_value">{{parseFloat(RiskData.blueVuser_num).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.blueVuser_num).toFixed(0)}}</td>
            </tr>
            <tr>
-             <td class="column_key">时间跨度</td>
+             <td class="column_key">时间跨度(小时)</td>
              <td class="column_value">{{parseFloat(RiskData.duration).toFixed(2)}}</td>
            </tr>
            <tr>
-             <td class="column_key">平均传播速度</td>
+             <td class="column_key">平均传播速度(博文数/小时)</td>
              <td class="column_value">{{parseFloat(RiskData.average_speed).toFixed(2)}}</td>
            </tr>
            <tr>
-             <td class="column_key">峰值传播速度</td>
+             <td class="column_key">峰值传播速度(博文数/小时)</td>
              <td class="column_value">{{parseFloat(RiskData.peak_speed).toFixed(2)}}</td>
            </tr>
            <tr>
@@ -70,19 +70,19 @@
            </tr>
            <tr>
              <td class="column_key">事件影响力</td>
-             <td class="column_value">{{parseFloat(RiskData.event_influence).toFixed(2)}}</td>
+             <td class="column_value" >{{parseFloat(RiskData.event_influence).toFixed(2)}} ({{influence_level}})</td>
            </tr>
            <tr>
              <td class="column_key">事件活跃度</td>
-             <td class="column_value">{{parseFloat(RiskData.event_active).toFixed(2)}}</td>
+             <td class="column_value">{{parseFloat(RiskData.event_active).toFixed(2)}} ({{activity_level}})</td>
            </tr>
            <tr>
              <td class="column_key" >风险数值</td>
-             <td class="column_value" :style="{'color':RiskData.risk_value<0.4?'#08775b':(RiskData.risk_value<0.7?'rgba(253,166,60,0.91)':'#911115')}">{{parseFloat(RiskData.risk_value)}}</td>
+             <td class="column_value" :style="{'color':RiskData.risk_value<0.4?'#08775b':(RiskData.risk_value<0.7?'#f98e0b':'#911115')}">{{RiskData.risk_value}}</td>
            </tr>
            <tr>
              <td class="column_key">风险等级</td>
-             <td class="column_value" :style="{'color':RiskData.risk_level==='低'?'#08775b':(RiskData.risk_level==='中'?'rgba(253,166,60,0.91)':'#911115')}">{{RiskData.risk_level}}</td>
+             <td class="column_value" :style="{'color':RiskData.risk_level==='低'?'#08775b':(RiskData.risk_level==='中'?'#f98e0b':'#911115')}">{{RiskData.risk_level}}</td>
            </tr>
          </table>
        </div>
@@ -119,6 +119,10 @@ export default {
 
       //时间选择
       start_end_date:'',
+
+      //
+      influence_level:'',
+      activity_level:'',
     }
   },
   watch: {
@@ -157,6 +161,32 @@ export default {
         let URL="/getRiskAssessmentData/"+start_time+'/'+end_time;
         getRiskAssessmentData(URL).then((res) =>{
           this.RiskData=res.data;
+
+          if(this.RiskData.event_active<10000)
+          {
+            this.activity_level="低";
+          }
+          else if(this.RiskData.event_active<10000)
+          {
+            this.activity_level="中";
+          }
+          else
+          {
+            this.activity_level="高";
+          }
+
+          if(this.RiskData.event_influence<100000)
+          {
+            this.influence_level="低";
+          }
+          else if(this.RiskData.event_influence<1000000) {
+            this.influence_level="中";
+          }
+          else
+          {
+            this.influence_level="高";
+          }
+
           this.detailShow_assessment=true;
         }).catch(() => {
           console.log("获取风险评估详情失败");

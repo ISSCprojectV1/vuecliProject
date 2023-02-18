@@ -334,13 +334,13 @@ export const asyncRoutes = [
       },
       {
         id:48,
-        name:"舆情事件详情",
+        name:"舆情风险详情",
         path:'/trade/PublicOpinionsRisk/opinionsRisk',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
       },
       {
         id:49,
-        name:"舆情风险详情",
+        name:"舆情事件详情",
         path:'/trade/PublicOpinionsRisk/opinionsDetails',
         component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
       },
