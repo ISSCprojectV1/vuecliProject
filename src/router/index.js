@@ -330,7 +330,7 @@ export const asyncRoutes = [
         id:47,
         name:"舆情信息汇总",
         path:'/trade/PublicOpinionsRisk/opinionsMain',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main2"),
+        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
       },
       {
         id:48,

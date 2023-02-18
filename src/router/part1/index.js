@@ -306,7 +306,7 @@ let routes = [
       },
       {
         path:"/trade/PublicOpinionsRisk/opinionsMain",
-        component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main2"),
+        component:() => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
         meta: {
           title: "舆情信息汇总"
         }
