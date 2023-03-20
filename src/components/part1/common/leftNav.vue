@@ -227,7 +227,7 @@
               >系统性风险监测子系统</span
               >
             </template>
-      
+
             <!--el-menu-item
                 index="/trade/PolicyRisk/event_calendar"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
@@ -271,22 +271,16 @@
                 index="/trade/DefaultRisk/entityEvaluation"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">交易主体评估</span>
+              <span slot="title">交易主体风险评估</span>
             </el-menu-item>
 
             <el-menu-item
-                index="/trade/DefaultRisk/transactionEvaluation"
+                index="/trade/DefaultRisk/supervisionRec"
                 style="text-align: left; padding-left: 70px; font-size: 18px"
             >
-              <span slot="title">交易过程评估</span>
+              <span slot="title">交易主体监管推荐</span>
             </el-menu-item>
 
-            <!--            <el-menu-item-->
-            <!--              index="/trade/DefaultRisk/categoryEvaluation"-->
-            <!--              style="text-align: left; padding-left: 70px; font-size: 18px"-->
-            <!--            >-->
-            <!--              <span slot="title">品类评估</span>-->
-            <!--            </el-menu-item>-->
           </el-submenu>
 
           <!--舆情风险子系统-->
