@@ -42,7 +42,6 @@ export default {
 #app
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   border: 1px solid #dcdfe6;
-  text-align: center;
   //color: #2c3e50;
   background-color: #ffffff;
   position: relative;
