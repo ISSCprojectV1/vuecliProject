@@ -30,35 +30,35 @@ export const constantRoutes = [
     component: () => import("@/components/part1/common/full"),
     children: [
       {
-        path:"/trade/PolicyRisk/event_calendar",
+        path: "/trade/PolicyRisk/event_calendar",
         component: () => import("@/components/part1/PolicyRisk/event_calendar"),
         meta: {
           title: "政策-事件日历"
         }
       },
       {
-        path:"/trade/PolicyRisk/viewIndustryPolicy",
+        path: "/trade/PolicyRisk/viewIndustryPolicy",
         component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicy"),
         meta: {
           title: "业内政策1"
         }
       },
       {
-        path:"/trade/PolicyRisk/viewIndustryPolicyco",
+        path: "/trade/PolicyRisk/viewIndustryPolicyco",
         component: () => import("@/components/part1/PolicyRisk/viewIndustryPolicyco"),
         meta: {
           title: "业内政策1"
         }
       },
       {
-        path:"/trade/PolicyRisk/viewAssociatedPolicy",
+        path: "/trade/PolicyRisk/viewAssociatedPolicy",
         component: () => import("@/components/part1/PolicyRisk/viewAssociatedPolicy"),
         meta: {
           title: "关联政策"
         }
       },
       {
-        path:"/trade/PolicyRisk/viewAssociated",
+        path: "/trade/PolicyRisk/viewAssociated",
         component: () => import("@/components/part1/PolicyRisk/viewAssociated"),
         meta: {
           title: "关联系统风险"
@@ -269,6 +269,7 @@ export const asyncRoutes = [
       },
       {
         id: 38,
+        name: '交易主体风险评估',
         path: "/trade/DefaultRisk/entityEvaluation",
         component: () => import("@/components/part4/DefaultRisk/entityEvaluation"),
       },
@@ -276,6 +277,11 @@ export const asyncRoutes = [
         id: 39,
         path: "/trade/DefaultRisk/categoryEvaluation",
         component: () => import("@/components/part4/DefaultRisk/categoryEvaluation"),
+      },
+      {
+        name: '交易主体监管推荐',
+        path: '/trade/DefaultRisk/supervisionRec',
+        component: () => import('@/components/part4/DefaultRisk/supervisionRec.vue'),
       },
       //  价格波动风险预警与传导
       {
@@ -295,30 +301,30 @@ export const asyncRoutes = [
         path: "/trade/riskPrediction/forecastMonitorInfo",
         component: () => import("@/components/part1/riskPrediction/forecastMonitorInfo"),
       },
-        // 舆情风险
+      // 舆情风险
       {
-        id:43,
-        name:"今日舆情汇总",
-        path:'/trade/PublicOpinionsRisk/opinions_summary',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_summary"),
+        id: 43,
+        name: "今日舆情汇总",
+        path: '/trade/PublicOpinionsRisk/opinions_summary',
+        component: () => import("@/components/part1/PublicOpinionsRisk/opinions_summary"),
       },
       {
-        id:44,
-        name:"今日风险详情",
-        path:'/trade/PublicOpinionsRisk/opinions_riskinfo',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_riskinfo"),
+        id: 44,
+        name: "今日风险详情",
+        path: '/trade/PublicOpinionsRisk/opinions_riskinfo',
+        component: () => import("@/components/part1/PublicOpinionsRisk/opinions_riskinfo"),
       },
       {
-        id:45,
-        name:"舆情网络",
-        path:'/trade/PublicOpinionsRisk/opinions_network',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_network"),
+        id: 45,
+        name: "舆情网络",
+        path: '/trade/PublicOpinionsRisk/opinions_network',
+        component: () => import("@/components/part1/PublicOpinionsRisk/opinions_network"),
       },
       {
-        id:46,
-        name:"舆情事件查询",
-        path:'/trade/PublicOpinionsRisk/opinions_search',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/opinions_search"),
+        id: 46,
+        name: "舆情事件查询",
+        path: '/trade/PublicOpinionsRisk/opinions_search',
+        component: () => import("@/components/part1/PublicOpinionsRisk/opinions_search"),
       },
       {
         id: 43,
@@ -327,22 +333,22 @@ export const asyncRoutes = [
         component: () => import("@/components/part1/riskPrediction/priceCompare"),
       },
       {
-        id:47,
-        name:"舆情信息汇总",
-        path:'/trade/PublicOpinionsRisk/opinionsMain',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
+        id: 47,
+        name: "舆情信息汇总",
+        path: '/trade/PublicOpinionsRisk/opinionsMain',
+        component: () => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_main"),
       },
       {
-        id:48,
-        name:"舆情风险详情",
-        path:'/trade/PublicOpinionsRisk/opinionsRisk',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
+        id: 48,
+        name: "舆情风险详情",
+        path: '/trade/PublicOpinionsRisk/opinionsRisk',
+        component: () => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_risk"),
       },
       {
-        id:49,
-        name:"舆情事件详情",
-        path:'/trade/PublicOpinionsRisk/opinionsDetails',
-        component: ()=>import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
+        id: 49,
+        name: "舆情事件详情",
+        path: '/trade/PublicOpinionsRisk/opinionsDetails',
+        component: () => import("@/components/part1/PublicOpinionsRisk/NewInterfaces/opinions_details"),
       },
       {
         id: 50,
