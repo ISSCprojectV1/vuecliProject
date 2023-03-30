@@ -91,12 +91,14 @@
 
         <!--履约评估分-->
         <el-col :span="5">
-          <div style="margin-top: auto; margin-bottom: auto">
+          <div
+              style="margin-top: auto; margin-bottom: auto; display: flex; flex-direction: column; justify-content: center; align-content: center">
             <el-progress type="circle" :percentage="100" :stroke-width="10"
                          stroke-linecap="square"
                          :color="entityData.riskLevel===1?'orange':(entityData.riskLevel===2?'gold':'lightgreen')"
                          :format="()=>entityData.score" :width="150"
-                         :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"></el-progress>
+                         :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"
+                         style="margin-left:auto; margin-right: auto"></el-progress>
             <p class="progress-text">履约评估分</p>
           </div>
         </el-col>
@@ -363,6 +365,7 @@ export default {
 
 .progress-text {
   font-weight: bold;
+  text-align: center;
 }
 
 /deep/ .box-card-no-padding .el-card__body {
