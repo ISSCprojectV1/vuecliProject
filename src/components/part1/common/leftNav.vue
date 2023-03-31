@@ -384,10 +384,7 @@ export default {
     else this.auctionshow = false;
     this.defaultActive = this.$router.currentRoute.path;
     let rootDiv = document.getElementById("diceng");
-    rootDiv.style.height =
-        (window.innerHeight > document.body.scrollHeight
-            ? window.innerHeight
-            : document.body.scrollHeight) + "px";
+
   },
   created() {
   },
