@@ -6,31 +6,26 @@
         <span>交易主体情况统计</span>
       </div>
 
-      <el-row style="margin-left: 5rem; margin-right: 5rem">
-        <el-col :span="8">
-          <button class="transparent-button" @click="onClickRiskI">
-            <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10"
-                         stroke-linecap="square"
-                         :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
-            <p class="progress-text">风险评级I 交易主体数<br/>（履约评估分 &lt; 60）</p>
-          </button>
-        </el-col>
-        <el-col :span="8">
-          <button class="transparent-button" @click="onClickRiskII">
-            <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
-            <p class="progress-text">风险评级II 交易主体数<br/>（60 &le; 履约评估分 &lt; 80）</p>
-          </button>
-        </el-col>
-        <el-col :span="8">
-          <button class="transparent-button" @click="onClickRiskIII">
-            <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
-                         :format="formatProgressNum" color="lightgreen" :width="90"
-                         class="green-progress"></el-progress>
-            <p class="progress-text">风险评级III 交易主体数<br/>（履约评估分 &ge; 80）</p>
-          </button>
-        </el-col>
-      </el-row>
+      <div style="display: flex; justify-content: space-around; align-content: center">
+        <button class="transparent-button" @click="onClickRiskI">
+          <el-progress type="circle" :percentage="l1Percentage" :stroke-width="10"
+                       stroke-linecap="square"
+                       :format="formatProgressNum" color="orange" :width="90" class="orange-progress"></el-progress>
+          <p class="progress-text">风险评级I 交易主体数<br/>（履约评估分 &lt; 60）</p>
+        </button>
+        <button class="transparent-button" @click="onClickRiskII">
+          <el-progress type="circle" :percentage="l2Percentage" :stroke-width="10" stroke-linecap="square"
+                       :format="formatProgressNum" color="gold" :width="90" class="gold-progress"></el-progress>
+          <p class="progress-text">风险评级II 交易主体数<br/>（60 &le; 履约评估分 &lt; 80）</p>
+        </button>
+        <button class="transparent-button" @click="onClickRiskIII">
+          <el-progress type="circle" :percentage="l3Percentage" :stroke-width="10" stroke-linecap="square"
+                       :format="formatProgressNum" color="lightgreen" :width="90"
+                       class="green-progress"></el-progress>
+          <p class="progress-text">风险评级III 交易主体数<br/>（履约评估分 &ge; 80）</p>
+        </button>
+      </div>
+
     </el-card>
 
     <!--交易主体查询-->
@@ -48,7 +43,7 @@
     <!--交易主体信息表格-->
     <el-card v-if="noQuery" shadow="hover" class="box-card box-card-no-padding" key="mainTable">
       <div slot="header" class="box-card-header">
-        <span>交易主体详情&nbsp;风险评级{{ currentLevel===1?'I':(currentLevel===2?'II':'III') }}</span>
+        <span>交易主体详情&nbsp;风险评级{{ currentLevel === 1 ? 'I' : (currentLevel === 2 ? 'II' : 'III') }}</span>
       </div>
       <el-table
           highlight-current-row
@@ -96,12 +91,14 @@
 
         <!--履约评估分-->
         <el-col :span="5">
-          <div style="margin-top: auto; margin-bottom: auto">
+          <div
+              style="margin-top: auto; margin-bottom: auto; display: flex; flex-direction: column; justify-content: center; align-content: center">
             <el-progress type="circle" :percentage="100" :stroke-width="10"
                          stroke-linecap="square"
                          :color="entityData.riskLevel===1?'orange':(entityData.riskLevel===2?'gold':'lightgreen')"
                          :format="()=>entityData.score" :width="150"
-                         :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"></el-progress>
+                         :class="entityData.riskLevel===1?'orange-score':(entityData.riskLevel===2?'gold-score':'green-score')"
+                         style="margin-left:auto; margin-right: auto"></el-progress>
             <p class="progress-text">履约评估分</p>
           </div>
         </el-col>
@@ -368,6 +365,7 @@ export default {
 
 .progress-text {
   font-weight: bold;
+  text-align: center;
 }
 
 /deep/ .box-card-no-padding .el-card__body {
