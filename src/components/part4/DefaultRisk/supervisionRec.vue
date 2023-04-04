@@ -6,11 +6,6 @@
         <span>监管推荐参数设置</span>
       </div>
 
-      <!--      <el-radio-group v-model="supervisionMode">-->
-      <!--        <el-radio-button label="global">全品类监管</el-radio-button>-->
-      <!--        <el-radio-button label="local">单品类监管</el-radio-button>-->
-      <!--      </el-radio-group>-->
-
       <el-form :model="form" label-width="auto" label-position="top" :inline="true">
 
         <el-form-item label="监管模式">
@@ -22,7 +17,7 @@
 
         <el-form-item label="目标交易品类" v-show="form.supervisionMode==='local'">
           <el-select v-model="form.targetCategory" placehoder="请选择">
-
+            <el-option v-for="category in categories" :key="category" :label="category" :value="category"></el-option>
           </el-select>
         </el-form-item>
 
@@ -43,6 +38,7 @@
       <div slot="header" class="box-card-header">
         <span>监管推荐详细信息</span>
       </div>
+
     </el-card>
   </div>
 </template>
@@ -54,9 +50,10 @@ export default {
     return {
       form: {
         supervisionMode: 'global',
-        targetCategory: '',
+        targetCategory: '苯乙烯',
         k: 1,
       },
+      categories: ['苯乙烯', '焦煤', '焦炭', '聚丙烯', '聚氯乙烯', '聚乙烯', '铁矿石', '液化石油气', '乙二醇'],
     }
   },
 }
